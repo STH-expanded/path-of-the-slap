@@ -1,5 +1,4 @@
 class Game {
-
     constructor(inputList) {
         this.frame = 0;
         this.inputList = inputList;
@@ -18,6 +17,20 @@ class Game {
         this.gameState = this.gameStateEnum.MAINMENU;
 
         this.players = new Map();
+
+        this.player1 = new Player(
+            1,
+            new Character(1, 'goku', new Vector2D(10, 10), new Vector2D(10, 10), 10, 5, new Vector2D(0, 2)),
+            'player'
+        );
+        this.player2 = new Player(
+            2,
+            new Character(2, 'vegeta', new Vector2D(30, 30), new Vector2D(10, 10), 10, 5, new Vector2D(0, 1)),
+            'bot'
+        );
+
+        this.stage = new Stage(1, 'forest', new Vector2D(240, 135), new Vector2D(480, 270));
+
 
         this.characterSelection = null;
         this.characters = ['mario', 'luigi', 'bowser'];
@@ -77,7 +90,7 @@ class Game {
         }
 
         this.manageFight = () => {
-            if (!this.fight) this.fight = new Fight();
+            if (!this.fight) this.fight = new Fight(this.player1, this.player2, this.stage);
             this.fight.update(this);
         }
 
@@ -114,6 +127,6 @@ class Game {
             });
 
             this.frame++;
-        }
+        };
     }
 }

@@ -18,17 +18,17 @@ var isIntersect = (playerPos, playerSize, wallPos, wallSize) => {
 
 var inBound = (playerPos, playerSize, bound) => {
   return !(
-    playerPos.y + playerSize.y > bound.size.y / 2 ||
-    playerPos.y < -bound.size.y / 2 ||
-    playerPos.x + playerSize.x > bound.size.x / 2 ||
-    playerPos.x < -bound.size.x / 2
+    playerPos.y + playerSize.y > bound.y / 2 ||
+    playerPos.y < -bound.y / 2 ||
+    playerPos.x + playerSize.x > bound.x / 2 ||
+    playerPos.x < -bound.x / 2
   );
 };
 
-var obstaclesAt = (pos, size, obstacles) => {
+var obstaclesAt = (pos, size, obstacles, bound) => {
   var result = [];
   obstacles.forEach(obstacle => {
-    if (isIntersect(pos, size, obstacle.pos, obstacle.size)) {
+    if (inBound(pos, size, bound)) {
       result.push(obstacle);
     }
   });
