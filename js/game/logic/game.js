@@ -5,7 +5,7 @@ class Game {
         this.lastInputList = new Map();
 
         this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training', 'settings', 'about'];
-        this.endMenuOptionList = ['Main menu', 'Play again'];
+        this.endMenuOptionList = ['Main menu','Selection new character', 'Play again'];
 
         this.gameStateEnum = {
             MAINMENU: 'mainMenu',
@@ -74,6 +74,11 @@ class Game {
                                 case this.endMenuOptionList[1]:
                                     console.log('go to CHARARTERSELECTION');
                                     this.gameState = this.gameStateEnum.CHARACTERSELECTION
+                                    break;
+                                case this.endMenuOptionList[2]:
+                                    console.log('go to NewGAME');
+                                    this.fight = new Fight(this.player1, this.player2, this.stage);
+                                    this.gameState = this.gameStateEnum.FIGHT;
                                     break;
                                 default:
                                     break;
