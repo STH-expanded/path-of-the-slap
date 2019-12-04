@@ -18,11 +18,12 @@ class Game {
             ENDMENU: 'endMenu'
         }
 
-        this.gameState = this.gameStateEnum.MAINMENU;
+        this.gameState = this.gameStateEnum.CHARACTERSELECTION;
 
         this.players = new Map();
 
         this.characterSelection = null;
+        this.characters = [];
 
         this.fight = null;
         
@@ -37,7 +38,8 @@ class Game {
         }
         
         this.manageCharacterSelection = () => {
-
+            if (!this.characterSelection) this.characterSelection = new CharacterSelection(this.characters);
+            this.characterSelection.update(this);
         }
 
         this.manageFight = () => {

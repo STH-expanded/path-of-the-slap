@@ -10,6 +10,41 @@ class Display {
         this.cx = this.canvas.getContext("2d");
 
         this.update = () => {
+            var game = this.game;
+            switch(game.gameState){
+                case game.gameStateEnum.MAINMENU:
+                    this.displayMainMenu();
+                case game.gameStateEnum.CHARACTERSELECTION:
+                    this.displayCharacterSelection();
+                case game.gameStateEnum.FIGHT:
+                    this.displayFight();
+                case game.gameStateEnum.ENDMENU:
+                    this.displayEndMenu();
+            }
+            this.frame++;
+        }
+
+        this.displayMainMenu = () => {
+            this.cx.fillStyle = '#080';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            )
+        }
+
+        this.displayEndMenu = () => {
+            this.cx.fillStyle = '#800';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            )
+        }
+        
+        this.displayCharacterSelection = () => {
             this.cx.fillStyle = '#008';
             this.cx.fillRect(
                 0 * this.zoom,
@@ -17,8 +52,16 @@ class Display {
                 480 * this.zoom,
                 270 * this.zoom,
             )
+        }
 
-            this.frame++;
+        this.displayFight = () => {
+            this.cx.fillStyle = '#088';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            )
         }
 
         this.flipHorizontally = around => {
