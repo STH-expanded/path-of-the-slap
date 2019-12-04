@@ -2,6 +2,7 @@ class Game {
   constructor(inputList) {
     this.frame = 0;
     this.inputList = inputList;
+    this.lastInputList = new Map();
 
     this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
 
@@ -18,10 +19,12 @@ class Game {
     this.players = new Map();
 
     this.characterSelection = null;
+    this.characters = [];
 
     this.fight = null;
 
     this.mainMenuCursor = 0;
+
 
     this.updateMainMenu = () => {
       var selectedOption = null;
@@ -50,9 +53,14 @@ class Game {
       }
     };
 
-    this.updateEndMenu = () => { };
+    this.updateEndMenu = () => {
 
-    this.manageCharacterSelection = () => { };
+    }
+
+    this.manageCharacterSelection = () => {
+      if (!this.characterSelection) this.characterSelection = new CharacterSelection(this.characters);
+      this.characterSelection.update(this);
+    }
 
     this.manageFight = () => {
       if (this.fight === null) {
@@ -60,21 +68,24 @@ class Game {
       } else {
         fight.update(this);
       }
-    };
+    }
 
     this.update = () => {
+
       switch (this.gameState) {
-        case gameStateEnum.MAINMENU:
+        case this.gameStateEnum.MAINMENU:
           this.updateMainMenu();
           break;
-        case gameStateEnum.CHARACTERSELECTION:
+        case this.gameStateEnum.CHARACTERSELECTION:
           this.manageCharacterSelection();
           break;
-        case gameStateEnum.FIGHT:
+        case this.gameStateEnum.FIGHT:
           this.manageFight();
           break;
-        case gameStateEnum.ENDMENU:
+        case this.gameStateEnum.ENDMENU:
           this.updateEndMenu();
+          break;
+        default:
           break;
       }
 
@@ -87,7 +98,11 @@ class Game {
       //     if (input.right) console.log("right : " + id);
       // });
 
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.set(id, JSON.parse(JSON.stringify(input)));
+      });
+
       this.frame++;
-    };
+    }
   }
 }

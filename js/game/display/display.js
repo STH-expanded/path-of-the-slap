@@ -10,15 +10,77 @@ class Display {
         this.cx = this.canvas.getContext("2d");
 
         this.update = () => {
-            this.cx.fillStyle = '#008';
+            switch (this.game.gameState) {
+                case this.game.gameStateEnum.MAINMENU:
+                    this.displayMainMenu();
+                    break;
+                case this.game.gameStateEnum.CHARACTERSELECTION:
+                    this.displayCharacterSelection();
+                    break;
+                case this.game.gameStateEnum.FIGHT:
+                    this.displayFight();
+                    break;
+                case this.game.gameStateEnum.ENDMENU:
+                    this.displayEndMenu();
+                    break;
+                default:
+                    break;
+            }
+            this.frame++;
+        }
+
+        this.displayMainMenu = () => {
+            this.cx.fillStyle = 'green';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
                 480 * this.zoom,
                 270 * this.zoom,
             )
+        }
 
-            this.frame++;
+        this.displayEndMenu = () => {
+            this.cx.fillStyle = 'yellow';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            )
+        }
+
+        this.displayCharacterSelection = () => {
+            this.cx.fillStyle = 'orange';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            );
+
+            if (this.game.characterSelection) {
+
+                console.log(this.game.characterSelection.cursor)
+                //cursor
+    
+                this.cx.fillStyle = 'white';
+                this.cx.fillRect(
+                    0 * this.zoom,
+                    0 * this.zoom + this.game.characterSelection.cursor * this.zoom,
+                    32 * this.zoom,
+                    32 * this.zoom,
+                );
+            }
+        }
+
+        this.displayFight = () => {
+            this.cx.fillStyle = 'red';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            )
         }
 
         this.flipHorizontally = around => {
