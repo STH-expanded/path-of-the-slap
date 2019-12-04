@@ -15,7 +15,7 @@ class Game {
             ENDMENU: 'endMenu'
         };
 
-        this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+        this.gameState = this.gameStateEnum.MAINMENU;
         this.gamemode = null;
 
         this.players = new Map();
@@ -28,18 +28,20 @@ class Game {
         this.mainMenuCursor = 0;
         this.EndMenuCursor = 0;
 
-
         this.updateMainMenu = () => {
-            var selectedOption = null;
             var nbMenu = this.menuOptionList.length;
-            this.inputList.forEach((input) => {
-                if (input.a) {
-                    selectedOption = this.menuOptionList[this.mainMenuCursor];
-                    this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                    this.characterSelection = new CharacterSelection(this.characters, selectedOption);
-                }
-                if (input.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
-                if (input.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+            this.inputList.forEach((input, id) => {
+                this.lastInputList.forEach((lastinput, lastid) => {
+                    if (id === lastid) {
+                        if (input.a && !lastinput.a) {
+                            console.log(this.menuOptionList[this.mainMenuCursor]);
+                            this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+                            this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
+                        }
+                        if (input.up && !lastinput.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
+                        if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+                    }
+                });
             });
         };
 
