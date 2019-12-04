@@ -10,22 +10,27 @@ class Display {
         this.cx = this.canvas.getContext("2d");
 
         this.update = () => {
-            var game = this.game;
-            switch(game.gameState){
-                case game.gameStateEnum.MAINMENU:
+            switch (this.game.gameState) {
+                case this.game.gameStateEnum.MAINMENU:
                     this.displayMainMenu();
-                case game.gameStateEnum.CHARACTERSELECTION:
+                    break;
+                case this.game.gameStateEnum.CHARACTERSELECTION:
                     this.displayCharacterSelection();
-                case game.gameStateEnum.FIGHT:
+                    break;
+                case this.game.gameStateEnum.FIGHT:
                     this.displayFight();
-                case game.gameStateEnum.ENDMENU:
+                    break;
+                case this.game.gameStateEnum.ENDMENU:
                     this.displayEndMenu();
+                    break;
+                default:
+                    break;
             }
             this.frame++;
         }
 
         this.displayMainMenu = () => {
-            this.cx.fillStyle = '#080';
+            this.cx.fillStyle = 'green';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
@@ -35,17 +40,7 @@ class Display {
         }
 
         this.displayEndMenu = () => {
-            this.cx.fillStyle = '#800';
-            this.cx.fillRect(
-                0 * this.zoom,
-                0 * this.zoom,
-                480 * this.zoom,
-                270 * this.zoom,
-            )
-        }
-        
-        this.displayCharacterSelection = () => {
-            this.cx.fillStyle = '#008';
+            this.cx.fillStyle = 'yellow';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
@@ -54,8 +49,32 @@ class Display {
             )
         }
 
+        this.displayCharacterSelection = () => {
+            this.cx.fillStyle = 'orange';
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom,
+            );
+
+            if (this.game.characterSelection) {
+
+                console.log(this.game.characterSelection.cursor)
+                //cursor
+    
+                this.cx.fillStyle = 'white';
+                this.cx.fillRect(
+                    0 * this.zoom,
+                    0 * this.zoom + this.game.characterSelection.cursor * this.zoom,
+                    32 * this.zoom,
+                    32 * this.zoom,
+                );
+            }
+        }
+
         this.displayFight = () => {
-            this.cx.fillStyle = '#088';
+            this.cx.fillStyle = 'red';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
