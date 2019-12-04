@@ -13,6 +13,7 @@ class Game {
     };
 
     this.gameState = this.gameStateEnum.MAINMENU;
+    this.gamemode = null;
 
     this.players = new Map();
 
@@ -26,18 +27,24 @@ class Game {
       var selectedOption = null;
       var nbMenu = this.menuOptionList.length;
       this.inputList.forEach((input) => {
-        if (input.a) selectedOption = this.menuOptionList[this.mainMenuCursor];
+        if (input.a) {
+          selectedOption = this.menuOptionList[this.mainMenuCursor];
+          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+        }
         if (input.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
         if (input.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
       });
 
       switch (selectedOption) {
         case 'playerVSplayer':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+          this.gamemode = 'playerVSplayer';
+          break;
         case 'playerVScomputer':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+          this.gamemode = 'playerVScomputer';
+          break;
         case 'training':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+          this.gamemode = 'training';
+          break;
         default:
           break;
       }
@@ -59,12 +66,16 @@ class Game {
       switch (this.gameState) {
         case gameStateEnum.MAINMENU:
           this.updateMainMenu();
+          break;
         case gameStateEnum.CHARACTERSELECTION:
           this.manageCharacterSelection();
+          break;
         case gameStateEnum.FIGHT:
           this.manageFight();
+          break;
         case gameStateEnum.ENDMENU:
           this.updateEndMenu();
+          break;
       }
 
       // this.inputList.forEach((input, id) => {
