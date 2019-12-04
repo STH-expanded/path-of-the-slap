@@ -16,7 +16,6 @@ class Game {
         };
 
         this.gameState = this.gameStateEnum.MAINMENU;
-        this.gamemode = null;
 
         this.players = new Map();
 
@@ -67,9 +66,8 @@ class Game {
                             console.log("down : " + this.EndMenuCursor);
                         }
                     }
-                })
-
-            }, this);
+                });
+            });
 
         };
 
@@ -79,11 +77,8 @@ class Game {
         }
 
         this.manageFight = () => {
-            if (this.fight === null) {
-                this.fight = new Fight();
-            } else {
-                fight.update(this);
-            }
+            if (!this.fight) this.fight = new Fight();
+            this.fight.update(this);
         }
 
         this.update = () => {

@@ -37,6 +37,14 @@ class Display {
                 480 * this.zoom,
                 270 * this.zoom,
             )
+
+            this.cx.fillStyle = 'white';
+            this.cx.fillRect(
+                224 * this.zoom,
+                87 * this.zoom + this.game.mainMenuCursor * 32 * this.zoom,
+                32 * this.zoom,
+                32 * this.zoom,
+            );
         }
 
         this.displayEndMenu = () => {
@@ -58,7 +66,7 @@ class Display {
                 270 * this.zoom,
             );
 
-            if (this.game.characterSelection) {   
+            if (this.game.characterSelection) {
                 this.cx.fillStyle = 'white';
                 this.cx.fillRect(
                     224 * this.zoom,
