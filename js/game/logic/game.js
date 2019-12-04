@@ -29,12 +29,17 @@ class Game {
         this.updateMainMenu = () => { };
 
         this.updateEndMenu = () => {
+            var doEnter = () => {
+                var currmenu = this.endMenuOptionList[this.EndMenuCursor];
+                console.log(currmenu);
+                
+            };
             this.inputList.forEach((input, id) => {
                 this.lastInputList.forEach((lastinput,lastid)=>{
                     if (id=lastid && !lastinput.a && !lastinput.down && !lastinput.up) {
                         if (input.a) {
                             console.log("a : " + id);
-                            this.doEnter
+                            doEnter();
                         }
                         if (input.up) {
                             this.EndMenuCursor = (((this.EndMenuCursor - 1)%this.endMenuOptionList.length)+this.endMenuOptionList.length) % this.endMenuOptionList.length
@@ -48,7 +53,7 @@ class Game {
                 })
                 
             }, this);
-            console.log(this.endMenuOptionList[this.EndMenuCursor])
+            
         };
 
         this.manageCharacterSelection = () => { };
