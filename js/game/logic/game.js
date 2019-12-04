@@ -47,13 +47,13 @@ class Game {
         this.update = () => {
 
             switch(this.gameState){
-                case gameStateEnum.MAINMENU:
+                case this.gameStateEnum.MAINMENU:
                     this.updateMainMenu();
-                case gameStateEnum.CHARACTERSELECTION:
+                case this.gameStateEnum.CHARACTERSELECTION:
                     this.manageCharacterSelection();
-                case gameStateEnum.FIGHT:
+                case this.gameStateEnum.FIGHT:
                     this.manageFight();
-                case gameStateEnum.ENDMENU:
+                case this.gameStateEnum.ENDMENU:
                     this.updateEndMenu();
             }
             
