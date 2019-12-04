@@ -10,7 +10,7 @@ class CharacterSelection {
                     if (id === lastId) {
                         if (input.a && !lastInput.a) {
                             console.log("x:" + this.cursor.x + ' y:' + this.cursor.y);
-                            game.fight = new Fight();
+                            game.fight = new Fight(game.player1, game.player2, game.stage);
                             game.gameState = game.gameStateEnum.FIGHT;
                         }
                         if (input.b) {
