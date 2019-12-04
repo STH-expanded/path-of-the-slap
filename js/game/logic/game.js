@@ -3,7 +3,7 @@ class Game {
     this.frame = 0;
     this.inputList = inputList;
 
-    this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training', 'settings', 'about'];
+    this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
 
     this.gameStateEnum = {
       MAINMENU: 'mainMenu',
@@ -22,11 +22,30 @@ class Game {
 
     this.mainMenuCursor = 0;
 
-    this.updateMainMenu = () => {};
+    this.updateMainMenu = () => {
+      var selectedOption = null;
+      var nbMenu = this.menuOptionList.length;
+      this.inputList.forEach((input) => {
+        if (input.a) selectedOption = this.menuOptionList[this.mainMenuCursor];
+        if (input.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
+        if (input.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+      });
 
-    this.updateEndMenu = () => {};
+      switch (selectedOption) {
+        case 'playerVSplayer':
+          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+        case 'playerVScomputer':
+          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+        case 'training':
+          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+        default:
+          break;
+      }
+    };
 
-    this.manageCharacterSelection = () => {};
+    this.updateEndMenu = () => { };
+
+    this.manageCharacterSelection = () => { };
 
     this.manageFight = () => {
       if (this.fight === null) {
