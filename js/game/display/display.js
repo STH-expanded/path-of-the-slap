@@ -44,13 +44,10 @@ class Display {
       this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
       if (this.game.characterSelection) {
-        console.log(this.game.characterSelection.cursor);
-        //cursor
-
         this.cx.fillStyle = 'white';
         this.cx.fillRect(
-          0 * this.zoom,
-          0 * this.zoom + this.game.characterSelection.cursor * this.zoom,
+          224 * this.zoom,
+          87 * this.zoom + this.game.characterSelection.cursor.y * 32 * this.zoom,
           32 * this.zoom,
           32 * this.zoom
         );

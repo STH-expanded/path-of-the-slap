@@ -5,6 +5,7 @@ class Game {
     this.lastInputList = new Map();
 
     this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
+    this.endMenuOptionList = ['training', 'settings', 'about'];
 
     this.gameStateEnum = {
       MAINMENU: 'mainMenu',
@@ -13,7 +14,7 @@ class Game {
       ENDMENU: 'endMenu'
     };
 
-    this.gameState = this.gameStateEnum.FIGHT;
+    this.gameState = this.gameStateEnum.MAINMENU;
     this.gamemode = null;
 
     this.player1 = new Player(
@@ -30,34 +31,62 @@ class Game {
     this.stage = new Stage(1, 'forest', new Vector2D(240, 135), new Vector2D(480, 270));
 
     this.characterSelection = null;
-    this.characters = [];
+    this.characters = ['mario', 'luigi', 'bowser'];
 
     this.fight = null;
 
     this.mainMenuCursor = 0;
+    this.EndMenuCursor = 0;
 
     this.updateMainMenu = () => {
-      var selectedOption = null;
       var nbMenu = this.menuOptionList.length;
-      this.inputList.forEach(input => {
-        if (input.a) selectedOption = this.menuOptionList[this.mainMenuCursor];
-        if (input.up) this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
-        if (input.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.forEach((lastinput, lastid) => {
+          if (id === lastid) {
+            if (input.a && !lastinput.a) {
+              console.log(this.menuOptionList[this.mainMenuCursor]);
+              this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+              this.characterSelection = new CharacterSelection(
+                this.characters,
+                this.menuOptionList[this.mainMenuCursor]
+              );
+            }
+            if (input.up && !lastinput.up)
+              this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
+            if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+          }
+        });
       });
-
-      switch (selectedOption) {
-        case 'playerVSplayer':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-        case 'playerVScomputer':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-        case 'training':
-          this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-        default:
-          break;
-      }
     };
 
-    this.updateEndMenu = () => {};
+    this.updateEndMenu = () => {
+      var doEnter = () => {
+        var currmenu = this.endMenuOptionList[this.EndMenuCursor];
+        console.log(currmenu);
+      };
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.forEach((lastinput, lastid) => {
+          if ((id = lastid && !lastinput.a && !lastinput.down && !lastinput.up)) {
+            if (input.a) {
+              console.log('a : ' + id);
+              doEnter();
+            }
+            if (input.up) {
+              this.EndMenuCursor =
+                (((this.EndMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) %
+                this.endMenuOptionList.length;
+              console.log('up : ' + this.EndMenuCursor);
+            }
+            if (input.down) {
+              this.EndMenuCursor =
+                (((this.EndMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) %
+                this.endMenuOptionList.length;
+              console.log('down : ' + this.EndMenuCursor);
+            }
+          }
+        });
+      }, this);
+    };
 
     this.manageCharacterSelection = () => {
       if (!this.characterSelection) this.characterSelection = new CharacterSelection(this.characters);
@@ -68,7 +97,7 @@ class Game {
       if (this.fight === null) {
         this.fight = new Fight(this.player1, this.player2, this.stage);
       } else {
-        this.fight.update(this);
+        fight.update(this);
       }
     };
 
@@ -90,14 +119,14 @@ class Game {
           break;
       }
 
-      this.inputList.forEach((input, id) => {
-        if (input.a) console.log('a : ' + id);
-        if (input.b) console.log('b : ' + id);
-        if (input.up) console.log('up : ' + id);
-        if (input.down) console.log('down : ' + id);
-        if (input.left) console.log('left : ' + id);
-        if (input.right) console.log('right : ' + id);
-      });
+      // this.inputList.forEach((input, id) => {
+      //     if (input.a) console.log("a : " + id);
+      //     if (input.b) console.log("b : " + id);
+      //     if (input.up) console.log("up : " + id);
+      //     if (input.down) console.log("down : " + id);
+      //     if (input.left) console.log("left : " + id);
+      //     if (input.right) console.log("right : " + id);
+      // });
 
       this.inputList.forEach((input, id) => {
         this.lastInputList.set(id, JSON.parse(JSON.stringify(input)));
