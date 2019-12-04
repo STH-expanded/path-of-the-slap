@@ -29,28 +29,49 @@ class Display {
       this.frame++;
     };
 
-        this.displayMainMenu = () => {
-            this.cx.fillStyle = 'green';
+        
+        
+    
+    this.displayMainMenu = () => {
+        this.cx.fillStyle = 'green';
+        this.cx.fillRect(
+            0 * this.zoom,
+            0 * this.zoom,
+            480 * this.zoom,
+            270 * this.zoom,
+        )
+
+        this.cx.fillStyle = 'white';
+        this.cx.fillRect(
+            224 * this.zoom,
+            87 * this.zoom + this.game.mainMenuCursor * 32 * this.zoom,
+            32 * this.zoom,
+            32 * this.zoom,
+        );
+    }
+    
+    this.displayEndMenu = () => {
+            this.cx.fillStyle = 'white';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
                 480 * this.zoom,
                 270 * this.zoom,
             )
+            this.game.endMenuOptionList.forEach((option,index) => {
+            if (this.game.endMenuOptionList[this.game.EndMenuCursor]===option) {
+                this.cx.fillStyle = 'red';
+            }else{
+                this.cx.fillStyle = 'black';
+            }
+            this.cx.font = '16px serif';
+            this.cx.fillText(option,(450 * this.zoom)/2,((270 * this.zoom)/2)+20*index);
+            });
+            
 
-            this.cx.fillStyle = 'white';
-            this.cx.fillRect(
-                224 * this.zoom,
-                87 * this.zoom + this.game.mainMenuCursor * 32 * this.zoom,
-                32 * this.zoom,
-                32 * this.zoom,
-            );
         }
 
-    this.displayEndMenu = () => {
-      this.cx.fillStyle = 'yellow';
-      this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-    };
+   
 
     this.displayCharacterSelection = () => {
       this.cx.fillStyle = 'orange';
