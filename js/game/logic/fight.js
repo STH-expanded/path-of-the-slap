@@ -6,16 +6,13 @@ class Fight {
     this.timer = 600;
     this.player1Life = 1000;
     this.player2Life = 1000;
-    this.winner;
 
     this.update = game => {
       this.timerDown();
 
       // tout le reste de la logique pour retirer les pv
 
-      if (this.checkVictory()) {
-        game.gameState = game.gameStateEnum.ENDMENU;
-      }
+      this.checkVictory(game);
     };
   }
 
@@ -23,20 +20,19 @@ class Fight {
     this.timer -= 1;
   };
 
-  checkVictory = () => {
+  checkVictory = game => {
+    let winner;
     if (this.player1Life === 0 || (this.player1Life < this.player2Life && this.timer === 0)) {
-      this.winner = this.player2;
-      return true;
+      winner = this.player2;
+      game.gameState = game.gameStateEnum.ENDMENU;
     } else if (this.player2Life === 0 || (this.player2Life < this.player1Life && this.timer === 0)) {
-      this.winner = this.player1;
-      return true;
+      winner = this.player1;
+      game.gameState = game.gameStateEnum.ENDMENU;
     } else if (
       (this.player1Life === 0 && this.player2Life === 0) ||
       (this.player1Life === this.player2Life && this.timer === 0)
     ) {
-      return true;
-    } else {
-      return false;
+      game.gameState = game.gameStateEnum.ENDMENU;
     }
   };
 }
