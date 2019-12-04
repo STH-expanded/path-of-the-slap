@@ -40,13 +40,24 @@ class Display {
         }
 
         this.displayEndMenu = () => {
-            this.cx.fillStyle = 'yellow';
+            this.cx.fillStyle = 'white';
             this.cx.fillRect(
                 0 * this.zoom,
                 0 * this.zoom,
                 480 * this.zoom,
                 270 * this.zoom,
             )
+            this.game.endMenuOptionList.forEach((option,index) => {
+            if (this.game.endMenuOptionList[this.game.EndMenuCursor]===option) {
+                this.cx.fillStyle = 'red';
+            }else{
+                this.cx.fillStyle = 'black';
+            }
+            this.cx.font = '16px serif';
+            this.cx.fillText(option,(450 * this.zoom)/2,((270 * this.zoom)/2)+20*index);
+            });
+            
+
         }
 
         this.displayCharacterSelection = () => {

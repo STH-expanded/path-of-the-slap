@@ -5,8 +5,8 @@ class Game {
     this.inputList = inputList;
     this.lastInputList = new Map();
 
-    this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
-    this.endMenuOptionList = [ 'training', 'settings', 'about'];
+    this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training', 'settings', 'about'];
+    this.endMenuOptionList = [ 'Main menu','Play again'];
 
     this.gameStateEnum = {
       MAINMENU: 'mainMenu',
@@ -15,7 +15,7 @@ class Game {
       ENDMENU: 'endMenu'
     };
 
-    this.gameState = this.gameStateEnum.MAINMENU;
+    this.gameState = this.gameStateEnum.ENDMENU;
     this.gamemode = null;
 
     this.players = new Map();
@@ -57,30 +57,37 @@ class Game {
     };
 
     this.updateEndMenu = () => {
-        var doEnter = () => {
-            var currmenu = this.endMenuOptionList[this.EndMenuCursor];
-            console.log(currmenu);
-            
-        };
         this.inputList.forEach((input, id) => {
             this.lastInputList.forEach((lastinput,lastid)=>{
-                if (id=lastid && !lastinput.a && !lastinput.down && !lastinput.up) {
-                    if (input.a) {
-                        console.log("a : " + id);
-                        doEnter();
+                if (id===lastid) {
+                    if (input.a && !lastinput.a) {
+                        // console.log("a : " + id);
+                        var currmenu = this.endMenuOptionList[this.EndMenuCursor];
+                        switch (currmenu) {
+                            case this.endMenuOptionList[0]:
+                                console.log('go to MAIN');
+                                this.gameState  = this.gameStateEnum.MAINMENU
+                                break;
+                            case this.endMenuOptionList[1]:
+                                console.log('go to CHARARTERSELECTION');
+                                this.gameState = this.gameStateEnum.CHARACTERSELECTION
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                    if (input.up) {
+                    if (input.up && !lastinput.up) {
                         this.EndMenuCursor = (((this.EndMenuCursor - 1)%this.endMenuOptionList.length)+this.endMenuOptionList.length) % this.endMenuOptionList.length
-                        console.log("up : " + this.EndMenuCursor);
+                        // console.log("up : " + this.EndMenuCursor);
                     }
-                    if (input.down) {
+                    if (input.down && !lastinput.down) {
                         this.EndMenuCursor = (((this.EndMenuCursor + 1)%this.endMenuOptionList.length)+this.endMenuOptionList.length) % this.endMenuOptionList.length
-                        console.log("down : " + this.EndMenuCursor);
+                        // console.log("down : " + this.EndMenuCursor);
                     }
                 }
             })
             
-        }, this);
+        }, this); 
         
     };
 
