@@ -21,9 +21,19 @@ class Game {
         this.endMenuCursor = 0;
 
         this.characterSelection = null;
-        this.characters = ['abstractCharacter', 'abstractCharacter'];
+        this.characters = [
+            'char1',
+            'char2'
+        ];
 
-        this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 270))];
+        this.stages = [
+            new Stage(
+                1,
+                'forest',
+                new Vector2D(0, 0),
+                new Vector2D(480, 270)
+            )
+        ];
 
         this.fight = null;
 
