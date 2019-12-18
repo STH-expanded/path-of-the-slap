@@ -49,10 +49,6 @@ class Display {
                 270 * this.zoom,
             )
 
-            this.cx.fillStyle = 'black';
-            this.cx.font = '20px serif';
-            this.cx.fillText("Main Menu", 25 * this.zoom, 25 * this.zoom);
-
             this.game.menuOptionList.forEach((option, index) => {
                 if (this.game.menuOptionList[this.game.mainMenuCursor] === option) {
                     this.cx.fillStyle = 'red';
@@ -67,10 +63,6 @@ class Display {
         this.displayEndMenu = () => {
             this.cx.fillStyle = 'yellow';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-
-            this.cx.fillStyle = 'black';
-            this.cx.font = '20px serif';
-            this.cx.fillText("End Menu", 25 * this.zoom, 25 * this.zoom);
 
             this.game.endMenuOptionList.forEach((option, index) => {
                 if (this.game.endMenuOptionList[this.game.endMenuCursor] === option) {
@@ -153,10 +145,6 @@ class Display {
         this.displayFight = () => {
             this.cx.fillStyle = 'red';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-
-            this.cx.fillStyle = 'black';
-            this.cx.font = '20px serif';
-            this.cx.fillText("Fight", 25 * this.zoom, 25 * this.zoom);
 
             var player1 = this.game.fight.player1.character;
             var player2 = this.game.fight.player2.character;
