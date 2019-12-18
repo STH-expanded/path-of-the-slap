@@ -20,7 +20,7 @@ class CharacterSelection {
                     if (input.a && !lastInput.a) {
                         if (!this.player1) {
                             this.player1 = game.players[0];
-                            this.player1.character = new Character(this.player1.keys);
+                            this.player1.character = new Mario(this.player1.keys);
                             if (this.mode === 'playerVSplayer') this.playerController++;
                         } else if (!this.player2) {
                             this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', this.player1.keys, 'computer');
@@ -42,6 +42,6 @@ class CharacterSelection {
                     }
                 }
             }
-        }
+        };
     }
 }
