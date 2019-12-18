@@ -4,27 +4,44 @@ class CharacterSelection {
         this.characters = characters;
         this.mode = mode;
 
+        this.playerController = 0;
+
+        this.player1 = null;
+        this.player2 = null;
+
         this.update = game => {
-            game.inputList.forEach((input, id) => {
-                game.lastInputList.forEach((lastInput, lastId) => {
-                    if (id === lastId) {
-                        if (input.a && !lastInput.a) {
-                            console.log("x:" + this.cursor.x + ' y:' + this.cursor.y);
-                            game.fight = new Fight(game.player1, game.player2, game.stage);
+            if (this.playerController < game.players.length) {
+                var id = game.players[this.playerController].id;
+                var input = game.inputList.get(id);
+                var lastInput = game.lastInputList.get(id);
+
+                if (input.b) game.gameState = game.gameStateEnum.MAINMENU;
+                else {
+                    if (input.a && !lastInput.a) {
+                        if (!this.player1) {
+                            this.player1 = game.players[0];
+                            this.player1.character = new Character(this.player1.keys);
+                            if (this.mode === 'playerVSplayer') this.playerController++;
+                        } else if (!this.player2) {
+                            this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', this.player1.keys, 'computer');
+                            this.player2.character = new Character(this.player2.keys);
+                        }
+
+                        if (this.player1 && this.player2) {
+                            game.fight = new Fight(this.player1, this.player2, game.stages[0]);
                             game.gameState = game.gameStateEnum.FIGHT;
                         }
-                        if (input.b) {
-                            game.gameState = game.gameStateEnum.MAINMENU;
-                        }
-                        if (input.up && !lastInput.up) {
-                            this.cursor.y = (((this.cursor.y - 1) % this.characters.length) + this.characters.length) % this.characters.length;
-                        }
-                        if (input.down && !lastInput.down) {
-                            this.cursor.y = (((this.cursor.y + 1) % this.characters.length) + this.characters.length) % this.characters.length;
-                        }
                     }
-                });
-            });
+
+                    if (input.up && !lastInput.up) {
+                        this.cursor.y = (((this.cursor.y - 1) % this.characters.length) + this.characters.length) % this.characters.length;
+                    }
+
+                    if (input.down && !lastInput.down) {
+                        this.cursor.y = (((this.cursor.y + 1) % this.characters.length) + this.characters.length) % this.characters.length;
+                    }
+                }
+            }
         }
     }
 }

@@ -1,51 +1,31 @@
 class Fight {
-  constructor(player1, player2, stage) {
-    this.player1 = player1;
-    this.player2 = player2;
-    this.stage = stage;
-    this.timer = 3600;
-    this.player1Life = 1000;
-    this.player2Life = 1000;
+    constructor(player1, player2, stage) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.stage = stage;
 
-    this.update = game => {
-      this.timerDown();
+        this.timer = 3600;
 
-      // tout le reste de la logique pour retirer les pv
+        this.winner = null;
 
-      [this.player1, this.player2].forEach(player => {
-        let keys = {};
-        game.inputList.forEach((input, id) => {
-          if (input.a) console.log('a : ' + id);
-          if (input.b) console.log('b : ' + id);
-          if (input.up) console.log('up : ' + id);
-          if (input.down) console.log('down : ' + id);
-          if (input.left) console.log('left : ' + id);
-          if (input.right) console.log('right : ' + id);
-        });
-        player.update(game, keys);
-      });
+        this.update = game => {
+            [this.player1, this.player2].forEach(player => player.update(game));
 
-      this.checkVictory(game);
-    };
-  }
-
-  timerDown = () => {
-    this.timer -= 1;
-  };
-
-  checkVictory = game => {
-    let winner;
-    if (this.player1Life === 0 || (this.player1Life < this.player2Life && this.timer === 0)) {
-      winner = this.player2;
-      game.gameState = game.gameStateEnum.ENDMENU;
-    } else if (this.player2Life === 0 || (this.player2Life < this.player1Life && this.timer === 0)) {
-      winner = this.player1;
-      game.gameState = game.gameStateEnum.ENDMENU;
-    } else if (
-      (this.player1Life === 0 && this.player2Life === 0) ||
-      (this.player1Life === this.player2Life && this.timer === 0)
-    ) {
-      game.gameState = game.gameStateEnum.ENDMENU;
+            this.winner = this.checkWinner();
+            if (this.winner) {
+                game.gameState = game.gameStateEnum.ENDMENU;
+            }
+            
+            this.timer--;
+        };
     }
-  };
+
+    checkWinner = () => {
+        let p1Health = this.player1.character.health;
+        let p2Health = this.player2.character.health;
+        if ((p1Health <= 0 && p2Health <= 0) || (p1Health === p2Health && this.timer <= 0)) return 'draw';
+        else if (p2Health <= 0 || (p1Health > p2Health && this.timer <= 0)) return 'player1';
+        else if (p1Health <= 0 || (p1Health < p2Health && this.timer <= 0)) return 'player2';
+        return null;
+    };
 }

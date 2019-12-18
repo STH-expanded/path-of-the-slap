@@ -1,149 +1,138 @@
 class Game {
-    constructor(inputList) {
-        this.frame = 0;
-        this.inputList = inputList;
-        this.lastInputList = new Map();
+  constructor(inputList) {
+    this.frame = 0;
+    this.inputList = inputList;
+    this.lastInputList = new Map();
 
-        this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training', 'settings', 'about'];
-        this.endMenuOptionList = ['Main menu','Selection new character', 'Play again'];
+    this.players = [];
 
-        this.gameStateEnum = {
-            MAINMENU: 'mainMenu',
-            CHARACTERSELECTION: 'characterSelection',
-            FIGHT: 'fight',
-            ENDMENU: 'endMenu'
-        };
+    this.gameStateEnum = {
+      MAINMENU: "mainMenu",
+      CHARACTERSELECTION: "characterSelection",
+      FIGHT: "fight",
+      ENDMENU: "endMenu"
+    };
+    this.gameState = this.gameStateEnum.MAINMENU;
+    this.gamemode = null;
 
-        this.gameState = this.gameStateEnum.MAINMENU;
-        this.gamemode = null;
+    this.menuOptionList = ["playerVSplayer", "playerVScomputer", "training"];
+    this.mainMenuCursor = 0;
 
-        this.players = new Map();
+    this.endMenuOptionList = ["rematch", "change characters", "return to menu"];
+    this.endMenuCursor = 0;
 
-        this.player1 = new Player(
-            1,
-            new Character(1, 'goku', new Vector2D(10, 10), new Vector2D(10, 10), 10, 5, new Vector2D(0, 2)),
-            'player'
-        );
-        this.player2 = new Player(
-            2,
-            new Character(2, 'vegeta', new Vector2D(30, 30), new Vector2D(10, 10), 10, 5, new Vector2D(0, 1)),
-            'bot'
-        );
+    this.characterSelection = null;
+    this.characters = ["abstractCharacter", "abstractCharacter"];
 
+    this.stages = [new Stage(1, "forest", new Vector2D(0, 0), new Vector2D(480, 270))];
 
+    this.fight = null;
 
-        this.stage = new Stage(1, 'forest', new Vector2D(240, 135), new Vector2D(480, 270));
-
-
-        this.characterSelection = null;
-        this.characters = ['mario', 'luigi', 'bowser'];
-
-        this.fight = null;
-
-        this.mainMenuCursor = 0;
-        this.EndMenuCursor = 0;
-
-        this.updateMainMenu = () => {
-            var nbMenu = this.menuOptionList.length;
-            this.inputList.forEach((input, id) => {
-                this.lastInputList.forEach((lastinput, lastid) => {
-                    if (id === lastid) {
-                        if (input.a && !lastinput.a) {
-                            console.log(this.menuOptionList[this.mainMenuCursor]);
-                            this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                            this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
-                        }
-                        if (input.up && !lastinput.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
-                        if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
-                    }
-                });
-            });
-        };
-        this.updateEndMenu = () => {
-            this.inputList.forEach((input, id) => {
-                this.lastInputList.forEach((lastinput, lastid) => {
-                    if (id === lastid) {
-                        if (input.a && !lastinput.a) {
-                            // console.log("a : " + id);
-                            var currmenu = this.endMenuOptionList[this.EndMenuCursor];
-                            switch (currmenu) {
-                                case this.endMenuOptionList[0]:
-                                    console.log('go to MAIN');
-                                    this.gameState = this.gameStateEnum.MAINMENU
-                                    break;
-                                case this.endMenuOptionList[1]:
-                                    console.log('go to CHARARTERSELECTION');
-                                    this.gameState = this.gameStateEnum.CHARACTERSELECTION
-                                    break;
-                                case this.endMenuOptionList[2]:
-                                    console.log('go to NewGAME');
-                                    this.fight = new Fight(this.player1, this.player2, this.stage);
-                                    this.gameState = this.gameStateEnum.FIGHT;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (input.up && !lastinput.up) {
-                            this.EndMenuCursor = (((this.EndMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            // console.log("up : " + this.EndMenuCursor);
-                        }
-                        if (input.down && !lastinput.down) {
-                            this.EndMenuCursor = (((this.EndMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            // console.log("down : " + this.EndMenuCursor);
-                        }
-                    }
-                })
-
-            }, this);
-
-        };
-
-
-
-        this.manageCharacterSelection = () => {
-            if (!this.characterSelection) this.characterSelection = new CharacterSelection(this.characters);
-            this.characterSelection.update(this);
-        }
-
-        this.manageFight = () => {
-            if (!this.fight) this.fight = new Fight(this.player1, this.player2, this.stage);
-            this.fight.update(this);
-        }
-
-        this.update = () => {
-
-            switch (this.gameState) {
-                case this.gameStateEnum.MAINMENU:
-                    this.updateMainMenu();
-                    break;
-                case this.gameStateEnum.CHARACTERSELECTION:
-                    this.manageCharacterSelection();
-                    break;
-                case this.gameStateEnum.FIGHT:
-                    this.manageFight();
-                    break;
-                case this.gameStateEnum.ENDMENU:
-                    this.updateEndMenu();
-                    break;
-                default:
-                    break;
+    this.updateMainMenu = () => {
+      var nbMenu = this.menuOptionList.length;
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.forEach((lastinput, lastid) => {
+          if (id === lastid) {
+            if (input.a && !lastinput.a) {
+              console.log(this.menuOptionList[this.mainMenuCursor]);
+              this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+              this.characterSelection = new CharacterSelection(
+                this.characters,
+                this.menuOptionList[this.mainMenuCursor]
+              );
             }
+            if (input.up && !lastinput.up)
+              this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
+            if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
+          }
+        });
+      });
+    };
+    this.updateEndMenu = () => {
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.forEach((lastinput, lastid) => {
+          if ((id = lastid && !lastinput.a && !lastinput.down && !lastinput.up)) {
+            if (input.a) {
+              console.log("a : " + id);
+              var currmenu = this.endMenuOptionList[this.endMenuCursor];
+              console.log(currmenu);
+            }
+            if (input.up) {
+              this.endMenuCursor =
+                (((this.endMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) %
+                this.endMenuOptionList.length;
+              console.log("up : " + this.endMenuCursor);
+            }
+            if (input.down) {
+              this.endMenuCursor =
+                (((this.endMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) %
+                this.endMenuOptionList.length;
+              console.log("down : " + this.endMenuCursor);
+            }
+          }
+        });
+      }, this);
+    };
 
-            // this.inputList.forEach((input, id) => {
-            //     if (input.a) console.log("a : " + id);
-            //     if (input.b) console.log("b : " + id);
-            //     if (input.up) console.log("up : " + id);
-            //     if (input.down) console.log("down : " + id);
-            //     if (input.left) console.log("left : " + id);
-            //     if (input.right) console.log("right : " + id);
-            // });
+    this.manageCharacterSelection = () => {
+      if (!this.characterSelection) {
+        console.log("ERROR : WRONG GAME STATE");
+        this.gameState = this.gameStateEnum.MAINMENU;
+      } else this.characterSelection.update(this);
+    };
 
-            this.inputList.forEach((input, id) => {
-                this.lastInputList.set(id, JSON.parse(JSON.stringify(input)));
-            });
+    this.manageFight = () => {
+      if (!this.fight) {
+        console.log("ERROR : WRONG GAME STATE");
+        this.gameState = this.gameStateEnum.MAINMENU;
+      } else this.fight.update(this);
+    };
 
-            this.frame++;
-        };
-    }
+    this.managePlayers = () => {
+      if (this.inputList.size !== this.players.size) {
+        this.inputList.forEach((input, id) => {
+          if (!this.players.find(player => player.id === id)) {
+            this.players.push(new Player(id, input, "player"));
+            console.log("new player : " + id);
+          }
+        });
+      }
+    };
+
+    this.update = () => {
+      this.managePlayers();
+
+      switch (this.gameState) {
+        case this.gameStateEnum.MAINMENU:
+          this.updateMainMenu();
+          break;
+        case this.gameStateEnum.CHARACTERSELECTION:
+          this.manageCharacterSelection();
+          break;
+        case this.gameStateEnum.FIGHT:
+          this.manageFight();
+          break;
+        case this.gameStateEnum.ENDMENU:
+          this.updateEndMenu();
+          break;
+        default:
+          break;
+      }
+
+      // this.inputList.forEach((input, id) => {
+      //     if (input.a) console.log("a : " + id);
+      //     if (input.b) console.log("b : " + id);
+      //     if (input.up) console.log("up : " + id);
+      //     if (input.down) console.log("down : " + id);
+      //     if (input.left) console.log("left : " + id);
+      //     if (input.right) console.log("right : " + id);
+      // });
+
+      this.inputList.forEach((input, id) => {
+        this.lastInputList.set(id, JSON.parse(JSON.stringify(input)));
+      });
+
+      this.frame++;
+    };
+  }
 }

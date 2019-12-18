@@ -6,8 +6,8 @@ class Display {
 
     this.game = game;
 
-    this.canvas = document.createElement('canvas');
-    this.cx = this.canvas.getContext('2d');
+    this.canvas = document.createElement("canvas");
+    this.cx = this.canvas.getContext("2d");
 
     this.update = () => {
       switch (this.game.gameState) {
@@ -29,56 +29,64 @@ class Display {
       this.frame++;
     };
 
-        
-        
-    
     this.displayMainMenu = () => {
-        this.cx.fillStyle = 'green';
-        this.cx.fillRect(
-            0 * this.zoom,
-            0 * this.zoom,
-            480 * this.zoom,
-            270 * this.zoom,
-        )
+      this.cx.fillStyle = "green";
+      this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
-        this.cx.fillStyle = 'white';
-        this.cx.fillRect(
-            224 * this.zoom,
-            87 * this.zoom + this.game.mainMenuCursor * 32 * this.zoom,
-            32 * this.zoom,
-            32 * this.zoom,
-        );
-    }
-    
+      this.cx.fillStyle = "white";
+      this.cx.fillRect(
+        224 * this.zoom,
+        87 * this.zoom + this.game.mainMenuCursor * 32 * this.zoom,
+        32 * this.zoom,
+        32 * this.zoom
+      );
+    };
+
     this.displayEndMenu = () => {
-            this.cx.fillStyle = 'white';
-            this.cx.fillRect(
-                0 * this.zoom,
-                0 * this.zoom,
-                480 * this.zoom,
-                270 * this.zoom,
-            )
-            this.game.endMenuOptionList.forEach((option,index) => {
-            if (this.game.endMenuOptionList[this.game.EndMenuCursor]===option) {
-                this.cx.fillStyle = 'red';
-            }else{
-                this.cx.fillStyle = 'black';
-            }
-            this.cx.font = '16px serif';
-            this.cx.fillText(option,(450 * this.zoom)/2,((270 * this.zoom)/2)+20*index);
-            });
-            
-
+      this.cx.fillStyle = "white";
+      this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
+      this.game.endMenuOptionList.forEach((option, index) => {
+        if (this.game.endMenuOptionList[this.game.EndMenuCursor] === option) {
+          this.cx.fillStyle = "red";
+        } else {
+          this.cx.fillStyle = "black";
         }
+        this.cx.font = "16px serif";
+        this.cx.fillText(option, (450 * this.zoom) / 2, (270 * this.zoom) / 2 + 20 * index);
+      });
 
-   
+      this.game.menuOptionList.forEach((option, index) => {
+        if (this.game.menuOptionList[this.game.mainMenuCursor] === option) {
+          this.cx.fillStyle = "red";
+        } else {
+          this.cx.fillStyle = "black";
+        }
+        this.cx.font = "16px serif";
+        this.cx.fillText(option, (450 * this.zoom) / 2, (270 * this.zoom) / 2 + 20 * index);
+      });
+    };
+
+    this.displayEndMenu = () => {
+      this.cx.fillStyle = "yellow";
+      this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
+
+      this.game.endMenuOptionList.forEach((option, index) => {
+        if (this.game.endMenuOptionList[this.game.endMenuCursor] === option) {
+          this.cx.fillStyle = "red";
+        } else {
+          this.cx.fillStyle = "black";
+        }
+        this.cx.font = "16px serif";
+        this.cx.fillText(option, (450 * this.zoom) / 2, (270 * this.zoom) / 2 + 20 * index);
+      });
+    };
 
     this.displayCharacterSelection = () => {
-      this.cx.fillStyle = 'orange';
+      this.cx.fillStyle = "orange";
       this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
       if (this.game.characterSelection) {
-        this.cx.fillStyle = 'white';
+        this.cx.fillStyle = "white";
         this.cx.fillRect(
           224 * this.zoom,
           87 * this.zoom + this.game.characterSelection.cursor.y * 32 * this.zoom,
@@ -89,22 +97,25 @@ class Display {
     };
 
     this.displayFight = () => {
-      this.cx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.cx.fillStyle = 'red';
+      this.cx.fillStyle = "red";
       this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-      this.cx.fillStyle = 'blue';
+
+      var player1 = this.game.fight.player1.character;
+      var player2 = this.game.fight.player2.character;
+
+      this.cx.fillStyle = "blue";
       this.cx.fillRect(
-        this.game.player1.character.pos.x * this.zoom,
-        this.game.player1.character.pos.y * this.zoom,
-        this.game.player1.character.size.x * this.zoom,
-        this.game.player1.character.size.y * this.zoom
+        player1.pos.x * this.zoom,
+        player1.pos.y * this.zoom,
+        player1.size.x * this.zoom,
+        player1.size.y * this.zoom
       );
-      this.cx.fillStyle = 'green';
+      this.cx.fillStyle = "green";
       this.cx.fillRect(
-        this.game.player2.character.pos.x * this.zoom,
-        this.game.player2.character.pos.y * this.zoom,
-        this.game.player2.character.size.x * this.zoom,
-        this.game.player2.character.size.y * this.zoom
+        player2.pos.x * this.zoom,
+        player2.pos.y * this.zoom,
+        player2.size.x * this.zoom,
+        player2.size.y * this.zoom
       );
     };
 
@@ -140,7 +151,7 @@ class Display {
     };
 
     this.resize();
-    window.addEventListener('resize', this.resize);
+    window.addEventListener("resize", this.resize);
     document.body.appendChild(this.canvas);
   }
 }
