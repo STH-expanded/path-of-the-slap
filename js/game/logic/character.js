@@ -5,11 +5,11 @@ class Character {
 
         this.keys = keys;
 
+        this.size = new Vector2D(32, 32);
         this.pos = new Vector2D(
             Math.floor(Math.random() * 448),
-            238
+            270 - 16 - this.size.y
         );
-        this.size = new Vector2D(32, 32);
         this.speed = new Vector2D(0, 0);
 
         this.maxHealth = 1000;
