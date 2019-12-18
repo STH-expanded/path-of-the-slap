@@ -68,25 +68,17 @@ class Display {
             this.cx.fillStyle = 'green';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
-            this.game.menuOptionList.forEach(() => {
-                switch (this.game.menuOptionList[this.game.mainMenuCursor]) {
-                    case 'playerVSplayer':
-                        this.cx.drawImage(this.menucursor, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-                        break;
-                    case 'playerVScomputer':
-                        this.cx.drawImage(this.menucursor, 0, 0, 128, 32, 176 * this.zoom, 118 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-                        break;
-                    case 'training':
-                        this.cx.drawImage(this.menucursor, 0, 0, 128, 32, 176 * this.zoom, 152 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-                        break;
+            this.game.menuOptionList.forEach((menuOption, index) => {
+                if (game.mainMenuCursor === index) {
+                    this.cx.drawImage(this.menucursor, 0, 0, 128, 32, 176 * this.zoom, (84 + index * 32) * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 }
                 if (this.game.players.length < 2) {
                     this.cx.drawImage(this.btnvsplayerdisabled, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 } else {
                     this.cx.drawImage(this.btnvsplayer, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 }
-                this.cx.drawImage(this.btnvscomputer, 0, 0, 128, 32, 176 * this.zoom, 118 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-                this.cx.drawImage(this.btnpractice, 0, 0, 128, 32, 176 * this.zoom, 152 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+                this.cx.drawImage(this.btnvscomputer, 0, 0, 128, 32, 176 * this.zoom, 116 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+                this.cx.drawImage(this.btnpractice, 0, 0, 128, 32, 176 * this.zoom, 148 * this.zoom, 128 * this.zoom, 32 * this.zoom);
             });
         };
 
