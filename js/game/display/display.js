@@ -7,7 +7,7 @@ class Display {
         this.game = game;
 
         this.GUI = new GUI();
-        
+
         this.characterSelect = document.createElement("img");
         this.characterSelect.src = "img/characterSelect.png";
         this.characterSelectP1 = document.createElement("img");
@@ -16,6 +16,18 @@ class Display {
         this.characterSelectP2.src = "img/charSelectCursorP2.png";
         this.characterSelectCPU = document.createElement("img");
         this.characterSelectCPU.src = "img/charSelectCursorCPU.png";
+        this.btnRematch = document.createElement("img");
+        this.btnRematch.src = "img/btnrematch.png";
+        this.btnvsplayer = document.createElement("img");
+        this.btnvsplayer.src = "img/btnvsplayer.png";
+        this.btnvscomputer = document.createElement("img");
+        this.btnvscomputer.src = "img/btnvscomputer.png";
+        this.btnpractice = document.createElement("img");
+        this.btnpractice.src = "img/btnpractice.png";
+        this.btnreturntomenu = document.createElement("img");
+        this.btnreturntomenu.src = "img/btnreturntomenu.png";
+        this.btncharacterselection = document.createElement("img");
+        this.btncharacterselection.src = "img/btncharacterselection.png";
 
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
@@ -117,7 +129,7 @@ class Display {
                         }
                     }
                 }
-                
+
                 if (charSelect.player1Pos) {
                     this.cx.drawImage(this.characterSelectP1,
                         0, 0,
@@ -163,7 +175,7 @@ class Display {
                 player2.size.x * this.zoom,
                 player2.size.y * this.zoom
             );
-            this.GUI.update(this.game.fight, this.cx,this.zoom);
+            this.GUI.update(this.game.fight, this.cx, this.zoom);
         };
 
         this.flipHorizontally = around => {
