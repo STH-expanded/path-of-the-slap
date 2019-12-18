@@ -1,9 +1,9 @@
 class Character {
-    constructor(keys) {
+    constructor() {
         this.id = 0;
         this.name = 'abstractCharacter';
 
-        this.keys = keys;
+        this.keys = null;
 
         this.size = new Vector2D(32, 32);
         this.pos = new Vector2D(
@@ -48,8 +48,8 @@ class Character {
             }
         };
 
-        this.update = (game, inputPLayer) => {
-            this.keys = inputPLayer;
+        this.update = (game, keys) => {
+            this.keys = keys;
             this.moveX(game);
             this.moveY(game);
         }

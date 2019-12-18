@@ -28,7 +28,7 @@ class CharacterSelection {
                             this.cursor = new Vector2D(1, 2);
                             if (this.mode === 'playerVSplayer') this.playerController++;
                         } else if (!this.player2) {
-                            this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', this.player1.keys, 'computer');
+                            this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', {}, 'computer');
                             this.player2.character = new Character(this.player2.keys);
                             this.player2Pos = new Vector2D(this.cursor.x, this.cursor.y);
                         }
