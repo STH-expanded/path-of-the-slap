@@ -21,19 +21,9 @@ class Game {
         this.endMenuCursor = 0;
 
         this.characterSelection = null;
-        this.characters = [
-            'char1',
-            'char2'
-        ];
+        this.characters = ['char1', 'char2'];
 
-        this.stages = [
-            new Stage(
-                1,
-                'forest',
-                new Vector2D(0, 0),
-                new Vector2D(480, 270)
-            )
-        ];
+        this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 270))];
 
         this.fight = null;
 
@@ -43,9 +33,12 @@ class Game {
                 this.lastInputList.forEach((lastinput, lastid) => {
                     if (id === lastid) {
                         if (input.a && !lastinput.a) {
-                            console.log(this.menuOptionList[this.mainMenuCursor]);
-                            this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                            this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
+                            if (this.menuOptionList[this.mainMenuCursor] === 'playerVSplayer' && this.players.length < 2) {
+                                console.error('You must connect 2 players');
+                            } else {
+                                this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+                                this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
+                            }
                         }
                         if (input.up && !lastinput.up) this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
                         if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
@@ -63,10 +56,7 @@ class Game {
                             switch (currmenu) {
                                 case 'Rematch':
                                     this.gameState = this.gameStateEnum.FIGHT;
-                                    this.fight = new Fight(
-                                        this.fight.player1,
-                                        this.fight.player2,
-                                        this.stages[0]);
+                                    this.fight = new Fight(this.fight.player1, this.fight.player2, this.stages[0]);
                                     break;
                                 case 'Change Characters':
                                     this.gameState = this.gameStateEnum.CHARACTERSELECTION;
