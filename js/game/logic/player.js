@@ -7,7 +7,7 @@ class Player {
         this.character = null;
 
         this.update = game => {
-            if (this.character) this.character.update(game);
+            if (this.character) this.character.update(game,this.keys);
         };
     }
 }

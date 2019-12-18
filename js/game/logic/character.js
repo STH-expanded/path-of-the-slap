@@ -20,7 +20,9 @@ class Character {
         this.gravity = new Vector2D(0, 2);
         
         this.moveX = game => {
-            if (this.keys.left) this.speed.x = -this.walkSpeed;
+            if (this.keys.left){
+                this.speed.x = -this.walkSpeed;
+            } 
             else if (this.keys.right) this.speed.x = this.walkSpeed;
             else this.speed.x = 0;
 
@@ -46,7 +48,8 @@ class Character {
             }
         };
 
-        this.update = (game) => {
+        this.update = (game, inputPLayer) => {
+            this.keys = inputPLayer;
             this.moveX(game);
             this.moveY(game);
         }
