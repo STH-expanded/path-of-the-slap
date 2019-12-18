@@ -76,14 +76,16 @@ class Display {
             this.cx.fillStyle = 'yellow';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
+            this.cx.drawImage(this.btnRematch, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+            this.cx.drawImage(this.btncharacterselection, 0, 0, 128, 32, 176 * this.zoom, 118 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+            this.cx.drawImage(this.btnreturntomenu, 0, 0, 128, 32, 176 * this.zoom, 152 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+
             this.game.endMenuOptionList.forEach((option, index) => {
                 if (this.game.endMenuOptionList[this.game.endMenuCursor] === option) {
                     this.cx.fillStyle = 'red';
                 } else {
                     this.cx.fillStyle = 'black';
                 }
-                this.cx.font = '16px serif';
-                this.cx.fillText(option, (450 * this.zoom) / 2, ((270 * this.zoom) / 2) + 20 * index);
             });
         };
 
