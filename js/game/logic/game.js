@@ -17,23 +17,13 @@ class Game {
         this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
         this.mainMenuCursor = 0;
 
-        this.endMenuOptionList = ['rematch', 'change characters', 'return to menu'];
+        this.endMenuOptionList = ['Rematch', 'Change Characters', 'Return to Menu'];
         this.endMenuCursor = 0;
 
         this.characterSelection = null;
-        this.characters = [
-            'abstractCharacter',
-            'abstractCharacter'
-        ];
+        this.characters = ['abstractCharacter', 'abstractCharacter'];
 
-        this.stages = [
-            new Stage(
-                1,
-                'forest',
-                new Vector2D(0, 0),
-                new Vector2D(480, 270)
-            )
-        ];
+        this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 270))];
 
         this.fight = null;
 
@@ -47,7 +37,7 @@ class Game {
                             this.gameState = this.gameStateEnum.CHARACTERSELECTION;
                             this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
                         }
-                        if (input.up && !lastinput.up) this.mainMenuCursor = ((((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu);
+                        if (input.up && !lastinput.up) this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
                         if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
                     }
                 });
@@ -57,40 +47,45 @@ class Game {
         this.updateEndMenu = () => {
             this.inputList.forEach((input, id) => {
                 this.lastInputList.forEach((lastinput, lastid) => {
-                    if (id = lastid && !lastinput.a && !lastinput.down && !lastinput.up) {
+                    if ((id = lastid && !lastinput.a && !lastinput.down && !lastinput.up)) {
                         if (input.a) {
-                            console.log("a : " + id);
                             var currmenu = this.endMenuOptionList[this.endMenuCursor];
-                            console.log(currmenu);
+                            switch (currmenu) {
+                                case 'Rematch':
+                                    this.gameState = this.gameStateEnum.FIGHT;
+                                    break;
+                                case 'Change Characters':
+                                    this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+                                    break;
+                                case 'Return to Menu':
+                                    this.gameState = this.gameStateEnum.MAINMENU;
+                                    break;
+                            }
                         }
                         if (input.up) {
-                            this.endMenuCursor = (((this.endMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            console.log("up : " + this.endMenuCursor);
+                            this.endMenuCursor = (((this.endMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length;
                         }
                         if (input.down) {
-                            this.endMenuCursor = (((this.endMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            console.log("down : " + this.endMenuCursor);
+                            this.endMenuCursor = (((this.endMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length;
                         }
                     }
                 });
             });
-
         };
 
         this.manageCharacterSelection = () => {
             if (!this.characterSelection) {
                 console.log('ERROR : WRONG GAME STATE');
                 this.gameState = this.gameStateEnum.MAINMENU;
-            }
-            else this.characterSelection.update(this);
-        }
+            } else this.characterSelection.update(this);
+        };
 
         this.manageFight = () => {
             if (!this.fight) {
                 console.log('ERROR : WRONG GAME STATE');
                 this.gameState = this.gameStateEnum.MAINMENU;
             } else this.fight.update(this);
-        }
+        };
 
         this.managePlayers = () => {
             if (this.inputList.size !== this.players.size) {
@@ -101,7 +96,7 @@ class Game {
                     }
                 });
             }
-        }
+        };
 
         this.update = () => {
             this.managePlayers();
