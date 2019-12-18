@@ -40,6 +40,10 @@ class Display {
         this.layer2.src = 'img/layer2.png';
         this.layer3 = document.createElement('img');
         this.layer3.src = 'img/layer3.png';
+        this.hudmugshot = document.createElement('img');
+        this.hudmugshot.src = 'img/hudMugshot.png';
+        this.hudlife = document.createElement('img');
+        this.hudlife.src = 'img/hudLife.png';
 
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
@@ -150,7 +154,7 @@ class Display {
             this.cx.drawImage(this.layer2, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
             this.cx.drawImage(this.layer3, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
 
-            this.GUI.update(this.game.fight, this.cx, this.zoom);
+            this.GUI.update(this.game.fight, this);
         };
 
         this.flipHorizontally = around => {
