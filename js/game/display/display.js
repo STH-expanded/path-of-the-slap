@@ -28,6 +28,15 @@ class Display {
         this.btnreturntomenu.src = "img/btnreturntomenu.png";
         this.btncharacterselection = document.createElement("img");
         this.btncharacterselection.src = "img/btncharacterselection.png";
+        
+        this.layer0 = document.createElement("img");
+        this.layer0.src = "img/layer0.png";
+        this.layer1 = document.createElement("img");
+        this.layer1.src = "img/layer1.png";
+        this.layer2 = document.createElement("img");
+        this.layer2.src = "img/layer2.png";
+        this.layer3 = document.createElement("img");
+        this.layer3.src = "img/layer3.png";
 
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
@@ -155,8 +164,20 @@ class Display {
         };
 
         this.displayFight = () => {
-            this.cx.fillStyle = 'red';
-            this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
+            this.cx.drawImage(this.layer0,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+            this.cx.drawImage(this.layer1,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
 
             var player1 = this.game.fight.player1.character;
             var player2 = this.game.fight.player2.character;
@@ -175,6 +196,22 @@ class Display {
                 player2.size.x * this.zoom,
                 player2.size.y * this.zoom
             );
+
+            this.cx.drawImage(this.layer2,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+            this.cx.drawImage(this.layer3,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+
             this.GUI.update(this.game.fight, this.cx, this.zoom);
         };
 

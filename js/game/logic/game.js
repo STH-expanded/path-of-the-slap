@@ -31,7 +31,7 @@ class Game {
                 1,
                 'forest',
                 new Vector2D(0, 0),
-                new Vector2D(480, 270)
+                new Vector2D(480, 254)
             )
         ];
 
