@@ -57,25 +57,30 @@ class Game {
         this.updateEndMenu = () => {
             this.inputList.forEach((input, id) => {
                 this.lastInputList.forEach((lastinput, lastid) => {
-                    if ((id = lastid && !lastinput.a && !lastinput.down && !lastinput.up)) {
-                        if (input.a) {
+                    if (id === lastid) {
+                        if (input.a && !lastinput.a) {
                             var currmenu = this.endMenuOptionList[this.endMenuCursor];
                             switch (currmenu) {
                                 case 'Rematch':
                                     this.gameState = this.gameStateEnum.FIGHT;
+                                    this.fight = new Fight(
+                                        this.fight.player1,
+                                        this.fight.player2,
+                                        this.stages[0]);
                                     break;
                                 case 'Change Characters':
                                     this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+                                    this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
                                     break;
                                 case 'Return to Menu':
                                     this.gameState = this.gameStateEnum.MAINMENU;
                                     break;
                             }
                         }
-                        if (input.up) {
+                        if (input.up && !lastinput.up) {
                             this.endMenuCursor = (((this.endMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length;
                         }
-                        if (input.down) {
+                        if (input.down && !lastinput.down) {
                             this.endMenuCursor = (((this.endMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length;
                         }
                     }
