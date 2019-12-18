@@ -15,7 +15,7 @@ class Fight {
             if (this.winner) {
                 game.gameState = game.gameStateEnum.ENDMENU;
             }
-            
+
             this.timer--;
         };
     }
