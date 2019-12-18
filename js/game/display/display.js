@@ -7,6 +7,15 @@ class Display {
         this.game = game;
 
         this.GUI = new GUI();
+        
+        this.characterSelect = document.createElement("img");
+        this.characterSelect.src = "img/characterSelect.png";
+        this.characterSelectP1 = document.createElement("img");
+        this.characterSelectP1.src = "img/charSelectCursorP1.png";
+        this.characterSelectP2 = document.createElement("img");
+        this.characterSelectP2.src = "img/charSelectCursorP2.png";
+        this.characterSelectCPU = document.createElement("img");
+        this.characterSelectCPU.src = "img/charSelectCursorCPU.png";
 
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
@@ -75,21 +84,69 @@ class Display {
         };
 
         this.displayCharacterSelection = () => {
+            var charSelect = this.game.characterSelection;
             this.cx.fillStyle = 'orange';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
+            this.cx.drawImage(
+                this.characterSelect,
+                0, 0,
+                480, 270,
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom
+            )
 
-            this.cx.fillStyle = 'black';
-            this.cx.font = '20px serif';
-            this.cx.fillText("Menu Character Selection", 25 * this.zoom, 25 * this.zoom);
+            if (charSelect) {
+                for (let x = 0; x < charSelect.cursorLimit.x; x++) {
+                    for (let y = 0; y < charSelect.cursorLimit.y; y++) {
+                        if (charSelect.cursor.equals(new Vector2D(x, y))) {
+                            var characterSelectImg = null;
+                            if (charSelect.playerController === 0) {
+                                if (charSelect.mode !== 'playerVSplayer' && charSelect.player1) {
+                                    characterSelectImg = this.characterSelectCPU;
+                                }
+                                else {
+                                    characterSelectImg = this.characterSelectP1;
+                                }
+                            }
+                            else if (charSelect.playerController === 1) {
+                                characterSelectImg = this.characterSelectP2;
+                            }
 
-            if (this.game.characterSelection) {
-                this.cx.fillStyle = 'white';
-                this.cx.fillRect(
-                    224 * this.zoom,
-                    87 * this.zoom + this.game.characterSelection.cursor.y * 32 * this.zoom,
-                    32 * this.zoom,
-                    32 * this.zoom
-                );
+                            this.cx.drawImage(characterSelectImg,
+                                0, 0,
+                                52, 52,
+                                192 * this.zoom + x * 44 * this.zoom - y * 11 * this.zoom,
+                                10 * this.zoom + y * 44 * this.zoom + x * 11 * this.zoom,
+                                52 * this.zoom,
+                                52 * this.zoom
+                            );
+                        }
+                    }
+                }
+                
+                if (charSelect.player1Pos) {
+                    this.cx.drawImage(this.characterSelectP1,
+                        0, 0,
+                        52, 52,
+                        192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom,
+                        10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom,
+                        52 * this.zoom,
+                        52 * this.zoom
+                    );
+                }
+                if (charSelect.player2Pos) {
+                    var img = charSelect.mode === 'playerVSplayer' ? this.characterSelectP2 : this.characterSelectCPU;
+                    this.cx.drawImage(img,
+                        0, 0,
+                        52, 52,
+                        192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom,
+                        10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom,
+                        52 * this.zoom,
+                        52 * this.zoom
+                    );
+                }
             }
         };
 
