@@ -22,8 +22,8 @@ class Game {
 
         this.characterSelection = null;
         this.characters = [
-            'abstractCharacter',
-            'abstractCharacter'
+            'char1',
+            'char2'
         ];
 
         this.stages = [
