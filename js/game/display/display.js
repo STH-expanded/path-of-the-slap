@@ -6,6 +6,8 @@ class Display {
 
         this.game = game;
 
+        this.GUI = new GUI();
+
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
 
@@ -100,6 +102,7 @@ class Display {
                 player2.size.x * this.zoom,
                 player2.size.y * this.zoom
             );
+            this.GUI.update(this.game.fight, this.cx,this.zoom);
         };
 
         this.flipHorizontally = around => {
