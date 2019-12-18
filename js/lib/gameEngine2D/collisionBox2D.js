@@ -16,12 +16,12 @@ var isIntersect = (playerPos, playerSize, wallPos, wallSize) => {
   );
 };
 
-var inBound = (playerPos, playerSize, bound) => {
+var inBound = (playerPos, playerSize, boundPos, boundSize) => {
   return !(
-    playerPos.y + playerSize.y > bound.y / 2 ||
-    playerPos.y < -bound.y / 2 ||
-    playerPos.x + playerSize.x > bound.x / 2 ||
-    playerPos.x < -bound.x / 2
+    playerPos.y + playerSize.y > boundPos.y + boundSize.y ||
+    playerPos.y < boundPos.y ||
+    playerPos.x + playerSize.x > boundPos.x + boundSize.x ||
+    playerPos.x < boundPos.x
   );
 };
 

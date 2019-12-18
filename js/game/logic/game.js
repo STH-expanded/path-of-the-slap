@@ -4,8 +4,7 @@ class Game {
         this.inputList = inputList;
         this.lastInputList = new Map();
 
-        this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
-        this.endMenuOptionList = ['training', 'settings', 'about'];
+        this.players = [];
 
         this.gameStateEnum = {
             MAINMENU: 'mainMenu',
@@ -13,32 +12,30 @@ class Game {
             FIGHT: 'fight',
             ENDMENU: 'endMenu'
         };
-
         this.gameState = this.gameStateEnum.MAINMENU;
 
-        this.players = new Map();
+        this.menuOptionList = ['playerVSplayer', 'playerVScomputer', 'training'];
+        this.mainMenuCursor = 0;
 
-        this.player1 = new Player(
-            1,
-            new Character(1, 'goku', new Vector2D(10, 10), new Vector2D(10, 10), 10, 5, new Vector2D(0, 2)),
-            'player'
-        );
-        this.player2 = new Player(
-            2,
-            new Character(2, 'vegeta', new Vector2D(30, 30), new Vector2D(10, 10), 10, 5, new Vector2D(0, 1)),
-            'bot'
-        );
-
-        this.stage = new Stage(1, 'forest', new Vector2D(240, 135), new Vector2D(480, 270));
-
+        this.endMenuOptionList = ['rematch', 'change characters', 'return to menu'];
+        this.endMenuCursor = 0;
 
         this.characterSelection = null;
-        this.characters = ['mario', 'luigi', 'bowser'];
+        this.characters = [
+            'abstractCharacter',
+            'abstractCharacter'
+        ];
+
+        this.stages = [
+            new Stage(
+                1,
+                'forest',
+                new Vector2D(0, 0),
+                new Vector2D(480, 270)
+            )
+        ];
 
         this.fight = null;
-
-        this.mainMenuCursor = 0;
-        this.EndMenuCursor = 0;
 
         this.updateMainMenu = () => {
             var nbMenu = this.menuOptionList.length;
@@ -58,25 +55,21 @@ class Game {
         };
 
         this.updateEndMenu = () => {
-            var doEnter = () => {
-                var currmenu = this.endMenuOptionList[this.EndMenuCursor];
-                console.log(currmenu);
-
-            };
             this.inputList.forEach((input, id) => {
                 this.lastInputList.forEach((lastinput, lastid) => {
                     if (id = lastid && !lastinput.a && !lastinput.down && !lastinput.up) {
                         if (input.a) {
                             console.log("a : " + id);
-                            doEnter();
+                            var currmenu = this.endMenuOptionList[this.endMenuCursor];
+                            console.log(currmenu);
                         }
                         if (input.up) {
-                            this.EndMenuCursor = (((this.EndMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            console.log("up : " + this.EndMenuCursor);
+                            this.endMenuCursor = (((this.endMenuCursor - 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
+                            console.log("up : " + this.endMenuCursor);
                         }
                         if (input.down) {
-                            this.EndMenuCursor = (((this.EndMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
-                            console.log("down : " + this.EndMenuCursor);
+                            this.endMenuCursor = (((this.endMenuCursor + 1) % this.endMenuOptionList.length) + this.endMenuOptionList.length) % this.endMenuOptionList.length
+                            console.log("down : " + this.endMenuCursor);
                         }
                     }
                 });
@@ -85,16 +78,33 @@ class Game {
         };
 
         this.manageCharacterSelection = () => {
-            if (!this.characterSelection) this.characterSelection = new CharacterSelection(this.characters);
-            this.characterSelection.update(this);
+            if (!this.characterSelection) {
+                console.log('ERROR : WRONG GAME STATE');
+                this.gameState = this.gameStateEnum.MAINMENU;
+            }
+            else this.characterSelection.update(this);
         }
 
         this.manageFight = () => {
-            if (!this.fight) this.fight = new Fight(this.player1, this.player2, this.stage);
-            this.fight.update(this);
+            if (!this.fight) {
+                console.log('ERROR : WRONG GAME STATE');
+                this.gameState = this.gameStateEnum.MAINMENU;
+            } else this.fight.update(this);
+        }
+
+        this.managePlayers = () => {
+            if (this.inputList.size !== this.players.size) {
+                this.inputList.forEach((input, id) => {
+                    if (!this.players.find(player => player.id === id)) {
+                        this.players.push(new Player(id, input, 'player'));
+                        console.log('new player : ' + id);
+                    }
+                });
+            }
         }
 
         this.update = () => {
+            this.managePlayers();
 
             switch (this.gameState) {
                 case this.gameStateEnum.MAINMENU:
