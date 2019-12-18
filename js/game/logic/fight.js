@@ -9,9 +9,10 @@ class Fight {
         this.winner = null;
 
         this.update = game => {
-            [this.player1, this.player2].forEach(player =>{
+            [this.player1, this.player2].forEach(player => {
                 this.assignKeys(player, game);
-                player.update(game);} );
+                player.update(game);
+            });
 
             this.winner = this.checkWinner();
             if (this.winner) {
@@ -21,13 +22,13 @@ class Fight {
             this.timer--;
         };
     }
+
     assignKeys = (player, game) => {
-        game.inputList.forEach((element,keys)=>{
-            if(keys===player.id){
-                player.keys = element
-            }
+        game.inputList.forEach((keys, id) => {
+            if (id === player.id) player.keys = keys;
         });
-    };
+    }
+
     checkWinner = () => {
         let p1Health = this.player1.character.health;
         let p2Health = this.player2.character.health;
@@ -35,5 +36,5 @@ class Fight {
         else if (p2Health <= 0 || (p1Health > p2Health && this.timer <= 0)) return 'player1';
         else if (p1Health <= 0 || (p1Health < p2Health && this.timer <= 0)) return 'player2';
         return null;
-    };
+    }
 }
