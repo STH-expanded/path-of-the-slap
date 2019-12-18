@@ -4,7 +4,7 @@ class Fight {
         this.player2 = player2;
         this.stage = stage;
 
-        this.timer = 60;
+        this.timer = 3600;
 
         this.winner = null;
 
