@@ -23,7 +23,7 @@ class Game {
         this.characterSelection = null;
         this.characters = ['char1', 'char2'];
 
-        this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 270))];
+        this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 254))];
 
         this.fight = null;
 

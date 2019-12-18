@@ -32,6 +32,14 @@ class Display {
         this.btncharacterselection.src = 'img/btncharacterselection.png';
         this.menucursor = document.createElement('img');
         this.menucursor.src = 'img/menucursor.png';
+        this.layer0 = document.createElement("img");
+        this.layer0.src = "img/layer0.png";
+        this.layer1 = document.createElement("img");
+        this.layer1.src = "img/layer1.png";
+        this.layer2 = document.createElement("img");
+        this.layer2.src = "img/layer2.png";
+        this.layer3 = document.createElement("img");
+        this.layer3.src = "img/layer3.png";
 
         this.canvas = document.createElement('canvas');
         this.cx = this.canvas.getContext('2d');
@@ -86,14 +94,16 @@ class Display {
             this.cx.fillStyle = 'yellow';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
+            this.cx.drawImage(this.btnRematch, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+            this.cx.drawImage(this.btncharacterselection, 0, 0, 128, 32, 176 * this.zoom, 118 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+            this.cx.drawImage(this.btnreturntomenu, 0, 0, 128, 32, 176 * this.zoom, 152 * this.zoom, 128 * this.zoom, 32 * this.zoom);
+
             this.game.endMenuOptionList.forEach((option, index) => {
                 if (this.game.endMenuOptionList[this.game.endMenuCursor] === option) {
                     this.cx.fillStyle = 'red';
                 } else {
                     this.cx.fillStyle = 'black';
                 }
-                this.cx.font = '16px serif';
-                this.cx.fillText(option, (450 * this.zoom) / 2, (270 * this.zoom) / 2 + 20 * index);
             });
         };
 
@@ -134,8 +144,20 @@ class Display {
         };
 
         this.displayFight = () => {
-            this.cx.fillStyle = 'red';
-            this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
+            this.cx.drawImage(this.layer0,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+            this.cx.drawImage(this.layer1,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
 
             var player1 = this.game.fight.player1.character;
             var player2 = this.game.fight.player2.character;
@@ -143,7 +165,32 @@ class Display {
             this.cx.fillStyle = 'blue';
             this.cx.fillRect(player1.pos.x * this.zoom, player1.pos.y * this.zoom, player1.size.x * this.zoom, player1.size.y * this.zoom);
             this.cx.fillStyle = 'green';
+<<<<<<< HEAD
             this.cx.fillRect(player2.pos.x * this.zoom, player2.pos.y * this.zoom, player2.size.x * this.zoom, player2.size.y * this.zoom);
+=======
+            this.cx.fillRect(
+                player2.pos.x * this.zoom,
+                player2.pos.y * this.zoom,
+                player2.size.x * this.zoom,
+                player2.size.y * this.zoom
+            );
+
+            this.cx.drawImage(this.layer2,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+            this.cx.drawImage(this.layer3,
+                0, 0,
+                480, 270,
+                0, 0,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+
+>>>>>>> 05a80d859f8d32d52654f1439319e55f03570fdc
             this.GUI.update(this.game.fight, this.cx, this.zoom);
         };
 

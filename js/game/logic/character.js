@@ -1,15 +1,15 @@
 class Character {
-    constructor(keys) {
+    constructor() {
         this.id = 0;
         this.name = 'abstractCharacter';
 
-        this.keys = keys;
+        this.keys = null;
 
+        this.size = new Vector2D(32, 32);
         this.pos = new Vector2D(
             Math.floor(Math.random() * 448),
-            238
+            270 - 16 - this.size.y
         );
-        this.size = new Vector2D(32, 32);
         this.speed = new Vector2D(0, 0);
 
         this.maxHealth = 1000;
@@ -48,8 +48,8 @@ class Character {
             }
         };
 
-        this.update = (game, inputPLayer) => {
-            this.keys = inputPLayer;
+        this.update = (game, keys) => {
+            this.keys = keys;
             this.moveX(game);
             this.moveY(game);
         }
