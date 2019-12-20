@@ -1,40 +1,127 @@
 class GUI {
-    constructor (){
-        this.update =  (fight, context)=>{
-            context.cx.fillStyle = 'white';
-            context.cx.strokeStyle = "white";
-            // x,y,w,h
-            // TIMER 
-            context.cx.strokeRect(224* context.zoom, 8* context.zoom , 32* context.zoom, 32* context.zoom);
-            context.cx.font = 25* context.zoom+"px serif";
-            context.cx.fillStyle = 'white';
-            context.cx.textAlign = "center";
-            var timer =(fight.timer- (fight.timer % 60))/60;
-            context.cx.fillText(timer.toString(),( context.cx.canvas.width/2), 33* context.zoom);
-            
-            // PV
+    constructor() {
+        this.update = (fight, display) => {
+
+            // TIMER
+            var timer = (fight.timer - (fight.timer % 60)) / 60;
+            var nb = timer > 99 ? "99" : timer.toString();
+            if (nb.length === 1) nb = "0" + nb;
+            for (let i = 0; i < nb.length; i++) {
+                display.cx.drawImage(
+                    display.assets.timerNumbers,
+                    14 * nb[i], 0,
+                    14, 20,
+                    display.cx.canvas.width / 2 + (-14 + i * 14) * display.zoom,
+                    12 * display.zoom,
+                    14 * display.zoom,
+                    20 * display.zoom
+                );
+            }
+
             // P1
-             context.cx.fillStyle = 'black';
-             context.cx.drawImage(context.hudmugshot,0, 0 ,64* context.zoom , 64* context.zoom);
-            //  context.cx.fillStyle = 'white';
-            //  context.cx.fillRect(64* context.zoom, 8* context.zoom , 160* context.zoom , 16* context.zoom);
-            //  context.cx.fillStyle = 'orange';
-             context.cx.drawImage(context.hudlife,64* context.zoom+(160* context.zoom-(160*(fight.player1.character.health /fight.player1.character.maxHealth)* context.zoom)) , 8* context.zoom ,160*(fight.player1.character.health /fight.player1.character.maxHealth)* context.zoom , 16* context.zoom);
-             context.cx.fillStyle = 'black';
-             context.cx.font = 10* context.zoom+"px serif";
-             context.cx.textAlign = "start";
-             context.cx.fillText(fight.player1.character.name,64* context.zoom, 34* context.zoom);
-            //P2    
-             context.cx.fillStyle = 'black ';
-             context.cx.drawImage(context.hudmugshot, context.cx.canvas.width-64* context.zoom, 0 , 64* context.zoom , 64* context.zoom);
-            //  context.cx.fillStyle = 'white';
-            //  context.cx.fillRect((224+32)* context.zoom, 8* context.zoom , 160* context.zoom , 16* context.zoom);
-            //  context.cx.fillStyle = 'purple';
-             context.cx.drawImage(context.hudlife,(224+32)* context.zoom, 8* context.zoom , 160*(fight.player1.character.health /fight.player1.character.maxHealth)* context.zoom  , 16* context.zoom);
-             context.cx.fillStyle = 'black';
-             context.cx.textAlign = "end";
-             context.cx.font = 10* context.zoom+"px serif";
-             context.cx.fillText(fight.player1.character.name,(context.cx.canvas.width-64)*context.zoom, 34* context.zoom);
-        }     
+            display.cx.save();
+            display.flipHorizontally(32 * display.zoom);
+            display.cx.drawImage(
+                display.assets.hudmugshot,
+                0, 0,
+                64 * display.zoom,
+                64 * display.zoom
+            );
+            display.cx.restore();
+
+            display.cx.drawImage(
+                display.assets.hudlife,
+                64 * display.zoom,
+                8 * display.zoom,
+                160 * display.zoom,
+                16 * display.zoom
+            );
+            display.cx.fillStyle = '#0080ff';
+            display.cx.fillRect(
+                66 * display.zoom + (156 * display.zoom - (156 * (fight.player1.character.health / fight.player1.character.maxHealth) * display.zoom)),
+                10 * display.zoom,
+                156 * (fight.player1.character.health / fight.player1.character.maxHealth) * display.zoom,
+                12 * display.zoom
+            );
+            
+            for (let i = 0; i < fight.playoff; i++) {
+                display.cx.drawImage(
+                    display.assets.scoreImg,
+                    (208 - 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+                if (i < fight.player1.winCount) {
+                    display.cx.drawImage(
+                        display.assets.winScore,
+                        (208 - 16 * i) * display.zoom,
+                        24 * display.zoom,
+                        16 * display.zoom,
+                        16 * display.zoom
+                    );
+                }
+            }
+
+            display.cx.fillStyle = 'white';
+            display.cx.font = 10 * display.zoom + "px serif";
+            display.cx.textAlign = "start";
+            display.cx.fillText(
+                fight.player1.character.name,
+                64 * display.zoom,
+                34 * display.zoom
+            );
+
+            //P2
+            display.cx.drawImage(
+                display.assets.hudmugshot,
+                display.cx.canvas.width - 64 * display.zoom, 0,
+                64 * display.zoom,
+                64 * display.zoom
+            );
+
+            display.cx.drawImage(
+                display.assets.hudlife,
+                256 * display.zoom,
+                8 * display.zoom,
+                160 * display.zoom,
+                16 * display.zoom
+            );
+            display.cx.fillStyle = '#0080ff';
+            display.cx.fillRect(
+                258 * display.zoom,
+                10 * display.zoom,
+                156 * (fight.player2.character.health / fight.player2.character.maxHealth) * display.zoom,
+                12 * display.zoom
+            );
+
+            for (let i = 0; i < fight.playoff; i++) {
+                display.cx.drawImage(
+                    display.assets.scoreImg,
+                    (256 + 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+                if (i < fight.player2.winCount) {
+                    display.cx.drawImage(
+                        display.assets.winScore,
+                        (256 + 16 * i) * display.zoom,
+                        24 * display.zoom,
+                        16 * display.zoom,
+                        16 * display.zoom
+                    );
+                }
+            }
+
+            display.cx.fillStyle = 'white';
+            display.cx.font = 10 * display.zoom + "px serif";
+            display.cx.textAlign = "end";
+            display.cx.fillText(
+                fight.player2.character.name,
+                display.cx.canvas.width - 64 * display.zoom,
+                34 * display.zoom
+            );
+        }
     }
 }

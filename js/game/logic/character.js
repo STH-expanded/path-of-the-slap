@@ -1,7 +1,7 @@
 class Character {
     constructor() {
         this.id = 0;
-        this.name = 'abstractCharacter';
+        this.name = 'Character';
 
         this.keys = null;
 

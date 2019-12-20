@@ -32,13 +32,9 @@ class Game {
             this.inputList.forEach((input, id) => {
                 this.lastInputList.forEach((lastinput, lastid) => {
                     if (id === lastid) {
-                        if (input.a && !lastinput.a) {
-                            if (this.menuOptionList[this.mainMenuCursor] === 'playerVSplayer' && this.players.length < 2) {
-                                console.error('You must connect 2 players');
-                            } else {
-                                this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                                this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
-                            }
+                        if (input.a && !lastinput.a && !(this.menuOptionList[this.mainMenuCursor] === 'playerVSplayer' && this.players.length < 2)) {
+                            this.gameState = this.gameStateEnum.CHARACTERSELECTION;
+                            this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
                         }
                         if (input.up && !lastinput.up) this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
                         if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
@@ -56,7 +52,11 @@ class Game {
                             switch (currmenu) {
                                 case 'Rematch':
                                     this.gameState = this.gameStateEnum.FIGHT;
-                                    this.fight = new Fight(this.fight.player1, this.fight.player2, this.stages[0]);
+                                    this.fight.player1.character.health = this.fight.player1.character.maxHealth;
+                                    this.fight.player1.winCount = 0;
+                                    this.fight.player2.character.health = this.fight.player2.character.maxHealth;
+                                    this.fight.player2.winCount = 0;
+                                    this.fight = new Fight(this.fight.player1, this.fight.player2, this.fight.stage);
                                     break;
                                 case 'Change Characters':
                                     this.gameState = this.gameStateEnum.CHARACTERSELECTION;

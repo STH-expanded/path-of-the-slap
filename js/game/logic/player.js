@@ -5,6 +5,7 @@ class Player {
         this.type = type;
 
         this.character = null;
+        this.winCount = 0;
 
         this.update = game => {
             if (this.character) this.character.update(game,this.keys);
