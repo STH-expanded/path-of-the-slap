@@ -33,7 +33,7 @@ class Display {
         };
 
         this.displayMainMenu = () => {
-            this.cx.fillStyle = 'green';
+            this.cx.fillStyle = 'lime';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
             this.game.menuOptionList.forEach((menuOption, index) => {
@@ -66,14 +66,87 @@ class Display {
         };
 
         this.displayCharacterSelection = () => {
-            var charSelect = this.game.characterSelection;
-            this.cx.fillStyle = 'orange';
+            this.cx.fillStyle = 'red';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-            this.cx.drawImage(this.assets.characterSelect, 0, 0, 480, 270, 0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
+            var charSelect = this.game.characterSelection;
             if (charSelect) {
+                
+                if (charSelect.player1Pos) {
+                    this.cx.drawImage(
+                        this.assets['cp' + charSelect.player1Pos.y + '' + charSelect.player1Pos.x],
+                        0, 0,
+                        202, 270,
+                        0 * this.zoom,
+                        0 * this.zoom,
+                        202 * this.zoom,
+                        270 * this.zoom
+                    );
+                }
+                if (charSelect.player2Pos) {
+                    this.cx.drawImage(
+                        this.assets['cp' + charSelect.player2Pos.y + '' + charSelect.player2Pos.x],
+                        0, 0,
+                        202, 270,
+                        278 * this.zoom,
+                        0 * this.zoom,
+                        202 * this.zoom,
+                        270 * this.zoom
+                    );
+                }
+
                 for (let x = 0; x < charSelect.cursorLimit.x; x++) {
                     for (let y = 0; y < charSelect.cursorLimit.y; y++) {
+                        if (charSelect.cursor.equals(new Vector2D(x, y))) {
+                            if (charSelect.playerController === 0) {
+                                if (charSelect.mode !== 'playerVSplayer' && charSelect.player1) {
+                                    this.cx.drawImage(
+                                        this.assets['cp' + y + '' + x],
+                                        0, 0,
+                                        202, 270,
+                                        278 * this.zoom,
+                                        0 * this.zoom,
+                                        202 * this.zoom,
+                                        270 * this.zoom
+                                    );
+                                } else {
+                                    this.cx.drawImage(
+                                        this.assets['cp' + y + '' + x],
+                                        0, 0,
+                                        202, 270,
+                                        0 * this.zoom,
+                                        0 * this.zoom,
+                                        202 * this.zoom,
+                                        270 * this.zoom
+                                    );
+                                }
+                            } else if (charSelect.playerController === 1) {
+                                this.cx.drawImage(
+                                    this.assets['cp' + y + '' + x],
+                                    0, 0,
+                                    202, 270,
+                                    278 * this.zoom,
+                                    0 * this.zoom,
+                                    202 * this.zoom,
+                                    270 * this.zoom
+                                );
+                            }
+                        }
+                    }
+                }
+                for (let x = 0; x < charSelect.cursorLimit.x; x++) {
+                    for (let y = 0; y < charSelect.cursorLimit.y; y++) {
+                        
+                        this.cx.drawImage(
+                            this.assets['cm' + y + '' + x],
+                            0, 0,
+                            52, 52,
+                            192 * this.zoom + x * 44 * this.zoom - y * 11 * this.zoom,
+                            10 * this.zoom + y * 44 * this.zoom + x * 11 * this.zoom,
+                            52 * this.zoom,
+                            52 * this.zoom
+                        );
+
                         if (charSelect.cursor.equals(new Vector2D(x, y))) {
                             var characterSelectImg = null;
                             if (charSelect.playerController === 0) {
@@ -86,19 +159,41 @@ class Display {
                                 characterSelectImg = this.assets.characterSelectP2;
                             }
 
-                            this.cx.drawImage(characterSelectImg, 0, 0, 52, 52, 192 * this.zoom + x * 44 * this.zoom - y * 11 * this.zoom, 10 * this.zoom + y * 44 * this.zoom + x * 11 * this.zoom, 52 * this.zoom, 52 * this.zoom);
+                            this.cx.drawImage(
+                                characterSelectImg,
+                                0, 0,
+                                52, 52,
+                                192 * this.zoom + x * 44 * this.zoom - y * 11 * this.zoom,
+                                10 * this.zoom + y * 44 * this.zoom + x * 11 * this.zoom,
+                                52 * this.zoom, 52 * this.zoom
+                            );
                         }
                     }
                 }
 
                 if (charSelect.player1Pos) {
-                    this.cx.drawImage(this.assets.characterSelectP1, 0, 0, 52, 52, 192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom, 10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom, 52 * this.zoom, 52 * this.zoom);
+                    this.cx.drawImage(
+                        this.assets.characterSelectP1,
+                        0, 0,
+                        52, 52,
+                        192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom,
+                        10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom,
+                        52 * this.zoom, 52 * this.zoom
+                    );
                 }
                 if (charSelect.player2Pos) {
                     var img = charSelect.mode === 'playerVSplayer' ? this.assets.characterSelectP2 : this.assets.characterSelectCPU;
-                    this.cx.drawImage(img, 0, 0, 52, 52, 192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom, 10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom, 52 * this.zoom, 52 * this.zoom);
+                    this.cx.drawImage(
+                        img,
+                        0, 0,
+                        52, 52,
+                        192 * this.zoom + charSelect.player1Pos.x * 44 * this.zoom - charSelect.player1Pos.y * 11 * this.zoom,
+                        10 * this.zoom + charSelect.player1Pos.y * 44 * this.zoom + charSelect.player1Pos.x * 11 * this.zoom,
+                        52 * this.zoom, 52 * this.zoom
+                    );
                 }
             }
+            this.cx.drawImage(this.assets.characterSelect, 0, 0, 480, 270, 0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
         };
 
         this.displayFight = () => {

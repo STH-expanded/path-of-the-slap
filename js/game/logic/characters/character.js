@@ -6,14 +6,11 @@ class Character {
         this.keys = null;
 
         this.size = new Vector2D(32, 32);
-        this.pos = new Vector2D(
-            Math.floor(Math.random() * 448),
-            270 - 16 - this.size.y
-        );
+        this.pos = new Vector2D(0, 0);
         this.speed = new Vector2D(0, 0);
 
         this.maxHealth = 1000;
-        this.health = 1000;
+        this.health = this.maxHealth;
 
         this.walkSpeed = 8;
         this.jumpSpeed = 24;

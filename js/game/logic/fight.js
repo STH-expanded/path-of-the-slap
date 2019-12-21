@@ -4,7 +4,7 @@ class Fight {
         this.player2 = player2;
         this.stage = stage;
 
-        this.timer = 3600;
+        this.timer = 5400;
 
         this.winners = [];
         this.playoff = 2;
@@ -23,12 +23,28 @@ class Fight {
                 if (this.winners.find(winner => winner.winCount === this.playoff)) {
                     game.gameState = game.gameStateEnum.ENDMENU;
                 } else {
-                    this.player1.character.health = this.player1.character.maxHealth;
-                    this.player2.character.health = this.player2.character.maxHealth;
                     game.fight = new Fight(this.player1, this.player2, this.stage);
+                    game.fight.initFight(false);
                 }
             }
         };
+
+        this.initFight = winReset => {
+            if (winReset) {
+                this.player1.winCount = 0;
+                this.player2.winCount = 0;
+            }
+            this.player1.character.health = this.player1.character.maxHealth;
+            this.player2.character.health = this.player2.character.maxHealth;
+            this.player1.character.pos = new Vector2D(
+                Math.floor(this.stage.size.x / 3) - this.player1.character.size.x / 2,
+                270 - 16 - this.player1.character.size.y
+            );
+            this.player2.character.pos = new Vector2D(
+                Math.floor(this.stage.size.x / 3 * 2) - this.player2.character.size.x / 2,
+                270 - 16 - this.player2.character.size.y
+            );
+        }
 
         this.assignKeys = (player, game) => {
             game.inputList.forEach((keys, id) => {

@@ -21,7 +21,6 @@ class Game {
         this.endMenuCursor = 0;
 
         this.characterSelection = null;
-        this.characters = ['char1', 'char2'];
 
         this.stages = [new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 254))];
 
@@ -34,7 +33,7 @@ class Game {
                     if (id === lastid) {
                         if (input.a && !lastinput.a && !(this.menuOptionList[this.mainMenuCursor] === 'playerVSplayer' && this.players.length < 2)) {
                             this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                            this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
+                            this.characterSelection = new CharacterSelection(this.menuOptionList[this.mainMenuCursor]);
                         }
                         if (input.up && !lastinput.up) this.mainMenuCursor = (((this.mainMenuCursor - 1) % nbMenu) + nbMenu) % nbMenu;
                         if (input.down && !lastinput.down) this.mainMenuCursor = (this.mainMenuCursor + 1) % nbMenu;
@@ -52,15 +51,12 @@ class Game {
                             switch (currmenu) {
                                 case 'Rematch':
                                     this.gameState = this.gameStateEnum.FIGHT;
-                                    this.fight.player1.character.health = this.fight.player1.character.maxHealth;
-                                    this.fight.player1.winCount = 0;
-                                    this.fight.player2.character.health = this.fight.player2.character.maxHealth;
-                                    this.fight.player2.winCount = 0;
                                     this.fight = new Fight(this.fight.player1, this.fight.player2, this.fight.stage);
+                                    this.fight.initFight(true);
                                     break;
                                 case 'Change Characters':
                                     this.gameState = this.gameStateEnum.CHARACTERSELECTION;
-                                    this.characterSelection = new CharacterSelection(this.characters, this.menuOptionList[this.mainMenuCursor]);
+                                    this.characterSelection = new CharacterSelection(this.menuOptionList[this.mainMenuCursor]);
                                     break;
                                 case 'Return to Menu':
                                     this.gameState = this.gameStateEnum.MAINMENU;

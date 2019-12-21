@@ -43,18 +43,20 @@ class GUI {
                 156 * (fight.player1.character.health / fight.player1.character.maxHealth) * display.zoom,
                 12 * display.zoom
             );
-            
+
             for (let i = 0; i < fight.playoff; i++) {
-                display.cx.drawImage(
-                    display.assets.scoreImg,
-                    (208 - 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
-                );
                 if (i < fight.player1.winCount) {
                     display.cx.drawImage(
                         display.assets.winScore,
+                        (208 - 16 * i) * display.zoom,
+                        24 * display.zoom,
+                        16 * display.zoom,
+                        16 * display.zoom
+                    );
+                }
+                else {
+                    display.cx.drawImage(
+                        display.assets.scoreImg,
                         (208 - 16 * i) * display.zoom,
                         24 * display.zoom,
                         16 * display.zoom,
@@ -96,16 +98,18 @@ class GUI {
             );
 
             for (let i = 0; i < fight.playoff; i++) {
-                display.cx.drawImage(
-                    display.assets.scoreImg,
-                    (256 + 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
-                );
                 if (i < fight.player2.winCount) {
                     display.cx.drawImage(
                         display.assets.winScore,
+                        (256 + 16 * i) * display.zoom,
+                        24 * display.zoom,
+                        16 * display.zoom,
+                        16 * display.zoom
+                    );
+                }
+                else {
+                    display.cx.drawImage(
+                        display.assets.scoreImg,
                         (256 + 16 * i) * display.zoom,
                         24 * display.zoom,
                         16 * display.zoom,
