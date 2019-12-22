@@ -4,6 +4,13 @@ class CharacterSelection {
         this.cursorLimit = new Vector2D(3, 5);
         this.mode = mode;
 
+        this.initAnimFrame = 60;
+        this.mugshotOrder = [
+            [60, 35, 30, 45, 50],
+            [55, 40, 25, 40, 55],
+            [50, 45, 30, 35, 60]
+        ];
+
         this.playerController = 0;
 
         this.player1 = null;
@@ -11,53 +18,53 @@ class CharacterSelection {
         this.player2 = null;
         this.player2Pos = null;
 
-        this.selectCharacter = keys => {
+        this.selectCharacter = pos => {
             var character = null;
-            switch (this.cursor.x + '' + this.cursor.y) {
+            switch (pos.x + '' + pos.y) {
                 case '00':
-                    character = new Mario(keys);
+                    character = new Mario();
                     break;
                 case '10':
-                    character = new Character(keys);
+                    character = new Character();
                     break;
                 case '20':
-                    character = null;
+                    character = new Character();
                     break;
                 case '01':
-                    character = null;
+                    character = new Character();
                     break;
                 case '11':
-                    character = null;
+                    character = new Character();
                     break;
                 case '21':
-                    character = null;
+                    character = new Character();
                     break;
                 case '02':
-                    character = null;
+                    character = new Character();
                     break;
                 case '12':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '22':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '03':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '13':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '23':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '04':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '14':
-                    character = null;
+                    character = new Mario();
                     break;
                 case '24':
-                    character = null;
+                    character = new Mario();
                     break;
                 default:
                     console.log('ERROR : WRONG CURSOR VALUE');
@@ -67,23 +74,24 @@ class CharacterSelection {
         }
 
         this.update = game => {
-            if (this.playerController < game.players.length) {
+            if (this.initAnimFrame) this.initAnimFrame--;
+            else if (this.playerController < game.players.length) {
                 var id = game.players[this.playerController].id;
                 var input = game.inputList.get(id);
                 var lastInput = game.lastInputList.get(id);
 
                 if (input.b) game.gameState = game.gameStateEnum.MAINMENU;
                 else {
-                    if (input.a && !lastInput.a && this.selectCharacter(null)) {
+                    if (input.a && !lastInput.a && this.selectCharacter(this.cursor)) {
                         if (!this.player1) {
                             this.player1 = game.players[0];
-                            this.player1.character = this.selectCharacter(this.player1.keys);
+                            this.player1.character = this.selectCharacter(this.cursor);
                             this.player1Pos = new Vector2D(this.cursor.x, this.cursor.y);
                             this.cursor = new Vector2D(1, 2);
                             if (this.mode === 'playerVSplayer') this.playerController++;
                         } else if (!this.player2) {
                             this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', {}, 'computer');
-                            this.player2.character = this.selectCharacter(this.player2.keys);
+                            this.player2.character = this.selectCharacter(this.cursor);
                             this.player2Pos = new Vector2D(this.cursor.x, this.cursor.y);
                         }
 
@@ -111,6 +119,6 @@ class CharacterSelection {
                     }
                 }
             }
-        };
+        }
     }
 }

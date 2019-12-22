@@ -6,8 +6,10 @@ class Assets {
         this.characterSelectP1.src = 'img/charSelectCursorP1.png';
         this.characterSelectP2 = document.createElement('img');
         this.characterSelectP2.src = 'img/charSelectCursorP2.png';
-        this.characterSelectCPU = document.createElement('img');
-        this.characterSelectCPU.src = 'img/charSelectCursorCPU.png';
+        this.characterSelectInfo = document.createElement('img');
+        this.characterSelectInfo.src = 'img/characterSelectInfo.png';
+        this.whiteMugshot = document.createElement('img');
+        this.whiteMugshot.src = 'img/mugshot.png';
 
         this.cp00 = document.createElement('img');
         this.cp00.src = 'img/characters/cp00.png';

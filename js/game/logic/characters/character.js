@@ -3,6 +3,9 @@ class Character {
         this.id = 0;
         this.name = 'Character';
 
+        this.mugshotImg = 'cm01';
+        this.profileImg = 'cp01';
+
         this.keys = null;
 
         this.size = new Vector2D(32, 32);
