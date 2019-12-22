@@ -1,15 +1,19 @@
 class CharacterSelection {
     constructor(mode) {
-        this.cursor = new Vector2D(1, 2);
+        this.cursor = new Vector2D(0, 2);
         this.cursorLimit = new Vector2D(3, 5);
         this.mode = mode;
 
         this.initAnimFrame = 60;
         this.mugshotOrder = [
-            [60, 35, 30, 45, 50],
-            [55, 40, 25, 40, 55],
-            [50, 45, 30, 35, 60]
+            [56, 36, 32, 44, 48],
+            [52, 40, 28, 40, 52],
+            [48, 44, 32, 36, 56]
         ];
+
+        this.endAnimFrame = 0;
+        this.endAnimEndFrame = 10;
+        this.nextGameState = null;
 
         this.playerController = 0;
 
@@ -64,7 +68,7 @@ class CharacterSelection {
                     character = new Mario();
                     break;
                 case '24':
-                    character = new Mario();
+                    character = new Character();
                     break;
                 default:
                     console.log('ERROR : WRONG CURSOR VALUE');
@@ -75,20 +79,26 @@ class CharacterSelection {
 
         this.update = game => {
             if (this.initAnimFrame) this.initAnimFrame--;
+            if (this.nextGameState) {
+                if (this.endAnimFrame >= this.endAnimEndFrame) game.gameState = this.nextGameState;
+                else this.endAnimFrame++;
+            }
             else if (this.playerController < game.players.length) {
                 var id = game.players[this.playerController].id;
                 var input = game.inputList.get(id);
                 var lastInput = game.lastInputList.get(id);
 
-                if (input.b) game.gameState = game.gameStateEnum.MAINMENU;
+                if (input.b) this.nextGameState = game.gameStateEnum.MAINMENU;
                 else {
                     if (input.a && !lastInput.a && this.selectCharacter(this.cursor)) {
                         if (!this.player1) {
                             this.player1 = game.players[0];
                             this.player1.character = this.selectCharacter(this.cursor);
                             this.player1Pos = new Vector2D(this.cursor.x, this.cursor.y);
-                            this.cursor = new Vector2D(1, 2);
+
+                            this.cursor = new Vector2D(2, 2);
                             if (this.mode === 'playerVSplayer') this.playerController++;
+                            
                         } else if (!this.player2) {
                             this.player2 = this.mode === 'playerVSplayer' ? game.players[1] : new Player('computer', {}, 'computer');
                             this.player2.character = this.selectCharacter(this.cursor);
@@ -98,7 +108,7 @@ class CharacterSelection {
                         if (this.player1 && this.player2) {
                             game.fight = new Fight(this.player1, this.player2, game.stages[0]);
                             game.fight.initFight(true);
-                            game.gameState = game.gameStateEnum.FIGHT;
+                            this.nextGameState = game.gameStateEnum.FIGHT;
                         }
                     }
 

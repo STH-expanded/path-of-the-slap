@@ -1,6 +1,7 @@
 class GUI {
     constructor() {
-        this.update = (fight, display) => {
+        this.update = display => {
+            var fight = display.game.fight;
 
             // TIMER
             var timer = (fight.timer - (fight.timer % 60)) / 60;

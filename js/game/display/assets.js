@@ -2,12 +2,18 @@ class Assets {
     constructor() {
         this.characterSelect = document.createElement('img');
         this.characterSelect.src = 'img/characterSelect.png';
+        this.characterSelectBackBlue = document.createElement('img');
+        this.characterSelectBackBlue.src = 'img/characterSelectBackBlue.png';
+        this.characterSelectBackRed = document.createElement('img');
+        this.characterSelectBackRed.src = 'img/characterSelectBackRed.png';
         this.characterSelectP1 = document.createElement('img');
         this.characterSelectP1.src = 'img/charSelectCursorP1.png';
         this.characterSelectP2 = document.createElement('img');
         this.characterSelectP2.src = 'img/charSelectCursorP2.png';
         this.characterSelectInfo = document.createElement('img');
         this.characterSelectInfo.src = 'img/characterSelectInfo.png';
+        this.characterSelectInfo2 = document.createElement('img');
+        this.characterSelectInfo2.src = 'img/characterSelectInfo2.png';
         this.whiteMugshot = document.createElement('img');
         this.whiteMugshot.src = 'img/mugshot.png';
 
