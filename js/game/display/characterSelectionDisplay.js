@@ -43,8 +43,37 @@ class CharacterSelectionDisplay {
 
             var charSelect = display.game.characterSelection;
             if (charSelect) {
+                var player1 = charSelect.player1Pos ? charSelect.player1Pos : charSelect.cursor;
+                var player2 = charSelect.player2Pos ? charSelect.player2Pos : charSelect.player1Pos ? charSelect.cursor : null;
+
+                // Character Profiles
+                var characterP1 = charSelect.selectCharacter(new Vector2D(player1.x, player1.y));
+                if (characterP1) {
+                    display.cx.drawImage(
+                        display.assets[characterP1.profileImg],
+                        0, 0,
+                        202, 270,
+                        0 * display.zoom,
+                        0 * display.zoom,
+                        202 * display.zoom,
+                        270 * display.zoom
+                    );
+                }
+                var characterP2 = player2 ? charSelect.selectCharacter(new Vector2D(player2.x, player2.y)) : charSelect.selectCharacter(new Vector2D(2, 2));
+                if (characterP2) {
+                    display.cx.drawImage(
+                        display.assets[characterP2.profileImg],
+                        0, 0,
+                        202, 270,
+                        278 * display.zoom,
+                        0 * display.zoom,
+                        202 * display.zoom,
+                        270 * display.zoom
+                    );
+                }
+
                 if (charSelect.initAnimFrame) {
-                    // Background animation
+                    // Background transition
                     var width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
                     display.cx.fillStyle = '#000';
                     display.cx.fillRect(
@@ -87,8 +116,7 @@ class CharacterSelectionDisplay {
                                         52 * display.zoom,
                                         52 * display.zoom
                                     );
-                                }
-                                else {
+                                } else {
                                     display.cx.drawImage(
                                         display.assets.whiteMugshot,
                                         0, 0,
@@ -103,34 +131,6 @@ class CharacterSelectionDisplay {
                         }
                     }
                 } else {
-                    var player1 = charSelect.player1Pos ? charSelect.player1Pos : charSelect.cursor;
-                    var player2 = charSelect.player2Pos ? charSelect.player2Pos : charSelect.player1Pos ? charSelect.cursor : null;
-
-                    // Character Profiles
-                    var characterP1 = charSelect.selectCharacter(new Vector2D(player1.x, player1.y));
-                    if (characterP1) {
-                        display.cx.drawImage(
-                            display.assets[characterP1.profileImg],
-                            0, 0,
-                            202, 270,
-                            0 * display.zoom,
-                            0 * display.zoom,
-                            202 * display.zoom,
-                            270 * display.zoom
-                        );
-                    }
-                    var characterP2 = player2 ? charSelect.selectCharacter(new Vector2D(player2.x, player2.y)) : charSelect.selectCharacter(new Vector2D(2, 2));
-                    if (characterP2) {
-                        display.cx.drawImage(
-                            display.assets[characterP2.profileImg],
-                            0, 0,
-                            202, 270,
-                            278 * display.zoom,
-                            0 * display.zoom,
-                            202 * display.zoom,
-                            270 * display.zoom
-                        );
-                    }
 
                     // Background 2nd Layer
                     display.cx.drawImage(
@@ -149,8 +149,8 @@ class CharacterSelectionDisplay {
                             display.assets.characterSelectInfo2,
                             0, 24,
                             72, 24,
-                            150 * display.zoom,
-                            236 * display.zoom,
+                            147 * display.zoom,
+                            231 * display.zoom,
                             72 * display.zoom,
                             24 * display.zoom
                         );
@@ -159,8 +159,8 @@ class CharacterSelectionDisplay {
                             display.assets.characterSelectInfo2,
                             0, 0,
                             72, 24,
-                            150 * display.zoom,
-                            236 * display.zoom,
+                            147 * display.zoom,
+                            231 * display.zoom,
                             72 * display.zoom,
                             24 * display.zoom
                         );
@@ -170,8 +170,8 @@ class CharacterSelectionDisplay {
                             display.assets.characterSelectInfo2,
                             0, 24,
                             72, 24,
-                            292 * display.zoom,
-                            18 * display.zoom,
+                            295 * display.zoom,
+                            23 * display.zoom,
                             72 * display.zoom,
                             24 * display.zoom
                         );
@@ -180,12 +180,32 @@ class CharacterSelectionDisplay {
                             display.assets.characterSelectInfo2,
                             0, 0,
                             72, 24,
-                            258 * display.zoom,
-                            10 * display.zoom,
+                            261 * display.zoom,
+                            15 * display.zoom,
                             72 * display.zoom,
                             24 * display.zoom
                         );
                     }
+
+                    display.cx.drawImage(
+                        display.assets.characterSelectInfo3,
+                        0, 0,
+                        58, 26,
+                        142 * display.zoom,
+                        244 * display.zoom,
+                        58 * display.zoom,
+                        26 * display.zoom
+                    );
+                    var info3multiplier = charSelect.mode === 'playerVSplayer' ? 1 : 2;
+                    display.cx.drawImage(
+                        display.assets.characterSelectInfo3,
+                        0, 26 * info3multiplier,
+                        58, 26,
+                        280 * display.zoom,
+                        1 * display.zoom,
+                        58 * display.zoom,
+                        26 * display.zoom
+                    );
 
                     // Mugshots
                     for (let x = 0; x < charSelect.cursorLimit.x; x++) {
@@ -201,8 +221,7 @@ class CharacterSelectionDisplay {
                                     52 * display.zoom,
                                     52 * display.zoom
                                 );
-                            }
-                            else {
+                            } else {
                                 display.cx.drawImage(
                                     display.assets.whiteMugshot,
                                     0, 0,

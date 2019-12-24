@@ -93,7 +93,6 @@ class Game {
                 this.inputList.forEach((input, id) => {
                     if (!this.players.find(player => player.id === id)) {
                         this.players.push(new Player(id, input, 'player'));
-                        console.log('new player : ' + id);
                     }
                 });
             }

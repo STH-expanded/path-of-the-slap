@@ -34,7 +34,7 @@ class Display {
         };
 
         this.displayMainMenu = () => {
-            this.cx.fillStyle = 'lime';
+            this.cx.fillStyle = '#114';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom)
 
             var vsplayerBtn = this.game.players.length < 2 ? this.assets.btnvsplayerdisabled : this.assets.btnvsplayer;
@@ -50,7 +50,7 @@ class Display {
         };
 
         this.displayEndMenu = () => {
-            this.cx.fillStyle = 'yellow';
+            this.cx.fillStyle = '#114';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
 
             this.cx.drawImage(this.assets.btnRematch, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
@@ -73,7 +73,7 @@ class Display {
 
             this.cx.fillStyle = 'blue';
             this.cx.fillRect(player1.pos.x * this.zoom, player1.pos.y * this.zoom, player1.size.x * this.zoom, player1.size.y * this.zoom);
-            this.cx.fillStyle = 'green';
+            this.cx.fillStyle = 'red';
             this.cx.fillRect(player2.pos.x * this.zoom, player2.pos.y * this.zoom, player2.size.x * this.zoom, player2.size.y * this.zoom);
 
             this.cx.drawImage(this.assets.layer2, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);

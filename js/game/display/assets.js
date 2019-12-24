@@ -14,6 +14,8 @@ class Assets {
         this.characterSelectInfo.src = 'img/characterSelectInfo.png';
         this.characterSelectInfo2 = document.createElement('img');
         this.characterSelectInfo2.src = 'img/characterSelectInfo2.png';
+        this.characterSelectInfo3 = document.createElement('img');
+        this.characterSelectInfo3.src = 'img/characterSelectInfo3.png';
         this.whiteMugshot = document.createElement('img');
         this.whiteMugshot.src = 'img/mugshot.png';
 

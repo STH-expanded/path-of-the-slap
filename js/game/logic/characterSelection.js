@@ -83,7 +83,7 @@ class CharacterSelection {
                 if (this.endAnimFrame >= this.endAnimEndFrame) game.gameState = this.nextGameState;
                 else this.endAnimFrame++;
             }
-            else if (this.playerController < game.players.length) {
+            else if (this.playerController < game.players.length & !this.initAnimFrame & !this.endAnimFrame) {
                 var id = game.players[this.playerController].id;
                 var input = game.inputList.get(id);
                 var lastInput = game.lastInputList.get(id);
