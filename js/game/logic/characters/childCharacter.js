@@ -1,18 +1,18 @@
-class Mario extends Character {
+class ChildCharacter extends Character {
     constructor() {
         super();
 
         this.id = 1;
-        this.name = 'Mario';
+        this.name = 'ChildCharacter';
         
         this.mugshotImg = 'cm00';
         this.profileImg = 'cp00';
         
-        this.keys = null;
+        this.inputs = null;
 
-        this.size = new Vector2D(16, 16);
+        this.size = new Vector2D(32, 96);
 
         this.walkSpeed = 4;
-        this.jumpSpeed = 8;
+        this.jumpSpeed = 20;
     }
 }

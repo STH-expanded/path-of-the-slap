@@ -14,18 +14,15 @@ class Display {
         this.cx = this.canvas.getContext('2d');
 
         this.update = () => {
-            switch (this.game.gameState) {
-                case this.game.gameStateEnum.MAINMENU:
-                    this.displayMainMenu();
+            switch (this.game.activity.constructor) {
+                case Menu:
+                    this.displayMenu(this.game.activity.options);
                     break;
-                case this.game.gameStateEnum.CHARACTERSELECTION:
+                case CharacterSelection:
                     this.characterSelectionDisplay.update(this);
                     break;
-                case this.game.gameStateEnum.FIGHT:
+                case Fight:
                     this.displayFight();
-                    break;
-                case this.game.gameStateEnum.ENDMENU:
-                    this.displayEndMenu();
                     break;
                 default:
                     break;
@@ -33,52 +30,42 @@ class Display {
             this.frame++;
         };
 
-        this.displayMainMenu = () => {
+        this.displayMenu = options => {
             this.cx.fillStyle = '#114';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom)
 
-            var vsplayerBtn = this.game.players.length < 2 ? this.assets.btnvsplayerdisabled : this.assets.btnvsplayer;
-            this.cx.drawImage(vsplayerBtn, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-            this.cx.drawImage(this.assets.btnvscomputer, 0, 0, 128, 32, 176 * this.zoom, 116 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-            this.cx.drawImage(this.assets.btnpractice, 0, 0, 128, 32, 176 * this.zoom, 148 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-
-            for (let i = 0; i < this.game.menuOptionList.length; i++) {
-                if (this.game.mainMenuCursor === i) {
-                    this.cx.drawImage(this.assets.menucursor, 0, 0, 128, 32, 176 * this.zoom, (84 + i * 32) * this.zoom, 128 * this.zoom, 32 * this.zoom);
+            options.forEach((option, index) => {
+                option += option === 'Player' && this.game.players.length < 2 ? 'Disabled' : '';
+                this.cx.drawImage(this.assets['btn' + option], 0, 0, 128, 32, 176 * this.zoom, (84 + 32 * index) * this.zoom, 128 * this.zoom, 32 * this.zoom);
+                if (this.game.activity.cursor === index) {
+                    this.cx.drawImage(this.assets.menucursor, 0, 0, 128, 32, 176 * this.zoom, (84 + 32 * index) * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 }
-            }
-        };
-
-        this.displayEndMenu = () => {
-            this.cx.fillStyle = '#114';
-            this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom);
-
-            this.cx.drawImage(this.assets.btnRematch, 0, 0, 128, 32, 176 * this.zoom, 84 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-            this.cx.drawImage(this.assets.btncharacterselection, 0, 0, 128, 32, 176 * this.zoom, 116 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-            this.cx.drawImage(this.assets.btnreturntomenu, 0, 0, 128, 32, 176 * this.zoom, 148 * this.zoom, 128 * this.zoom, 32 * this.zoom);
-
-            for (let i = 0; i < this.game.endMenuOptionList.length; i++) {
-                if (this.game.endMenuCursor === i) {
-                    this.cx.drawImage(this.assets.menucursor, 0, 0, 128, 32, 176 * this.zoom, (84 + i * 32) * this.zoom, 128 * this.zoom, 32 * this.zoom);
-                }
-            }
+            });
         };
 
         this.displayFight = () => {
+
+            // Background
             this.cx.drawImage(this.assets.layer0, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
             this.cx.drawImage(this.assets.layer1, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
 
-            var player1 = this.game.fight.player1.character;
-            var player2 = this.game.fight.player2.character;
+            // Players
+            var player1 = this.game.activity.player1.character;
+            var player2 = this.game.activity.player2.character;
 
-            this.cx.fillStyle = 'blue';
-            this.cx.fillRect(player1.pos.x * this.zoom, player1.pos.y * this.zoom, player1.size.x * this.zoom, player1.size.y * this.zoom);
-            this.cx.fillStyle = 'red';
-            this.cx.fillRect(player2.pos.x * this.zoom, player2.pos.y * this.zoom, player2.size.x * this.zoom, player2.size.y * this.zoom);
+            if (this.debugMode) {
+                this.cx.fillStyle = '#00f';
+                this.cx.globalAlpha = 0.5;
+                this.cx.fillRect(player1.pos.x * this.zoom, player1.pos.y * this.zoom, player1.size.x * this.zoom, player1.size.y * this.zoom);
+                this.cx.fillRect(player2.pos.x * this.zoom, player2.pos.y * this.zoom, player2.size.x * this.zoom, player2.size.y * this.zoom);
+                this.cx.globalAlpha = 1;
+            }
 
+            // Foreground
             this.cx.drawImage(this.assets.layer2, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
             this.cx.drawImage(this.assets.layer3, 0, 0, 480, 270, 0, 0, 480 * this.zoom, 270 * this.zoom);
 
+            // GUI
             this.GUI.update(this);
         };
 
@@ -86,6 +73,18 @@ class Display {
             this.cx.translate(around, 0);
             this.cx.scale(-1, 1);
             this.cx.translate(-around, 0);
+        };
+
+        this.fadeEffect = (color, frame, MaxFrame) => {
+            this.cx.fillStyle = color;
+            this.cx.globalAlpha = frame / MaxFrame;
+            this.cx.fillRect(
+                0 * this.zoom,
+                0 * this.zoom,
+                480 * this.zoom,
+                270 * this.zoom
+            );
+            this.cx.globalAlpha = 1;
         };
 
         this.resize = () => {

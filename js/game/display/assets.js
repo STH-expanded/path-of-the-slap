@@ -86,18 +86,18 @@ class Assets {
 
         this.btnRematch = document.createElement('img');
         this.btnRematch.src = 'img/btnrematch.png';
-        this.btnvsplayer = document.createElement('img');
-        this.btnvsplayer.src = 'img/btnvsplayer.png';
-        this.btnvsplayerdisabled = document.createElement('img');
-        this.btnvsplayerdisabled.src = 'img/btnvsplayerdisabled.png';
-        this.btnvscomputer = document.createElement('img');
-        this.btnvscomputer.src = 'img/btnvscomputer.png';
-        this.btnpractice = document.createElement('img');
-        this.btnpractice.src = 'img/btnpractice.png';
-        this.btnreturntomenu = document.createElement('img');
-        this.btnreturntomenu.src = 'img/btnreturntomenu.png';
-        this.btncharacterselection = document.createElement('img');
-        this.btncharacterselection.src = 'img/btncharacterselection.png';
+        this.btnPlayer = document.createElement('img');
+        this.btnPlayer.src = 'img/btnvsplayer.png';
+        this.btnPlayerDisabled = document.createElement('img');
+        this.btnPlayerDisabled.src = 'img/btnvsplayerdisabled.png';
+        this.btnComputer = document.createElement('img');
+        this.btnComputer.src = 'img/btnvscomputer.png';
+        this.btnPractice = document.createElement('img');
+        this.btnPractice.src = 'img/btnpractice.png';
+        this.btnMainMenu = document.createElement('img');
+        this.btnMainMenu.src = 'img/btnreturntomenu.png';
+        this.btnCharacterSelection = document.createElement('img');
+        this.btnCharacterSelection.src = 'img/btncharacterselection.png';
 
         this.menucursor = document.createElement('img');
         this.menucursor.src = 'img/menucursor.png';

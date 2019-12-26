@@ -1,7 +1,7 @@
 class GUI {
     constructor() {
         this.update = display => {
-            var fight = display.game.fight;
+            var fight = display.game.activity;
 
             // TIMER
             var timer = (fight.timer - (fight.timer % 60)) / 60;
@@ -27,6 +27,13 @@ class GUI {
                 0, 0,
                 64 * display.zoom,
                 64 * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets[fight.player1.character.mugshotImg],
+                6 * display.zoom,
+                6 * display.zoom,
+                52 * display.zoom,
+                52 * display.zoom
             );
             display.cx.restore();
 
@@ -78,9 +85,17 @@ class GUI {
             //P2
             display.cx.drawImage(
                 display.assets.hudmugshot,
-                display.cx.canvas.width - 64 * display.zoom, 0,
+                display.cx.canvas.width - 64 * display.zoom,
+                0,
                 64 * display.zoom,
                 64 * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets[fight.player2.character.mugshotImg],
+                display.cx.canvas.width - 58 * display.zoom,
+                6 * display.zoom,
+                52 * display.zoom,
+                52 * display.zoom
             );
 
             display.cx.drawImage(

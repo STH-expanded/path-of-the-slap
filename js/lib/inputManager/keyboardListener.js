@@ -1,6 +1,13 @@
 class KeyboardListener {
     constructor() {
-        this.keys = {};
+        this.keys = {
+            "left": false,
+            "up": false,
+            "right": false,
+            "down": false,
+            "a": false,
+            "b": false
+        };
 
         this.keyCodes = new Map([
             [81, "left"],
