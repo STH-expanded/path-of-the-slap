@@ -103,21 +103,20 @@ class CharacterSelectionDisplay {
                 for (let x = 0; x < charSelect.size.x; x++) {
                     for (let y = 0; y < charSelect.size.y; y++) {
                         if (charSelect.mugshotOrder[x][y] >= charSelect.initAnimFrame) {
+                            display.cx.drawImage(
+                                display.assets.whiteMugshot,
+                                0, 0,
+                                52, 52,
+                                192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                                10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
+                                52 * display.zoom,
+                                52 * display.zoom
+                            );
                             var character = charSelect.selectCharacter(new Vector2D(x, y));
                             if (character) {
                                 var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.whiteMugshot : display.assets[character.mugshotImg];
                                 display.cx.drawImage(
                                     mugshotImg,
-                                    0, 0,
-                                    52, 52,
-                                    192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                                    10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                                    52 * display.zoom,
-                                    52 * display.zoom
-                                );
-                            } else {
-                                display.cx.drawImage(
-                                    display.assets.whiteMugshot,
                                     0, 0,
                                     52, 52,
                                     192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
@@ -209,20 +208,19 @@ class CharacterSelectionDisplay {
                 // Mugshots
                 for (let x = 0; x < charSelect.size.x; x++) {
                     for (let y = 0; y < charSelect.size.y; y++) {
+                        display.cx.drawImage(
+                            display.assets.whiteMugshot,
+                            0, 0,
+                            52, 52,
+                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
+                            52 * display.zoom,
+                            52 * display.zoom
+                        );
                         var character = charSelect.selectCharacter(new Vector2D(x, y));
                         if (character) {
                             display.cx.drawImage(
                                 display.assets[character.mugshotImg],
-                                0, 0,
-                                52, 52,
-                                192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                                10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                                52 * display.zoom,
-                                52 * display.zoom
-                            );
-                        } else {
-                            display.cx.drawImage(
-                                display.assets.whiteMugshot,
                                 0, 0,
                                 52, 52,
                                 192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,

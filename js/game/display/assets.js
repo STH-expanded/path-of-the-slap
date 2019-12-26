@@ -27,62 +27,6 @@ class Assets {
         this.cp01.src = 'img/characters/cp01.png';
         this.cm01 = document.createElement('img');
         this.cm01.src = 'img/characters/cm01.png';
-        this.cp02 = document.createElement('img');
-        this.cp02.src = 'img/characters/cp02.png';
-        this.cm02 = document.createElement('img');
-        this.cm02.src = 'img/characters/cm02.png';
-
-        this.cp10 = document.createElement('img');
-        this.cp10.src = 'img/characters/cp10.png';
-        this.cm10 = document.createElement('img');
-        this.cm10.src = 'img/characters/cm10.png';
-        this.cp11 = document.createElement('img');
-        this.cp11.src = 'img/characters/cp11.png';
-        this.cm11 = document.createElement('img');
-        this.cm11.src = 'img/characters/cm11.png';
-        this.cp12 = document.createElement('img');
-        this.cp12.src = 'img/characters/cp12.png';
-        this.cm12 = document.createElement('img');
-        this.cm12.src = 'img/characters/cm12.png';
-
-        this.cp20 = document.createElement('img');
-        this.cp20.src = 'img/characters/cp20.png';
-        this.cm20 = document.createElement('img');
-        this.cm20.src = 'img/characters/cm20.png';
-        this.cp21 = document.createElement('img');
-        this.cp21.src = 'img/characters/cp21.png';
-        this.cm21 = document.createElement('img');
-        this.cm21.src = 'img/characters/cm21.png';
-        this.cp22 = document.createElement('img');
-        this.cp22.src = 'img/characters/cp22.png';
-        this.cm22 = document.createElement('img');
-        this.cm22.src = 'img/characters/cm22.png';
-
-        this.cp30 = document.createElement('img');
-        this.cp30.src = 'img/characters/cp30.png';
-        this.cm30 = document.createElement('img');
-        this.cm30.src = 'img/characters/cm30.png';
-        this.cp31 = document.createElement('img');
-        this.cp31.src = 'img/characters/cp31.png';
-        this.cm31 = document.createElement('img');
-        this.cm31.src = 'img/characters/cm31.png';
-        this.cp32 = document.createElement('img');
-        this.cp32.src = 'img/characters/cp32.png';
-        this.cm32 = document.createElement('img');
-        this.cm32.src = 'img/characters/cm32.png';
-        
-        this.cp40 = document.createElement('img');
-        this.cp40.src = 'img/characters/cp40.png';
-        this.cm40 = document.createElement('img');
-        this.cm40.src = 'img/characters/cm40.png';
-        this.cp41 = document.createElement('img');
-        this.cp41.src = 'img/characters/cp41.png';
-        this.cm41 = document.createElement('img');
-        this.cm41.src = 'img/characters/cm41.png';
-        this.cp42 = document.createElement('img');
-        this.cp42.src = 'img/characters/cp42.png';
-        this.cm42 = document.createElement('img');
-        this.cm42.src = 'img/characters/cm42.png';
 
         this.btnRematch = document.createElement('img');
         this.btnRematch.src = 'img/btnrematch.png';
@@ -92,8 +36,8 @@ class Assets {
         this.btnPlayerDisabled.src = 'img/btnvsplayerdisabled.png';
         this.btnComputer = document.createElement('img');
         this.btnComputer.src = 'img/btnvscomputer.png';
-        this.btnPractice = document.createElement('img');
-        this.btnPractice.src = 'img/btnpractice.png';
+        this.btnTraining = document.createElement('img');
+        this.btnTraining.src = 'img/btntraining.png';
         this.btnMainMenu = document.createElement('img');
         this.btnMainMenu.src = 'img/btnreturntomenu.png';
         this.btnCharacterSelection = document.createElement('img');

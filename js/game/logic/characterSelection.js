@@ -1,6 +1,7 @@
 class CharacterSelection {
-    constructor(mode, players) {
+    constructor(mode, characters, players) {
         this.mode = mode;
+        this.characters = characters;
 
         this.size = new Vector2D(3, 5);
         this.cursorInitPos = [
@@ -17,6 +18,7 @@ class CharacterSelection {
 
         this.endAnimFrame = 0;
         this.endAnimEndFrame = 10;
+        
         this.nextActivity = null;
 
         this.cursors = [];
@@ -28,60 +30,7 @@ class CharacterSelection {
             });
         });
 
-        this.selectCharacter = pos => {
-            var character = null;
-            switch (pos.x + '' + pos.y) {
-                case '00':
-                    character = new ChildCharacter();
-                    break;
-                case '10':
-                    character = new Character();
-                    break;
-                case '20':
-                    character = new Character();
-                    break;
-                case '01':
-                    character = new Character();
-                    break;
-                case '11':
-                    character = new Character();
-                    break;
-                case '21':
-                    character = new Character();
-                    break;
-                case '02':
-                    character = new Character();
-                    break;
-                case '12':
-                    character = new ChildCharacter();
-                    break;
-                case '22':
-                    character = new ChildCharacter();
-                    break;
-                case '03':
-                    character = new ChildCharacter();
-                    break;
-                case '13':
-                    character = new ChildCharacter();
-                    break;
-                case '23':
-                    character = new ChildCharacter();
-                    break;
-                case '04':
-                    character = new ChildCharacter();
-                    break;
-                case '14':
-                    character = new ChildCharacter();
-                    break;
-                case '24':
-                    character = new Character();
-                    break;
-                default:
-                    console.log('ERROR : WRONG CURSOR VALUE');
-                    break;
-            }
-            return character;
-        }
+        this.selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? new this.characters[pos.x + pos.y * 3]() : null;
 
         this.updatePlayer = (game, cursor, readyNow) => {
             var id = cursor.player.id === 'computer' ? this.cursors[0].player.id : cursor.player.id;
@@ -122,7 +71,7 @@ class CharacterSelection {
 
             if (!this.cursors.find(cursor => !cursor.ready)) {
                 this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
-                this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), game.stages[0], true);
+                this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new game.stages[0](), true);
             }
         }
     }

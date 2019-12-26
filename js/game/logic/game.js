@@ -12,15 +12,34 @@ class Game {
         }
 
         this.stages = [
-            new Stage(1, 'forest', new Vector2D(0, 0), new Vector2D(480, 270 - 16))
+            Stage
+        ];
+
+        this.characters = [
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
+            ChildCharacter,
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
+            Character,
         ];
 
         // Main Menu
-        this.mainMenuOptions = ['Player', 'Computer', 'Practice'];
+        this.mainMenuOptions = ['Player', 'Computer', 'Training'];
         this.mainMenuHandler = (game, options, cursor) => {
             if (!(options[cursor] === 'Player' && game.players.length < 2)) {
                 game.activity = new CharacterSelection(
                     options[cursor],
+                    game.characters,
                     [
                         game.players[0],
                         options[cursor] === 'Player' ? game.players[1] : new Player('computer')
@@ -37,7 +56,7 @@ class Game {
                     game.activity = new Fight(game.lastFight.players, game.lastFight.stage, true);
                     break;
                 case 'CharacterSelection':
-                    game.activity = new CharacterSelection(options[cursor], game.lastFight.players);
+                    game.activity = new CharacterSelection(options[cursor], game.characters, game.lastFight.players);
                     break;
                 case 'MainMenu':
                     game.activity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
