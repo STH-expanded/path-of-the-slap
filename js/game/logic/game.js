@@ -36,8 +36,9 @@ class Game {
         // Main Menu
         this.mainMenuOptions = ['Player', 'Computer', 'Training'];
         this.mainMenuHandler = (game, options, cursor) => {
+            var nextActivity = null;
             if (!(options[cursor] === 'Player' && game.players.length < 2)) {
-                game.activity = new CharacterSelection(
+                nextActivity = new CharacterSelection(
                     options[cursor],
                     game.characters,
                     [
@@ -46,22 +47,25 @@ class Game {
                     ]
                 );
             }
+            return nextActivity;
         };
 
         // End Menu
         this.endMenuOptions = ['Rematch', 'CharacterSelection', 'MainMenu'];
         this.endMenuHandler = (game, options, cursor) => {
+            var nextActivity = null;
             switch (options[cursor]) {
                 case 'Rematch':
-                    game.activity = new Fight(game.lastFight.players, game.lastFight.stage, true);
+                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, true);
                     break;
                 case 'CharacterSelection':
-                    game.activity = new CharacterSelection(options[cursor], game.characters, game.lastFight.players);
+                    nextActivity = new CharacterSelection(options[cursor], game.characters, game.lastFight.players);
                     break;
                 case 'MainMenu':
-                    game.activity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
+                    nextActivity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
                     break;
             }
+            return nextActivity;
         };
 
         this.update = () => {

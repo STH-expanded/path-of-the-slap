@@ -16,7 +16,7 @@ class Display {
         this.update = () => {
             switch (this.game.activity.constructor) {
                 case Menu:
-                    this.displayMenu(this.game.activity.options);
+                    this.displayMenu(this.game.activity);
                     break;
                 case CharacterSelection:
                     this.characterSelectionDisplay.update(this);
@@ -30,17 +30,22 @@ class Display {
             this.frame++;
         };
 
-        this.displayMenu = options => {
+        this.displayMenu = menu => {
             this.cx.fillStyle = '#114';
             this.cx.fillRect(0 * this.zoom, 0 * this.zoom, 480 * this.zoom, 270 * this.zoom)
 
-            options.forEach((option, index) => {
+            
+            menu.options.forEach((option, index) => {
                 option += option === 'Player' && this.game.players.length < 2 ? 'Disabled' : '';
                 this.cx.drawImage(this.assets['btn' + option], 0, 0, 128, 32, 176 * this.zoom, (84 + 32 * index) * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 if (this.game.activity.cursor === index) {
                     this.cx.drawImage(this.assets.menucursor, 0, 0, 128, 32, 176 * this.zoom, (84 + 32 * index) * this.zoom, 128 * this.zoom, 32 * this.zoom);
                 }
             });
+            
+            // Transitions
+            if (menu.initAnimFrame) this.fadeEffect('#000', menu.initAnimFrame, menu.initAnimInitFrame);
+            if (menu.endAnimFrame) this.fadeEffect('#000', menu.endAnimFrame, menu.endAnimEndFrame);
         };
 
         this.displayFight = () => {
