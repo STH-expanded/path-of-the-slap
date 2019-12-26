@@ -1,5 +1,6 @@
-class Menu {
+class Menu extends Activity {
     constructor(options, handler) {
+        super();
         this.options = options;
         this.handler = handler;
         this.cursor = 0;

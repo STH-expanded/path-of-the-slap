@@ -1,5 +1,6 @@
-class CharacterSelection {
+class CharacterSelection extends Activity {
     constructor(mode, characters, players) {
+        super();
         this.mode = mode;
         this.characters = characters;
 

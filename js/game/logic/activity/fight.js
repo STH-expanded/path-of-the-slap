@@ -1,5 +1,6 @@
-class Fight {
+class Fight extends Activity {
     constructor(players, stage, winReset) {
+        super();
         this.player1 = players[0];
         this.player2 = players[1];
         this.stage = stage;
