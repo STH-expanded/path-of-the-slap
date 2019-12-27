@@ -1,6 +1,9 @@
 class CharacterSelection extends Activity {
     constructor(mode, characters, players) {
         super();
+        this.display = CharacterSelectionDisplay;
+        this.nextActivity = null;
+
         this.mode = mode;
         this.characters = characters;
 
@@ -19,8 +22,6 @@ class CharacterSelection extends Activity {
 
         this.endAnimFrame = 0;
         this.endAnimEndFrame = 10;
-        
-        this.nextActivity = null;
 
         this.cursors = [];
         players.forEach((player, i) => {

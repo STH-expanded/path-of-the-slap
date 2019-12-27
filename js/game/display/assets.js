@@ -1,6 +1,24 @@
 class Assets {
     constructor() {
         
+        // Menu
+        this.menucursor = document.createElement('img');
+        this.menucursor.src = 'img/menu/menucursor.png';
+        this.btnPlayerDisabled = document.createElement('img');
+        this.btnPlayerDisabled.src = 'img/menu/btnvsplayerdisabled.png';
+        this.btnPlayer = document.createElement('img');
+        this.btnPlayer.src = 'img/menu/btnvsplayer.png';
+        this.btnComputer = document.createElement('img');
+        this.btnComputer.src = 'img/menu/btnvscomputer.png';
+        this.btnTraining = document.createElement('img');
+        this.btnTraining.src = 'img/menu/btntraining.png';
+        this.btnRematch = document.createElement('img');
+        this.btnRematch.src = 'img/menu/btnrematch.png';
+        this.btnMainMenu = document.createElement('img');
+        this.btnMainMenu.src = 'img/menu/btnreturntomenu.png';
+        this.btnCharacterSelection = document.createElement('img');
+        this.btnCharacterSelection.src = 'img/menu/btncharacterselection.png';
+
         // Character
         this.cp00 = document.createElement('img');
         this.cp00.src = 'img/character/cp00.png';
@@ -30,24 +48,6 @@ class Assets {
         this.characterSelectInfo3.src = 'img/characterSelect/characterSelectInfo3.png';
         this.whiteMugshot = document.createElement('img');
         this.whiteMugshot.src = 'img/characterSelect/mugshot.png';
-
-        // Menu
-        this.btnRematch = document.createElement('img');
-        this.btnRematch.src = 'img/menu/btnrematch.png';
-        this.btnPlayer = document.createElement('img');
-        this.btnPlayer.src = 'img/menu/btnvsplayer.png';
-        this.btnPlayerDisabled = document.createElement('img');
-        this.btnPlayerDisabled.src = 'img/menu/btnvsplayerdisabled.png';
-        this.btnComputer = document.createElement('img');
-        this.btnComputer.src = 'img/menu/btnvscomputer.png';
-        this.btnTraining = document.createElement('img');
-        this.btnTraining.src = 'img/menu/btntraining.png';
-        this.btnMainMenu = document.createElement('img');
-        this.btnMainMenu.src = 'img/menu/btnreturntomenu.png';
-        this.btnCharacterSelection = document.createElement('img');
-        this.btnCharacterSelection.src = 'img/menu/btncharacterselection.png';
-        this.menucursor = document.createElement('img');
-        this.menucursor.src = 'img/menu/menucursor.png';
 
         // Stage
         this.layer0 = document.createElement('img');

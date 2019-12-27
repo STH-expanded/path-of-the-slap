@@ -1,6 +1,9 @@
 class Menu extends Activity {
     constructor(options, handler) {
         super();
+        this.display = MenuDisplay;
+        this.nextActivity = null;
+
         this.options = options;
         this.handler = handler;
         this.cursor = 0;
@@ -10,8 +13,6 @@ class Menu extends Activity {
         
         this.endAnimFrame = 0;
         this.endAnimEndFrame = 10;
-
-        this.nextActivity = null;
 
         this.update = game => {
             if (this.initAnimFrame) this.initAnimFrame--;
