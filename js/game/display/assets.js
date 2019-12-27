@@ -1,6 +1,10 @@
 class Assets {
     constructor() {
         
+        // Opening
+        this.openingImg = document.createElement('img');
+        this.openingImg.src = 'img/opening.png';
+
         // Menu
         this.menucursor = document.createElement('img');
         this.menucursor.src = 'img/menu/menucursor.png';

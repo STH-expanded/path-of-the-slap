@@ -1,3 +1,3 @@
 class ActivityDisplay {
-    static update = (display, activity) => {}
+    static update = (display) => {}
 }

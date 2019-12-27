@@ -1,5 +1,6 @@
 class FightDisplay extends ActivityDisplay {
-    static update = (display, fight) => {
+    static update = display => {
+        var fight = display.game.activity;
 
         // Background
         display.cx.drawImage(display.assets.layer0, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
@@ -22,6 +23,6 @@ class FightDisplay extends ActivityDisplay {
         display.cx.drawImage(display.assets.layer3, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
 
         // GUI
-        GUI.update(display, fight);
+        GUI.update(display);
     }
 }

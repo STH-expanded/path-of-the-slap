@@ -9,7 +9,7 @@ class Display {
         this.assets = new Assets();
 
         this.update = () => {
-            this.game.activity.display.update(this, this.game.activity);
+            this.game.activity.display.update(this);
             this.frame++;
         };
 

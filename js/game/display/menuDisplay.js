@@ -1,5 +1,7 @@
 class MenuDisplay extends ActivityDisplay {
-    static update = (display, menu) => {
+    static update = display => {
+        var menu = display.game.activity;
+
         display.cx.fillStyle = '#114';
         display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom)
 

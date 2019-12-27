@@ -1,5 +1,6 @@
 class CharacterSelectionDisplay extends ActivityDisplay {
-    static update = (display, charSelect) => {
+    static update = display => {
+        var charSelect = display.game.activity;
 
         // Colored Moving Background
         display.cx.drawImage(

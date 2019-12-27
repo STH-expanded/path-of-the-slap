@@ -8,7 +8,7 @@ class Fight extends Activity {
         this.player2 = players[1];
         this.stage = stage;
 
-        this.timer = 120;
+        this.timer = 5400;
 
         this.winners = [];
         this.playoff = 2;

@@ -1,5 +1,6 @@
 class GUI {
-    static update = (display, fight) => {
+    static update = display => {
+        var fight = display.game.activity;
 
         // TIMER
         var timer = (fight.timer - (fight.timer % 60)) / 60;

@@ -4,6 +4,8 @@ class Game {
         this.inputList = inputList;
         this.lastInputList = new Map();
 
+        this.activity = new Opening();
+
         this.players = [];
 
         this.lastFight = {
@@ -80,7 +82,5 @@ class Game {
             this.inputList.forEach((input, id) => this.lastInputList.set(id, JSON.parse(JSON.stringify(input))));
             this.frame++;
         };
-
-        this.activity = new Menu(this.mainMenuOptions, this.mainMenuHandler);
     }
 }

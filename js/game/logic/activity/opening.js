@@ -4,20 +4,18 @@ class Opening extends Activity {
         this.display = OpeningDisplay;
         this.nextActivity = null;
 
-        this.initAnimInitFrame = 10;
+        this.initAnimInitFrame = 90;
         this.initAnimFrame = this.initAnimInitFrame;
         
         this.endAnimFrame = 0;
-        this.endAnimEndFrame = 10;
+        this.endAnimEndFrame = 30;
 
         this.update = game => {
             if (this.initAnimFrame) this.initAnimFrame--;
             if (this.nextActivity) {
                 if (this.endAnimFrame >= this.endAnimEndFrame) game.activity = this.nextActivity;
                 else this.endAnimFrame++;
-            } else if (!this.initAnimFrame && !this.endAnimFrame) {
-
-            }
+            } else if (!this.initAnimFrame && !this.endAnimFrame) this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
         }
     }
 }
