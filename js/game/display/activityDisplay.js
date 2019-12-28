@@ -1,3 +1,2 @@
-class ActivityDisplay {
-    static update = (display) => {}
-}
+class ActivityDisplay {}
+ActivityDisplay.update = display => {}

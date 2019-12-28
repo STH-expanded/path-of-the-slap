@@ -1,6 +1,5 @@
 class Assets {
     constructor() {
-        
         // Opening
         this.openingImg = document.createElement('img');
         this.openingImg.src = 'img/opening.png';
