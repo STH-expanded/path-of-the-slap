@@ -6,7 +6,6 @@ class AudioManager {
         };
 
         this.play = sound => {
-            if (sound.audio.muted) sound.audio.muted = false;
             sound.audio.volume = this.volume[sound.type];
             sound.audio.play();
         };

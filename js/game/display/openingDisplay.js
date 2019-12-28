@@ -20,7 +20,7 @@ OpeningDisplay.update = display => {
         display.cx.fillStyle = '#000';
         display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom)
     } else if (opening.initAnimFrame === Math.floor(opening.initAnimInitFrame * 0.75)) {
-        // display.audioManager.play(new Sound('sfx', 'audio/smw_coin.wav'));
+        display.audioManager.play(new Sound('sfx', 'audio/smw_coin.wav'));
     }
     if (opening.endAnimFrame) display.fadeEffect('#000', opening.endAnimFrame, opening.endAnimEndFrame);
 }
