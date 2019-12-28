@@ -1,5 +1,6 @@
 window.onload = () => {
     var startGame = () => {
+        clearInterval(helpAnimation);
         document.body.innerHTML = '';
         document.body.onclick = null;
         document.body.onkeypress = null;
@@ -23,7 +24,7 @@ window.onload = () => {
 
     document.body.onclick = () => startGame();
     document.body.onkeypress = () => startGame();
-    setInterval(() => {
+    var helpAnimation = setInterval(() => {
         help.innerHTML = help.innerHTML.match(/[a-z|A-Z|0-9]+[^_]+_{1}$/) ? help.innerHTML.slice(0, -1) : help.innerHTML + '_';
     }, 1000);
 }
