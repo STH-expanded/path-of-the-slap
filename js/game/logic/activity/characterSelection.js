@@ -12,6 +12,8 @@ class CharacterSelection extends Activity {
             new Vector2D(0, 2),
             new Vector2D(2, 2)
         ];
+        this.cursorInfoInitFrame = 16;
+        this.cursorProfileInitFrame = 8;
 
         this.initAnimFrame = 60;
         this.mugshotOrder = [
@@ -31,8 +33,8 @@ class CharacterSelection extends Activity {
                 player: player,
                 ready: false,
                 pos: this.cursorInitPos[i],
-                initInfoinitFrame: 16,
-                initInfoFrame: 16
+                infoFrame: this.cursorInfoInitFrame,
+                profileFrame: 0
             });
         });
 
@@ -46,27 +48,39 @@ class CharacterSelection extends Activity {
             if (input.a && !lastInput.a && this.selectCharacter(cursor.pos)) {
                 if (!cursor.ready && !readyNow.find(otherId => otherId === id)) {
                     cursor.ready = true;
-                    cursor.initInfoFrame = cursor.initInfoinitFrame;
+                    cursor.infoFrame = this.cursorInfoInitFrame;
                     readyNow.push(id);
                 }
             }
             else if (input.b && !lastInput.b) {
                 if (cursor.player.id === 'computer') {
                     this.cursors[0].ready = false;
-                    cursor.initInfoFrame = cursor.initInfoinitFrame;
+                    cursor.infoFrame = this.cursorInfoInitFrame;
                 }
                 else {
                     if (cursor.ready) {
                         cursor.ready = false;
-                        cursor.initInfoFrame = cursor.initInfoinitFrame;
+                        cursor.infoFrame = this.cursorInfoInitFrame;
                     }
                     else this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
                 }
             } else if (!cursor.ready) {
-                if (input.up && !lastInput.up) cursor.pos.y = (((cursor.pos.y - 1) % this.size.y) + this.size.y) % this.size.y;
-                if (input.down && !lastInput.down) cursor.pos.y = (((cursor.pos.y + 1) % this.size.y) + this.size.y) % this.size.y;
-                if (input.left && !lastInput.left) cursor.pos.x = (((cursor.pos.x - 1) % this.size.x) + this.size.x) % this.size.x;
-                if (input.right && !lastInput.right) cursor.pos.x = (((cursor.pos.x + 1) % this.size.x) + this.size.x) % this.size.x;
+                if (input.up && !lastInput.up) {
+                    cursor.pos.y = (((cursor.pos.y - 1) % this.size.y) + this.size.y) % this.size.y;
+                    cursor.profileFrame = this.cursorProfileInitFrame;
+                }
+                if (input.down && !lastInput.down) {
+                    cursor.pos.y = (((cursor.pos.y + 1) % this.size.y) + this.size.y) % this.size.y;
+                    cursor.profileFrame = this.cursorProfileInitFrame;
+                }
+                if (input.left && !lastInput.left) {
+                    cursor.pos.x = (((cursor.pos.x - 1) % this.size.x) + this.size.x) % this.size.x;
+                    cursor.profileFrame = this.cursorProfileInitFrame;
+                }
+                if (input.right && !lastInput.right) {
+                    cursor.pos.x = (((cursor.pos.x + 1) % this.size.x) + this.size.x) % this.size.x;
+                    cursor.profileFrame = this.cursorProfileInitFrame;
+                }
             }
         }
 
@@ -79,7 +93,8 @@ class CharacterSelection extends Activity {
                 if (this.initInfo3Frame) this.initInfo3Frame--;
                 var readyNow = [];
                 this.cursors.forEach(cursor => {
-                    if (cursor.initInfoFrame) cursor.initInfoFrame--;
+                    if (cursor.infoFrame) cursor.infoFrame--;
+                    if (cursor.profileFrame) cursor.profileFrame--;
                     if (cursor.player.id !== 'computer' || this.cursors[0].ready) this.updatePlayer(game, cursor, readyNow);
                 });
             }

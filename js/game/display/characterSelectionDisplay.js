@@ -48,25 +48,69 @@ CharacterSelectionDisplay.update = display => {
     var character1 = charSelect.selectCharacter(cursor1.pos);
     if (character1) {
         display.cx.drawImage(
+            display.assets[character1.profileImg + 'shadow'],
+            0, 0,
+            202, 270,
+            (-8 + cursor1.profileFrame) * display.zoom,
+            (8 - cursor1.profileFrame) * display.zoom,
+            (194 + cursor1.profileFrame) * display.zoom,
+            (278 - cursor1.profileFrame) * display.zoom
+        );
+        display.cx.drawImage(
             display.assets[character1.profileImg],
             0, 0,
             202, 270,
-            0 * display.zoom,
-            0 * display.zoom,
-            202 * display.zoom,
-            270 * display.zoom
+            (0 - Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
+            (0 - Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
+            (202 + Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
+            (270 + Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom
         );
     }
     var character2 = charSelect.selectCharacter(cursor2.pos);
     if (character2) {
         display.cx.drawImage(
+            display.assets[character2.profileImg + 'shadow'],
+            0, 0,
+            202, 270,
+            (270 + cursor2.profileFrame) * display.zoom,
+            (8 - cursor2.profileFrame) * display.zoom,
+            (194 + cursor2.profileFrame) * display.zoom,
+            (278 - cursor2.profileFrame) * display.zoom
+        );
+        display.cx.drawImage(
             display.assets[character2.profileImg],
             0, 0,
             202, 270,
-            278 * display.zoom,
+            (278 - Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
+            (0 - Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
+            (202 + Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
+            (270 + Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom
+        );
+    }
+
+    // Player Input
+    var p1Input = cursor1.player.id === 'computer' ? null : display.assets['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    if (p1Input) {
+        display.cx.drawImage(
+            p1Input,
+            0, 0,
+            16, 16,
+            182 * display.zoom,
             0 * display.zoom,
-            202 * display.zoom,
-            270 * display.zoom
+            16 * display.zoom,
+            16 * display.zoom
+        );
+    }
+    var p2Input = cursor2.player.id === 'computer' ? null : display.assets['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    if (p2Input) {
+        display.cx.drawImage(
+            p2Input,
+            0, 0,
+            16, 16,
+            462 * display.zoom,
+            0 * display.zoom,
+            16 * display.zoom,
+            16 * display.zoom
         );
     }
 
@@ -145,8 +189,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo2,
             0, cursor1.ready ? 24 : 0,
             72, 24,
-            (147 + Math.pow(cursor1.initInfoFrame / 2, 2) * 4) * display.zoom,
-            (231 + Math.pow(cursor1.initInfoFrame / 2, 2) * 1) * display.zoom,
+            (147 + Math.pow(cursor1.infoFrame / 2, 2) * 4) * display.zoom,
+            (231 + Math.pow(cursor1.infoFrame / 2, 2) * 1) * display.zoom,
             72 * display.zoom,
             24 * display.zoom
         );
@@ -154,8 +198,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo2,
             0, cursor2.ready ? 24 : 0,
             72, 24,
-            ((cursor2.ready ? 295 : 261) - Math.pow(cursor2.initInfoFrame / 2, 2) * 4) * display.zoom,
-            ((cursor2.ready ? 23 : 15) - Math.pow(cursor2.initInfoFrame / 2, 2) * 1) * display.zoom,
+            ((cursor2.ready ? 295 : 261) - Math.pow(cursor2.infoFrame / 2, 2) * 4) * display.zoom,
+            ((cursor2.ready ? 23 : 15) - Math.pow(cursor2.infoFrame / 2, 2) * 1) * display.zoom,
             72 * display.zoom,
             24 * display.zoom
         );

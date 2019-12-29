@@ -25,10 +25,14 @@ class Assets {
         // Character
         this.cp00 = document.createElement('img');
         this.cp00.src = 'img/character/cp00.png';
+        this.cp00shadow = document.createElement('img');
+        this.cp00shadow.src = 'img/character/cp00shadow.png';
         this.cm00 = document.createElement('img');
         this.cm00.src = 'img/character/cm00.png';
         this.cp01 = document.createElement('img');
         this.cp01.src = 'img/character/cp01.png';
+        this.cp01shadow = document.createElement('img');
+        this.cp01shadow.src = 'img/character/cp01shadow.png';
         this.cm01 = document.createElement('img');
         this.cm01.src = 'img/character/cm01.png';
 
@@ -51,6 +55,10 @@ class Assets {
         this.characterSelectInfo3.src = 'img/characterSelect/characterSelectInfo3.png';
         this.whiteMugshot = document.createElement('img');
         this.whiteMugshot.src = 'img/characterSelect/mugshot.png';
+        this.characterSelectKeyboard = document.createElement('img');
+        this.characterSelectKeyboard.src = 'img/characterSelect/keyboard.png';
+        this.characterSelectGamepad = document.createElement('img');
+        this.characterSelectGamepad.src = 'img/characterSelect/gamepad.png';
 
         // Stage
         this.layer0 = document.createElement('img');
