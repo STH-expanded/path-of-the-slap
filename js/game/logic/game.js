@@ -37,7 +37,7 @@ class Game {
 
         // Main Menu
         this.mainMenuOptions = ['Player', 'Computer', 'Training'];
-        this.mainMenuOptionYCenter = 0.5;
+        this.mainMenuOptionYCenter = 3;
         this.mainMenuHandler = (game, options, cursor) => {
             var nextActivity = null;
             if (!(options[cursor] === 'Player' && game.players.length < 2)) {
@@ -55,7 +55,7 @@ class Game {
 
         // End Menu
         this.endMenuOptions = ['Rematch', 'CharacterSelection', 'MainMenu'];
-        this.endMenuOptionYCenter = 0.5;
+        this.endMenuOptionYCenter = 2;
         this.endMenuHandler = (game, options, cursor) => {
             var nextActivity = null;
             switch (options[cursor]) {

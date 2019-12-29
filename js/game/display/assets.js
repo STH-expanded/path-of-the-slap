@@ -5,6 +5,8 @@ class Assets {
         this.openingImg.src = 'img/opening.png';
 
         // Menu
+        this.titleScreen = document.createElement('img');
+        this.titleScreen.src = 'img/menu/titleScreen.png';
         this.menucursor = document.createElement('img');
         this.menucursor.src = 'img/menu/menucursor.png';
         this.btnPlayerDisabled = document.createElement('img');
