@@ -15,7 +15,7 @@ class Opening extends Activity {
             if (this.nextActivity) {
                 if (this.endAnimFrame >= this.endAnimEndFrame) game.activity = this.nextActivity;
                 else this.endAnimFrame++;
-            } else if (!this.initAnimFrame && !this.endAnimFrame) this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
+            } else if (!this.initAnimFrame && !this.endAnimFrame) this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
         }
     }
 }

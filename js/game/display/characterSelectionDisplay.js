@@ -141,55 +141,31 @@ CharacterSelectionDisplay.update = display => {
         );
 
         // Informations
-        if (cursor1.ready) {
-            display.cx.drawImage(
-                display.assets.characterSelectInfo2,
-                0, 24,
-                72, 24,
-                147 * display.zoom,
-                231 * display.zoom,
-                72 * display.zoom,
-                24 * display.zoom
-            );
-        } else {
-            display.cx.drawImage(
-                display.assets.characterSelectInfo2,
-                0, 0,
-                72, 24,
-                147 * display.zoom,
-                231 * display.zoom,
-                72 * display.zoom,
-                24 * display.zoom
-            );
-        }
-        if (cursor2.ready) {
-            display.cx.drawImage(
-                display.assets.characterSelectInfo2,
-                0, 24,
-                72, 24,
-                295 * display.zoom,
-                23 * display.zoom,
-                72 * display.zoom,
-                24 * display.zoom
-            );
-        } else {
-            display.cx.drawImage(
-                display.assets.characterSelectInfo2,
-                0, 0,
-                72, 24,
-                261 * display.zoom,
-                15 * display.zoom,
-                72 * display.zoom,
-                24 * display.zoom
-            );
-        }
+        display.cx.drawImage(
+            display.assets.characterSelectInfo2,
+            0, cursor1.ready ? 24 : 0,
+            72, 24,
+            (147 + Math.pow(cursor1.initInfoFrame / 2, 2) * 4) * display.zoom,
+            (231 + Math.pow(cursor1.initInfoFrame / 2, 2) * 1) * display.zoom,
+            72 * display.zoom,
+            24 * display.zoom
+        );
+        display.cx.drawImage(
+            display.assets.characterSelectInfo2,
+            0, cursor2.ready ? 24 : 0,
+            72, 24,
+            ((cursor2.ready ? 295 : 261) - Math.pow(cursor2.initInfoFrame / 2, 2) * 4) * display.zoom,
+            ((cursor2.ready ? 23 : 15) - Math.pow(cursor2.initInfoFrame / 2, 2) * 1) * display.zoom,
+            72 * display.zoom,
+            24 * display.zoom
+        );
 
         display.cx.drawImage(
             display.assets.characterSelectInfo3,
             0, 0,
             58, 26,
-            142 * display.zoom,
-            244 * display.zoom,
+            (142 + Math.pow(charSelect.initInfo3Frame / 2, 2) * 4) * display.zoom,
+            (244 + Math.pow(charSelect.initInfo3Frame / 2, 2) * 1) * display.zoom,
             58 * display.zoom,
             26 * display.zoom
         );
@@ -198,8 +174,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo3,
             0, 26 * info3multiplier,
             58, 26,
-            280 * display.zoom,
-            1 * display.zoom,
+            (280 - Math.pow(charSelect.initInfo3Frame / 2, 2) * 4) * display.zoom,
+            (1 - Math.pow(charSelect.initInfo3Frame / 2, 2) * 1) * display.zoom,
             58 * display.zoom,
             26 * display.zoom
         );

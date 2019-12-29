@@ -1,10 +1,11 @@
 class Menu extends Activity {
-    constructor(options, handler) {
+    constructor(options, optionYCenter, handler) {
         super();
         this.display = MenuDisplay;
         this.nextActivity = null;
 
         this.options = options;
+        this.optionYCenter = optionYCenter;
         this.handler = handler;
         this.cursor = 0;
         

@@ -20,6 +20,8 @@ class CharacterSelection extends Activity {
             [48, 44, 32, 36, 56]
         ];
 
+        this.initInfo3Frame = 16;
+
         this.endAnimFrame = 0;
         this.endAnimEndFrame = 10;
 
@@ -28,7 +30,9 @@ class CharacterSelection extends Activity {
             this.cursors.push({
                 player: player,
                 ready: false,
-                pos: this.cursorInitPos[i]
+                pos: this.cursorInitPos[i],
+                initInfoinitFrame: 16,
+                initInfoFrame: 16
             });
         });
 
@@ -42,14 +46,21 @@ class CharacterSelection extends Activity {
             if (input.a && !lastInput.a && this.selectCharacter(cursor.pos)) {
                 if (!cursor.ready && !readyNow.find(otherId => otherId === id)) {
                     cursor.ready = true;
+                    cursor.initInfoFrame = cursor.initInfoinitFrame;
                     readyNow.push(id);
                 }
             }
             else if (input.b && !lastInput.b) {
-                if (cursor.player.id === 'computer') this.cursors[0].ready = false;
+                if (cursor.player.id === 'computer') {
+                    this.cursors[0].ready = false;
+                    cursor.initInfoFrame = cursor.initInfoinitFrame;
+                }
                 else {
-                    if (cursor.ready) cursor.ready = false;
-                    else this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuHandler);
+                    if (cursor.ready) {
+                        cursor.ready = false;
+                        cursor.initInfoFrame = cursor.initInfoinitFrame;
+                    }
+                    else this.nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
                 }
             } else if (!cursor.ready) {
                 if (input.up && !lastInput.up) cursor.pos.y = (((cursor.pos.y - 1) % this.size.y) + this.size.y) % this.size.y;
@@ -65,8 +76,10 @@ class CharacterSelection extends Activity {
                 if (this.endAnimFrame >= this.endAnimEndFrame) game.activity = this.nextActivity;
                 else this.endAnimFrame++;
             } else if (!this.initAnimFrame && !this.endAnimFrame) {
+                if (this.initInfo3Frame) this.initInfo3Frame--;
                 var readyNow = [];
                 this.cursors.forEach(cursor => {
+                    if (cursor.initInfoFrame) cursor.initInfoFrame--;
                     if (cursor.player.id !== 'computer' || this.cursors[0].ready) this.updatePlayer(game, cursor, readyNow);
                 });
             }

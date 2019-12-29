@@ -24,7 +24,7 @@ class Fight extends Activity {
                 game.lastFight.players = [this.player1, this.player2];
                 game.lastFight.stage = this.stage;
                 game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
-                    new Menu(game.endMenuOptions, game.endMenuHandler) :
+                    new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
                     new Fight([this.player1, this.player2], this.stage, false);
             }
         };

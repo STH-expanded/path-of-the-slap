@@ -10,7 +10,7 @@ MenuDisplay.update = display => {
         display.cx.drawImage(
             asset,
             0, 0, 128, 32,
-            176 * display.zoom, (display.canvas.height / 2 / display.zoom - menu.options.length / 2 * 32 + 32 * index) * display.zoom,
+            176 * display.zoom, (display.canvas.height * menu.optionYCenter / display.zoom - menu.options.length / 2 * 32 + 32 * index) * display.zoom,
             128 * display.zoom, 32 * display.zoom
         );
     };
