@@ -28,7 +28,7 @@ GUI.update = display => {
         64 * display.zoom
     );
     display.cx.drawImage(
-        display.assets[fight.player1.character.mugshotImg],
+        display.assets['cm' + fight.player1.character.id],
         6 * display.zoom,
         6 * display.zoom,
         52 * display.zoom,
@@ -89,7 +89,7 @@ GUI.update = display => {
         64 * display.zoom
     );
     display.cx.drawImage(
-        display.assets[fight.player2.character.mugshotImg],
+        display.assets['cm' + fight.player2.character.id],
         display.cx.canvas.width - 58 * display.zoom,
         6 * display.zoom,
         52 * display.zoom,

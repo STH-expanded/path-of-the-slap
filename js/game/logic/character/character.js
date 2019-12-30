@@ -1,10 +1,7 @@
 class Character {
     constructor() {
-        this.id = 0;
+        this.id = '01';
         this.name = 'ParentCharacter';
-
-        this.mugshotImg = 'cm01';
-        this.profileImg = 'cp01';
 
         this.inputs = null;
 

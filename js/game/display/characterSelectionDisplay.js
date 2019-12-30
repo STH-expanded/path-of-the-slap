@@ -44,11 +44,13 @@ CharacterSelectionDisplay.update = display => {
     var cursor1 = charSelect.cursors[0];
     var cursor2 = charSelect.cursors[1];
 
-    // Character Profiles
     var character1 = charSelect.selectCharacter(cursor1.pos);
+    var character2 = charSelect.selectCharacter(cursor2.pos);
+
+    // Character Profiles
     if (character1) {
         display.cx.drawImage(
-            display.assets[character1.profileImg + 'shadow'],
+            display.assets['cp' + character1.id + 'shadow'],
             0, 0,
             202, 270,
             (-8 + cursor1.profileFrame) * display.zoom,
@@ -57,7 +59,7 @@ CharacterSelectionDisplay.update = display => {
             (278 - cursor1.profileFrame) * display.zoom
         );
         display.cx.drawImage(
-            display.assets[character1.profileImg],
+            display.assets['cp' + character1.id],
             0, 0,
             202, 270,
             (0 - Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
@@ -66,10 +68,9 @@ CharacterSelectionDisplay.update = display => {
             (270 + Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom
         );
     }
-    var character2 = charSelect.selectCharacter(cursor2.pos);
     if (character2) {
         display.cx.drawImage(
-            display.assets[character2.profileImg + 'shadow'],
+            display.assets['cp' + character2.id + 'shadow'],
             0, 0,
             202, 270,
             (270 + cursor2.profileFrame) * display.zoom,
@@ -78,7 +79,7 @@ CharacterSelectionDisplay.update = display => {
             (278 - cursor2.profileFrame) * display.zoom
         );
         display.cx.drawImage(
-            display.assets[character2.profileImg],
+            display.assets['cp' + character2.id],
             0, 0,
             202, 270,
             (278 - Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
@@ -115,6 +116,41 @@ CharacterSelectionDisplay.update = display => {
     }
 
     if (charSelect.initAnimFrame) {
+        // Background 2nd Layer
+        display.cx.drawImage(
+            display.assets.characterSelect,
+            0, 0,
+            480, 270,
+            0 * display.zoom,
+            0 * display.zoom,
+            480 * display.zoom,
+            270 * display.zoom
+        );
+        
+        // Character Names
+        if (character1) {
+            display.cx.drawImage(
+                display.assets['cn' + character1.id],
+                0, 0,
+                62, 136,
+                (0 + Math.pow(cursor1.profileFrame, 2) * 1) * display.zoom,
+                (0 - Math.pow(cursor1.profileFrame, 2) * 4) * display.zoom,
+                62 * display.zoom,
+                136 * display.zoom
+            );
+        }
+        if (character2) {
+            display.cx.drawImage(
+                display.assets['cn' + character2.id],
+                0, 0,
+                62, 136,
+                (419 + Math.pow(cursor2.profileFrame, 2) * 1) * display.zoom,
+                (134 - Math.pow(cursor2.profileFrame, 2) * 4) * display.zoom,
+                62 * display.zoom,
+                136 * display.zoom
+            );
+        }
+        
         // Background transition
         var width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
         display.cx.fillStyle = '#000';
@@ -128,17 +164,6 @@ CharacterSelectionDisplay.update = display => {
             (480 - width * 240) * display.zoom,
             0 * display.zoom,
             width * 240 * display.zoom,
-            270 * display.zoom
-        );
-
-        // Background 2nd Layer
-        display.cx.drawImage(
-            display.assets.characterSelect,
-            0, 0,
-            480, 270,
-            0 * display.zoom,
-            0 * display.zoom,
-            480 * display.zoom,
             270 * display.zoom
         );
 
@@ -157,7 +182,7 @@ CharacterSelectionDisplay.update = display => {
                     );
                     var character = charSelect.selectCharacter(new Vector2D(x, y));
                     if (character) {
-                        var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.whiteMugshot : display.assets[character.mugshotImg];
+                        var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.whiteMugshot : display.assets['cm' + character.id];
                         display.cx.drawImage(
                             mugshotImg,
                             0, 0,
@@ -183,6 +208,30 @@ CharacterSelectionDisplay.update = display => {
             480 * display.zoom,
             270 * display.zoom
         );
+        
+        // Character Names
+        if (character1) {
+            display.cx.drawImage(
+                display.assets['cn' + character1.id],
+                0, 0,
+                62, 136,
+                (0 + Math.pow(cursor1.profileFrame, 2) * 1) * display.zoom,
+                (0 - Math.pow(cursor1.profileFrame, 2) * 4) * display.zoom,
+                62 * display.zoom,
+                136 * display.zoom
+            );
+        }
+        if (character2) {
+            display.cx.drawImage(
+                display.assets['cn' + character2.id],
+                0, 0,
+                62, 136,
+                (419 + Math.pow(cursor2.profileFrame, 2) * 1) * display.zoom,
+                (134 - Math.pow(cursor2.profileFrame, 2) * 4) * display.zoom,
+                62 * display.zoom,
+                136 * display.zoom
+            );
+        }
 
         // Informations
         display.cx.drawImage(
@@ -239,7 +288,7 @@ CharacterSelectionDisplay.update = display => {
                 var character = charSelect.selectCharacter(new Vector2D(x, y));
                 if (character) {
                     display.cx.drawImage(
-                        display.assets[character.mugshotImg],
+                        display.assets['cm' + character.id],
                         0, 0,
                         52, 52,
                         192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,

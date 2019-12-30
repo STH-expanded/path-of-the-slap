@@ -2,11 +2,8 @@ class ChildCharacter extends Character {
     constructor() {
         super();
 
-        this.id = 1;
+        this.id = '00';
         this.name = 'ChildCharacter';
-        
-        this.mugshotImg = 'cm00';
-        this.profileImg = 'cp00';
         
         this.inputs = null;
 

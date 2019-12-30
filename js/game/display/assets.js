@@ -31,12 +31,16 @@ class Assets {
         this.cp00shadow.src = 'img/character/cp00shadow.png';
         this.cm00 = document.createElement('img');
         this.cm00.src = 'img/character/cm00.png';
+        this.cn00 = document.createElement('img');
+        this.cn00.src = 'img/character/cn00.png';
         this.cp01 = document.createElement('img');
         this.cp01.src = 'img/character/cp01.png';
         this.cp01shadow = document.createElement('img');
         this.cp01shadow.src = 'img/character/cp01shadow.png';
         this.cm01 = document.createElement('img');
         this.cm01.src = 'img/character/cm01.png';
+        this.cn01 = document.createElement('img');
+        this.cn01.src = 'img/character/cn01.png';
 
         // Character Selection
         this.characterSelect = document.createElement('img');
