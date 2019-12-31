@@ -5,7 +5,7 @@ class ChildCharacter extends Character {
         this.id = '00';
         this.name = 'ChildCharacter';
         
-        this.inputs = null;
+        this.inputList = null;
 
         this.size = new Vector2D(32, 96);
 

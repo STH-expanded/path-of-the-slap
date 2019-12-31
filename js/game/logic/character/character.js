@@ -3,7 +3,7 @@ class Character {
         this.id = '01';
         this.name = 'ParentCharacter';
 
-        this.inputs = null;
+        this.inputList = null;
 
         this.pos = null;
         this.size = new Vector2D(32, 128);
@@ -17,10 +17,10 @@ class Character {
         this.gravity = new Vector2D(0, 2);
         
         this.moveX = game => {
-            if (this.inputs.left){
+            if (this.inputList[this.inputList.length-1].inputs.left){
                 this.speed.x = -this.walkSpeed;
             }
-            else if (this.inputs.right) this.speed.x = this.walkSpeed;
+            else if (this.inputList[this.inputList.length-1].inputs.right) this.speed.x = this.walkSpeed;
             else this.speed.x = 0;
 
             var newPos = this.pos.plus(new Vector2D(this.speed.x, 0));
@@ -33,7 +33,8 @@ class Character {
         };
 
         this.moveY = game => {
-            if (this.pos.y + this.size.y === game.activity.stage.pos.y + game.activity.stage.size.y && this.inputs.up) this.speed.y = -this.jumpSpeed;
+            if (this.pos.y + this.size.y === game.activity.stage.pos.y + game.activity.stage.size.y &&
+                this.inputList[this.inputList.length-1].inputs.up) this.speed.y = -this.jumpSpeed;
             this.speed.y += this.gravity.y;
 
             let newPos = this.pos.plus(new Vector2D(0, this.speed.y));
@@ -45,8 +46,8 @@ class Character {
             }
         };
 
-        this.update = (game, inputs) => {
-            this.inputs = inputs;
+        this.update = (game, inputList) => {
+            this.inputList = inputList;
             this.moveX(game);
             this.moveY(game);
         }
