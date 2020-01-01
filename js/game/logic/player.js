@@ -13,14 +13,26 @@ class Player {
             } else {
                 if (this.inputList.length === 10) this.inputList.splice(0, 1);
                 this.inputList.push({
-                    inputs: JSON.parse(JSON.stringify(inputs)),
+                    inputs: inputs,
                     frames: 1
                 });
             }
         }
 
+        this.socdCleaner = inputs => {
+            var cleanedInputs = JSON.parse(JSON.stringify(inputs));
+            if (cleanedInputs.left && cleanedInputs.right) {
+                cleanedInputs.left = false;
+                cleanedInputs.right = false;
+            }
+            if (cleanedInputs.up && cleanedInputs.down) {
+                cleanedInputs.down = false;
+            }
+            return cleanedInputs;
+        }
+
         this.update = game => {
-            this.updateLastInputs(id !== 'computer' ? game.inputList.get(this.id) : {});
+            this.updateLastInputs(this.socdCleaner(id !== 'computer' ? game.inputList.get(this.id) : {}));
             if (game.activity) this.character.update(game, this.inputList);
         };
     }
