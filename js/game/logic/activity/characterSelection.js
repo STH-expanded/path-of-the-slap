@@ -101,7 +101,7 @@ class CharacterSelection extends Activity {
 
             if (!this.cursors.find(cursor => !cursor.ready)) {
                 this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
-                this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new game.stages[0](), true);
+                this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new game.stages[0](), this.mode === 'Training', true);
             }
         }
     }

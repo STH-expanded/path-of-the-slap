@@ -60,7 +60,7 @@ class Game {
             var nextActivity = null;
             switch (options[cursor]) {
                 case 'Rematch':
-                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, true);
+                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, false, true);
                     break;
                 case 'CharacterSelection':
                     nextActivity = new CharacterSelection(options[cursor], game.characters, game.lastFight.players);

@@ -1,7 +1,8 @@
 class Fight extends Activity {
-    constructor(players, stage, winReset) {
+    constructor(players, stage, trainingMode, winReset) {
         super();
         this.display = FightDisplay;
+        this.trainingMode = trainingMode;
         this.nextActivity = null;
 
         this.player1 = players[0];
@@ -16,16 +17,18 @@ class Fight extends Activity {
         this.update = game => {
             [this.player1, this.player2].forEach(player => player.update(game));
 
-            this.timer--;
+            if (!this.trainingMode) {
+                this.timer--;
 
-            this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
-            if (this.winners.length > 0) {
-                this.winners.forEach(winner => winner.winCount++);
-                game.lastFight.players = [this.player1, this.player2];
-                game.lastFight.stage = this.stage;
-                game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
-                    new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
-                    new Fight([this.player1, this.player2], this.stage, false);
+                this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
+                if (this.winners.length > 0) {
+                    this.winners.forEach(winner => winner.winCount++);
+                    game.lastFight.players = [this.player1, this.player2];
+                    game.lastFight.stage = this.stage;
+                    game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
+                        new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
+                        new Fight([this.player1, this.player2], this.stage, false, false);
+                }
             }
         };
 
@@ -35,7 +38,7 @@ class Fight extends Activity {
             else if (p1Health <= 0 || (p1Health < p2Health && timer <= 0)) return [this.player2];
             return [];
         }
-        
+
         this.initFight = winReset => {
             [this.player1, this.player2].forEach((player, index) => {
                 if (winReset) player.winCount = 0;

@@ -3,18 +3,29 @@ GUI.update = display => {
     var fight = display.game.activity;
 
     // TIMER
-    var timer = (fight.timer - (fight.timer % 60)) / 60;
-    var nb = timer > 99 ? "99" : timer.toString();
-    if (nb.length === 1) nb = "0" + nb;
-    for (let i = 0; i < nb.length; i++) {
+    if (!fight.trainingMode) {
+        var timer = (fight.timer - (fight.timer % 60)) / 60;
+        var nb = timer > 99 ? "99" : timer.toString();
+        if (nb.length === 1) nb = "0" + nb;
+        for (let i = 0; i < nb.length; i++) {
+            display.cx.drawImage(
+                display.assets.timerNumbers,
+                14 * nb[i], 0,
+                14, 20,
+                display.cx.canvas.width / 2 + (-14 + i * 14) * display.zoom,
+                12 * display.zoom,
+                14 * display.zoom,
+                20 * display.zoom
+            );
+        }
+    }
+    else {
         display.cx.drawImage(
-            display.assets.timerNumbers,
-            14 * nb[i], 0,
-            14, 20,
-            display.cx.canvas.width / 2 + (-14 + i * 14) * display.zoom,
-            12 * display.zoom,
-            14 * display.zoom,
-            20 * display.zoom
+            display.assets.infinity,
+            0, 0,
+            28, 20,
+            226 * display.zoom, 12 * display.zoom,
+            28 * display.zoom, 20 * display.zoom
         );
     }
 
@@ -51,24 +62,27 @@ GUI.update = display => {
         12 * display.zoom
     );
 
-    for (let i = 0; i < fight.playoff; i++) {
-        if (i < fight.player1.winCount) {
-            display.cx.drawImage(
-                display.assets.winScore,
-                (208 - 16 * i) * display.zoom,
-                24 * display.zoom,
-                16 * display.zoom,
-                16 * display.zoom
-            );
-        } else {
-            display.cx.drawImage(
-                display.assets.scoreImg,
-                (208 - 16 * i) * display.zoom,
-                24 * display.zoom,
-                16 * display.zoom,
-                16 * display.zoom
-            );
+    if (!fight.trainingMode) {
+        for (let i = 0; i < fight.playoff; i++) {
+            if (i < fight.player1.winCount) {
+                display.cx.drawImage(
+                    display.assets.winScore,
+                    (208 - 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+            } else {
+                display.cx.drawImage(
+                    display.assets.scoreImg,
+                    (208 - 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+            }
         }
+
     }
 
     display.cx.fillStyle = 'white';
@@ -111,23 +125,25 @@ GUI.update = display => {
         12 * display.zoom
     );
 
-    for (let i = 0; i < fight.playoff; i++) {
-        if (i < fight.player2.winCount) {
-            display.cx.drawImage(
-                display.assets.winScore,
-                (256 + 16 * i) * display.zoom,
-                24 * display.zoom,
-                16 * display.zoom,
-                16 * display.zoom
-            );
-        } else {
-            display.cx.drawImage(
-                display.assets.scoreImg,
-                (256 + 16 * i) * display.zoom,
-                24 * display.zoom,
-                16 * display.zoom,
-                16 * display.zoom
-            );
+    if (!fight.trainingMode) {
+        for (let i = 0; i < fight.playoff; i++) {
+            if (i < fight.player2.winCount) {
+                display.cx.drawImage(
+                    display.assets.winScore,
+                    (256 + 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+            } else {
+                display.cx.drawImage(
+                    display.assets.scoreImg,
+                    (256 + 16 * i) * display.zoom,
+                    24 * display.zoom,
+                    16 * display.zoom,
+                    16 * display.zoom
+                );
+            }
         }
     }
 
@@ -139,4 +155,7 @@ GUI.update = display => {
         display.cx.canvas.width - 64 * display.zoom,
         34 * display.zoom
     );
+
+    // Practice Display
+    PracticeDisplay.update(display);
 }

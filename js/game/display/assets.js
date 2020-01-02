@@ -87,5 +87,17 @@ class Assets {
         this.winScore.src = 'img/fight/winScore.png';
         this.timerNumbers = document.createElement('img');
         this.timerNumbers.src = 'img/fight/numbers2.png';
+
+        // Fight Training
+        this.infinity = document.createElement('img');
+        this.infinity.src = 'img/training/infinity.png';
+        this.aBtn = document.createElement('img');
+        this.aBtn.src = 'img/training/a-button.png';
+        this.bBtn = document.createElement('img');
+        this.bBtn.src = 'img/training/b-button.png';
+        this.arrows = document.createElement('img');
+        this.arrows.src = 'img/training/arrows.png';
+        this.trainingNumbers = document.createElement('img');
+        this.trainingNumbers.src = 'img/training/numbers.png';
     }
 }
