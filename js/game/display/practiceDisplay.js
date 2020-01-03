@@ -6,8 +6,8 @@ PracticeDisplay.update = display => {
     display.cx.fillRect(
         0 * display.zoom,
         64 * display.zoom,
-        48 * display.zoom,
-        player.inputList.length * 8 * display.zoom
+        76 * display.zoom,
+        (4 + player.inputList.length * 12) * display.zoom
     );
 
     player.inputList.forEach((inputObject, index) => {
@@ -23,22 +23,22 @@ PracticeDisplay.update = display => {
 
         display.cx.drawImage(display.assets.arrows,
             8 * arrow[0], 8 * arrow[1], 8, 8,
-            0 * display.zoom,
-            (64 + 8 * index) * display.zoom,
+            8 * display.zoom,
+            (68 + 12 * index) * display.zoom,
             8 * display.zoom,
             8 * display.zoom
         );
         display.cx.drawImage(display.assets.aBtn,
             8 * (inputObject.inputs.a ? 1 : 0), 0, 8, 8,
-            8 * display.zoom,
-            (64 + 8 * index) * display.zoom,
+            24 * display.zoom,
+            (68 + 12 * index) * display.zoom,
             8 * display.zoom,
             8 * display.zoom
         );
         display.cx.drawImage(display.assets.bBtn,
             8 * (inputObject.inputs.b ? 1 : 0), 0, 8, 8,
-            16 * display.zoom,
-            (64 + 8 * index) * display.zoom,
+            36 * display.zoom,
+            (68 + 12 * index) * display.zoom,
             8 * display.zoom,
             8 * display.zoom
         );
@@ -47,8 +47,8 @@ PracticeDisplay.update = display => {
         for (let i = 0; i < frame.length; i++) {
             display.cx.drawImage(display.assets.trainingNumbers,
                 5 * frame[i], 0, 5, 8,
-                (32 + i * 5) * display.zoom,
-                (64 + 8 * index) * display.zoom,
+                (52 + i * 5) * display.zoom,
+                (68 + 12 * index) * display.zoom,
                 5 * display.zoom,
                 8 * display.zoom
             );
