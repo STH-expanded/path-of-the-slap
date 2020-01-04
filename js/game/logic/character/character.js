@@ -1,6 +1,6 @@
 class Character {
     constructor() {
-        this.id = '01';
+        this.id = '00';
         this.name = 'ParentCharacter';
 
         this.inputList = null;

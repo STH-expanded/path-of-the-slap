@@ -1,5 +1,5 @@
-class PracticeDisplay {}
-PracticeDisplay.update = display => {
+class TrainingDisplay {}
+TrainingDisplay.update = display => {
     var player = display.game.activity.player1;
 
     display.cx.fillStyle = "rgba(0, 0, 0, 0.5)";

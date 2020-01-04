@@ -3,8 +3,8 @@ FightDisplay.update = display => {
     var fight = display.game.activity;
 
     // Background
-    display.cx.drawImage(display.assets.layer0, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
-    display.cx.drawImage(display.assets.layer1, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
+    display.cx.drawImage(display.assets['s' + fight.stage.id + 'l0'], 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
+    display.cx.drawImage(display.assets['s' + fight.stage.id + 'l1'], 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
 
     // Players
     var player1 = fight.player1.character;
@@ -35,8 +35,8 @@ FightDisplay.update = display => {
     }
 
     // Foreground
-    display.cx.drawImage(display.assets.layer2, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
-    display.cx.drawImage(display.assets.layer3, 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
+    display.cx.drawImage(display.assets['s' + fight.stage.id + 'l2'], 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
+    if (display.assets['s' + fight.stage.id + 'l3']) display.cx.drawImage(display.assets['s' + fight.stage.id + 'l3'], 0, 0, 480, 270, 0, 0, 480 * display.zoom, 270 * display.zoom);
 
     // GUI
     GUI.update(display);

@@ -67,14 +67,20 @@ class Assets {
         this.characterSelectGamepad.src = 'img/characterSelect/gamepad.png';
 
         // Stage
-        this.layer0 = document.createElement('img');
-        this.layer0.src = 'img/stage/layer0.png';
-        this.layer1 = document.createElement('img');
-        this.layer1.src = 'img/stage/layer1.png';
-        this.layer2 = document.createElement('img');
-        this.layer2.src = 'img/stage/layer2.png';
-        this.layer3 = document.createElement('img');
-        this.layer3.src = 'img/stage/layer3.png';
+        this.s0l0 = document.createElement('img');
+        this.s0l0.src = 'img/stage/s0l0.png';
+        this.s0l1 = document.createElement('img');
+        this.s0l1.src = 'img/stage/s0l1.png';
+        this.s0l2 = document.createElement('img');
+        this.s0l2.src = 'img/stage/s0l2.png';
+        this.s0l3 = document.createElement('img');
+        this.s0l3.src = 'img/stage/s0l3.png';
+        this.s1l0 = document.createElement('img');
+        this.s1l0.src = 'img/stage/s1l0.png';
+        this.s1l1 = document.createElement('img');
+        this.s1l1.src = 'img/stage/s1l1.png';
+        this.s1l2 = document.createElement('img');
+        this.s1l2.src = 'img/stage/s1l2.png';
 
         // Fight
         this.hudmugshot = document.createElement('img');

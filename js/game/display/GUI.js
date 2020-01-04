@@ -156,6 +156,6 @@ GUI.update = display => {
         34 * display.zoom
     );
 
-    // Practice Display
-    PracticeDisplay.update(display);
+    // Training Display
+    if (fight.trainingMode) TrainingDisplay.update(display);
 }

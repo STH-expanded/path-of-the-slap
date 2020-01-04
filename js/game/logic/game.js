@@ -14,6 +14,7 @@ class Game {
         }
 
         this.stages = [
+            ChildStage,
             Stage
         ];
 
