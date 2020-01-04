@@ -45,6 +45,8 @@ class Assets {
         // Character Selection
         this.characterSelect = document.createElement('img');
         this.characterSelect.src = 'img/characterSelect/characterSelect.png';
+        this.stageSelect = document.createElement('img');
+        this.stageSelect.src = 'img/characterSelect/stageSelect.png';
         this.characterSelectBackBlue = document.createElement('img');
         this.characterSelectBackBlue.src = 'img/characterSelect/characterSelectBackBlue.png';
         this.characterSelectBackRed = document.createElement('img');
@@ -75,12 +77,17 @@ class Assets {
         this.s0l2.src = 'img/stage/s0l2.png';
         this.s0l3 = document.createElement('img');
         this.s0l3.src = 'img/stage/s0l3.png';
+        this.s0preview = document.createElement('img');
+        this.s0preview.src = 'img/stage/s0preview.png';
+
         this.s1l0 = document.createElement('img');
         this.s1l0.src = 'img/stage/s1l0.png';
         this.s1l1 = document.createElement('img');
         this.s1l1.src = 'img/stage/s1l1.png';
         this.s1l2 = document.createElement('img');
         this.s1l2.src = 'img/stage/s1l2.png';
+        this.s1preview = document.createElement('img');
+        this.s1preview.src = 'img/stage/s1preview.png';
 
         // Fight
         this.hudmugshot = document.createElement('img');

@@ -55,8 +55,9 @@ class CharacterSelection extends Activity {
                     cursorObj.ready = false;
                     cursorObj.pos = this.cursorInitPos[index].data();
                     cursorObj.infoFrame = this.cursorInfoInitFrame;
-                    cursorObj.profileFrame = 0;
+                    cursorObj.profileFrame = this.cursorProfileInitFrame;
                 });
+                this.stageCursor = 0;
             } else {
                 if (input.up && !lastInput.up && !this.stageReady) {
                     this.stageCursor = (((this.stageCursor - 1) % this.stages.length) + this.stages.length) % this.stages.length;
@@ -127,14 +128,12 @@ class CharacterSelection extends Activity {
                     });
                 } else {
                     if (this.stageReady) {
-                        console.log(new this.stages[this.stageCursor]())
                         this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
                         this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new this.stages[this.stageCursor](), this.mode === 'Training', true);
                     } else {
                         this.cursors.forEach(cursor => {
                             if (cursor.player.id !== 'computer') this.selectStage(game, cursor);
                         });
-                        console.log(this.stageCursor);
                     }
                 }
             }

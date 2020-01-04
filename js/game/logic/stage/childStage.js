@@ -6,3 +6,4 @@ class ChildStage extends Stage {
         this.name = 'ChildStage';
     }
 }
+ChildStage.id = 1;

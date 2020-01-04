@@ -1,5 +1,6 @@
 class Stage {
     constructor() {
+
         this.id = 0;
         this.name = 'ParentStage';
         
@@ -7,3 +8,4 @@ class Stage {
         this.size = new Vector2D(480, 270 - 16);
     }
 }
+Stage.id = 0;
