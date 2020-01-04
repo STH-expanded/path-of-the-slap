@@ -1,11 +1,12 @@
 class CharacterSelection extends Activity {
-    constructor(mode, characters, players) {
+    constructor(mode, characters, stages, players) {
         super();
         this.display = CharacterSelectionDisplay;
         this.nextActivity = null;
 
         this.mode = mode;
         this.characters = characters;
+        this.stages = stages;
 
         this.size = new Vector2D(3, 5);
         this.cursorInitPos = [
@@ -32,13 +33,39 @@ class CharacterSelection extends Activity {
             this.cursors.push({
                 player: player,
                 ready: false,
-                pos: this.cursorInitPos[i],
+                pos: this.cursorInitPos[i].data(),
                 infoFrame: this.cursorInfoInitFrame,
                 profileFrame: 0
             });
         });
 
+        this.stageCursor = 0;
+        this.stageReady = false;
+
         this.selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? new this.characters[pos.x + pos.y * 3]() : null;
+
+        this.selectStage = (game, cursor) => {
+            var id = cursor.player.id;
+            var input = game.inputList.get(id);
+            var lastInput = game.lastInputList.get(id);
+
+            if (input.a && !lastInput.a) this.stageReady = true;
+            else if (input.b && !lastInput.b && !this.stageReady) {
+                this.cursors.forEach((cursorObj, index) => {
+                    cursorObj.ready = false;
+                    cursorObj.pos = this.cursorInitPos[index].data();
+                    cursorObj.infoFrame = this.cursorInfoInitFrame;
+                    cursorObj.profileFrame = 0;
+                });
+            } else {
+                if (input.up && !lastInput.up && !this.stageReady) {
+                    this.stageCursor = (((this.stageCursor - 1) % this.stages.length) + this.stages.length) % this.stages.length;
+                }
+                if (input.down && !lastInput.down) {
+                    this.stageCursor = (((this.stageCursor + 1) % this.stages.length) + this.stages.length) % this.stages.length;
+                }
+            }
+        }
 
         this.updatePlayer = (game, cursor, readyNow) => {
             var id = cursor.player.id === 'computer' ? this.cursors[0].player.id : cursor.player.id;
@@ -86,22 +113,30 @@ class CharacterSelection extends Activity {
 
         this.update = game => {
             if (this.initAnimFrame) this.initAnimFrame--;
-            if (this.nextActivity) {
+            else if (this.nextActivity) {
                 if (this.endAnimFrame >= this.endAnimEndFrame) game.activity = this.nextActivity;
                 else this.endAnimFrame++;
             } else if (!this.initAnimFrame && !this.endAnimFrame) {
-                if (this.initInfo3Frame) this.initInfo3Frame--;
-                var readyNow = [];
-                this.cursors.forEach(cursor => {
-                    if (cursor.infoFrame) cursor.infoFrame--;
-                    if (cursor.profileFrame) cursor.profileFrame--;
-                    if (cursor.player.id !== 'computer' || this.cursors[0].ready) this.updatePlayer(game, cursor, readyNow);
-                });
-            }
-
-            if (!this.cursors.find(cursor => !cursor.ready)) {
-                this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
-                this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new game.stages[0](), this.mode === 'Training', true);
+                if (this.cursors.find(cursor => !cursor.ready || cursor.infoFrame)) {
+                    if (this.initInfo3Frame) this.initInfo3Frame--;
+                    var readyNow = [];
+                    this.cursors.forEach(cursor => {
+                        if (cursor.infoFrame) cursor.infoFrame--;
+                        if (cursor.profileFrame) cursor.profileFrame--;
+                        if (cursor.player.id !== 'computer' || this.cursors[0].ready) this.updatePlayer(game, cursor, readyNow);
+                    });
+                } else {
+                    if (this.stageReady) {
+                        console.log(new this.stages[this.stageCursor]())
+                        this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
+                        this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new this.stages[this.stageCursor](), this.mode === 'Training', true);
+                    } else {
+                        this.cursors.forEach(cursor => {
+                            if (cursor.player.id !== 'computer') this.selectStage(game, cursor);
+                        });
+                        console.log(this.stageCursor);
+                    }
+                }
             }
         }
     }

@@ -62,10 +62,10 @@ CharacterSelectionDisplay.update = display => {
             display.assets['cp' + character1.id],
             0, 0,
             202, 270,
-            (0 - Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
-            (0 - Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
-            (202 + Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom,
-            (270 + Math.pow(cursor1.profileFrame / 2, 2)) * display.zoom
+            (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+            (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+            (202 + Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+            (270 + Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom
         );
     }
     if (character2) {
@@ -82,10 +82,10 @@ CharacterSelectionDisplay.update = display => {
             display.assets['cp' + character2.id],
             0, 0,
             202, 270,
-            (278 - Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
-            (0 - Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
-            (202 + Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom,
-            (270 + Math.pow(cursor2.profileFrame / 2, 2)) * display.zoom
+            (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+            (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+            (202 + Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+            (270 + Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom
         );
     }
 
@@ -329,6 +329,12 @@ CharacterSelectionDisplay.update = display => {
                 );
             }
         });
+    }
+
+    // Stage Select
+    if (![cursor1, cursor2].find(cursor => !cursor.ready || cursor.infoFrame)) {
+        display.cx.fillStyle = '#0005';
+        display.cx.fillRect(0, 0, display.canvas.width, display.canvas.height);
     }
 
     // Transition

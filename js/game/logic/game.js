@@ -45,6 +45,7 @@ class Game {
                 nextActivity = new CharacterSelection(
                     options[cursor],
                     game.characters,
+                    game.stages,
                     [
                         game.players[0],
                         options[cursor] === 'Player' ? game.players[1] : new Player('computer')
@@ -64,7 +65,7 @@ class Game {
                     nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, false, true);
                     break;
                 case 'CharacterSelection':
-                    nextActivity = new CharacterSelection(options[cursor], game.characters, game.lastFight.players);
+                    nextActivity = new CharacterSelection(options[cursor], game.characters, game.stages, game.lastFight.players);
                     break;
                 case 'MainMenu':
                     nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
