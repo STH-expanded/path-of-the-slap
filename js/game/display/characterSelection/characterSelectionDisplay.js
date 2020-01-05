@@ -49,44 +49,98 @@ CharacterSelectionDisplay.update = display => {
 
     // Character Profiles
     if (character1) {
-        display.cx.drawImage(
-            display.assets['cp' + character1.id + 'shadow'],
-            0, 0,
-            202, 270,
-            (-8 + cursor1.profileFrame) * display.zoom,
-            (8 - cursor1.profileFrame) * display.zoom,
-            (194 + cursor1.profileFrame) * display.zoom,
-            (278 - cursor1.profileFrame) * display.zoom
-        );
-        display.cx.drawImage(
-            display.assets['cp' + character1.id],
-            0, 0,
-            202, 270,
-            (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-            (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-            (202 + Math.pow(cursor1.profileFrame, 2)) * display.zoom,
-            (270 + Math.pow(cursor1.profileFrame, 2)) * display.zoom
-        );
+        if (cursor1.ready) {
+            display.cx.drawImage(
+                display.assets['cp' + character1.id + 'activeShadow'],
+                0, 0,
+                202, 270,
+                (-8 + cursor1.profileFrame) * display.zoom,
+                (8 - cursor1.profileFrame) * display.zoom,
+                (194 + cursor1.profileFrame) * display.zoom,
+                (278 - cursor1.profileFrame) * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets['cp' + character1.id + 'active'],
+                0, 0,
+                202, 270,
+                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+                (202 + Math.pow(cursor1.profileFrame, 2)) * display.zoom,
+                (270 + Math.pow(cursor1.profileFrame, 2)) * display.zoom
+            );
+            if (cursor1.infoFrame) {
+                display.cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
+                display.cx.fillStyle = "#fff";
+                display.cx.fillRect(0, 0, 240 * display.zoom, 270 * display.zoom);
+                display.cx.globalAlpha = 1;
+            }
+        } else {
+            display.cx.drawImage(
+                display.assets['cp' + character1.id + 'shadow'],
+                0, 0,
+                202, 270,
+                (-8 + cursor1.profileFrame) * display.zoom,
+                (8 - cursor1.profileFrame) * display.zoom,
+                (194 + cursor1.profileFrame) * display.zoom,
+                (278 - cursor1.profileFrame) * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets['cp' + character1.id],
+                0, 0,
+                202, 270,
+                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
+                (202 + Math.pow(cursor1.profileFrame, 2)) * display.zoom,
+                (270 + Math.pow(cursor1.profileFrame, 2)) * display.zoom
+            );
+        }
     }
     if (character2) {
-        display.cx.drawImage(
-            display.assets['cp' + character2.id + 'shadow'],
-            0, 0,
-            202, 270,
-            (270 + cursor2.profileFrame) * display.zoom,
-            (8 - cursor2.profileFrame) * display.zoom,
-            (194 + cursor2.profileFrame) * display.zoom,
-            (278 - cursor2.profileFrame) * display.zoom
-        );
-        display.cx.drawImage(
-            display.assets['cp' + character2.id],
-            0, 0,
-            202, 270,
-            (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-            (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-            (202 + Math.pow(cursor2.profileFrame, 2)) * display.zoom,
-            (270 + Math.pow(cursor2.profileFrame, 2)) * display.zoom
-        );
+        if (cursor2.ready) {
+            display.cx.drawImage(
+                display.assets['cp' + character2.id + 'activeShadow'],
+                0, 0,
+                202, 270,
+                (270 + cursor2.profileFrame) * display.zoom,
+                (8 - cursor2.profileFrame) * display.zoom,
+                (194 + cursor2.profileFrame) * display.zoom,
+                (278 - cursor2.profileFrame) * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets['cp' + character2.id + 'active'],
+                0, 0,
+                202, 270,
+                (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+                (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+                (202 + Math.pow(cursor2.profileFrame, 2)) * display.zoom,
+                (270 + Math.pow(cursor2.profileFrame, 2)) * display.zoom
+            );
+            if (cursor2.infoFrame) {
+                display.cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
+                display.cx.fillStyle = "#fff";
+                display.cx.fillRect(240 * display.zoom, 0, 240 * display.zoom, 270 * display.zoom);
+                display.cx.globalAlpha = 1;
+            }
+        } else {
+            display.cx.drawImage(
+                display.assets['cp' + character2.id + 'shadow'],
+                0, 0,
+                202, 270,
+                (270 + cursor2.profileFrame) * display.zoom,
+                (8 - cursor2.profileFrame) * display.zoom,
+                (194 + cursor2.profileFrame) * display.zoom,
+                (278 - cursor2.profileFrame) * display.zoom
+            );
+            display.cx.drawImage(
+                display.assets['cp' + character2.id],
+                0, 0,
+                202, 270,
+                (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+                (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
+                (202 + Math.pow(cursor2.profileFrame, 2)) * display.zoom,
+                (270 + Math.pow(cursor2.profileFrame, 2)) * display.zoom
+            );
+        }
     }
 
     // Player Input
