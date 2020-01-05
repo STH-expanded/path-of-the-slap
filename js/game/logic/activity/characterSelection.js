@@ -41,6 +41,12 @@ class CharacterSelection extends Activity {
 
         this.stageCursor = 0;
         this.stageReady = false;
+        
+        this.stageInitFrame = 6;
+        this.stageFrame = this.stageInitFrame;
+        
+        this.selectStageInitFrame = 6;
+        this.selectStageFrame = 0;
 
         this.selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? new this.characters[pos.x + pos.y * 3]() : null;
 
@@ -58,12 +64,15 @@ class CharacterSelection extends Activity {
                     cursorObj.profileFrame = this.cursorProfileInitFrame;
                 });
                 this.stageCursor = 0;
+                this.stageFrame = this.stageInitFrame;
             } else {
                 if (input.up && !lastInput.up && !this.stageReady) {
                     this.stageCursor = (((this.stageCursor - 1) % this.stages.length) + this.stages.length) % this.stages.length;
+                    this.selectStageFrame = -this.selectStageInitFrame;
                 }
                 if (input.down && !lastInput.down) {
                     this.stageCursor = (((this.stageCursor + 1) % this.stages.length) + this.stages.length) % this.stages.length;
+                    this.selectStageFrame = this.selectStageInitFrame;
                 }
             }
         }
@@ -131,9 +140,14 @@ class CharacterSelection extends Activity {
                         this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
                         this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new this.stages[this.stageCursor](), this.mode === 'Training', true);
                     } else {
-                        this.cursors.forEach(cursor => {
-                            if (cursor.player.id !== 'computer') this.selectStage(game, cursor);
-                        });
+                        if (this.stageFrame) this.stageFrame--;
+                        else if (this.selectStageFrame > 0) this.selectStageFrame--;
+                        else if (this.selectStageFrame < 0) this.selectStageFrame++;
+                        else {
+                            this.cursors.forEach(cursor => {
+                                if (cursor.player.id !== 'computer') this.selectStage(game, cursor);
+                            });
+                        }
                     }
                 }
             }

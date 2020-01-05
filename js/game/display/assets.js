@@ -47,6 +47,8 @@ class Assets {
         this.characterSelect.src = 'img/characterSelect/characterSelect.png';
         this.stageSelect = document.createElement('img');
         this.stageSelect.src = 'img/characterSelect/stageSelect.png';
+        this.stageSelectCursor = document.createElement('img');
+        this.stageSelectCursor.src = 'img/characterSelect/stageCursor.png';
         this.characterSelectBackBlue = document.createElement('img');
         this.characterSelectBackBlue.src = 'img/characterSelect/characterSelectBackBlue.png';
         this.characterSelectBackRed = document.createElement('img');
