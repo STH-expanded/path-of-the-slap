@@ -14,7 +14,7 @@ class Game {
         }
 
         this.stages = [
-            ChildStage,
+            TrainingStage,
             ChildStage,
             ChildStage,
             Stage,

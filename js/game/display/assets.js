@@ -100,6 +100,13 @@ class Assets {
         this.s1preview = document.createElement('img');
         this.s1preview.src = 'img/stage/s1preview.png';
 
+        this.s2l0 = document.createElement('img');
+        this.s2l0.src = 'img/stage/s2l0.png';
+        this.s2l1 = document.createElement('img');
+        this.s2l1.src = 'img/stage/s2l1.png';
+        this.s2preview = document.createElement('img');
+        this.s2preview.src = 'img/stage/s2preview.png';
+
         // Fight
         this.hudmugshot = document.createElement('img');
         this.hudmugshot.src = 'img/fight/hudMugshot.png';
