@@ -29,14 +29,23 @@ class Assets {
         this.cp00.src = 'img/character/cp00.png';
         this.cp00shadow = document.createElement('img');
         this.cp00shadow.src = 'img/character/cp00shadow.png';
+        this.cp00active = document.createElement('img');
+        this.cp00active.src = 'img/character/cp00active.png';
+        this.cp00activeShadow = document.createElement('img');
+        this.cp00activeShadow.src = 'img/character/cp00activeShadow.png';
         this.cm00 = document.createElement('img');
         this.cm00.src = 'img/character/cm00.png';
         this.cn00 = document.createElement('img');
         this.cn00.src = 'img/character/cn00.png';
+
         this.cp01 = document.createElement('img');
         this.cp01.src = 'img/character/cp01.png';
         this.cp01shadow = document.createElement('img');
         this.cp01shadow.src = 'img/character/cp01shadow.png';
+        this.cp01active = document.createElement('img');
+        this.cp01active.src = 'img/character/cp01active.png';
+        this.cp01activeShadow = document.createElement('img');
+        this.cp01activeShadow.src = 'img/character/cp01activeShadow.png';
         this.cm01 = document.createElement('img');
         this.cm01.src = 'img/character/cm01.png';
         this.cn01 = document.createElement('img');

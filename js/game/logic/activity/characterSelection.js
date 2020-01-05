@@ -140,9 +140,9 @@ class CharacterSelection extends Activity {
                         this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
                         this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new this.stages[this.stageCursor](), this.mode === 'Training', true);
                     } else {
+                        if (this.selectStageFrame > 0) this.selectStageFrame--;
+                        if (this.selectStageFrame < 0) this.selectStageFrame++;
                         if (this.stageFrame) this.stageFrame--;
-                        else if (this.selectStageFrame > 0) this.selectStageFrame--;
-                        else if (this.selectStageFrame < 0) this.selectStageFrame++;
                         else {
                             this.cursors.forEach(cursor => {
                                 if (cursor.player.id !== 'computer') this.selectStage(game, cursor);
