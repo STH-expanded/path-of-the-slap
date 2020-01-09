@@ -80,6 +80,8 @@ class Assets {
         this.characterSelectGamepad.src = 'img/characterSelect/gamepad.png';
 
         // Stage
+        this.s0floor = document.createElement('img');
+        this.s0floor.src = 'img/stage/s0floor.png';
         this.s0l0 = document.createElement('img');
         this.s0l0.src = 'img/stage/s0l0.png';
         this.s0l1 = document.createElement('img');
@@ -91,6 +93,8 @@ class Assets {
         this.s0preview = document.createElement('img');
         this.s0preview.src = 'img/stage/s0preview.png';
 
+        this.s1floor = document.createElement('img');
+        this.s1floor.src = 'img/stage/s1floor.png';
         this.s1l0 = document.createElement('img');
         this.s1l0.src = 'img/stage/s1l0.png';
         this.s1l1 = document.createElement('img');
@@ -100,8 +104,8 @@ class Assets {
         this.s1preview = document.createElement('img');
         this.s1preview.src = 'img/stage/s1preview.png';
 
-        this.s2l0 = document.createElement('img');
-        this.s2l0.src = 'img/stage/s2l0.png';
+        this.s2floor = document.createElement('img');
+        this.s2floor.src = 'img/stage/s2floor.png';
         this.s2l1 = document.createElement('img');
         this.s2l1.src = 'img/stage/s2l1.png';
         this.s2preview = document.createElement('img');

@@ -63,10 +63,10 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cp' + character1.id + 'active'],
                 0, 0,
                 202, 270,
-                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-                (202 + Math.pow(cursor1.profileFrame, 2)) * display.zoom,
-                (270 + Math.pow(cursor1.profileFrame, 2)) * display.zoom
+                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
+                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
+                (202 + cursor1.profileFrame ** 2) * display.zoom,
+                (270 + cursor1.profileFrame ** 2) * display.zoom
             );
             if (cursor1.infoFrame) {
                 display.cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
@@ -88,10 +88,10 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cp' + character1.id],
                 0, 0,
                 202, 270,
-                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-                (0 - Math.pow(cursor1.profileFrame, 2) / 2) * display.zoom,
-                (202 + Math.pow(cursor1.profileFrame, 2)) * display.zoom,
-                (270 + Math.pow(cursor1.profileFrame, 2)) * display.zoom
+                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
+                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
+                (202 + cursor1.profileFrame ** 2) * display.zoom,
+                (270 + cursor1.profileFrame ** 2) * display.zoom
             );
         }
     }
@@ -110,10 +110,10 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cp' + character2.id + 'active'],
                 0, 0,
                 202, 270,
-                (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-                (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-                (202 + Math.pow(cursor2.profileFrame, 2)) * display.zoom,
-                (270 + Math.pow(cursor2.profileFrame, 2)) * display.zoom
+                (278 - cursor2.profileFrame ** 2 / 2) * display.zoom,
+                (0 - cursor2.profileFrame ** 2 / 2) * display.zoom,
+                (202 + cursor2.profileFrame ** 2) * display.zoom,
+                (270 + cursor2.profileFrame ** 2) * display.zoom
             );
             if (cursor2.infoFrame) {
                 display.cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
@@ -135,10 +135,10 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cp' + character2.id],
                 0, 0,
                 202, 270,
-                (278 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-                (0 - Math.pow(cursor2.profileFrame, 2) / 2) * display.zoom,
-                (202 + Math.pow(cursor2.profileFrame, 2)) * display.zoom,
-                (270 + Math.pow(cursor2.profileFrame, 2)) * display.zoom
+                (278 - cursor2.profileFrame ** 2 / 2) * display.zoom,
+                (0 - cursor2.profileFrame ** 2 / 2) * display.zoom,
+                (202 + cursor2.profileFrame ** 2) * display.zoom,
+                (270 + cursor2.profileFrame ** 2) * display.zoom
             );
         }
     }
@@ -187,8 +187,8 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cn' + character1.id],
                 0, 0,
                 62, 136,
-                (0 + Math.pow(cursor1.profileFrame, 2) * 1) * display.zoom,
-                (0 - Math.pow(cursor1.profileFrame, 2) * 4) * display.zoom,
+                (0 + cursor1.profileFrame ** 2 * 1) * display.zoom,
+                (0 - cursor1.profileFrame ** 2 * 4) * display.zoom,
                 62 * display.zoom,
                 136 * display.zoom
             );
@@ -198,8 +198,8 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cn' + character2.id],
                 0, 0,
                 62, 136,
-                (419 + Math.pow(cursor2.profileFrame, 2) * 1) * display.zoom,
-                (134 - Math.pow(cursor2.profileFrame, 2) * 4) * display.zoom,
+                (419 + cursor2.profileFrame ** 2 * 1) * display.zoom,
+                (134 - cursor2.profileFrame ** 2 * 4) * display.zoom,
                 62 * display.zoom,
                 136 * display.zoom
             );
@@ -269,8 +269,8 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cn' + character1.id],
                 0, 0,
                 62, 136,
-                (0 + Math.pow(cursor1.profileFrame, 2) * 1) * display.zoom,
-                (0 - Math.pow(cursor1.profileFrame, 2) * 4) * display.zoom,
+                (0 + cursor1.profileFrame ** 2 * 1) * display.zoom,
+                (0 - cursor1.profileFrame ** 2 * 4) * display.zoom,
                 62 * display.zoom,
                 136 * display.zoom
             );
@@ -280,8 +280,8 @@ CharacterSelectionDisplay.update = display => {
                 display.assets['cn' + character2.id],
                 0, 0,
                 62, 136,
-                (419 + Math.pow(cursor2.profileFrame, 2) * 1) * display.zoom,
-                (134 - Math.pow(cursor2.profileFrame, 2) * 4) * display.zoom,
+                (419 + cursor2.profileFrame ** 2 * 1) * display.zoom,
+                (134 - cursor2.profileFrame ** 2 * 4) * display.zoom,
                 62 * display.zoom,
                 136 * display.zoom
             );
@@ -292,8 +292,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo2,
             0, cursor1.ready ? 24 : 0,
             72, 24,
-            (147 + Math.pow(cursor1.infoFrame / 2, 2) * 4) * display.zoom,
-            (231 + Math.pow(cursor1.infoFrame / 2, 2) * 1) * display.zoom,
+            (147 + (cursor1.infoFrame / 2) ** 2 * 4) * display.zoom,
+            (231 + (cursor1.infoFrame / 2) ** 2 * 1) * display.zoom,
             72 * display.zoom,
             24 * display.zoom
         );
@@ -301,8 +301,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo2,
             0, cursor2.ready ? 24 : 0,
             72, 24,
-            ((cursor2.ready ? 295 : 261) - Math.pow(cursor2.infoFrame / 2, 2) * 4) * display.zoom,
-            ((cursor2.ready ? 23 : 15) - Math.pow(cursor2.infoFrame / 2, 2) * 1) * display.zoom,
+            ((cursor2.ready ? 295 : 261) - (cursor2.infoFrame / 2) ** 2 * 4) * display.zoom,
+            ((cursor2.ready ? 23 : 15) - (cursor2.infoFrame / 2) ** 2 * 1) * display.zoom,
             72 * display.zoom,
             24 * display.zoom
         );
@@ -311,8 +311,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo3,
             0, 0,
             58, 26,
-            (142 + Math.pow(charSelect.initInfo3Frame / 2, 2) * 4) * display.zoom,
-            (244 + Math.pow(charSelect.initInfo3Frame / 2, 2) * 1) * display.zoom,
+            (142 + (charSelect.initInfo3Frame / 2) ** 2 * 4) * display.zoom,
+            (244 + (charSelect.initInfo3Frame / 2) ** 2 * 1) * display.zoom,
             58 * display.zoom,
             26 * display.zoom
         );
@@ -321,8 +321,8 @@ CharacterSelectionDisplay.update = display => {
             display.assets.characterSelectInfo3,
             0, 26 * info3multiplier,
             58, 26,
-            (280 - Math.pow(charSelect.initInfo3Frame / 2, 2) * 4) * display.zoom,
-            (1 - Math.pow(charSelect.initInfo3Frame / 2, 2) * 1) * display.zoom,
+            (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4) * display.zoom,
+            (1 - (charSelect.initInfo3Frame / 2) ** 2 * 1) * display.zoom,
             58 * display.zoom,
             26 * display.zoom
         );
@@ -385,7 +385,7 @@ CharacterSelectionDisplay.update = display => {
         });
     }
 
-    if (![cursor1, cursor2].find(cursor => !cursor.ready || cursor.infoFrame)) StageSelectionDisplay.update(display);
+    if (![cursor1, cursor2].find(cursor => !cursor.ready || cursor.infoFrame) && charSelect.mode !== 'Training') StageSelectionDisplay.update(display);
 
     // Transition
     if (charSelect.endAnimFrame) display.fadeEffect('#000', charSelect.endAnimFrame, charSelect.endAnimEndFrame);

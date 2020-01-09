@@ -14,7 +14,7 @@ class Game {
         }
 
         this.stages = [
-            TrainingStage,
+            Stage,
             ChildStage,
             ChildStage,
             Stage,
@@ -92,7 +92,7 @@ class Game {
 
             this.activity.update(this);
 
-            this.inputList.forEach((input, id) => this.lastInputList.set(id, JSON.parse(JSON.stringify(input))));
+            this.inputList.forEach((input, id) => this.lastInputList.set(id, {...input}));
             this.frame++;
         };
     }

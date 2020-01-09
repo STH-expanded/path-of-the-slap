@@ -40,7 +40,7 @@ class CharacterSelection extends Activity {
         });
 
         this.stageCursor = 0;
-        this.stageReady = false;
+        this.stageReady = this.mode === 'Training';
         
         this.stageInitFrame = 6;
         this.stageFrame = this.stageInitFrame;
@@ -48,7 +48,7 @@ class CharacterSelection extends Activity {
         this.selectStageInitFrame = 6;
         this.selectStageFrame = 0;
 
-        this.selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? new this.characters[pos.x + pos.y * 3]() : null;
+        this.selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? new (this.characters[pos.x + pos.y * 3])() : null;
 
         this.selectStage = (game, cursor) => {
             var id = cursor.player.id;
@@ -138,7 +138,12 @@ class CharacterSelection extends Activity {
                 } else {
                     if (this.stageReady) {
                         this.cursors.forEach(cursor => cursor.player.character = this.selectCharacter(cursor.pos));
-                        this.nextActivity = new Fight(this.cursors.map(cursor => cursor.player), new this.stages[this.stageCursor](), this.mode === 'Training', true);
+                        this.nextActivity = new Fight(
+                            this.cursors.map(cursor => cursor.player),
+                            new (this.mode === 'Training' ? TrainingStage : this.stages[this.stageCursor])(),
+                            this.mode === 'Training',
+                            true
+                        );
                     } else {
                         if (this.selectStageFrame > 0) this.selectStageFrame--;
                         if (this.selectStageFrame < 0) this.selectStageFrame++;

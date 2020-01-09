@@ -24,21 +24,7 @@ FightDisplay.update = display => {
     display.cx.translate(-view.xOffset * display.zoom, 0);
 
     // Background
-    if (fight.stage.id === 2) {
-        FightDisplay.perspectiveLayer(display, fight, view);
-    } else {
-        display.cx.drawImage(
-            display.assets['s' + fight.stage.id + 'l0'],
-            0, 0, fight.stage.size.x, fight.stage.size.y + 16,
-            0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
-        );
-        display.cx.drawImage(
-            display.assets['s' + fight.stage.id + 'l1'],
-            0, 0, fight.stage.size.x, fight.stage.size.y + 16,
-            0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
-        );
-    }
-
+    FightDisplay.perspectiveLayer(display, fight, view);
 
     if (display.debugMode) {
 
@@ -76,7 +62,7 @@ FightDisplay.update = display => {
     if (display.assets['s' + fight.stage.id + 'l3']) {
         display.cx.drawImage(
             display.assets['s' + fight.stage.id + 'l3'],
-            0, 0, fight.stage.size.x, fight.stage.size.y + 16,
+            -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16,
             0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
         );
     }
@@ -89,11 +75,14 @@ FightDisplay.update = display => {
 
 FightDisplay.perspectiveLayer = (display, fight, view) => {
 
-    display.cx.drawImage(
-        display.assets['s' + fight.stage.id + 'l0'],
-        -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16,
-        0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
-    );
+
+    if (display.assets['s' + fight.stage.id + 'l0']) {
+        display.cx.drawImage(
+            display.assets['s' + fight.stage.id + 'l0'],
+            -view.xOffset, 0, fight.stage.size.x, fight.stage.size.y + 16,
+            0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
+        );
+    }
 
     var img = {
         x: view.xOffset,
@@ -128,7 +117,7 @@ FightDisplay.perspectiveLayer = (display, fight, view) => {
     for (var row = 0; row < img.w; row++) {
         var yTop = m1 * row + b1;
         var yBottom = m2 * row + b2;
-        display.cx.drawImage(display.assets['s2l1'],
+        display.cx.drawImage(display.assets['s' + fight.stage.id + 'floor'],
             row, img.x / 2, 1, img.h,
             row * display.zoom, yTop * display.zoom,
             1 * display.zoom, (yBottom - yTop) * display.zoom
@@ -137,4 +126,12 @@ FightDisplay.perspectiveLayer = (display, fight, view) => {
 
     display.cx.rotate(90 * Math.PI / 180);
     display.cx.translate(0, -270 * display.zoom);
+    
+    if (display.assets['s' + fight.stage.id + 'l1']) {
+        display.cx.drawImage(
+            display.assets['s' + fight.stage.id + 'l1'],
+            -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16,
+            0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom
+        );
+    }
 }

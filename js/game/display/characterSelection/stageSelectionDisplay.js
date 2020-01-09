@@ -12,7 +12,7 @@ StageSelectionDisplay.update = display => {
                 0, 0,
                 480, 54,
                 0,
-                ((i + 2) * 54 - Math.pow(charSelect.stageFrame, 2)) * display.zoom,
+                ((i + 2) * 54 - charSelect.stageFrame ** 2) * display.zoom,
                 480 * display.zoom, 54 * display.zoom
             );
         }
@@ -24,10 +24,10 @@ StageSelectionDisplay.update = display => {
             display.assets.stageSelect,
             0, 0,
             480, 270,
-            (0 - Math.pow(charSelect.stageFrame, 2)) * display.zoom,
-            (0 - Math.pow(charSelect.stageFrame, 2)) * display.zoom,
-            (480 + Math.pow(charSelect.stageFrame, 2) * 2) * display.zoom,
-            (270 + Math.pow(charSelect.stageFrame, 2) * 2) * display.zoom
+            (0 - charSelect.stageFrame ** 2) * display.zoom,
+            (0 - charSelect.stageFrame ** 2) * display.zoom,
+            (480 + charSelect.stageFrame ** 2 * 2) * display.zoom,
+            (270 + charSelect.stageFrame ** 2 * 2) * display.zoom
         );
 
         display.cx.drawImage(
@@ -35,7 +35,7 @@ StageSelectionDisplay.update = display => {
             0, 0,
             480, 54,
             0,
-            (2 * 54 - Math.pow(charSelect.stageFrame, 2)) * display.zoom,
+            (2 * 54 - charSelect.stageFrame ** 2) * display.zoom,
             480 * display.zoom, 54 * display.zoom
         );
 
@@ -49,7 +49,7 @@ StageSelectionDisplay.update = display => {
                 0, 0,
                 480, 54,
                 0,
-                ((i + 2) * 54 + Math.pow(charSelect.selectStageFrame, 2) * (charSelect.selectStageFrame < 0 ? -1 : 1)) * display.zoom,
+                ((i + 2) * 54 + charSelect.selectStageFrame ** 2 * (charSelect.selectStageFrame < 0 ? -1 : 1)) * display.zoom,
                 480 * display.zoom, 54 * display.zoom
             );
         }
@@ -64,7 +64,7 @@ StageSelectionDisplay.update = display => {
             0, 0,
             480, 54,
             0,
-            (2 * 54 + Math.pow(charSelect.selectStageFrame, 2) * (charSelect.selectStageFrame < 0 ? -1 : 1)) * display.zoom,
+            (2 * 54 + charSelect.selectStageFrame ** 2 * (charSelect.selectStageFrame < 0 ? -1 : 1)) * display.zoom,
             480 * display.zoom, 54 * display.zoom
         );
 
