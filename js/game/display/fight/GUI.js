@@ -1,4 +1,4 @@
-class GUI {}
+class GUI { }
 GUI.update = display => {
     var fight = display.game.activity;
 
@@ -158,4 +158,10 @@ GUI.update = display => {
 
     // Training Display
     if (fight.trainingMode) TrainingDisplay.update(display);
+
+    // PauseMenu
+    if (fight.isPausing) {
+        display.cx.fillStyle = "#0008";
+        display.cx.fillRect(0, 0, 480 * display.zoom, 270 * display.zoom);
+    }
 }

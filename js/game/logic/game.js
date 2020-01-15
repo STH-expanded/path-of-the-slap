@@ -92,9 +92,6 @@ class Game {
 
             this.activity.update(this);
 
-            var test = this.inputList.has("keyboard") ? this.inputList.get("keyboard") : null;
-            if (test && test.start) console.log("ok sa mère");
-
             this.inputList.forEach((input, id) => this.lastInputList.set(id, { ...input }));
             this.frame++;
         };
