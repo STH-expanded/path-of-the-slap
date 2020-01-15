@@ -20,7 +20,7 @@ class Player {
         }
 
         this.socdCleaner = inputs => {
-            var cleanedInputs = {...inputs};
+            var cleanedInputs = { ...inputs };
             if (cleanedInputs.left && cleanedInputs.right) {
                 cleanedInputs.left = false;
                 cleanedInputs.right = false;

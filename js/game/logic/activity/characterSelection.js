@@ -138,7 +138,8 @@ class CharacterSelection extends Activity {
                             this.cursors.map(cursor => cursor.player),
                             new (this.mode === 'Training' ? TrainingStage : this.stages[this.stageCursor])(),
                             this.mode === 'Training',
-                            true
+                            true,
+                            0
                         );
                     } else {
                         if (this.selectStageFrame > 0) this.selectStageFrame--;

@@ -71,7 +71,7 @@ class Game {
             var nextActivity = null;
             switch (options[cursor]) {
                 case 'Rematch':
-                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, false, true);
+                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, false, true,0);
                     break;
                 case 'CharacterSelection':
                     nextActivity = new CharacterSelection(options[cursor], game.characters, game.stages, game.lastFight.players);
@@ -92,7 +92,7 @@ class Game {
 
             this.activity.update(this);
 
-            this.inputList.forEach((input, id) => this.lastInputList.set(id, {...input}));
+            this.inputList.forEach((input, id) => this.lastInputList.set(id, { ...input }));
             this.frame++;
         };
     }
