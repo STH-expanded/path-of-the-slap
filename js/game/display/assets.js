@@ -25,6 +25,8 @@ class Assets {
         this.btnCharacterSelection.src = 'img/menu/btncharacterselection.png';
 
         // Character
+        this.ci00 = document.createElement('img');
+        this.ci00.src = 'img/character/ci00.png';
         this.cp00 = document.createElement('img');
         this.cp00.src = 'img/character/cp00.png';
         this.cp00shadow = document.createElement('img');
@@ -38,6 +40,8 @@ class Assets {
         this.cn00 = document.createElement('img');
         this.cn00.src = 'img/character/cn00.png';
 
+        this.ci01 = document.createElement('img');
+        this.ci01.src = 'img/character/ci01.png';
         this.cp01 = document.createElement('img');
         this.cp01.src = 'img/character/cp01.png';
         this.cp01shadow = document.createElement('img');

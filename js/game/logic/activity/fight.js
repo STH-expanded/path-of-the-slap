@@ -1,5 +1,5 @@
 class Fight extends Activity {
-    constructor(players, stage, trainingMode, winReset,round) {
+    constructor(players, stage, trainingMode, winReset) {
         super();
         this.display = FightDisplay;
         this.trainingMode = trainingMode;
@@ -8,7 +8,6 @@ class Fight extends Activity {
         this.player1 = players[0];
         this.player2 = players[1];
         this.stage = stage;
-        this.round=round+1
 
         this.timer = 400;
 
@@ -21,36 +20,36 @@ class Fight extends Activity {
 
         this.update = game => {
             if (this.stoplayer === 0) {
-            [this.player1, this.player2].forEach(player => {
-                if (player.id !== 'computer') {
-                    if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
-                        this.isPausing = !this.isPausing;
-                        console.log("t", this.isPausing)
+                [this.player1, this.player2].forEach(player => {
+                    if (player.id !== 'computer') {
+                        if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
+                            this.isPausing = !this.isPausing;
+                            console.log("t", this.isPausing)
+                        }
                     }
-                }
-            });
+                });
 
-            if (!this.isPausing) {
-                [this.player1, this.player2].forEach(player => player.update(game));
+                if (!this.isPausing) {
+                    [this.player1, this.player2].forEach(player => player.update(game));
 
-                if (!this.trainingMode) {
-                    this.timer--;
+                    if (!this.trainingMode) {
+                        this.timer--;
 
-                    this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
-                    if (this.winners.length > 0) {
-                        if(this.endingGame === null){
-                            this.endingGame=60
-                        }else if(this.endingGame===0){
-                            this.winners.forEach(winner => winner.winCount++);
-                            game.lastFight.players = [this.player1, this.player2];
-                            game.lastFight.stage = this.stage;
-                            game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
-                                new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
-                                new Fight([this.player1, this.player2], this.stage, false, false,1);
+                        this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
+                        if (this.winners.length > 0) {
+                            if(this.endingGame === null){
+                                this.endingGame=60
+                            }else if(this.endingGame===0){
+                                this.winners.forEach(winner => winner.winCount++);
+                                game.lastFight.players = [this.player1, this.player2];
+                                game.lastFight.stage = this.stage;
+                                game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
+                                    new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
+                                    new Fight([this.player1, this.player2], this.stage, false, false,1);
+                            }
                         }
                     }
                 }
-                
             }
             if (this.endingGame>0) {
                 this.endingGame--
@@ -78,5 +77,4 @@ class Fight extends Activity {
         };
         this.initFight(winReset);
     }
-}
 }
