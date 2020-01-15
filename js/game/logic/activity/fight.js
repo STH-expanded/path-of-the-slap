@@ -9,12 +9,12 @@ class Fight extends Activity {
         this.player2 = players[1];
         this.stage = stage;
 
-        this.timer = 400;
+        this.timer = 5400;
 
         this.winners = [];
         this.playoff = 2;
-        this.stoplayer =  180; // temps ou le jeux serat figé
-        this.endingGame = null // game is finish
+        this.stoplayer = 180; // temps ou le jeux serat figé
+        this.endingGame = null; // game is finish
 
         this.isPausing = false;
 
@@ -24,7 +24,7 @@ class Fight extends Activity {
                     if (player.id !== 'computer') {
                         if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
                             this.isPausing = !this.isPausing;
-                            console.log("t", this.isPausing)
+                            console.log('t', this.isPausing);
                         }
                     }
                 });
@@ -37,25 +37,23 @@ class Fight extends Activity {
 
                         this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
                         if (this.winners.length > 0) {
-                            if(this.endingGame === null){
-                                this.endingGame=60
-                            }else if(this.endingGame===0){
+                            if (this.endingGame === null) {
+                                this.endingGame = 60;
+                            } else if (this.endingGame === 0) {
                                 this.winners.forEach(winner => winner.winCount++);
                                 game.lastFight.players = [this.player1, this.player2];
                                 game.lastFight.stage = this.stage;
-                                game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
-                                    new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
-                                    new Fight([this.player1, this.player2], this.stage, false, false,1);
+                                game.activity = this.winners.find(winner => winner.winCount === this.playoff) ? new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) : new Fight([this.player1, this.player2], this.stage, false, false, 1);
                             }
                         }
                     }
                 }
             }
-            if (this.endingGame>0) {
-                this.endingGame--
+            if (this.endingGame > 0) {
+                this.endingGame--;
             }
-            if (this.stoplayer>0) {
-                this.stoplayer--
+            if (this.stoplayer > 0) {
+                this.stoplayer--;
             }
         };
 

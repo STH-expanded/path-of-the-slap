@@ -6,6 +6,7 @@ class Character {
 
         this.inputList = null;
         this.opponent = null;
+        this.isAttack = false;
 
         this.hurtbox = new HurtBox(new Vector2D(0, 0), new Vector2D(32, 128));
         this.speed = new Vector2D(0, 0);
@@ -45,15 +46,23 @@ class Character {
             }
         };
 
+        this.attack = game => {
+            if (this.inputList[this.inputList.length - 1].inputs.a) {
+                this.isAttack = true;
+            } else this.isAttack = false;
+        };
+
         this.update = (game, inputList) => {
             this.inputList = inputList;
-            game.players.forEach(player => {
+            [game.activity.player1, game.activity.player2].forEach(player => {
                 if (player.id !== this.playerID) {
                     this.opponent = player;
                 }
             });
             this.moveX(game);
             this.moveY(game);
+            this.hitbox = new HitBox(new Vector2D(this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2, this.hurtbox.playerPos.y + 10), new Vector2D(this.hurtbox.playerSize.x, 20));
+            this.attack(game);
         };
     }
 }
