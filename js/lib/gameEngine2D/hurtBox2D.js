@@ -1,5 +1,5 @@
 class HurtBox extends CollisionBox {
-    constructor() {
-        super();
+    constructor(pos, size) {
+        super(pos, size);
     }
 }
