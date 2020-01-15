@@ -1,36 +1,27 @@
-var isCollide = (playerPos, playerSize, wallPos, wallSize) => {
-    return !(
-        playerPos.y + playerSize.y < wallPos.y ||
-        playerPos.y > wallPos.y + wallSize.y ||
-        playerPos.x + playerSize.x < wallPos.x ||
-        playerPos.x > wallPos.x + wallSize.x
-    );
-};
+class CollisionBox {
+    constructor(pos, size) {
+        this.playerPos = pos;
+        this.playerSize = size;
+        this.isCollide = (wallPos, wallSize) => {
+            return !(this.playerPos.y + this.playerSize.y < wallPos.y || this.playerPos.y > wallPos.y + wallSize.y || this.playerPos.x + this.playerSize.x < wallPos.x || this.playerPos.x > wallPos.x + wallSize.x);
+        };
 
-var isIntersect = (playerPos, playerSize, wallPos, wallSize) => {
-    return !(
-        playerPos.y + playerSize.y <= wallPos.y ||
-        playerPos.y >= wallPos.y + wallSize.y ||
-        playerPos.x + playerSize.x <= wallPos.x ||
-        playerPos.x >= wallPos.x + wallSize.x
-    );
-};
+        this.isIntersect = (wallPos, wallSize) => {
+            return !(this.playerPos.y + this.playerSize.y <= wallPos.y || this.playerPos.y >= wallPos.y + wallSize.y || this.playerPos.x + this.playerSize.x <= wallPos.x || this.playerPos.x >= wallPos.x + wallSize.x);
+        };
 
-var inBound = (playerPos, playerSize, boundPos, boundSize) => {
-    return !(
-        playerPos.y + playerSize.y > boundPos.y + boundSize.y ||
-        playerPos.y < boundPos.y ||
-        playerPos.x + playerSize.x > boundPos.x + boundSize.x ||
-        playerPos.x < boundPos.x
-    );
-};
+        this.inBound = (pos, boundPos, boundSize) => {
+            return !(pos.y + this.playerSize.y > boundPos.y + boundSize.y || pos.y < boundPos.y || pos.x + this.playerSize.x > boundPos.x + boundSize.x || pos.x < boundPos.x);
+        };
 
-var obstaclesAt = (pos, size, obstacles, bound) => {
-    var result = [];
-    obstacles.forEach(obstacle => {
-        if (inBound(pos, size, bound)) {
-            result.push(obstacle);
-        }
-    });
-    return result;
-};
+        this.obstaclesAt = obstacles => {
+            var result = [];
+            obstacles.forEach(obstacle => {
+                if (this.inBound(obstacle.pos, obstacle.size)) {
+                    result.push(obstacle);
+                }
+            });
+            return result;
+        };
+    }
+}

@@ -7,6 +7,8 @@ class Player {
         this.character = null;
         this.winCount = 0;
 
+        this.isPausing = false;
+
         this.updateLastInputs = inputs => {
             if (this.inputList.length > 0 && JSON.stringify(inputs) === JSON.stringify(this.inputList[this.inputList.length - 1].inputs)) {
                 this.inputList[this.inputList.length - 1].frames++;
@@ -20,7 +22,7 @@ class Player {
         }
 
         this.socdCleaner = inputs => {
-            var cleanedInputs = {...inputs};
+            var cleanedInputs = { ...inputs };
             if (cleanedInputs.left && cleanedInputs.right) {
                 cleanedInputs.left = false;
                 cleanedInputs.right = false;
@@ -33,6 +35,10 @@ class Player {
 
         this.update = game => {
             this.updateLastInputs(this.socdCleaner(id !== 'computer' ? game.inputList.get(this.id) : {}));
+
+
+            if (this.inputList[this.inputList.length - 1].inputs.start) this.isPausing = !this.isPausing;
+
             if (game.activity) this.character.update(game, this.inputList);
         };
     }
