@@ -122,6 +122,10 @@ class Assets {
         this.winScore.src = 'img/fight/winScore.png';
         this.timerNumbers = document.createElement('img');
         this.timerNumbers.src = 'img/fight/numbers2.png';
+        this.fightTitle = document.createElement('img');
+        this.fightTitle.src = 'img/fight/fight.png';
+        this.victory = document.createElement('img');
+        this.victory.src = 'img/fight/Victory.png';
 
         // Fight Training
         this.infinity = document.createElement('img');
