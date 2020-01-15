@@ -62,6 +62,15 @@ GUI.update = display => {
         12 * display.zoom
     );
 
+    var imgci1 = display.assets['ci' + fight.player1.character.id];
+    display.cx.drawImage(
+        imgci1,
+        64 * display.zoom,
+        24 * display.zoom,
+        imgci1.naturalWidth * display.zoom,
+        16 * display.zoom
+    );
+
     if (!fight.trainingMode) {
         for (let i = 0; i < fight.playoff; i++) {
             if (i < fight.player1.winCount) {
@@ -82,17 +91,7 @@ GUI.update = display => {
                 );
             }
         }
-
     }
-
-    display.cx.fillStyle = 'white';
-    display.cx.font = 10 * display.zoom + "px serif";
-    display.cx.textAlign = "start";
-    display.cx.fillText(
-        fight.player1.character.name,
-        64 * display.zoom,
-        34 * display.zoom
-    );
 
     //P2
     display.cx.drawImage(
@@ -124,6 +123,15 @@ GUI.update = display => {
         156 * (fight.player2.character.health / fight.player2.character.maxHealth) * display.zoom,
         12 * display.zoom
     );
+    
+    var imgci2 = display.assets['ci' + fight.player2.character.id];
+    display.cx.drawImage(
+        imgci2,
+        (416 - imgci2.naturalWidth) * display.zoom,
+        24 * display.zoom,
+        imgci2.naturalWidth * display.zoom,
+        16 * display.zoom
+    );
 
     if (!fight.trainingMode) {
         for (let i = 0; i < fight.playoff; i++) {
@@ -146,15 +154,6 @@ GUI.update = display => {
             }
         }
     }
-
-    display.cx.fillStyle = 'white';
-    display.cx.font = 10 * display.zoom + "px serif";
-    display.cx.textAlign = "end";
-    display.cx.fillText(
-        fight.player2.character.name,
-        display.cx.canvas.width - 64 * display.zoom,
-        34 * display.zoom
-    );
 
     // Training Display
     if (fight.trainingMode) TrainingDisplay.update(display);
