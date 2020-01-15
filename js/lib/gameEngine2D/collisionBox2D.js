@@ -2,8 +2,8 @@ class CollisionBox {
     constructor(pos, size) {
         this.playerPos = pos;
         this.playerSize = size;
-        this.isCollide = (wallPos, wallSize) => {
-            return !(this.playerPos.y + this.playerSize.y < wallPos.y || this.playerPos.y > wallPos.y + wallSize.y || this.playerPos.x + this.playerSize.x < wallPos.x || this.playerPos.x > wallPos.x + wallSize.x);
+        this.isCollide = (pos, wallPos, wallSize) => {
+            return !(pos.y + this.playerSize.y < wallPos.y || pos.y > wallPos.y + wallSize.y || pos.x + this.playerSize.x < wallPos.x || pos.x > wallPos.x + wallSize.x);
         };
 
         this.isIntersect = (pos, wallPos, wallSize) => {
