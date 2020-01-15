@@ -14,18 +14,34 @@ class Fight extends Activity {
         this.winners = [];
         this.playoff = 2;
 
+        this.isPausing = false;
+
         this.update = game => {
-            [this.player1, this.player2].forEach(player => player.update(game));
 
-            if (!this.trainingMode) {
-                this.timer--;
+            [this.player1, this.player2].forEach(player => {
+                if (player.id !== 'computer') {
+                    if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
+                        this.isPausing = !this.isPausing;
+                        console.log("t", this.isPausing)
+                    }
+                }
+            });
 
-                this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
-                if (this.winners.length > 0) {
-                    this.winners.forEach(winner => winner.winCount++);
-                    game.lastFight.players = [this.player1, this.player2];
-                    game.lastFight.stage = this.stage;
-                    game.activity = this.winners.find(winner => winner.winCount === this.playoff) ? new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) : new Fight([this.player1, this.player2], this.stage, false, false);
+            if (!this.isPausing) {
+                [this.player1, this.player2].forEach(player => player.update(game));
+
+                if (!this.trainingMode) {
+                    this.timer--;
+
+                    this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
+                    if (this.winners.length > 0) {
+                        this.winners.forEach(winner => winner.winCount++);
+                        game.lastFight.players = [this.player1, this.player2];
+                        game.lastFight.stage = this.stage;
+                        game.activity = (this.winners.find(winner => winner.winCount === this.playoff)) ?
+                            new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
+                            new Fight([this.player1, this.player2], this.stage, false, false);
+                    }
                 }
             }
         };
