@@ -14,20 +14,44 @@ class Fight extends Activity {
         this.winners = [];
         this.playoff = 2;
 
-        this.isPausing = false;
+        this.pauseMenu = null;
+        
+        // Pause Menu
+        this.pauseMenu = null;
+        this.pauseMenuOptions = ['Resume', 'Rematch', 'CharacterSelection', 'MainMenu'];
+        this.pauseMenuOptionYCenter = 2;
+        this.pauseMenuHandler = (game, options, cursor) => {
+            var nextActivity = null;
+            switch (options[cursor]) {
+                case 'Resume':
+                    game.activity.pauseMenu = null;
+                    break;
+                case 'Rematch':
+                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, game.activity.trainingMode, true);
+                    break;
+                case 'CharacterSelection':
+                    var mode = game.activity.trainingMode ? 'Training' : game.activity.player2.id !== 'computer' ? 'Player' : 'Computer';
+                    nextActivity = new CharacterSelection(mode, game.characters, game.stages, game.lastFight.players);
+                    break;
+                case 'MainMenu':
+                    nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
+                    break;
+            }
+            return nextActivity;
+        };
 
         this.update = game => {
-
-            [this.player1, this.player2].forEach(player => {
-                if (player.id !== 'computer') {
-                    if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
-                        this.isPausing = !this.isPausing;
-                        console.log("t", this.isPausing)
+            if (!this.pauseMenu) {
+                [this.player1, this.player2].forEach(player => {
+                    if (player.id !== 'computer') {
+                        if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
+                            game.lastFight.players = [this.player1, this.player2];
+                            game.lastFight.stage = this.stage;
+                            this.pauseMenu = new PauseMenu(this.pauseMenuOptions, this.pauseMenuOptionYCenter, this.pauseMenuHandler, this);
+                        }
                     }
-                }
-            });
+                });
 
-            if (!this.isPausing) {
                 [this.player1, this.player2].forEach(player => player.update(game));
 
                 if (!this.trainingMode) {
@@ -44,6 +68,7 @@ class Fight extends Activity {
                     }
                 }
             }
+            else this.pauseMenu.update(game);
         };
 
         this.checkWinners = (p1Health, p2Health, timer) => {

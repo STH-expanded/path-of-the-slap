@@ -1,12 +1,12 @@
 class MenuDisplay extends ActivityDisplay {}
 MenuDisplay.update = display => {
-    var menu = display.game.activity;
+    var menu = display.game.activity instanceof Fight ? display.game.activity.pauseMenu : display.game.activity;
 
     if (menu.optionYCenter === display.game.mainMenuOptionYCenter) {
         display.cx.drawImage(display.assets.titleScreen, 0, 0, 480, 270, 0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom);
     }
     else {
-        display.cx.fillStyle = '#114';
+        display.cx.fillStyle = display.game.activity instanceof Fight ? '#0008' : '#114';
         display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom);
     }
 
@@ -23,10 +23,7 @@ MenuDisplay.update = display => {
     menu.options.forEach((option, index) => {
         option += option === 'Player' && display.game.players.length < 2 ? 'Disabled' : '';
         drawMenuElement(display.assets['btn' + option], index);
-        if (display.game.activity.cursor === index) drawMenuElement(display.assets.menucursor, index);
+        var cursor = display.game.activity instanceof Fight ? display.game.activity.pauseMenu.cursor : display.game.activity.cursor;
+        if (cursor === index) drawMenuElement(display.assets.menucursor, index);
     });
-
-    // Transitions
-    if (menu.initAnimFrame) display.fadeEffect('#000', menu.initAnimFrame, menu.initAnimInitFrame);
-    if (menu.endAnimFrame) display.fadeEffect('#000', menu.endAnimFrame, menu.endAnimEndFrame);
 }

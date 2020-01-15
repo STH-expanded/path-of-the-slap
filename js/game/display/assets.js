@@ -19,6 +19,8 @@ class Assets {
         this.btnTraining.src = 'img/menu/btntraining.png';
         this.btnRematch = document.createElement('img');
         this.btnRematch.src = 'img/menu/btnrematch.png';
+        this.btnResume = document.createElement('img');
+        this.btnResume.src = 'img/menu/btnresume.png';
         this.btnMainMenu = document.createElement('img');
         this.btnMainMenu.src = 'img/menu/btnreturntomenu.png';
         this.btnCharacterSelection = document.createElement('img');

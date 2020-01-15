@@ -159,8 +159,5 @@ GUI.update = display => {
     if (fight.trainingMode) TrainingDisplay.update(display);
 
     // PauseMenu
-    if (fight.isPausing) {
-        display.cx.fillStyle = "#0008";
-        display.cx.fillRect(0, 0, 480 * display.zoom, 270 * display.zoom);
-    }
+    if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 }
