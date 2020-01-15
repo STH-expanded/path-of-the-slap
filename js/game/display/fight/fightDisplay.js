@@ -33,6 +33,14 @@ FightDisplay.update = display => {
         display.cx.fillRect(player1.hurtbox.playerPos.x * display.zoom, player1.hurtbox.playerPos.y * display.zoom, player1.hurtbox.playerSize.x * display.zoom, player1.hurtbox.playerSize.y * display.zoom);
         display.cx.fillRect(player2.hurtbox.playerPos.x * display.zoom, player2.hurtbox.playerPos.y * display.zoom, player2.hurtbox.playerSize.x * display.zoom, player2.hurtbox.playerSize.y * display.zoom);
         display.cx.globalAlpha = 1;
+        [fight.player1, fight.player2].forEach(player => {
+            if (player.character.isAttack) {
+                display.cx.fillStyle = '#f00';
+                display.cx.globalAlpha = 0.5;
+                display.cx.fillRect(player.character.hitbox.playerPos.x * display.zoom, player.character.hitbox.playerPos.y * display.zoom, player.character.hitbox.playerSize.x * display.zoom, player.character.hitbox.playerSize.y * display.zoom);
+                display.cx.globalAlpha = 1;
+            }
+        });
 
         // Player State
         display.cx.textAlign = 'center';

@@ -157,7 +157,36 @@ GUI.update = display => {
 
     // Training Display
     if (fight.trainingMode) TrainingDisplay.update(display);
-
+    if (fight.stoplayer!=0) {
+        var width = 300;
+        var height = (width *display.assets.fightTitle.height)/ display.assets.fightTitle.width;
+        if (fight.stoplayer>120) {
+            console.log(fight.round);
+            
+        }else if (fight.stoplayer<= 120 && fight.stoplayer>= 60) {  
+            console.log(fight.player1.winCount+"-"+fight.player2.winCount);
+            
+        }else if (fight.stoplayer<60) {
+            display.cx.drawImage(
+                display.assets.fightTitle,
+                (240-(width/2)) * display.zoom,
+                (135-(height/2))  *  display.zoom,
+                width * display.zoom,
+                height  *  display.zoom
+            );
+        }
+    }
+    if (fight.endingGame && fight.endingGame!=0) {
+        var width = 100;
+        var height = (width *display.assets.fightTitle.height)/ display.assets.fightTitle.width;
+        display.cx.drawImage(
+            display.assets.victory,
+            (240-(width/2)) * display.zoom,
+            (135-(height/2))  *  display.zoom,
+            width * display.zoom,
+            height  *  display.zoom
+        );
+    }
     // PauseMenu
     if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 }

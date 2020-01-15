@@ -1,9 +1,12 @@
 class Character {
-    constructor() {
+    constructor(playerID) {
+        this.playerID = playerID;
         this.id = '00';
         this.name = 'ParentCharacter';
 
         this.inputList = null;
+        this.opponent = null;
+        this.isAttack = false;
 
         this.hurtbox = new HurtBox(new Vector2D(0, 0), new Vector2D(32, 128));
         this.speed = new Vector2D(0, 0);
@@ -23,7 +26,7 @@ class Character {
 
             var newPos = this.hurtbox.playerPos.plus(new Vector2D(this.speed.x, 0));
 
-            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size)) {
+            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size) || this.hurtbox.isIntersect(newPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
                 this.speed.x = 0;
             } else {
                 this.hurtbox.playerPos = newPos;
@@ -36,17 +39,42 @@ class Character {
 
             let newPos = this.hurtbox.playerPos.plus(new Vector2D(0, this.speed.y));
 
-            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size)) {
+            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size) || this.hurtbox.isIntersect(newPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
                 this.speed.y = 0;
             } else {
                 this.hurtbox.playerPos = newPos;
             }
         };
 
+        this.attack = game => {
+            if (this.inputList[this.inputList.length - 1].inputs.a) {
+                const dir = this.direction ? this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2 : this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2 - this.hurtbox.playerSize.x;
+                this.hitbox = new HitBox(new Vector2D(dir, this.hurtbox.playerPos.y + 10), new Vector2D(this.hurtbox.playerSize.x, 20));
+                this.isAttack = true;
+                if (this.hitbox.isIntersect(this.hitbox.playerPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
+                    this.opponent.character.health -= 5;
+                } else {
+                    console.log('no damage');
+                }
+            } else this.isAttack = false;
+        };
+
         this.update = (game, inputList) => {
             this.inputList = inputList;
+            [game.activity.player1, game.activity.player2].forEach(player => {
+                if (player.id !== this.playerID) {
+                    this.opponent = player;
+                    if (this.opponent.character.hurtbox.playerPos.x < this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2) {
+                        // direction: true for right, false for left
+                        this.direction = false;
+                    } else {
+                        this.direction = true;
+                    }
+                }
+            });
             this.moveX(game);
             this.moveY(game);
+            this.attack(game);
         };
     }
 }
