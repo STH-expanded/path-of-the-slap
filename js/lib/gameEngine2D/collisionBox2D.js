@@ -6,8 +6,8 @@ class CollisionBox {
             return !(this.playerPos.y + this.playerSize.y < wallPos.y || this.playerPos.y > wallPos.y + wallSize.y || this.playerPos.x + this.playerSize.x < wallPos.x || this.playerPos.x > wallPos.x + wallSize.x);
         };
 
-        this.isIntersect = (wallPos, wallSize) => {
-            return !(this.playerPos.y + this.playerSize.y <= wallPos.y || this.playerPos.y >= wallPos.y + wallSize.y || this.playerPos.x + this.playerSize.x <= wallPos.x || this.playerPos.x >= wallPos.x + wallSize.x);
+        this.isIntersect = (pos, wallPos, wallSize) => {
+            return !(pos.y + this.playerSize.y <= wallPos.y || pos.y >= wallPos.y + wallSize.y || pos.x + this.playerSize.x <= wallPos.x || pos.x >= wallPos.x + wallSize.x);
         };
 
         this.inBound = (pos, boundPos, boundSize) => {

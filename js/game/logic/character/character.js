@@ -1,9 +1,11 @@
 class Character {
-    constructor() {
+    constructor(playerID) {
+        this.playerID = playerID;
         this.id = '00';
         this.name = 'ParentCharacter';
 
         this.inputList = null;
+        this.opponent = null;
 
         this.hurtbox = new HurtBox(new Vector2D(0, 0), new Vector2D(32, 128));
         this.speed = new Vector2D(0, 0);
@@ -23,7 +25,7 @@ class Character {
 
             var newPos = this.hurtbox.playerPos.plus(new Vector2D(this.speed.x, 0));
 
-            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size)) {
+            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size) || this.hurtbox.isIntersect(newPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
                 this.speed.x = 0;
             } else {
                 this.hurtbox.playerPos = newPos;
@@ -36,7 +38,7 @@ class Character {
 
             let newPos = this.hurtbox.playerPos.plus(new Vector2D(0, this.speed.y));
 
-            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size)) {
+            if (!this.hurtbox.inBound(newPos, game.activity.stage.pos, game.activity.stage.size) || this.hurtbox.isIntersect(newPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
                 this.speed.y = 0;
             } else {
                 this.hurtbox.playerPos = newPos;
@@ -45,6 +47,11 @@ class Character {
 
         this.update = (game, inputList) => {
             this.inputList = inputList;
+            game.players.forEach(player => {
+                if (player.id !== this.playerID) {
+                    this.opponent = player;
+                }
+            });
             this.moveX(game);
             this.moveY(game);
         };
