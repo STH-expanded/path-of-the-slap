@@ -3,18 +3,41 @@ class Fight extends Activity {
         super();
         this.display = FightDisplay;
         this.trainingMode = trainingMode;
-        this.nextActivity = null;
 
-        this.player1 = players[0];
-        this.player2 = players[1];
         this.stage = stage;
+        this.players = players;
+        this.players.forEach((player, index) => {
+            if (winReset) player.winCount = 0;
+            player.character.health = player.character.maxHealth;
+            player.character.hurtbox.playerPos = new Vector2D(
+                Math.floor((this.stage.size.x / 3) * (1 + index)) - player.character.hurtbox.playerSize.x / 2,
+                270 - 16 - player.character.hurtbox.playerSize.y
+            );
+            player.inputList = [];
+            player.character.inputList = null;
+        });
+        this.player1 = this.players[0];
+        this.player2 = this.players[1];
 
         this.timer = 5400;
 
         this.winners = [];
         this.playoff = 2;
-        this.stoplayer = 180; // temps ou le jeux serat figé
-        this.endingGame = null; // game is finish
+
+        this.roundIsOver = false;
+        this.gameIsOver = false;
+
+        this.entranceAnimEndFrame = 60;
+        this.entranceAnimFrame = winReset ? 0 : this.entranceAnimEndFrame;
+
+        this.roundAnimEndFrame = 60;
+        this.roundAnimFrame = 0;
+
+        this.roundEndAnimEndFrame = 60;
+        this.roundEndAnimFrame = 0;
+
+        this.endAnimEndFrame = 60;
+        this.endAnimFrame = 0;
 
         this.pauseMenu = null;
 
@@ -43,61 +66,52 @@ class Fight extends Activity {
         };
 
         this.update = game => {
-            if (this.stoplayer === 0) {
+            if (this.entranceAnimFrame < this.entranceAnimEndFrame) this.entranceAnimFrame++;
+            else if (this.roundAnimFrame < this.roundAnimEndFrame) this.roundAnimFrame++;
+            else if (this.roundIsOver) {
+                if (this.roundEndAnimFrame < this.roundEndAnimEndFrame) this.roundEndAnimFrame++;
+                else if (this.endAnimFrame < this.endAnimEndFrame) this.endAnimFrame++;
+                else {
+                    game.lastFight.players = this.players;
+                    game.lastFight.stage = this.stage;
+                    game.activity = this.gameIsOver ?
+                        new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) :
+                        new Fight(this.players, this.stage, false, false, 1);
+                }
+            } else {
                 if (!this.pauseMenu) {
-                    [this.player1, this.player2].forEach(player => {
+                    this.players.forEach(player => {
                         if (player.id !== 'computer') {
                             if (game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start) {
-                                game.lastFight.players = [this.player1, this.player2];
+                                game.lastFight.players = this.players;
                                 game.lastFight.stage = this.stage;
                                 this.pauseMenu = new PauseMenu(this.pauseMenuOptions, this.pauseMenuOptionYCenter, this.pauseMenuHandler, this);
                             }
                         }
                     });
 
-                    [this.player1, this.player2].forEach(player => player.update(game));
+                    this.players.forEach(player => player.update(game));
 
                     if (!this.trainingMode) {
                         this.timer--;
 
                         this.winners = this.checkWinners(this.player1.character.health, this.player2.character.health, this.timer);
                         if (this.winners.length > 0) {
-                            if (this.endingGame === null) {
-                                this.endingGame = 60;
-                            } else if (this.endingGame === 0) {
-                                this.winners.forEach(winner => winner.winCount++);
-                                game.lastFight.players = [this.player1, this.player2];
-                                game.lastFight.stage = this.stage;
-                                game.activity = this.winners.find(winner => winner.winCount === this.playoff) ? new Menu(game.endMenuOptions, game.endMenuOptionYCenter, game.endMenuHandler) : new Fight([this.player1, this.player2], this.stage, false, false, 1);
-                            }
+                            this.winners.forEach(winner => winner.winCount++);
+                            this.roundIsOver = true;
+                            this.gameIsOver = this.winners.find(winner => winner.winCount === this.playoff);
+                            this.endAnimFrame = this.gameIsOver ? 0 : this.endAnimEndFrame;
                         }
                     }
                 } else this.pauseMenu.update(game);
             }
-            if (this.endingGame > 0) {
-                this.endingGame--;
-            }
-            if (this.stoplayer > 0) {
-                this.stoplayer--;
-            }
         };
 
         this.checkWinners = (p1Health, p2Health, timer) => {
-            if ((p1Health <= 0 && p2Health <= 0) || (p1Health === p2Health && timer <= 0)) return [this.player1, this.player2];
+            if ((p1Health <= 0 && p2Health <= 0) || (p1Health === p2Health && timer <= 0)) return this.players;
             else if (p2Health <= 0 || (p1Health > p2Health && timer <= 0)) return [this.player1];
             else if (p1Health <= 0 || (p1Health < p2Health && timer <= 0)) return [this.player2];
             return [];
         };
-
-        this.initFight = winReset => {
-            [this.player1, this.player2].forEach((player, index) => {
-                if (winReset) player.winCount = 0;
-                player.character.health = player.character.maxHealth;
-                player.character.hurtbox.playerPos = new Vector2D(Math.floor((this.stage.size.x / 3) * (1 + index)) - player.character.hurtbox.playerSize.x / 2, 270 - 16 - player.character.hurtbox.playerSize.y);
-                player.inputList = [];
-                player.character.inputList = null;
-            });
-        };
-        this.initFight(winReset);
     }
 }

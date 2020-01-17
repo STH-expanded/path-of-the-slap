@@ -128,10 +128,20 @@ class Assets {
         this.winScore.src = 'img/fight/winScore.png';
         this.timerNumbers = document.createElement('img');
         this.timerNumbers.src = 'img/fight/numbers2.png';
-        this.fightTitle = document.createElement('img');
-        this.fightTitle.src = 'img/fight/fight.png';
-        this.victory = document.createElement('img');
-        this.victory.src = 'img/fight/Victory.png';
+        this.entranceImg = document.createElement('img');
+        this.entranceImg.src = 'img/fight/entrance.png';
+        this.round1 = document.createElement('img');
+        this.round1.src = 'img/fight/round1.png';
+        this.round2 = document.createElement('img');
+        this.round2.src = 'img/fight/round2.png';
+        this.round3 = document.createElement('img');
+        this.round3.src = 'img/fight/round3.png';
+        this.ko = document.createElement('img');
+        this.ko.src = 'img/fight/ko.png';
+        this.result1 = document.createElement('img');
+        this.result1.src = 'img/fight/result1.png';
+        this.result2 = document.createElement('img');
+        this.result2.src = 'img/fight/result2.png';
 
         // Fight Training
         this.infinity = document.createElement('img');

@@ -1,4 +1,4 @@
-class GUI { }
+class GUI {}
 GUI.update = display => {
     var fight = display.game.activity;
 
@@ -18,8 +18,7 @@ GUI.update = display => {
                 20 * display.zoom
             );
         }
-    }
-    else {
+    } else {
         display.cx.drawImage(
             display.assets.infinity,
             0, 0,
@@ -123,7 +122,7 @@ GUI.update = display => {
         156 * (fight.player2.character.health / fight.player2.character.maxHealth) * display.zoom,
         12 * display.zoom
     );
-    
+
     var imgci2 = display.assets['ci' + fight.player2.character.id];
     display.cx.drawImage(
         imgci2,
@@ -155,38 +154,23 @@ GUI.update = display => {
         }
     }
 
-    // Training Display
+    // Training or Fight Animation Display
     if (fight.trainingMode) TrainingDisplay.update(display);
-    if (fight.stoplayer!=0) {
-        var width = 300;
-        var height = (width *display.assets.fightTitle.height)/ display.assets.fightTitle.width;
-        if (fight.stoplayer>120) {
-            console.log(fight.round);
-            
-        }else if (fight.stoplayer<= 120 && fight.stoplayer>= 60) {  
-            console.log(fight.player1.winCount+"-"+fight.player2.winCount);
-            
-        }else if (fight.stoplayer<60) {
-            display.cx.drawImage(
-                display.assets.fightTitle,
-                (240-(width/2)) * display.zoom,
-                (135-(height/2))  *  display.zoom,
-                width * display.zoom,
-                height  *  display.zoom
-            );
+    else {
+        if (fight.entranceAnimFrame < fight.entranceAnimEndFrame) {
+            display.cx.drawImage(display.assets.entranceImg, 0, 0, 480 * display.zoom, 270 * display.zoom);
+        } else if (fight.roundAnimFrame < fight.roundAnimEndFrame) {
+            display.cx.drawImage(display.assets['round' + (1 + fight.player1.winCount + fight.player2.winCount)], 0, 0, 480 * display.zoom, 270 * display.zoom);
+        }
+        if (fight.roundIsOver) {
+            if (fight.roundEndAnimFrame < fight.roundEndAnimEndFrame) {
+                display.cx.drawImage(display.assets.ko, 0, 0, 480 * display.zoom, 270 * display.zoom);
+            } else if (fight.endAnimFrame < fight.endAnimEndFrame) {
+                display.cx.drawImage(display.assets['result' + (fight.players.findIndex(player => player.winCount === fight.playoff) + 1)], 0, 0, 480 * display.zoom, 270 * display.zoom);
+            }
         }
     }
-    if (fight.endingGame && fight.endingGame!=0) {
-        var width = 100;
-        var height = (width *display.assets.fightTitle.height)/ display.assets.fightTitle.width;
-        display.cx.drawImage(
-            display.assets.victory,
-            (240-(width/2)) * display.zoom,
-            (135-(height/2))  *  display.zoom,
-            width * display.zoom,
-            height  *  display.zoom
-        );
-    }
+
     // PauseMenu
     if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 }
