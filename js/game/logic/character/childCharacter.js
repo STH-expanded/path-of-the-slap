@@ -1,14 +1,12 @@
 class ChildCharacter extends Character {
-    constructor(playerID) {
-        super();
+    constructor(playerId) {
+        super(playerId);
 
         this.id = '01';
         this.name = 'ChildCharacter';
-        this.playerID = playerID;
 
-        this.hurtbox.playerSize = new Vector2D(32, 96);
-
-        this.walkSpeed = 4;
-        this.jumpSpeed = 20;
+        this.idleSize = new Vector2D(32, 128);
+        this.jumpSize = new Vector2D(32, 96);
+        this.crouchSize = new Vector2D(32, 96);
     }
 }

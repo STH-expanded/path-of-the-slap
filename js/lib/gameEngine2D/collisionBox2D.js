@@ -1,27 +1,30 @@
 class CollisionBox {
     constructor(pos, size) {
-        this.playerPos = pos;
-        this.playerSize = size;
-        this.isCollide = (pos, wallPos, wallSize) => {
-            return !(pos.y + this.playerSize.y < wallPos.y || pos.y > wallPos.y + wallSize.y || pos.x + this.playerSize.x < wallPos.x || pos.x > wallPos.x + wallSize.x);
-        };
+        this.pos = pos;
+        this.size = size;
 
-        this.isIntersect = (pos, wallPos, wallSize) => {
-            return !(pos.y + this.playerSize.y <= wallPos.y || pos.y >= wallPos.y + wallSize.y || pos.x + this.playerSize.x <= wallPos.x || pos.x >= wallPos.x + wallSize.x);
+        this.collidesWith = collisionBox => {
+            return !(
+                this.pos.y + this.size.y < collisionBox.pos.y || this.pos.y > collisionBox.pos.y + collisionBox.size.y ||
+                this.pos.x + this.size.x < collisionBox.pos.x || this.pos.x > collisionBox.pos.x + collisionBox.size.x
+            );
         };
+        this.collidingCollisionBoxes = collisionBoxList => collisionBoxList.map(collisionBox => this.collidesWith(collisionBox));
 
-        this.inBound = (pos, boundPos, boundSize) => {
-            return !(pos.y + this.playerSize.y > boundPos.y + boundSize.y || pos.y < boundPos.y || pos.x + this.playerSize.x > boundPos.x + boundSize.x || pos.x < boundPos.x);
+        this.intersects = collisionBox => {
+            return !(
+                this.pos.y + this.size.y <= collisionBox.pos.y || this.pos.y >= collisionBox.pos.y + collisionBox.size.y ||
+                this.pos.x + this.size.x <= collisionBox.pos.x || this.pos.x >= collisionBox.pos.x + collisionBox.size.x
+            );
         };
+        this.intersectingCollisionBoxes = collisionBoxList => collisionBoxList.map(collisionBox => this.intersects(collisionBox));
 
-        this.obstaclesAt = obstacles => {
-            var result = [];
-            obstacles.forEach(obstacle => {
-                if (this.inBound(obstacle.pos, obstacle.size)) {
-                    result.push(obstacle);
-                }
-            });
-            return result;
+        this.isIncludedIn = collisionBox => {
+            return !(
+                this.pos.y + this.size.y > collisionBox.pos.y + collisionBox.size.y || this.pos.y < collisionBox.pos.y ||
+                this.pos.x + this.size.x > collisionBox.pos.x + collisionBox.size.x || this.pos.x < collisionBox.pos.x
+            );
         };
+        this.includingCollisionBoxes = collisionBoxList => collisionBoxList.map(collisionBox => this.isIncludedIn(collisionBox));
     }
 }

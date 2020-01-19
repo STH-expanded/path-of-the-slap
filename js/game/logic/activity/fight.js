@@ -8,10 +8,14 @@ class Fight extends Activity {
         this.players = players;
         this.players.forEach((player, index) => {
             if (winReset) player.winCount = 0;
+            player.character.action = 'IDLE';
+            player.character.direction = index === 0;
             player.character.health = player.character.maxHealth;
-            player.character.hurtbox.playerPos = new Vector2D(
-                Math.floor((this.stage.size.x / 3) * (1 + index)) - player.character.hurtbox.playerSize.x / 2,
-                270 - 16 - player.character.hurtbox.playerSize.y
+            player.character.enemy = this.players.find(p => p.id !== player.id).character;
+            player.character.collisionBox.size = {...player.character.idleSize};
+            player.character.collisionBox.pos = new Vector2D(
+                Math.floor((this.stage.size.x / 3) * (1 + index)) - player.character.collisionBox.size.x / 2,
+                270 - 16 - player.character.collisionBox.size.y
             );
             player.inputList = [];
             player.character.inputList = null;

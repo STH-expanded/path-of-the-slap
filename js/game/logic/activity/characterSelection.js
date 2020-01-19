@@ -30,7 +30,7 @@ class CharacterSelection extends Activity {
             this.cursors.push({
                 player: player,
                 ready: false,
-                pos: this.cursorInitPos[i].data(),
+                pos: {...this.cursorInitPos[i]},
                 infoFrame: this.cursorInfoInitFrame,
                 profileFrame: 0
             });
@@ -56,7 +56,7 @@ class CharacterSelection extends Activity {
             else if (input.b && !lastInput.b && !this.stageReady) {
                 this.cursors.forEach((cursorObj, index) => {
                     cursorObj.ready = false;
-                    cursorObj.pos = this.cursorInitPos[index].data();
+                    cursorObj.pos = {...this.cursorInitPos[index]};
                     cursorObj.infoFrame = this.cursorInfoInitFrame;
                     cursorObj.profileFrame = this.cursorProfileInitFrame;
                 });

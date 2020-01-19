@@ -7,7 +7,7 @@ FightDisplay.update = display => {
     var player2 = fight.player2.character;
 
     // Fight middle
-    var middle = (player1.hurtbox.playerPos.x + player1.hurtbox.playerSize.x / 2) / 2 + (player2.hurtbox.playerPos.x + player2.hurtbox.playerSize.x / 2) / 2;
+    var middle = (player1.collisionBox.pos.x + player1.collisionBox.size.x / 2) / 2 + (player2.collisionBox.pos.x + player2.collisionBox.size.x / 2) / 2;
 
     // Viewport
     var view = {
@@ -26,32 +26,48 @@ FightDisplay.update = display => {
     // Background
     FightDisplay.perspectiveLayer(display, fight, view);
 
+    // DEBUG
     if (display.debugMode) {
-        // Player Hitbox/Hurtbox
-        display.cx.fillStyle = '#00f';
-        display.cx.globalAlpha = 0.5;
-        display.cx.fillRect(player1.hurtbox.playerPos.x * display.zoom, player1.hurtbox.playerPos.y * display.zoom, player1.hurtbox.playerSize.x * display.zoom, player1.hurtbox.playerSize.y * display.zoom);
-        display.cx.fillRect(player2.hurtbox.playerPos.x * display.zoom, player2.hurtbox.playerPos.y * display.zoom, player2.hurtbox.playerSize.x * display.zoom, player2.hurtbox.playerSize.y * display.zoom);
-        display.cx.globalAlpha = 1;
-        [fight.player1, fight.player2].forEach(player => {
-            if (player.character.isAttack) {
-                display.cx.fillStyle = '#f00';
-                display.cx.globalAlpha = 0.5;
-                display.cx.fillRect(player.character.hitbox.playerPos.x * display.zoom, player.character.hitbox.playerPos.y * display.zoom, player.character.hitbox.playerSize.x * display.zoom, player.character.hitbox.playerSize.y * display.zoom);
-                display.cx.globalAlpha = 1;
-            }
-        });
+        [player1, player2].forEach(player => {
+            display.cx.globalAlpha = 0.5;
 
-        // Player State
-        display.cx.textAlign = 'center';
-        display.cx.fillStyle = 'white';
-        display.cx.font = 10 * display.zoom + 'px serif';
-        display.cx.fillText('x:' + player1.hurtbox.playerPos.x + ' y:' + player1.hurtbox.playerPos.y, (player1.hurtbox.playerPos.x + player1.hurtbox.playerSize.x / 2) * display.zoom, (player1.hurtbox.playerPos.y - 6) * display.zoom);
-        // display.cx.fillText(
-        //     player1.action,
-        //     player1.hurtbox.playerPos.x + player1.hurtbox.playerSize.x / 2,
-        //     player1.hurtbox.playerPos.y - 18
-        // );
+            // Player
+            display.cx.fillStyle = '#00f';
+            display.cx.fillRect(
+                player.collisionBox.pos.x * display.zoom, player.collisionBox.pos.y * display.zoom,
+                player.collisionBox.size.x * display.zoom, player.collisionBox.size.y * display.zoom
+            );
+
+            // Hurtboxes
+            display.cx.fillStyle = '#0f0';
+            player.hurtboxes.forEach(hurtbox => {
+                display.cx.fillRect(
+                    hurtbox.pos.x * display.zoom, hurtbox.pos.y * display.zoom,
+                    hurtbox.size.x * display.zoom, hurtbox.size.y * display.zoom
+                );
+            });
+
+            // Hitboxes
+            display.cx.fillStyle = '#f00';
+            player.hitboxes.forEach(hitbox => {
+                display.cx.fillRect(
+                    hitbox.pos.x * display.zoom, hitbox.pos.y * display.zoom,
+                    hitbox.size.x * display.zoom, hitbox.size.y * display.zoom
+                );
+            });
+
+            display.cx.globalAlpha = 1;
+
+            // State
+            display.cx.textAlign = 'center';
+            display.cx.fillStyle = '#fff';
+            display.cx.font = 10 * display.zoom + 'px serif';
+            display.cx.fillText(
+                'action: ' + player.action,
+                (player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom,
+                (player.collisionBox.pos.y - 6) * display.zoom
+            );
+        });
     }
 
     // Foreground

@@ -20,7 +20,7 @@ class Player {
         }
 
         this.socdCleaner = inputs => {
-            var cleanedInputs = { ...inputs };
+            var cleanedInputs = inputs;
             if (cleanedInputs.left && cleanedInputs.right) {
                 cleanedInputs.left = false;
                 cleanedInputs.right = false;
@@ -32,7 +32,7 @@ class Player {
         }
 
         this.update = game => {
-            this.updateLastInputs(this.socdCleaner(id !== 'computer' ? game.inputList.get(this.id) : {}));
+            this.updateLastInputs(this.socdCleaner(id !== 'computer' ? {...game.inputList.get(this.id)} : {}));
             if (game.activity) this.character.update(game, this.inputList);
         };
     }
