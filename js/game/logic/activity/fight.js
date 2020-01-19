@@ -32,10 +32,10 @@ class Fight extends Activity {
         this.gameIsOver = false;
 
         this.entranceAnimEndFrame = 60;
-        this.entranceAnimFrame = winReset ? 0 : this.entranceAnimEndFrame;
+        this.entranceAnimFrame = this.trainingMode || !winReset ? this.entranceAnimEndFrame : 0;
 
         this.roundAnimEndFrame = 60;
-        this.roundAnimFrame = 0;
+        this.roundAnimFrame = this.trainingMode ? this.roundAnimEndFrame : 0;
 
         this.roundEndAnimEndFrame = 60;
         this.roundEndAnimFrame = 0;
