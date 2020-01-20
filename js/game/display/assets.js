@@ -92,10 +92,6 @@ class Assets {
         this.s0l0.src = 'img/stage/s0l0.png';
         this.s0l1 = document.createElement('img');
         this.s0l1.src = 'img/stage/s0l1.png';
-        this.s0l2 = document.createElement('img');
-        this.s0l2.src = 'img/stage/s0l2.png';
-        this.s0l3 = document.createElement('img');
-        this.s0l3.src = 'img/stage/s0l3.png';
         this.s0preview = document.createElement('img');
         this.s0preview.src = 'img/stage/s0preview.png';
 
@@ -105,8 +101,6 @@ class Assets {
         this.s1l0.src = 'img/stage/s1l0.png';
         this.s1l1 = document.createElement('img');
         this.s1l1.src = 'img/stage/s1l1.png';
-        this.s1l2 = document.createElement('img');
-        this.s1l2.src = 'img/stage/s1l2.png';
         this.s1preview = document.createElement('img');
         this.s1preview.src = 'img/stage/s1preview.png';
 
@@ -142,6 +136,10 @@ class Assets {
         this.result1.src = 'img/fight/result1.png';
         this.result2 = document.createElement('img');
         this.result2.src = 'img/fight/result2.png';
+        this.result3 = document.createElement('img');
+        this.result3.src = 'img/fight/result3.png';
+        this.timeover = document.createElement('img');
+        this.timeover.src = 'img/fight/timeover.png';
 
         // Fight Training
         this.infinity = document.createElement('img');

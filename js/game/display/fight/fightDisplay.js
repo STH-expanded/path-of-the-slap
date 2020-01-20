@@ -26,20 +26,28 @@ FightDisplay.update = display => {
     // Background
     FightDisplay.perspectiveLayer(display, fight, view);
 
+    display.cx.translate(view.xOffset * display.zoom, 0);
+    
+    // GUI
+    GUI.update(display);
+
+    display.cx.translate(-view.xOffset * display.zoom, 0);
+
+    // Player
+
     // DEBUG
     if (display.debugMode) {
         [player1, player2].forEach(player => {
-            display.cx.globalAlpha = 0.5;
 
             // Player
-            display.cx.fillStyle = '#00f';
+            display.cx.fillStyle = '#00f4';
             display.cx.fillRect(
                 player.collisionBox.pos.x * display.zoom, player.collisionBox.pos.y * display.zoom,
                 player.collisionBox.size.x * display.zoom, player.collisionBox.size.y * display.zoom
             );
 
             // Hurtboxes
-            display.cx.fillStyle = '#0f0';
+            display.cx.fillStyle = '#0f04';
             player.hurtboxes.forEach(hurtbox => {
                 display.cx.fillRect(
                     hurtbox.pos.x * display.zoom, hurtbox.pos.y * display.zoom,
@@ -48,15 +56,13 @@ FightDisplay.update = display => {
             });
 
             // Hitboxes
-            display.cx.fillStyle = '#f00';
+            display.cx.fillStyle = '#f004';
             player.hitboxes.forEach(hitbox => {
                 display.cx.fillRect(
                     hitbox.pos.x * display.zoom, hitbox.pos.y * display.zoom,
                     hitbox.size.x * display.zoom, hitbox.size.y * display.zoom
                 );
             });
-
-            display.cx.globalAlpha = 1;
 
             // State
             display.cx.textAlign = 'center';
@@ -70,18 +76,10 @@ FightDisplay.update = display => {
         });
     }
 
-    // Foreground
-    if (display.assets['s' + fight.stage.id + 'l2']) {
-        display.cx.drawImage(display.assets['s' + fight.stage.id + 'l2'], 0, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom);
-    }
-    if (display.assets['s' + fight.stage.id + 'l3']) {
-        display.cx.drawImage(display.assets['s' + fight.stage.id + 'l3'], -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom);
-    }
-
     display.cx.translate(view.xOffset * display.zoom, 0);
-
-    // GUI
-    GUI.update(display);
+    
+    // PauseMenu
+    if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 };
 
 FightDisplay.perspectiveLayer = (display, fight, view) => {

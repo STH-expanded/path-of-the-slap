@@ -6,11 +6,20 @@ class Character {
         this.name = 'ParentCharacter';
 
         this.LAG_ACTIONS = ["LAND", "GET_UP"];
-        this.DASH_ACTIONS = ["FORWARD_DASH", "BACK_DASH"];
-        this.JUMP_ACTIONS = ["NEUTRAL_JUMP", "FORWARD_JUMP", "BACK_JUMP"];
-        this.CROUCH_ACTIONS = ["FORWARD_CROUCH", "BACKWARD_CROUCH", "NAUTRAL_CROUCH"];
-        this.GROUND_ACTIONS = ["IDLE", "MOVE_FORWARD", "MOVE_BACKWARD", ...this.CROUCH_ACTIONS, ...this.DASH_ACTIONS];
+        this.DASH_ACTIONS = ["FORWARD_DASH", "BACKWARD_DASH"];
 
+        this.AERIAL_ACTIONS = ["BACKWARD_AERIAL", "NEUTRAL_AERIAL", "FORWARD_AERIAL"];
+        this.HIGH_ACTIONS = ["BACKWARD_HIGH", "NEUTRAL_HIGH", "FORWARD_HIGH"];
+        this.LOW_ACTIONS = ["BACKWARD_LOW", "NEUTRAL_LOW", "FORWARD_LOW"];
+
+        this.AERIAL_ATTACKS = ["AERIAL_A", "AERIAL_B"];
+        this.HIGH_ATTACKS = ["HIGH_A", "HIGH_B"];
+        this.LOW_ATTACKS = ["LOW_A", "LOW_B"];
+
+        this.ATTACK_ACTIONS = [...this.LOW_ATTACKS, ...this.HIGH_ATTACKS, ...this.AERIAL_ATTACKS];
+        this.GROUND_ACTIONS = [...this.HIGH_ACTIONS, ...this.LOW_ACTIONS, ...this.DASH_ACTIONS];
+
+        this.frame = 0;
         this.status = null;
         this.action = null;
         this.command = null;
@@ -18,7 +27,7 @@ class Character {
         this.collisionBox = new CollisionBox(null, null);
         this.speed = new Vector2D(0, 0);
         this.direction = null;
-        // this.weight ?
+        // weight ?
 
         this.hurtboxes = [];
         this.hitboxes = [];
@@ -26,9 +35,16 @@ class Character {
         this.maxHealth = 1000;
         this.health = this.maxHealth;
 
-        this.idleSize = new Vector2D(48, 96);
-        this.jumpSize = new Vector2D(48, 64);
-        this.crouchSize = new Vector2D(48, 64);
+        this.highAFrame = 15;
+        this.highBFrame = 30;
+
+        // boolean run dash ?
+
+        // attack cancels ?
+
+        this.idleSize = new Vector2D(24, 96);
+        this.jumpSize = new Vector2D(24, 64);
+        this.crouchSize = new Vector2D(24, 64);
 
         this.moveForwardSpeed = 2;
         this.moveBackwardSpeed = -2;
@@ -44,22 +60,22 @@ class Character {
             var direction = this.direction ? 1 : -1;
 
             switch (this.action) {
-                case "MOVE_FORWARD":
+                case "FORWARD_HIGH":
                     this.speed.x = direction * this.moveForwardSpeed;
                     break;
-                case "MOVE_BACKWARD":
+                case "BACKWARD_HIGH":
                     this.speed.x = direction * this.moveBackwardSpeed;
                     break;
                 case "FORWARD_DASH":
                     this.speed.x = direction * this.forwardDashSpeed;
                     break;
-                case "BACK_DASH":
+                case "BACKWARD_DASH":
                     this.speed.x = direction * this.backDashSpeed;
                     break;
-                case "FORWARD_JUMP":
+                case "FORWARD_AERIAL":
                     this.speed.x = direction * this.forwardJumpSpeed;
                     break;
-                case "BACK_JUMP":
+                case "BACKWARD_AERIAL":
                     this.speed.x = direction * this.backJumpSpeed;
                     break;
                 default:
@@ -87,7 +103,7 @@ class Character {
         };
 
         this.moveY = game => {
-            if (this.JUMP_ACTIONS.includes(this.command)) this.speed.y -= this.jumpHeight;
+            if (this.AERIAL_ACTIONS.includes(this.command)) this.speed.y -= this.jumpHeight;
             this.speed.y += this.gravity.y;
 
             let newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(0, this.speed.y)), this.collisionBox.size);
@@ -95,27 +111,74 @@ class Character {
             else this.speed.y = 0;
         }
 
-        // this.attack = game => {
-        //     if (inputList[inputList.length - 1].inputs.a) {
-        //         const dir = this.direction ? this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2 : this.hurtbox.playerPos.x + this.hurtbox.playerSize.x / 2 - this.hurtbox.playerSize.x;
-        //         this.hitbox = new HitBox(new Vector2D(dir, this.hurtbox.playerPos.y + 10), new Vector2D(this.hurtbox.playerSize.x, 20));
-        //         this.isAttack = true;
-        //         if (this.hitbox.isIntersect(this.hitbox.playerPos, this.opponent.character.hurtbox.playerPos, this.opponent.character.hurtbox.playerSize)) {
-        //             this.opponent.character.health -= 5;
-        //         } else {
-        //             console.log('Missed');
-        //         }
-        //     } else this.isAttack = false;
-        // };
+        this.LAND = game => {}
+        this.GET_UP = game => {}
+
+        this.BACKWARD_DASH = game => {}
+        this.FORWARD_DASH = game => {}
+
+        this.BACKWARD_LOW = game => {}
+        this.NEUTRAL_LOW = game => {}
+        this.FORWARD_LOW = game => {}
+
+        this.BACKWARD_HIGH = game => {}
+        this.NEUTRAL_HIGH = game => {}
+        this.FORWARD_HIGH = game => {}
+
+        this.BACKWARD_AERIAL = game => {}
+        this.NEUTRAL_AERIAL = game => {}
+        this.FORWARD_AERIAL = game => {}
+
+        this.LOW_A = game => {}
+        this.LOW_B = game => {}
+
+        this.AERIAL_A = game => {}
+        this.AERIAL_B = game => {}
+
+        this.HIGH_A = game => {
+            this.frame++;
+
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+
+            this.hurtboxes.push(new HurtBox(
+                new Vector2D(center.x, center.y - 8),
+                new Vector2D(32, 112)
+            ));
+
+            if (this.frame > 6 && this.frame < 9) {
+                this.hitboxes.push(new HitBox(
+                    new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 24),
+                    new Vector2D(40, 24)
+                ));
+
+                this.hurtboxes.push(new HurtBox(
+                    new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 16),
+                    new Vector2D(40, 24)
+                ));
+            }
+        };
+
+        this.HIGH_B = game => {
+            this.frame++;
+
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+
+            if (this.frame > 11 && this.frame < 18) {
+                this.hitboxes.push(new HitBox(
+                    new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 16),
+                    new Vector2D(72, 32)
+                ));
+            }
+        };
 
         this.updateSize = () => {
-            if (this.JUMP_ACTIONS.includes(this.command) && this.collisionBox.size.y !== this.jumpSize.y) {
+            if (this.AERIAL_ACTIONS.includes(this.command) && this.collisionBox.size.y !== this.jumpSize.y) {
                 this.collisionBox.pos.y += this.collisionBox.size.y - this.jumpSize.y;
                 this.collisionBox.size.y = this.jumpSize.y;
-            } else if (this.CROUCH_ACTIONS.includes(this.command) && this.collisionBox.size.y !== this.crouchSize.y) {
+            } else if (this.LOW_ACTIONS.includes(this.command) && this.collisionBox.size.y !== this.crouchSize.y) {
                 this.collisionBox.pos.y += this.collisionBox.size.y - this.crouchSize.y;
                 this.collisionBox.size.y = this.crouchSize.y;
-            } else if (![...this.JUMP_ACTIONS, ...this.CROUCH_ACTIONS].includes(this.action) && this.collisionBox.size.y !== this.idleSize.y) {
+            } else if (![...this.AERIAL_ACTIONS, ...this.LOW_ACTIONS].includes(this.action) && this.collisionBox.size.y !== this.idleSize.y) {
                 this.collisionBox.pos.y -= this.idleSize.y - this.collisionBox.size.y;
                 this.collisionBox.size.y = this.idleSize.y;
             }
@@ -130,48 +193,74 @@ class Character {
         this.getCommandInput = (game, inputList) => {
             var inputs = inputList[inputList.length - 1].inputs;
 
-            if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.JUMP_ACTIONS.includes(this.action)) {
+            if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_ACTIONS.includes(this.action)) {
                 return "LAND";
-            } else if (!inputs.down && this.CROUCH_ACTIONS.includes(this.action)) {
+            } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
                 return "GET_UP";
+            } else if ((inputs.a && this.HIGH_ACTIONS.includes(this.action) || this.action === "HIGH_A") && this.frame < this.highAFrame) {
+                return "HIGH_A";
+            } else if ((inputs.b && this.HIGH_ACTIONS.includes(this.action) || this.action === "HIGH_B") && this.frame < this.highBFrame) {
+                return "HIGH_B";
             } else if (inputs.up && this.GROUND_ACTIONS.includes(this.action)) {
-                return (inputs.left && !this.direction || inputs.right && this.direction) ? "FORWARD_JUMP" :
-                    (inputs.left && this.direction || inputs.right && !this.direction) ? "BACK_JUMP" :
-                    "NEUTRAL_JUMP";
+                if (inputs.left && !this.direction || inputs.right && this.direction) {
+                    return "FORWARD_AERIAL";
+                } else if (inputs.left && this.direction || inputs.right && !this.direction) {
+                    return "BACKWARD_AERIAL";
+                } else {
+                    return "NEUTRAL_AERIAL";
+                }
             } else if (inputs.down && this.GROUND_ACTIONS.includes(this.action)) {
-                return (inputs.left && !this.direction || inputs.right && this.direction) ? "FORWARD_CROUCH" :
-                    (inputs.left && this.direction || inputs.right && !this.direction) ? "BACKWARD_CROUCH" :
-                    "NAUTRAL_CROUCH";
-            } else if (inputs.right && (this.DASH_ACTIONS.includes(this.action) || this.action === "IDLE" && inputList.length > 2 &&
-                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) {
-                return this.direction ? "FORWARD_DASH" :
-                    "BACK_DASH";
-            } else if (inputs.left && (this.DASH_ACTIONS.includes(this.action) || this.action === "IDLE" && inputList.length > 2 &&
-                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) {
-                return this.direction ? "BACK_DASH" :
-                    "FORWARD_DASH";
+                if (inputs.left && !this.direction || inputs.right && this.direction) {
+                    return "FORWARD_LOW";
+                } else if (inputs.left && this.direction || inputs.right && !this.direction) {
+                    return "BACKWARD_LOW";
+                } else {
+                    return "NEUTRAL_LOW";
+                }
+            } else if (inputs.right && this.direction && (this.action === "FORWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
+                    !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) {
+                return "FORWARD_DASH";
+            } else if (inputs.left && !this.direction && (this.action === "FORWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
+                    !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) {
+                return "FORWARD_DASH";
+            } else if (inputs.left && this.direction && (this.action === "BACKWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
+                    !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) {
+                return "BACKWARD_DASH";
+            } else if (inputs.right && !this.direction && (this.action === "BACKWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
+                    !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) {
+                return "BACKWARD_DASH";
             } else if ((inputs.right && this.direction || inputs.left && !this.direction) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
-                return "MOVE_FORWARD";
+                return "FORWARD_HIGH";
             } else if ((inputs.left && this.direction || inputs.right && !this.direction) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
-                return "MOVE_BACKWARD";
-            } else if ([...this.GROUND_ACTIONS, ...this.LAG_ACTIONS].includes(this.action)) {
-                return "IDLE";
+                return "BACKWARD_HIGH";
+            } else if ([...this.GROUND_ACTIONS, ...this.HIGH_ATTACKS, ...this.LAG_ACTIONS].includes(this.action)) {
+                return "NEUTRAL_HIGH";
             } else {
                 return null;
             }
         }
 
         this.update = (game, inputList) => {
+            this.hitboxes = [];
+            this.hurtboxes = [];
+
             this.command = this.getCommandInput(game, inputList);
+            if (this.command !== this.action) this.frame = 0;
             this.action = this.command ? this.command : this.action;
 
+            // check if intersect enemy hitboxes
+
             this.updateSize();
-            if (!this.JUMP_ACTIONS.includes(this.action)) this.updateDirection(game);
+            if (!this.AERIAL_ACTIONS.includes(this.action)) this.updateDirection(game);
 
             if (!this.status) {
                 this.moveX(game);
                 this.moveY(game);
-                // this.attack(game);
+                if (this.action) this[this.action](game);
             }
 
             this.command = null;

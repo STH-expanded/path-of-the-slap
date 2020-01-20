@@ -164,13 +164,14 @@ GUI.update = display => {
         }
         if (fight.roundIsOver) {
             if (fight.roundEndAnimFrame < fight.roundEndAnimEndFrame) {
-                display.cx.drawImage(display.assets.ko, 0, 0, 480 * display.zoom, 270 * display.zoom);
+                display.cx.drawImage(display.assets[fight.timer === 0 ? 'timeover' : 'ko'], 0, 0, 480 * display.zoom, 270 * display.zoom);
             } else if (fight.endAnimFrame < fight.endAnimEndFrame) {
-                display.cx.drawImage(display.assets['result' + (fight.players.findIndex(player => player.winCount === fight.playoff) + 1)], 0, 0, 480 * display.zoom, 270 * display.zoom);
+                display.cx.drawImage(
+                    display.assets['result' + (fight.player1.winCount === fight.player2.winCount && fight.player1.winCount === fight.playoff ? 3 :
+                    (fight.players.findIndex(player => player.winCount === fight.playoff) + 1))],
+                    0, 0, 480 * display.zoom, 270 * display.zoom
+                );
             }
         }
     }
-
-    // PauseMenu
-    if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 }

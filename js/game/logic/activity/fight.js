@@ -8,7 +8,7 @@ class Fight extends Activity {
         this.players = players;
         this.players.forEach((player, index) => {
             if (winReset) player.winCount = 0;
-            player.character.action = 'IDLE';
+            player.character.action = "NEUTRAL_HIGH";
             player.character.direction = index === 0;
             player.character.health = player.character.maxHealth;
             player.character.enemy = this.players.find(p => p.id !== player.id).character;
