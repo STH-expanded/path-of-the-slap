@@ -8,24 +8,11 @@ window.onload = () => {
         var inputManager = new InputManager();
         var game = new Game(inputManager.inputList);
         var display = new Display(game);
-    
-        var fps = 60;
-        var now;
-        var then = Date.now();
-        var interval = 1000/fps;
-        var delta;
 
         var frame = () => {
-            now = Date.now();
-            delta = now - then;
-
-            if (delta > interval) {
-                inputManager.update();
-                game.update();
-                display.update();
-                
-                then = now - (delta % interval);
-            }
+            inputManager.update();
+            game.update();
+            display.update();            
 
             requestAnimationFrame(frame);
         }

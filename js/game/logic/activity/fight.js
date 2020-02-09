@@ -19,6 +19,8 @@ class Fight extends Activity {
             );
             player.inputList = [];
             player.character.inputList = null;
+            player.character.hitboxes = [];
+            player.character.hurtboxes = [];
         });
         this.player1 = this.players[0];
         this.player2 = this.players[1];

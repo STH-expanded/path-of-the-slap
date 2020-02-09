@@ -73,6 +73,13 @@ FightDisplay.update = display => {
                 (player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom,
                 (player.collisionBox.pos.y - 6) * display.zoom
             );
+            if (player.status) {
+                display.cx.fillText(
+                    'status: ' + player.status,
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom,
+                    (player.collisionBox.pos.y - 16) * display.zoom
+                );
+            }
         });
     }
 
