@@ -49,6 +49,7 @@ class Character {
         this.highBFrame = 30;
 
         // boolean run dash ?
+        this.canBackdash = false;
 
         // attack cancels ?
 
@@ -56,9 +57,9 @@ class Character {
         this.jumpSize = new Vector2D(24, 64);
         this.crouchSize = new Vector2D(24, 64);
 
-        this.moveForwardSpeed = 2;
+        this.moveForwardSpeed = 1;
         this.moveBackwardSpeed = -2;
-        this.forwardDashSpeed = 6;
+        this.forwardDashSpeed = 10;
         this.backDashSpeed = -6;
 
         this.forwardJumpSpeed = 4;
@@ -308,11 +309,13 @@ class Character {
                 return "FORWARD_DASH";
             } else if (inputs.left && this.direction && (this.action === "BACKWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
                     !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
-                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) {
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left) &&
+                    this.canBackdash) {
                 return "BACKWARD_DASH";
             } else if (inputs.right && !this.direction && (this.action === "BACKWARD_DASH" || this.action === "NEUTRAL_HIGH" && inputList.length > 2 &&
                     !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a &&
-                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) {
+                    !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right) &&
+                    this.canBackdash) {
                 return "BACKWARD_DASH";
             } else if ((inputs.right && this.direction || inputs.left && !this.direction) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return "FORWARD_HIGH";

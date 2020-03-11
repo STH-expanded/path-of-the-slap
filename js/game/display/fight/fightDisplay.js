@@ -1,4 +1,4 @@
-class FightDisplay extends ActivityDisplay { }
+class FightDisplay extends ActivityDisplay {}
 FightDisplay.update = display => {
     var fight = display.game.activity;
 
@@ -82,6 +82,12 @@ FightDisplay.update = display => {
             }
 
             var drawCharacter = player => {
+
+                display.cx.save();
+                if (!player.direction) {
+                    display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom);
+                }
+
                 switch (player.action) {
                     case "HIT":
                         display.cx.fillStyle = '#04ff';
@@ -114,7 +120,13 @@ FightDisplay.update = display => {
                         display.cx.fillStyle = '#d3f8b0';
                         break;
                     case "FORWARD_DASH":
-                        display.cx.fillStyle = '#f7ff00';
+                        display.cx.drawImage(display.assets.c00df,
+                            0, 0,
+                            182, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "BACKWARD_DASH":
                         display.cx.fillStyle = '#ffa4a4';
@@ -129,13 +141,31 @@ FightDisplay.update = display => {
                         display.cx.fillStyle = '#cdff00';
                         break;
                     case "BACKWARD_HIGH":
-                        display.cx.fillStyle = '#7cff00';
+                        display.cx.drawImage(display.assets.c00hb,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "NEUTRAL_HIGH":
-                        display.cx.fillStyle = '#00fff0';
+                        display.cx.drawImage(display.assets.c00idle,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "FORWARD_HIGH":
-                        display.cx.fillStyle = '#00aaff';
+                        display.cx.drawImage(display.assets.c00hf,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "BACKWARD_LOW":
                         display.cx.fillStyle = '#0f00ff';
@@ -153,10 +183,22 @@ FightDisplay.update = display => {
                         display.cx.fillStyle = '#0f6903';
                         break;
                     case "HIGH_A":
-                        display.cx.fillStyle = '#fbff77';
+                        display.cx.drawImage(display.assets.c00ha,
+                            182 * Math.floor((player.frame / 4) % 4), 0,
+                            182, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "HIGH_B":
-                        display.cx.fillStyle = '#f8bb19';
+                        display.cx.drawImage(display.assets.c00hab,
+                            182 * Math.floor((player.frame / 5) % 6), 0,
+                            182, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "LOW_A":
                         display.cx.fillStyle = '#73717d';
@@ -165,13 +207,11 @@ FightDisplay.update = display => {
                         display.cx.fillStyle = '#d9ace2';
                         break;
                 }
-                display.cx.fillRect(
-                    player.collisionBox.pos.x * display.zoom, player.collisionBox.pos.y * display.zoom,
-                    player.collisionBox.size.x * display.zoom, player.collisionBox.size.y * display.zoom
-                );
+                
+                display.cx.restore();
             }
 
-            drawCharacter(player);
+            if (player.id === '00') drawCharacter(player);
         });
     }
 
