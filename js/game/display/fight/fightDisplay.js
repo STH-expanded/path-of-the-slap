@@ -1,4 +1,4 @@
-class FightDisplay extends ActivityDisplay {}
+class FightDisplay extends ActivityDisplay { }
 FightDisplay.update = display => {
     var fight = display.game.activity;
 
@@ -27,7 +27,7 @@ FightDisplay.update = display => {
     FightDisplay.perspectiveLayer(display, fight, view);
 
     display.cx.translate(view.xOffset * display.zoom, 0);
-    
+
     // GUI
     GUI.update(display);
 
@@ -80,11 +80,103 @@ FightDisplay.update = display => {
                     (player.collisionBox.pos.y - 16) * display.zoom
                 );
             }
+
+            var drawCharacter = player => {
+                switch (player.action) {
+                    case "HIT":
+                        display.cx.fillStyle = '#04ff';
+                        break;
+                    case "EJECTED":
+                        display.cx.fillStyle = '#229954';
+                        break;
+                    case "GROUND":
+                        display.cx.fillStyle = '#2c3e50';
+                        break;
+                    case "RECOVER":
+                        display.cx.fillStyle = '#d4ac0d';
+                        break;
+                    case "TECH":
+                        display.cx.fillStyle = '#8e44ad';
+                        break;
+                    case "BLOCK_AERIAL":
+                        display.cx.fillStyle = '#0b5345';
+                        break;
+                    case "BLOCK_HIGH":
+                        display.cx.fillStyle = '#5f6a6a';
+                        break;
+                    case "BLOCK_LOW":
+                        display.cx.fillStyle = '#82e0aa';
+                        break;
+                    case "LAND":
+                        display.cx.fillStyle = '#fc33ff';
+                        break;
+                    case "GET_UP":
+                        display.cx.fillStyle = '#d3f8b0';
+                        break;
+                    case "FORWARD_DASH":
+                        display.cx.fillStyle = '#f7ff00';
+                        break;
+                    case "BACKWARD_DASH":
+                        display.cx.fillStyle = '#ffa4a4';
+                        break;
+                    case "BACKWARD_AERIAL":
+                        display.cx.fillStyle = '#ff7000';
+                        break;
+                    case "NEUTRAL_AERIAL":
+                        display.cx.fillStyle = '#ffd800';
+                        break;
+                    case "FORWARD_AERIAL":
+                        display.cx.fillStyle = '#cdff00';
+                        break;
+                    case "BACKWARD_HIGH":
+                        display.cx.fillStyle = '#7cff00';
+                        break;
+                    case "NEUTRAL_HIGH":
+                        display.cx.fillStyle = '#00fff0';
+                        break;
+                    case "FORWARD_HIGH":
+                        display.cx.fillStyle = '#00aaff';
+                        break;
+                    case "BACKWARD_LOW":
+                        display.cx.fillStyle = '#0f00ff';
+                        break;
+                    case "NEUTRAL_LOW":
+                        display.cx.fillStyle = '#9e00ff';
+                        break;
+                    case "FORWARD_LOW":
+                        display.cx.fillStyle = '#d800ff';
+                        break;
+                    case "AERIAL_A":
+                        display.cx.fillStyle = '#946aa8';
+                        break;
+                    case "AERIAL_B":
+                        display.cx.fillStyle = '#0f6903';
+                        break;
+                    case "HIGH_A":
+                        display.cx.fillStyle = '#fbff77';
+                        break;
+                    case "HIGH_B":
+                        display.cx.fillStyle = '#f8bb19';
+                        break;
+                    case "LOW_A":
+                        display.cx.fillStyle = '#73717d';
+                        break;
+                    case "LOW_B":
+                        display.cx.fillStyle = '#d9ace2';
+                        break;
+                }
+                display.cx.fillRect(
+                    player.collisionBox.pos.x * display.zoom, player.collisionBox.pos.y * display.zoom,
+                    player.collisionBox.size.x * display.zoom, player.collisionBox.size.y * display.zoom
+                );
+            }
+
+            drawCharacter(player);
         });
     }
 
     display.cx.translate(view.xOffset * display.zoom, 0);
-    
+
     // PauseMenu
     if (fight.pauseMenu) fight.pauseMenu.display.update(display);
 };
