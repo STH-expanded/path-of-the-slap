@@ -20,10 +20,11 @@ class Character {
         this.HIGH_ATTACKS = ['HIGH_A', 'HIGH_B'];
         this.LOW_ATTACKS = ['LOW_A', 'LOW_B'];
 
-        this.AERIAL_ACTIONS = ['BACKWARD_AERIAL', 'NEUTRAL_AERIAL', 'FORWARD_AERIAL', ...this.AERIAL_ATTACKS];
+        this.AERIAL_ACTIONS = ['BACKWARD_AERIAL', 'NEUTRAL_AERIAL', 'FORWARD_AERIAL'];
         this.HIGH_ACTIONS = ['BACKWARD_HIGH', 'NEUTRAL_HIGH', 'FORWARD_HIGH', ...this.HIGH_ATTACKS];
         this.LOW_ACTIONS = ['BACKWARD_LOW', 'NEUTRAL_LOW', 'FORWARD_LOW', ...this.LOW_ATTACKS];
 
+        this.AERIAL_FULL = [...this.AERIAL_ATTACKS, ...this.AERIAL_ACTIONS];
         this.ATTACK_ACTIONS = [...this.LOW_ATTACKS, ...this.HIGH_ATTACKS, ...this.AERIAL_ATTACKS];
         this.GROUND_ACTIONS = [...this.HIGH_ACTIONS, ...this.LOW_ACTIONS, ...this.DASH_ACTIONS];
 
@@ -31,6 +32,7 @@ class Character {
         this.status = null;
         this.action = null;
         this.command = null;
+        this.lastAction = null;
 
         this.collisionBox = new CollisionBox(null, null);
         this.speed = new Vector2D(0, 0);
@@ -92,6 +94,20 @@ class Character {
                     break;
                 case 'FORWARD_AERIAL':
                     this.speed.x = direction * this.forwardJumpSpeed;
+                    break;
+                case 'AERIAL_A':
+                    if (this.lastAction === 'FORWARD_AERIAL') {
+                        this.speed.x = direction * this.forwardJumpSpeed;
+                    } else if (this.lastAction === 'BACKWARD_AERIAL') {
+                        this.speed.x = direction * this.backJumpSpeed;
+                    }
+                    break;
+                case 'AERIAL_B':
+                    if (this.lastAction === 'FORWARD_AERIAL') {
+                        this.speed.x = direction * this.forwardJumpSpeed;
+                    } else if (this.lastAction === 'BACKWARD_AERIAL') {
+                        this.speed.x = direction * this.backJumpSpeed;
+                    }
                     break;
                 case 'BACKWARD_AERIAL':
                     this.speed.x = direction * this.backJumpSpeed;
@@ -169,7 +185,10 @@ class Character {
         // ACTIONS
         //------------------------------------------------------------------------------------------------------------------------------
 
-        this.LAND = game => {};
+        this.LAND = game => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
+        };
         this.GET_UP = game => {};
 
         this.BACKWARD_DASH = game => {
@@ -249,12 +268,20 @@ class Character {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(46, 106)));
-            if (this.frame > 3 && this.frame < 7) {
+            if (this.frame > 5 && this.frame < 9) {
                 this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(40, 24), 50, 10));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(32, 16)));
             }
         };
-        this.AERIAL_B = game => {};
+        this.AERIAL_B = game => {
+            this.frame++;
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(46, 106)));
+            if (this.frame > 3 && this.frame < 15) {
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 16), new Vector2D(64, 24), 50, 15));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 16), new Vector2D(58, 16)));
+            }
+        };
 
         this.HIGH_A = game => {
             this.frame++;
@@ -288,7 +315,7 @@ class Character {
         this.getCommandInput = (game, inputList) => {
             var inputs = inputList[inputList.length - 1].inputs;
 
-            if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_ACTIONS.includes(this.action)) {
+            if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
             } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
                 return 'GET_UP';
@@ -301,7 +328,6 @@ class Character {
             } else if (((inputs.b && this.LOW_ACTIONS.includes(this.action)) || this.action === 'LOW_B') && this.frame < this.lowBFrame) {
                 return 'LOW_B';
             } else if (((inputs.a && this.AERIAL_ACTIONS.includes(this.action)) || this.action === 'AERIAL_A') && this.frame < this.aerialAFrame) {
-                console.log(this.action);
                 return 'AERIAL_A';
             } else if (((inputs.b && this.AERIAL_ACTIONS.includes(this.action)) || this.action === 'AERIAL_B') && this.frame < this.aerialBFrame) {
                 return 'AERIAL_B';
@@ -355,7 +381,7 @@ class Character {
             this.action = this.command ? this.command : this.action;
 
             this.updateSize();
-            if (!this.AERIAL_ACTIONS.includes(this.action)) this.updateDirection(game);
+            if (!this.AERIAL_FULL.includes(this.action) || !this.LAG_ACTIONS.includes(this.action)) this.updateDirection(game);
 
             if (!this.status) {
                 this.moveX(game);
@@ -365,6 +391,8 @@ class Character {
 
             this.command = null;
             if (this.health < 0) this.health = 0;
+
+            this.lastAction = this.lastAction === this.action ? this.lastAction : this.action;
         };
     }
 }
