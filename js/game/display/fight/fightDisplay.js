@@ -34,11 +34,10 @@ FightDisplay.update = display => {
     display.cx.translate(-view.xOffset * display.zoom, 0);
 
     // Player
+    [player1, player2].forEach(player => {
 
-    // DEBUG
-    if (display.debugMode) {
-        [player1, player2].forEach(player => {
-
+        // DEBUG
+        if (display.debugMode) {
             // Player
             display.cx.fillStyle = '#00f4';
             display.cx.fillRect(
@@ -80,72 +79,162 @@ FightDisplay.update = display => {
                     (player.collisionBox.pos.y - 16) * display.zoom
                 );
             }
+        }
 
-            var drawCharacter = player => {
+        var drawCharacter = player => {
 
-                display.cx.save();
-                if (!player.direction) {
-                    display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom);
-                }
+            display.cx.save();
+            if (!player.direction) {
+                display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom);
+            }
 
-                switch (player.action) {
+            if (player.status) {
+                switch (player.status) {
                     case "HIT":
-                        display.cx.fillStyle = '#04ff';
+                        display.cx.drawImage(display.assets.c00stun,
+                            0, 0,
+                            91, 192,
+                            (Math.floor(Math.random() * player.frame / 2) - player.frame / 4 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "EJECTED":
-                        display.cx.fillStyle = '#229954';
+                        console.log("EJECTED");
                         break;
                     case "GROUND":
-                        display.cx.fillStyle = '#2c3e50';
+                        console.log("GROUND");
                         break;
                     case "RECOVER":
-                        display.cx.fillStyle = '#d4ac0d';
+                        console.log("RECOVER");
                         break;
                     case "TECH":
-                        display.cx.fillStyle = '#8e44ad';
+                        console.log("TECH");
                         break;
                     case "BLOCK_AERIAL":
-                        display.cx.fillStyle = '#0b5345';
+                        console.log("BLOCK_AERIAL");
                         break;
                     case "BLOCK_HIGH":
-                        display.cx.fillStyle = '#5f6a6a';
+                        console.log("BLOCK_HIGH");
                         break;
                     case "BLOCK_LOW":
-                        display.cx.fillStyle = '#82e0aa';
+                        console.log("BLOCK_LOW");
                         break;
+                }
+            } else {
+                switch (player.action) {
                     case "LAND":
-                        display.cx.fillStyle = '#fc33ff';
+                        display.cx.drawImage(display.assets.c00a0,
+                            0, 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "GET_UP":
-                        display.cx.fillStyle = '#d3f8b0';
+                        display.cx.drawImage(display.assets.c00a0,
+                            0, 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "FORWARD_DASH":
                         display.cx.drawImage(display.assets.c00df,
                             0, 0,
                             182, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             182 * display.zoom, 192 * display.zoom
                         );
+                        display.cx.drawImage(display.assets.dust,
+                            128 * Math.floor((player.frame / 2) % 20), 0,
+                            128, 128,
+                            (-(Math.floor(player.frame / 2) * player.forwardDashSpeed) + player.collisionBox.pos.x - 128) * display.zoom,
+                            (8 + player.collisionBox.pos.y + player.collisionBox.size.y - 128) * display.zoom,
+                            128 * display.zoom, 128 * display.zoom
+                        );
+                        display.cx.globalAlpha = 0.5;
+                        display.cx.drawImage(display.assets.dash,
+                            128 * Math.floor((player.frame / 4) % 20), 0,
+                            128, 128,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x) * display.zoom,
+                            (player.collisionBox.pos.y + player.collisionBox.size.y - 128) * display.zoom,
+                            128 * display.zoom, 128 * display.zoom
+                        );
+                        display.cx.globalAlpha = 1;
                         break;
                     case "BACKWARD_DASH":
-                        display.cx.fillStyle = '#ffa4a4';
+                        console.log("BACKWARD_DASH");
                         break;
                     case "BACKWARD_AERIAL":
-                        display.cx.fillStyle = '#ff7000';
+                        if (player.speed.y <= 0) {
+                            display.cx.drawImage(display.assets.c00a1,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
+                        else {
+                            display.cx.drawImage(display.assets.c00a2,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
                         break;
                     case "NEUTRAL_AERIAL":
-                        display.cx.fillStyle = '#ffd800';
+                        if (player.speed.y <= 0) {
+                            display.cx.drawImage(display.assets.c00a1,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
+                        else {
+                            display.cx.drawImage(display.assets.c00a2,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
                         break;
                     case "FORWARD_AERIAL":
-                        display.cx.fillStyle = '#cdff00';
+                        if (player.speed.y <= 0) {
+                            display.cx.drawImage(display.assets.c00a1,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
+                        else {
+                            display.cx.drawImage(display.assets.c00a2,
+                                0, 0,
+                                91, 192,
+                                (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                91 * display.zoom, 192 * display.zoom
+                            );
+                        }
                         break;
                     case "BACKWARD_HIGH":
                         display.cx.drawImage(display.assets.c00hb,
                             91 * Math.floor((display.frame / 8) % 6), 0,
                             91, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             91 * display.zoom, 192 * display.zoom
                         );
                         break;
@@ -154,7 +243,7 @@ FightDisplay.update = display => {
                             91 * Math.floor((display.frame / 8) % 6), 0,
                             91, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             91 * display.zoom, 192 * display.zoom
                         );
                         break;
@@ -163,31 +252,61 @@ FightDisplay.update = display => {
                             91 * Math.floor((display.frame / 8) % 6), 0,
                             91, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             91 * display.zoom, 192 * display.zoom
                         );
                         break;
                     case "BACKWARD_LOW":
-                        display.cx.fillStyle = '#0f00ff';
+                        display.cx.drawImage(display.assets.c00lidle,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "NEUTRAL_LOW":
-                        display.cx.fillStyle = '#9e00ff';
+                        display.cx.drawImage(display.assets.c00lidle,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "FORWARD_LOW":
-                        display.cx.fillStyle = '#d800ff';
+                        display.cx.drawImage(display.assets.c00lidle,
+                            91 * Math.floor((display.frame / 8) % 6), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "AERIAL_A":
-                        display.cx.fillStyle = '#946aa8';
+                        display.cx.drawImage(display.assets.c00aa,
+                            91 * Math.floor((player.frame / 5) % 4), 0,
+                            91, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            91 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "AERIAL_B":
-                        display.cx.fillStyle = '#0f6903';
+                        display.cx.drawImage(display.assets.c00ab,
+                            182 * Math.floor((player.frame / 4) % 6), 0,
+                            182, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "HIGH_A":
                         display.cx.drawImage(display.assets.c00ha,
                             182 * Math.floor((player.frame / 4) % 4), 0,
                             182, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             182 * display.zoom, 192 * display.zoom
                         );
                         break;
@@ -196,24 +315,36 @@ FightDisplay.update = display => {
                             182 * Math.floor((player.frame / 5) % 6), 0,
                             182, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                            -80 + (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             182 * display.zoom, 192 * display.zoom
                         );
                         break;
                     case "LOW_A":
-                        display.cx.fillStyle = '#73717d';
+                        display.cx.drawImage(display.assets.c00la,
+                            182 * Math.floor((player.frame / 3) % 4), 0,
+                            182, 192,
+                            (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                     case "LOW_B":
-                        display.cx.fillStyle = '#d9ace2';
+                        display.cx.drawImage(display.assets.c00lab,
+                            182 * Math.floor((player.frame / 5) % 6), 0,
+                            182, 192,
+                            (32 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
                         break;
                 }
-                
-                display.cx.restore();
             }
 
-            if (player.id === '00') drawCharacter(player);
-        });
-    }
+            display.cx.restore();
+        }
+
+        if (player.id === '00') drawCharacter(player);
+    });
 
     display.cx.translate(view.xOffset * display.zoom, 0);
 

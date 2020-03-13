@@ -53,6 +53,24 @@ class Assets {
         this.c00ha.src = 'img/character/c00ha.png';
         this.c00hab = document.createElement('img');
         this.c00hab.src = 'img/character/c00hab.png';
+        this.c00lidle = document.createElement('img');
+        this.c00lidle.src = 'img/character/c00lidle.png';
+        this.c00la = document.createElement('img');
+        this.c00la.src = 'img/character/c00la.png';
+        this.c00lab = document.createElement('img');
+        this.c00lab.src = 'img/character/c00lab.png';
+        this.c00a0 = document.createElement('img');
+        this.c00a0.src = 'img/character/c00a0.png';
+        this.c00a1 = document.createElement('img');
+        this.c00a1.src = 'img/character/c00a1.png';
+        this.c00a2 = document.createElement('img');
+        this.c00a2.src = 'img/character/c00a2.png';
+        this.c00stun = document.createElement('img');
+        this.c00stun.src = 'img/character/c00stun.png';
+        this.c00aa = document.createElement('img');
+        this.c00aa.src = 'img/character/c00aa.png';
+        this.c00ab = document.createElement('img');
+        this.c00ab.src = 'img/character/c00ab.png';
 
         this.ci01 = document.createElement('img');
         this.ci01.src = 'img/character/ci01.png';
@@ -152,6 +170,10 @@ class Assets {
         this.result3.src = 'img/fight/result3.png';
         this.timeover = document.createElement('img');
         this.timeover.src = 'img/fight/timeover.png';
+        this.dust = document.createElement('img');
+        this.dust.src = 'img/fight/dust.png';
+        this.dash = document.createElement('img');
+        this.dash.src = 'img/fight/dash.png';
 
         // Fight Training
         this.infinity = document.createElement('img');

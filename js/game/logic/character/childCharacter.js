@@ -11,9 +11,9 @@ class ChildCharacter extends Character {
         this.id = '01';
         this.name = 'ChildCharacter';
 
-        this.idleSize = new Vector2D(32, 128);
-        this.jumpSize = new Vector2D(32, 96);
-        this.crouchSize = new Vector2D(32, 96);
+        this.idleSize = new Vector2D(24, 96);
+        this.jumpSize = new Vector2D(24, 64);
+        this.crouchSize = new Vector2D(24, 64);
 
 
         //------------------------------------------------------------------------------------------------------------------------------
