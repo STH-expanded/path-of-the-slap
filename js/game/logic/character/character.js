@@ -56,7 +56,6 @@ class Character {
 
         this.forwardDashFrame = 20;
 
-        // boolean run dash ?
         this.canBackdash = false;
         this.runDash = false;
 
@@ -140,7 +139,7 @@ class Character {
         };
 
         this.moveY = game => {
-            if (this.AERIAL_ACTIONS.includes(this.command)) this.speed.y -= this.jumpHeight;
+            if (this.AERIAL_ACTIONS.includes(this.command) && !this.AERIAL_ATTACKS.includes(this.lastAction)) this.speed.y -= this.jumpHeight;
             this.speed.y += this.gravity.y;
 
             let newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(0, this.speed.y)), this.collisionBox.size);
@@ -337,10 +336,10 @@ class Character {
                 return 'AERIAL_A';
             } else if (((inputs.b && this.AERIAL_ACTIONS.includes(this.action)) || this.action === 'AERIAL_B') && this.frame < this.aerialBFrame) {
                 return 'AERIAL_B';
-            } else if (inputs.up && this.GROUND_ACTIONS.includes(this.action)) {
-                if ((inputs.left && !this.direction) || (inputs.right && this.direction)) {
+            } else if ((inputs.up && this.GROUND_ACTIONS.includes(this.action)) || this.AERIAL_ATTACKS.includes(this.action)) {
+                if ((inputs.left && !this.direction) || (inputs.right && this.direction) || (this.AERIAL_ATTACKS.includes(this.action) && this.lastAction === 'FORWARD_AERIAL')) {
                     return 'FORWARD_AERIAL';
-                } else if ((inputs.left && this.direction) || (inputs.right && !this.direction)) {
+                } else if ((inputs.left && this.direction) || (inputs.right && !this.direction) || (this.AERIAL_ATTACKS.includes(this.action) && this.lastAction === 'BACKWARD_AERIAL')) {
                     return 'BACKWARD_AERIAL';
                 } else {
                     return 'NEUTRAL_AERIAL';
