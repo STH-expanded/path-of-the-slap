@@ -87,6 +87,36 @@ class Assets {
         this.cn01 = document.createElement('img');
         this.cn01.src = 'img/character/cn01.png';
 
+        this.ci02 = document.createElement('img');
+        this.ci02.src = 'img/character/ci02.png';
+        this.cp02 = document.createElement('img');
+        this.cp02.src = 'img/character/cp02.png';
+        this.cp02shadow = document.createElement('img');
+        this.cp02shadow.src = 'img/character/cp02shadow.png';
+        this.cp02active = document.createElement('img');
+        this.cp02active.src = 'img/character/cp02active.png';
+        this.cp02activeShadow = document.createElement('img');
+        this.cp02activeShadow.src = 'img/character/cp02activeShadow.png';
+        this.cm02 = document.createElement('img');
+        this.cm02.src = 'img/character/cm02.png';
+        this.cn02 = document.createElement('img');
+        this.cn02.src = 'img/character/cn02.png';
+
+        this.ci03 = document.createElement('img');
+        this.ci03.src = 'img/character/ci03.png';
+        this.cp03 = document.createElement('img');
+        this.cp03.src = 'img/character/cp03.png';
+        this.cp03shadow = document.createElement('img');
+        this.cp03shadow.src = 'img/character/cp03shadow.png';
+        this.cp03active = document.createElement('img');
+        this.cp03active.src = 'img/character/cp03active.png';
+        this.cp03activeShadow = document.createElement('img');
+        this.cp03activeShadow.src = 'img/character/cp03activeShadow.png';
+        this.cm03 = document.createElement('img');
+        this.cm03.src = 'img/character/cm03.png';
+        this.cn03 = document.createElement('img');
+        this.cn03.src = 'img/character/cn03.png';
+
         // Character Selection
         this.characterSelect = document.createElement('img');
         this.characterSelect.src = 'img/characterSelect/characterSelect.png';

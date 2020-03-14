@@ -29,20 +29,20 @@ class Game {
 
         this.characters = [
             Character,
-            Character,
-            Character,
             ChildCharacter,
-            ChildCharacter,
-            Character,
-            Character,
+            ChildCharacter2,
+            ChildCharacter3,
             Character,
             ChildCharacter,
-            ChildCharacter,
-            ChildCharacter,
+            ChildCharacter2,
+            ChildCharacter3,
             Character,
             ChildCharacter,
+            ChildCharacter2,
+            ChildCharacter3,
+            Character,
             ChildCharacter,
-            ChildCharacter,
+            ChildCharacter2
         ];
 
         // Main Menu
