@@ -47,6 +47,28 @@ CharacterSelectionDisplay.update = display => {
     var character1 = charSelect.selectCharacter(cursor1.pos);
     var character2 = charSelect.selectCharacter(cursor2.pos);
 
+    // if random pick
+    if (cursor1.pos.x === 1 && cursor1.pos.y === 2) {
+        var randPos;
+        do {
+            randPos = new Vector2D(
+                Math.round(Math.random() * 2),
+                Math.round(Math.random() * 4),
+            );
+        } while (!charSelect.selectCharacter(randPos, null));
+        character1 = charSelect.selectCharacter(randPos);
+    }
+    if (cursor2.pos.x === 1 && cursor2.pos.y === 2) {
+        var randPos;
+        do {
+            randPos = new Vector2D(
+                Math.round(Math.random() * 2),
+                Math.round(Math.random() * 4),
+            );
+        } while (!charSelect.selectCharacter(randPos, null));
+        character2 = charSelect.selectCharacter(randPos);
+    }
+
     // Character Profiles
     if (character1) {
         if (cursor1.ready) {
@@ -247,6 +269,26 @@ CharacterSelectionDisplay.update = display => {
                             52 * display.zoom
                         );
                     }
+                    if (x === 1 && y === 2) {
+                        display.cx.drawImage(
+                            display.assets.random2Img,
+                            0, 0,
+                            52, 52,
+                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom + Math.sin(display.frame * 0.05) * 2 * display.zoom,
+                            52 * display.zoom,
+                            52 * display.zoom
+                        );
+                        display.cx.drawImage(
+                            display.assets.randomImg,
+                            0, 0,
+                            52, 52,
+                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
+                            52 * display.zoom,
+                            52 * display.zoom
+                        );
+                    }
                 }
             }
         }
@@ -347,6 +389,26 @@ CharacterSelectionDisplay.update = display => {
                         52, 52,
                         192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
                         10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
+                        52 * display.zoom,
+                        52 * display.zoom
+                    );
+                }
+                if (x === 1 && y === 2) {
+                    display.cx.drawImage(
+                        display.assets.random2Img,
+                        0, 0,
+                        52, 52,
+                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom + Math.sin(display.frame * 0.05) * 2 * display.zoom,
+                        52 * display.zoom,
+                        52 * display.zoom
+                    );
+                    display.cx.drawImage(
+                        display.assets.randomImg,
+                        0, 0,
+                        52, 52,
+                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
                         52 * display.zoom,
                         52 * display.zoom
                     );

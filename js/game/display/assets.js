@@ -144,6 +144,10 @@ class Assets {
         this.characterSelectKeyboard.src = 'img/characterSelect/keyboard.png';
         this.characterSelectGamepad = document.createElement('img');
         this.characterSelectGamepad.src = 'img/characterSelect/gamepad.png';
+        this.randomImg = document.createElement('img');
+        this.randomImg.src = 'img/characterSelect/random.png';
+        this.random2Img = document.createElement('img');
+        this.random2Img.src = 'img/characterSelect/random2.png';
 
         // Stage
         this.s0floor = document.createElement('img');

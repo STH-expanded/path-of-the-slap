@@ -28,21 +28,21 @@ class Game {
         ];
 
         this.characters = [
-            Character,
-            ChildCharacter,
+            null,
+            null,
+            null,
+            null,
             ChildCharacter2,
-            ChildCharacter3,
+            null,
             Character,
+            null,
             ChildCharacter,
-            ChildCharacter2,
+            null,
             ChildCharacter3,
-            Character,
-            ChildCharacter,
-            ChildCharacter2,
-            ChildCharacter3,
-            Character,
-            ChildCharacter,
-            ChildCharacter2
+            null,
+            null,
+            null,
+            null
         ];
 
         // Main Menu

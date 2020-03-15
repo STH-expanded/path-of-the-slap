@@ -175,7 +175,7 @@ FightDisplay.update = display => {
                                 0, 0,
                                 91, 192,
                                 (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
                         }
@@ -184,7 +184,7 @@ FightDisplay.update = display => {
                                 0, 0,
                                 91, 192,
                                 (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
                         }
@@ -195,7 +195,7 @@ FightDisplay.update = display => {
                                 0, 0,
                                 91, 192,
                                 (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
                         }
@@ -204,7 +204,7 @@ FightDisplay.update = display => {
                                 0, 0,
                                 91, 192,
                                 (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                                (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                                (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
                         }
@@ -288,7 +288,7 @@ FightDisplay.update = display => {
                             91 * Math.floor((player.frame / 5) % 4), 0,
                             91, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             91 * display.zoom, 192 * display.zoom
                         );
                         break;
@@ -297,7 +297,7 @@ FightDisplay.update = display => {
                             182 * Math.floor((player.frame / 4) % 6), 0,
                             182, 192,
                             (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             182 * display.zoom, 192 * display.zoom
                         );
                         break;

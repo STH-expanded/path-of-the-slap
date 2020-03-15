@@ -30,7 +30,9 @@ class CharacterSelection extends Activity {
             this.cursors.push({
                 player: player,
                 ready: false,
-                pos: {...this.cursorInitPos[i]},
+                pos: {
+                    ...this.cursorInitPos[i]
+                },
                 infoFrame: this.cursorInfoInitFrame,
                 profileFrame: 0
             });
@@ -56,7 +58,9 @@ class CharacterSelection extends Activity {
             else if (input.b && !lastInput.b && !this.stageReady) {
                 this.cursors.forEach((cursorObj, index) => {
                     cursorObj.ready = false;
-                    cursorObj.pos = {...this.cursorInitPos[index]};
+                    cursorObj.pos = {
+                        ...this.cursorInitPos[index]
+                    };
                     cursorObj.infoFrame = this.cursorInfoInitFrame;
                     cursorObj.profileFrame = this.cursorProfileInitFrame;
                 });
@@ -79,7 +83,15 @@ class CharacterSelection extends Activity {
             var input = game.inputList.get(id);
             var lastInput = game.lastInputList.get(id);
 
-            if (input.a && !lastInput.a && this.selectCharacter(cursor.pos, id)) {
+            if (input.a && !lastInput.a && (this.selectCharacter(cursor.pos, id) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
+                if (new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2))) {
+                    do {
+                        cursor.pos = new Vector2D(
+                            Math.round(Math.random() * 2),
+                            Math.round(Math.random() * 4),
+                        );
+                    } while (!this.selectCharacter(cursor.pos, id));
+                }
                 if (!cursor.ready && !readyNow.find(otherId => otherId === id)) {
                     cursor.ready = true;
                     cursor.infoFrame = this.cursorInfoInitFrame;
@@ -136,7 +148,7 @@ class CharacterSelection extends Activity {
                         });
                         this.nextActivity = new Fight(
                             this.cursors.map(cursor => cursor.player),
-                            new (this.mode === 'Training' ? TrainingStage : this.stages[this.stageCursor])(),
+                            new(this.mode === 'Training' ? TrainingStage : this.stages[this.stageCursor])(),
                             this.mode === 'Training',
                             true,
                             0
