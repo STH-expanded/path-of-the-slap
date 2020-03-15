@@ -269,7 +269,7 @@ CharacterSelectionDisplay.update = display => {
                             52 * display.zoom
                         );
                     }
-                    if (x === 1 && y === 2) {
+                    else if (x === 1 && y === 2 && charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
                         display.cx.drawImage(
                             display.assets.random2Img,
                             0, 0,
@@ -285,6 +285,17 @@ CharacterSelectionDisplay.update = display => {
                             52, 52,
                             192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
                             10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
+                            52 * display.zoom,
+                            52 * display.zoom
+                        );
+                    }
+                    else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
+                        display.cx.drawImage(
+                            display.assets.lockImg,
+                            0, 0,
+                            52, 52,
+                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
                             52 * display.zoom,
                             52 * display.zoom
                         );
@@ -393,7 +404,7 @@ CharacterSelectionDisplay.update = display => {
                         52 * display.zoom
                     );
                 }
-                if (x === 1 && y === 2) {
+                else if (x === 1 && y === 2) {
                     display.cx.drawImage(
                         display.assets.random2Img,
                         0, 0,
@@ -409,6 +420,17 @@ CharacterSelectionDisplay.update = display => {
                         52, 52,
                         192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
                         10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
+                        52 * display.zoom,
+                        52 * display.zoom
+                    );
+                }
+                else {
+                    display.cx.drawImage(
+                        display.assets.lockImg,
+                        0, 0,
+                        52, 52,
+                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
+                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
                         52 * display.zoom,
                         52 * display.zoom
                     );

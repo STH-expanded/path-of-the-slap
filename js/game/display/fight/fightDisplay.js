@@ -178,8 +178,7 @@ FightDisplay.update = display => {
                                 (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
-                        }
-                        else {
+                        } else {
                             display.cx.drawImage(display.assets.c00a2,
                                 0, 0,
                                 91, 192,
@@ -198,8 +197,7 @@ FightDisplay.update = display => {
                                 (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
-                        }
-                        else {
+                        } else {
                             display.cx.drawImage(display.assets.c00a2,
                                 0, 0,
                                 91, 192,
@@ -218,8 +216,7 @@ FightDisplay.update = display => {
                                 (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                                 91 * display.zoom, 192 * display.zoom
                             );
-                        }
-                        else {
+                        } else {
                             display.cx.drawImage(display.assets.c00a2,
                                 0, 0,
                                 91, 192,
@@ -334,6 +331,15 @@ FightDisplay.update = display => {
                             182, 192,
                             (32 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
                             (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                            182 * display.zoom, 192 * display.zoom
+                        );
+                        break;
+                    case "QCF":
+                        display.cx.drawImage(display.assets.c00qcf,
+                            182 * Math.floor((player.frame / 4) % 8), 0,
+                            182, 192,
+                            (16 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                            (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
                             182 * display.zoom, 192 * display.zoom
                         );
                         break;

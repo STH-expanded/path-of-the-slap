@@ -11,19 +11,19 @@ MenuDisplay.update = display => {
     }
 
     // Options
-    var drawMenuElement = (asset, index) => {
+    var drawMenuElement = (asset, index, offset) => {
         display.cx.drawImage(
             asset,
             0, 0, 128, 32,
-            176 * display.zoom, ((display.canvas.height - display.canvas.height / menu.optionYCenter) / display.zoom - menu.options.length / 2 * 32 + 32 * index) * display.zoom,
+            176 * display.zoom + offset, ((display.canvas.height - display.canvas.height / menu.optionYCenter) / display.zoom - menu.options.length / 2 * 32 + 32 * index) * display.zoom,
             128 * display.zoom, 32 * display.zoom
         );
     };
 
     menu.options.forEach((option, index) => {
         option += option === 'Player' && display.game.players.length < 2 ? 'Disabled' : '';
-        drawMenuElement(display.assets['btn' + option], index);
+        drawMenuElement(display.assets['btn' + option], index, 0);
         var cursor = display.game.activity instanceof Fight ? display.game.activity.pauseMenu.cursor : display.game.activity.cursor;
-        if (cursor === index) drawMenuElement(display.assets.menucursor, index);
+        if (cursor === index) drawMenuElement(display.assets.menucursor, index, Math.sin(display.frame * 0.1) * 4 * display.zoom);
     });
 }

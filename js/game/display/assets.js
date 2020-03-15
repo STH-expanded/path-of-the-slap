@@ -71,6 +71,8 @@ class Assets {
         this.c00aa.src = 'img/character/c00aa.png';
         this.c00ab = document.createElement('img');
         this.c00ab.src = 'img/character/c00ab.png';
+        this.c00qcf = document.createElement('img');
+        this.c00qcf.src = 'img/character/c00qcf.png';
 
         this.ci01 = document.createElement('img');
         this.ci01.src = 'img/character/ci01.png';
@@ -148,6 +150,8 @@ class Assets {
         this.randomImg.src = 'img/characterSelect/random.png';
         this.random2Img = document.createElement('img');
         this.random2Img.src = 'img/characterSelect/random2.png';
+        this.lockImg = document.createElement('img');
+        this.lockImg.src = 'img/characterSelect/lock.png';
 
         // Stage
         this.s0floor = document.createElement('img');

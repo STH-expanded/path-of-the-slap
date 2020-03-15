@@ -19,13 +19,14 @@ class Character {
         this.AERIAL_ATTACKS = ['AERIAL_A', 'AERIAL_B'];
         this.HIGH_ATTACKS = ['HIGH_A', 'HIGH_B'];
         this.LOW_ATTACKS = ['LOW_A', 'LOW_B'];
+        this.COMMAND_ATTACKS = ['QCF'];
 
         this.AERIAL_ACTIONS = ['BACKWARD_AERIAL', 'NEUTRAL_AERIAL', 'FORWARD_AERIAL'];
         this.HIGH_ACTIONS = ['BACKWARD_HIGH', 'NEUTRAL_HIGH', 'FORWARD_HIGH', ...this.HIGH_ATTACKS];
         this.LOW_ACTIONS = ['BACKWARD_LOW', 'NEUTRAL_LOW', 'FORWARD_LOW', ...this.LOW_ATTACKS];
 
         this.AERIAL_FULL = [...this.AERIAL_ATTACKS, ...this.AERIAL_ACTIONS];
-        this.ATTACK_ACTIONS = [...this.LOW_ATTACKS, ...this.HIGH_ATTACKS, ...this.AERIAL_ATTACKS];
+        this.ATTACK_ACTIONS = [...this.LOW_ATTACKS, ...this.HIGH_ATTACKS, ...this.AERIAL_ATTACKS, ...this.COMMAND_ATTACKS];
         this.GROUND_ACTIONS = [...this.HIGH_ACTIONS, ...this.LOW_ACTIONS, ...this.DASH_ACTIONS];
 
         this.frame = 0;
@@ -55,6 +56,8 @@ class Character {
         this.aerialBFrame = 24;
 
         this.forwardDashFrame = 20;
+
+        this.qcfFrame = 32;
 
         this.canBackdash = false;
         this.runDash = false;
@@ -311,6 +314,13 @@ class Character {
             }
         };
 
+        this.QCF = game => {
+            this.frame++;
+        }
+        this.QCB = game => {}
+        this.DP = game => {}
+        this.HCF = game => {}
+
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
         //------------------------------------------------------------------------------------------------------------------------------
@@ -324,6 +334,20 @@ class Character {
                 return 'LAND';
             } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
                 return 'GET_UP';
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 &&
+                this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) &&
+                ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) ||
+                (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) ||
+                (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) ||
+                this.action === 'QCF') && this.frame < this.qcfFrame) {
+                return 'QCF';
+            } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 &&
+                this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) &&
+                ((inputList[inputList.length - 2].inputs.left && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) ||
+                (inputs.left && inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 3].inputs.down) ||
+                (inputs.left && !inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 2].inputs.down))) ||
+                this.action === 'QCF') && this.frame < this.qcfFrame) {
+                return 'QCF';
             } else if (((inputs.a && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_A') && this.frame < this.highAFrame) {
                 return 'HIGH_A';
             } else if (((inputs.b && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_B') && this.frame < this.highBFrame) {

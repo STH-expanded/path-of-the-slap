@@ -46,8 +46,8 @@ class Game {
         ];
 
         // Main Menu
-        this.mainMenuOptions = ['Player', 'Computer', 'Training'];
-        this.mainMenuOptionYCenter = 3;
+        this.mainMenuOptions = ['Computer', 'Player', 'Training'];
+        this.mainMenuOptionYCenter = 4;
         this.mainMenuHandler = (game, options, cursor) => {
             var nextActivity = null;
             if (!(options[cursor] === 'Player' && game.players.length < 2)) {
