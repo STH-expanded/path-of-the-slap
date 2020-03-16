@@ -6,7 +6,7 @@ MenuDisplay.update = display => {
         display.cx.drawImage(display.assets.titleScreen, 0, 0, 480, 270, 0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom);
     }
     else {
-        display.cx.fillStyle = display.game.activity instanceof Fight ? '#0008' : '#114';
+        display.cx.fillStyle = display.game.activity instanceof Fight ? '#0008' : '#000';
         display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom);
     }
 
