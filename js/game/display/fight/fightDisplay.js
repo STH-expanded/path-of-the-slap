@@ -33,6 +33,34 @@ FightDisplay.update = display => {
 
     display.cx.translate(-view.xOffset * display.zoom, 0);
 
+    //Projectile
+    fight.projectiles.forEach(projectile => {
+        display.cx.fillRect(
+            projectile.collisionBox.pos.x * display.zoom,
+            projectile.collisionBox.pos.y * display.zoom,
+            projectile.collisionBox.size.x * display.zoom,
+            projectile.collisionBox.size.y * display.zoom
+        );
+        display.cx.fillStyle = "#0f04";
+        // projectile.hurtboxes.forEach(hurtbox => {
+        //     display.cx.fillRect(
+        //         hurtbox.collisionBox.pos.x * display.zoom,
+        //         hurtbox.collisionBox.pos.y * display.zoom,
+        //         hurtbox.collisionBox.size.x * display.zoom,
+        //         hurtbox.collisionBox.size.y * display.zoom
+        //     );
+        // });
+        display.cx.fillStyle = "#f004";
+        projectile.hitboxes.forEach(hitbox => {
+            display.cx.fillRect(
+                hitbox.collisionBox.pos.x * display.zoom,
+                hitbox.collisionBox.pos.y * display.zoom,
+                hitbox.collisionBox.size.x * display.zoom,
+                hitbox.collisionBox.size.y * display.zoom
+            );
+        });
+    });
+
     // Player
     [player1, player2].forEach(player => {
 

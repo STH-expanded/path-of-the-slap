@@ -31,6 +31,7 @@ class Character {
 
         this.frame = 0;
         this.status = null;
+        this.isEjected = false;
         this.action = null;
         this.command = null;
         this.lastAction = null;
@@ -176,16 +177,26 @@ class Character {
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') newStatus = null;
-                } else this.frame--;
+                    if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
+                        newStatus = 'GROUND';
+                        this.frame = 1;
+                    }
+                    if (this.status === 'GROUND') newStatus = null;
+                } else if (this.status !== 'GROUND') this.frame--;
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
                 otherHitboxes.forEach(hitBox => {
-                    newStatus = 'HIT';
                     this.health -= hitBox.might;
-                    this.frame = hitBox.stun;
+                    if (hitBox.status === false) {
+                        newStatus = 'HIT';
+                        this.frame = hitBox.stun;
+                    } else if (hitBox.status === true) {
+                        newStatus = 'EJECTED';
+                    }
                 });
             }
+
             return newStatus;
         };
 
@@ -197,105 +208,107 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
         };
-        this.GET_UP = game => {};
+        this.GET_UP = game => { };
+
+        this.BACKWARD_DASH = game => { };
 
         this.FORWARD_DASH = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y + 8), new Vector2D(75, 115)));
         };
 
         this.BACKWARD_LOW = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 4, center.y - 4), new Vector2D(54, 72)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 4, center.y), new Vector2D(70, 96)));
         };
 
         this.NEUTRAL_LOW = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(54, 72)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
         };
 
         this.FORWARD_LOW = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 4, center.y - 4), new Vector2D(54, 72)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 4, center.y), new Vector2D(70, 96)));
         };
 
         this.BACKWARD_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 8), new Vector2D(32, 112)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - 5, center.y), new Vector2D(42, 128)));
         };
 
         this.NEUTRAL_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 8), new Vector2D(32, 112)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(47, 128)));
         };
 
         this.FORWARD_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 8), new Vector2D(32, 112)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(42, 128)));
         };
 
         this.BACKWARD_AERIAL = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 4, center.y - 4), new Vector2D(46, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
         this.NEUTRAL_AERIAL = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(46, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
         this.FORWARD_AERIAL = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 4, center.y - 4), new Vector2D(46, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
         this.LOW_A = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(54, 72)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 4 && this.frame < 7) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(40, 24), 50, 10));
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(36, 22)));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10, false, 0));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(52, 28)));
             }
         };
         this.LOW_B = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(54, 72)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 20 && this.frame < 28) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 18), new Vector2D(64, 24), 50, 15));
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 18), new Vector2D(58, 22)));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15, true, 15));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
         };
 
         this.AERIAL_A = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(46, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 116)));
             if (this.frame > 5 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(40, 24), 50, 10));
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y - 16), new Vector2D(32, 16)));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25, false, 0));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(32, 16)));
             }
         };
         this.AERIAL_B = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(46, 106)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
             if (this.frame > 3 && this.frame < 15) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 16), new Vector2D(64, 24), 50, 15));
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 16), new Vector2D(58, 16)));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40, false, 0));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 40), new Vector2D(58, 24)));
             }
         };
 
         this.HIGH_A = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 8), new Vector2D(32, 112)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 128)));
             if (this.frame > 6 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 24), new Vector2D(40, 24), 50, 15));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15, false, 0));
 
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 16), new Vector2D(40, 24)));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(60, 24)));
             }
         };
 
@@ -304,21 +317,32 @@ class Character {
 
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
 
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 8), new Vector2D(32, 112)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 15, center.y), new Vector2D(70, 128)));
 
             if (this.frame > 11 && this.frame < 18) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 16), new Vector2D(72, 32), 75, 30));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30, false, 0));
 
-                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 16), new Vector2D(40, 24)));
+                this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(80, 32)));
             }
         };
 
         this.QCF = game => {
             this.frame++;
-        }
-        this.QCB = game => {}
-        this.DP = game => {}
-        this.HCF = game => {}
+            if (this.frame === 13) {
+                game.activity.projectiles.push(
+                    new Projectile(
+                        new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
+                        this.playerId,
+                        this.direction,
+                        new Vector2D(10, 0),
+                        10
+                    )
+                );
+            }
+        };
+        this.QCB = game => { };
+        this.DP = game => { };
+        this.HCF = game => { };
 
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
@@ -334,19 +358,9 @@ class Character {
                 return 'LAND';
             } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
                 return 'GET_UP';
-            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 &&
-                this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) &&
-                ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) ||
-                (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) ||
-                (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) ||
-                this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) || (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
-            } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 &&
-                this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) &&
-                ((inputList[inputList.length - 2].inputs.left && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) ||
-                (inputs.left && inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 3].inputs.down) ||
-                (inputs.left && !inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 2].inputs.down))) ||
-                this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.left && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.left && inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 3].inputs.down) || (inputs.left && !inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
             } else if (((inputs.a && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_A') && this.frame < this.highAFrame) {
                 return 'HIGH_A';
