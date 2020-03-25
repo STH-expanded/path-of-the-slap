@@ -38,12 +38,25 @@ FightDisplay.update = display => {
 
   //Projectil
   fight.projectiles.forEach(element => {
-    display.cx.fillRect(
-      element.collisionBox.pos.x * display.zoom,
-      element.collisionBox.pos.y * display.zoom,
-      element.collisionBox.size.x * display.zoom,
-      element.collisionBox.size.y * display.zoom
-    );
+    display.cx.fillStyle = "#0f04";
+    element.hurtboxes.forEach(hurtbox => {
+      display.cx.fillRect(
+        element.collisionBox.pos.x * display.zoom,
+        element.collisionBox.pos.y * display.zoom,
+        element.collisionBox.size.x * display.zoom,
+        element.collisionBox.size.y * display.zoom
+      );
+    });
+    display.cx.fillStyle = "#f004";
+    element.hitboxes.forEach(hitbox => {
+      display.cx.fillRect(
+        element.collisionBox.pos.x * display.zoom,
+        element.collisionBox.pos.y * display.zoom,
+        element.collisionBox.size.x * display.zoom,
+        element.collisionBox.size.y * display.zoom
+      );
+    });
+    
   });
 
   // Player

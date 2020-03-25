@@ -126,8 +126,7 @@ class Fight extends Activity {
           this.players.forEach(player => {
             if (player.id !== "computer") {
               if (
-                game.inputList.get(player.id).start &&
-                !game.lastInputList.get(player.id).start
+                game.inputList.get(player.id).start && !game.lastInputList.get(player.id).start
               ) {
                 game.lastFight.players = this.players;
                 game.lastFight.stage = this.stage;
