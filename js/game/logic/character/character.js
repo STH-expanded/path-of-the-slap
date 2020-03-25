@@ -25,9 +25,9 @@ class Character {
         this.HIGH_ACTIONS = ['BACKWARD_HIGH', 'NEUTRAL_HIGH', 'FORWARD_HIGH', ...this.HIGH_ATTACKS];
         this.LOW_ACTIONS = ['BACKWARD_LOW', 'NEUTRAL_LOW', 'FORWARD_LOW', ...this.LOW_ATTACKS];
 
-        this.AERIAL_FULL = [...this.AERIAL_ATTACKS, ...this.AERIAL_ACTIONS];
+        this.AERIAL_FULL = [...this.AERIAL_ATTACKS, ...this.AERIAL_ACTIONS, 'BLOCK_AERIAL'];
         this.ATTACK_ACTIONS = [...this.LOW_ATTACKS, ...this.HIGH_ATTACKS, ...this.AERIAL_ATTACKS, ...this.COMMAND_ATTACKS];
-        this.GROUND_ACTIONS = [...this.HIGH_ACTIONS, ...this.LOW_ACTIONS, ...this.DASH_ACTIONS];
+        this.GROUND_ACTIONS = [...this.HIGH_ACTIONS, ...this.LOW_ACTIONS, ...this.DASH_ACTIONS, 'BLOCK_HIGH', 'BLOCK_LOW'];
 
         this.frame = 0;
         this.status = null;
@@ -196,6 +196,11 @@ class Character {
         };
         this.GET_UP = game => {};
 
+        this.BLOCK_HIGH = game => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(42, 128)));
+        };
+
         this.BACKWARD_DASH = game => {};
 
         this.FORWARD_DASH = game => {
@@ -221,12 +226,12 @@ class Character {
 
         this.BACKWARD_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - 5, center.y), new Vector2D(42, 128)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 5, center.y), new Vector2D(42, 128)));
         };
 
         this.NEUTRAL_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(47, 128)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 7, center.y), new Vector2D(47, 128)));
         };
 
         this.FORWARD_HIGH = game => {
@@ -262,7 +267,7 @@ class Character {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
-            if (this.frame > 20 && this.frame < 28) {
+            if (this.frame > 15 && this.frame < 23) {
                 this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
@@ -375,7 +380,13 @@ class Character {
             } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
             } else if (((inputs.left && this.direction) || (inputs.right && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
-                return 'BACKWARD_HIGH';
+                console.log(this.status);
+                if (this.status === 'HIT' || this.action === 'BLOCK_HIGH') {
+                    this.health = this.health;
+                    return 'BLOCK_HIGH';
+                } else {
+                    return 'BACKWARD_HIGH';
+                }
             } else if ([...this.GROUND_ACTIONS, ...this.ATTACK_ACTIONS, ...this.LAG_ACTIONS].includes(this.action)) {
                 return 'NEUTRAL_HIGH';
             } else {
