@@ -334,7 +334,6 @@ class Character {
         this.QCF = game => {
             this.frame++;
             if (this.frame === 13) {
-<<<<<<< HEAD
               game.activity.projectiles.push(
                 new Projectile(
                   new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
@@ -345,17 +344,6 @@ class Character {
                   5
                 )
               );
-=======
-                game.activity.projectiles.push(
-                    new Projectile(
-                        new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
-                        this.playerId,
-                        this.direction,
-                        new Vector2D(10, 0),
-                        10
-                    )
-                );
->>>>>>> ae717b0320ca59ab99da71bff59ac317a39b14c2
             }
         };
         this.QCB = game => { };
