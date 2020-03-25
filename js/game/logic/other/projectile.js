@@ -35,7 +35,7 @@ class Projectile {
     }
 
     this.actif = game => {
-      this.actif = this.isOut(game) ? false : this.actif; 
+      this.active = this.isOut(game) ? false : this.active; 
       this.collisionBox.pos = this.direction
         ? this.collisionBox.pos.plus(this.speed)
         : this.collisionBox.pos.plus(new Vector2D(-this.speed.x, this.speed.y));
