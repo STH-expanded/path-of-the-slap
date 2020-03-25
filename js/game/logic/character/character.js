@@ -31,6 +31,7 @@ class Character {
 
         this.frame = 0;
         this.status = null;
+        this.isEjected = false;
         this.action = null;
         this.command = null;
         this.lastAction = null;
@@ -173,16 +174,26 @@ class Character {
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') newStatus = null;
-                } else this.frame--;
+                    if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
+                        newStatus = 'GROUND';
+                        this.frame = 1;
+                    }
+                    if (this.status === 'GROUND') newStatus = null;
+                } else if (this.status !== 'GROUND') this.frame--;
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
                 otherHitboxes.forEach(hitBox => {
-                    newStatus = 'HIT';
                     this.health -= hitBox.might;
-                    this.frame = hitBox.stun;
+                    if (hitBox.status === false) {
+                        newStatus = 'HIT';
+                        this.frame = hitBox.stun;
+                    } else if (hitBox.status === true) {
+                        newStatus = 'EJECTED';
+                    }
                 });
             }
+
             return newStatus;
         };
 
@@ -319,6 +330,9 @@ class Character {
 
         this.QCF = game => {
             this.frame++;
+            if (this.frame === 13) {
+                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)), this.playerId, this.direction, new Vector2D(10, 0), 10));
+            }
         };
         this.QCB = game => {};
         this.DP = game => {};

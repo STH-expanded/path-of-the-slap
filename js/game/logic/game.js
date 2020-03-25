@@ -27,6 +27,7 @@ class Game {
             Stage
         ];
 
+
         this.characters = [
             null,
             null,
