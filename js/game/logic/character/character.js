@@ -339,7 +339,7 @@ class Character {
             if (this.frame === 13) {
               game.activity.projectiles.push(
                 new Projectile(
-                  new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
+                  new CollisionBox(this.collisionBox.pos, new Vector2D(32, 32)),
                   this.playerId,
                   this.direction,
                   new Vector2D(10, 0),

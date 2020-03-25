@@ -218,6 +218,8 @@ class Assets {
         this.dust.src = 'img/fight/dust.png';
         this.dash = document.createElement('img');
         this.dash.src = 'img/fight/dash.png';
+        this.projectile1 = document.createElement('img');
+        this.projectile1.src = 'img/fight/projectile1.png';
 
         // Fight Training
         this.infinity = document.createElement('img');
