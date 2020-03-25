@@ -11,6 +11,14 @@ class ChildCharacter2 extends Character {
         this.id = '02';
         this.name = 'ChildCharacter2';
 
+        this.backDashFrame = 20;
+
+        this.canBackdash = true;
+        this.runBackDash = false;
+        
+        this.canDash = true;
+        this.runDash = false;
+
         this.idleSize = new Vector2D(24, 96);
         this.jumpSize = new Vector2D(24, 64);
         this.crouchSize = new Vector2D(24, 64);
@@ -28,6 +36,11 @@ class ChildCharacter2 extends Character {
         // ACTIONS
         //------------------------------------------------------------------------------------------------------------------------------
 
+        this.BACKWARD_DASH = game => {
+            this.frame++;
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
+        };
 
         this.NEUTRAL_HIGH = game => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);

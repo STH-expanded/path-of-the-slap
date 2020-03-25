@@ -60,6 +60,9 @@ class Character {
         this.qcfFrame = 32;
 
         this.canBackdash = false;
+        this.runBackDash = true;
+        
+        this.canDash = true;
         this.runDash = false;
 
         // attack cancels ?
@@ -196,10 +199,6 @@ class Character {
         };
         this.GET_UP = game => {};
 
-        this.BACKWARD_DASH = game => {
-            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
-        };
         this.FORWARD_DASH = game => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
@@ -329,6 +328,7 @@ class Character {
             var inputs = inputList[inputList.length - 1].inputs;
 
             if (!this.runDash && this.action === 'FORWARD_DASH' && this.frame < this.forwardDashFrame) return 'FORWARD_DASH';
+            if (!this.runBackDash && this.action === 'BACKWARD_DASH' && this.frame < this.backDashFrame) return 'BACKWARD_DASH';
 
             if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
@@ -379,24 +379,24 @@ class Character {
             } else if (((this.runDash && inputs.right) || (!this.runDash && inputs.right && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && this.direction &&
                 (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down &&
                     !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b &&
-                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right))) {
+                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canDash) {
                 return 'FORWARD_DASH';
             } else if (((this.runDash && inputs.left) || (!this.runDash && inputs.left && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && !this.direction &&
                 (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down &&
                     !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b &&
-                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left))) {
+                    inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canDash) {
                 return 'FORWARD_DASH';
-            } else if (inputs.left && this.direction &&
+            } else if (((this.runBackDash && inputs.left) || (!this.runBackDash && inputs.left && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && this.direction &&
                 (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down &&
                     !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b &&
                     inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
-            } else if (inputs.right && !this.direction &&
+            } else if (((this.runBackDash && inputs.right) || (!this.runBackDash && inputs.right && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && !this.direction &&
                 (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down &&
                     !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b &&
                     inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
-            } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
+        } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
             } else if (((inputs.left && this.direction) || (inputs.right && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'BACKWARD_HIGH';
