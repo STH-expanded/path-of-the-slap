@@ -168,6 +168,7 @@ class Character {
             this.direction = this.collisionBox.pos.x + this.collisionBox.size.x / 2 === other.pos.x + other.size.x / 2 ? this.direction : this.collisionBox.pos.x + this.collisionBox.size.x / 2 < other.pos.x + other.size.x / 2;
         };
 
+
         this.getNewStatus = game => {
             var newStatus = this.status;
             if (this.status) {
@@ -177,7 +178,13 @@ class Character {
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
-                otherHitboxes.forEach(hitBox => {
+                var projectilesHitboxes =[]
+                game.activity.projectiles.forEach((projectile) => {
+                    projectilesHitboxes= projectile.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
+                    if (projectilesHitboxes.length) { projectile.istouchHurt() };
+                });
+                var allHitboxes = [...otherHitboxes,...projectilesHitboxes]
+                allHitboxes.forEach(hitBox => {
                     newStatus = 'HIT';
                     this.health -= hitBox.might;
                     this.frame = hitBox.stun;
@@ -321,7 +328,8 @@ class Character {
                   this.playerId,
                   this.direction,
                   new Vector2D(10, 0),
-                  10
+                  10,
+                  5
                 )
               );
             }

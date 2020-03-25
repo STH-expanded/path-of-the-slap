@@ -142,18 +142,11 @@ class Fight extends Activity {
 
           this.players.forEach(player => player.update(game));
           this.projectiles.forEach((projectile,i) => {
-            projectile.update(game);
-            if(!projectile.collisionBox.isIncludedIn(this.stage)){
-                this.projectiles.splice(i,1);
-            };
-            this.players.forEach(player => {
-                if(player.character.playerId!= projectile.launcher && projectile.collisionBox.intersects(player.character.collisionBox)){
-                    this.projectiles.splice(i,1);
-                    player.character.health -= projectile.damage
-                }
-            });
-
-
+            if(!projectile.active){
+              this.projectiles.splice(i,1);
+            }else{
+              projectile.update(game);
+            }
           });
 
           if (!this.trainingMode) {
