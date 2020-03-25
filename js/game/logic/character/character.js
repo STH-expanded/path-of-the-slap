@@ -31,6 +31,7 @@ class Character {
 
         this.frame = 0;
         this.status = null;
+        this.isEjected = false;
         this.action = null;
         this.command = null;
         this.lastAction = null;
@@ -174,7 +175,12 @@ class Character {
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') newStatus = null;
-                } else this.frame--;
+                    if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
+                        newStatus = 'GROUND';
+                        this.frame = 1;
+                    }
+                    if (this.status === 'GROUND') newStatus = null;
+                } else if (this.status !== 'GROUND') this.frame--;
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
@@ -187,9 +193,15 @@ class Character {
                 allHitboxes.forEach(hitBox => {
                     newStatus = 'HIT';
                     this.health -= hitBox.might;
-                    this.frame = hitBox.stun;
+                    if (hitBox.status === false) {
+                        newStatus = 'HIT';
+                        this.frame = hitBox.stun;
+                    } else if (hitBox.status === true) {
+                        newStatus = 'EJECTED';
+                    }
                 });
             }
+
             return newStatus;
         };
 
@@ -201,9 +213,9 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
         };
-        this.GET_UP = game => {};
+        this.GET_UP = game => { };
 
-        this.BACKWARD_DASH = game => {};
+        this.BACKWARD_DASH = game => { };
 
         this.FORWARD_DASH = game => {
             this.frame++;
@@ -261,7 +273,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 4 && this.frame < 7) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(52, 28)));
             }
         };
@@ -270,7 +282,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 20 && this.frame < 28) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15, true, 15));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
         };
@@ -280,7 +292,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 116)));
             if (this.frame > 5 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(32, 16)));
             }
         };
@@ -289,7 +301,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
             if (this.frame > 3 && this.frame < 15) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 40), new Vector2D(58, 24)));
             }
         };
@@ -299,7 +311,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 128)));
             if (this.frame > 6 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15, false, 0));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(60, 24)));
             }
@@ -313,7 +325,7 @@ class Character {
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 15, center.y), new Vector2D(70, 128)));
 
             if (this.frame > 11 && this.frame < 18) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30, false, 0));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(80, 32)));
             }
@@ -322,6 +334,7 @@ class Character {
         this.QCF = game => {
             this.frame++;
             if (this.frame === 13) {
+<<<<<<< HEAD
               game.activity.projectiles.push(
                 new Projectile(
                   new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
@@ -332,11 +345,22 @@ class Character {
                   5
                 )
               );
+=======
+                game.activity.projectiles.push(
+                    new Projectile(
+                        new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
+                        this.playerId,
+                        this.direction,
+                        new Vector2D(10, 0),
+                        10
+                    )
+                );
+>>>>>>> ae717b0320ca59ab99da71bff59ac317a39b14c2
             }
         };
-        this.QCB = game => {};
-        this.DP = game => {};
-        this.HCF = game => {};
+        this.QCB = game => { };
+        this.DP = game => { };
+        this.HCF = game => { };
 
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
