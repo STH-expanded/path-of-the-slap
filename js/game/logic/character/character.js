@@ -172,6 +172,7 @@ class Character {
             this.direction = this.collisionBox.pos.x + this.collisionBox.size.x / 2 === other.pos.x + other.size.x / 2 ? this.direction : this.collisionBox.pos.x + this.collisionBox.size.x / 2 < other.pos.x + other.size.x / 2;
         };
 
+
         this.getNewStatus = game => {
             var newStatus = this.status;
             if (this.status) {
@@ -186,7 +187,14 @@ class Character {
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
-                otherHitboxes.forEach(hitBox => {
+                var projectilesHitboxes =[]
+                game.activity.projectiles.forEach((projectile) => {
+                    projectilesHitboxes= projectile.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
+                    if (projectilesHitboxes.length) { projectile.istouchHurt() };
+                });
+                var allHitboxes = [...otherHitboxes,...projectilesHitboxes]
+                allHitboxes.forEach(hitBox => {
+                    newStatus = 'HIT';
                     this.health -= hitBox.might;
                     if (hitBox.status === false) {
                         newStatus = 'HIT';
@@ -329,15 +337,16 @@ class Character {
         this.QCF = game => {
             this.frame++;
             if (this.frame === 13) {
-                game.activity.projectiles.push(
-                    new Projectile(
-                        new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
-                        this.playerId,
-                        this.direction,
-                        new Vector2D(10, 0),
-                        10
-                    )
-                );
+              game.activity.projectiles.push(
+                new Projectile(
+                  new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)),
+                  this.playerId,
+                  this.direction,
+                  new Vector2D(10, 0),
+                  10,
+                  5
+                )
+              );
             }
         };
         this.QCB = game => { };
