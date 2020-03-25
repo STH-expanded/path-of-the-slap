@@ -174,6 +174,7 @@ class Character {
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') newStatus = null;
+                    if (this.status === 'BLOCK' && this.action !== 'BLOCK_HIGH') newStatus = null;
                     if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
                         newStatus = 'GROUND';
                         this.frame = 1;
@@ -184,12 +185,16 @@ class Character {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
                 otherHitboxes.forEach(hitBox => {
-                    this.health -= hitBox.might;
-                    if (hitBox.status === false) {
-                        newStatus = 'HIT';
-                        this.frame = hitBox.stun;
-                    } else if (hitBox.status === true) {
-                        newStatus = 'EJECTED';
+                    if (this.action === 'BACKWARD_HIGH') {
+                        newStatus = 'BLOCK';
+                    } else {
+                        this.health -= hitBox.might;
+                        if (hitBox.status === false) {
+                            newStatus = 'HIT';
+                            this.frame = hitBox.stun;
+                        } else if (hitBox.status === true) {
+                            newStatus = 'EJECTED';
+                        }
                     }
                 });
             }
@@ -270,7 +275,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 4 && this.frame < 7) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(52, 28)));
             }
         };
@@ -279,7 +284,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 15 && this.frame < 23) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15, true, 15));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
         };
@@ -289,7 +294,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 116)));
             if (this.frame > 5 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(32, 16)));
             }
         };
@@ -298,7 +303,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
             if (this.frame > 3 && this.frame < 15) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40, false, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 40), new Vector2D(58, 24)));
             }
         };
@@ -308,7 +313,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 128)));
             if (this.frame > 6 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15, false, 0));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(60, 24)));
             }
@@ -322,7 +327,7 @@ class Character {
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 15, center.y), new Vector2D(70, 128)));
 
             if (this.frame > 11 && this.frame < 18) {
-                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30));
+                this.hitboxes.push(new HitBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30, false, 0));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(80, 32)));
             }
@@ -394,9 +399,7 @@ class Character {
             } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
             } else if (((inputs.left && this.direction) || (inputs.right && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
-                console.log(this.status);
-                if (this.status === 'HIT' || this.action === 'BLOCK_HIGH') {
-                    this.health = this.health;
+                if (this.status === 'BLOCK') {
                     return 'BLOCK_HIGH';
                 } else {
                     return 'BACKWARD_HIGH';
