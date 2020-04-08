@@ -183,7 +183,7 @@ class Character {
                         var other = game.activity.players.find((player) => player.id !== this.playerId).character;
                         var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
                         otherHitboxes.forEach((hitBox) => {
-                            if ((!this.HIGH_ATTACKS.includes(other.action) && this.action === 'BLOCK_HIGH') || (!this.LOW_ATTACKS.includes(other.action) && this.action === 'BLOCK_LOW')) {
+                            if ((!other.HIGH_ATTACKS.includes(other.action) && this.action === 'BLOCK_HIGH') || (!other.LOW_ATTACKS.includes(other.action) && this.action === 'BLOCK_LOW')) {
                                 this.health -= hitBox.might;
                                 if (hitBox.status === false) {
                                     newStatus = 'HIT';
@@ -213,7 +213,7 @@ class Character {
                 });
                 var allHitboxes = [...otherHitboxes, ...projectilesHitboxes];
                 allHitboxes.forEach((hitBox) => {
-                    if ((this.other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (this.other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (this.other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action))) {
+                    if ((other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action))) {
                         newStatus = 'BLOCK';
                     } else {
                         this.health -= hitBox.might;
