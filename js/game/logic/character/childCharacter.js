@@ -50,10 +50,12 @@ class ChildCharacter extends Character {
 
             if (this.frame > 11 && this.frame < 18) {
                 this.hitboxes.push(new HitBox(
+                    "storke",
                     new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 16),
                     new Vector2D(72, 32),
                     75,
-                    30
+                    30,
+                    this.direction
                 ));
             }
         };
