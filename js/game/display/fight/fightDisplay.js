@@ -1,4 +1,4 @@
-class FightDisplay extends ActivityDisplay {}
+class FightDisplay extends ActivityDisplay { }
 FightDisplay.update = display => {
     var fight = display.game.activity;
 
@@ -114,8 +114,12 @@ FightDisplay.update = display => {
 
         if (player.id === '00') FightDisplay.drawCharacter0(display, player);
         if (player.id === '02') FightDisplay.drawCharacter2(display, player);
-        
+
+        display.cx.save();
         fight.projectiles.forEach(projectile => {
+            if (!projectile.direction) {
+                display.flipHorizontally((projectile.collisionBox.pos.x + projectile.collisionBox.size.x / 2) * display.zoom);
+            }
             display.cx.drawImage(display.assets.projectile1,
                 0, 0,
                 128, 64,
@@ -124,6 +128,7 @@ FightDisplay.update = display => {
                 128 * display.zoom, 64 * display.zoom
             );
         });
+        display.cx.restore();
     });
 
     display.cx.translate(view.xOffset * display.zoom, 0);
