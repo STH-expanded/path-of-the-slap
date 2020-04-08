@@ -83,7 +83,7 @@ class Character {
         // PHYSIC ENGINE
         //------------------------------------------------------------------------------------------------------------------------------
 
-        this.moveX = game => {
+        this.moveX = (game) => {
             var direction = this.direction ? 1 : -1;
 
             switch (this.action) {
@@ -127,14 +127,14 @@ class Character {
             var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(this.speed.x, 0)), this.collisionBox.size);
             if (!newCollisionBox.isIncludedIn(game.activity.stage)) newCollisionBox.pos.x = newCollisionBox.pos.x < 0 ? 0 : game.activity.stage.size.x - newCollisionBox.size.x;
 
-            var other = game.activity.players.find(player => player.id !== this.playerId).character;
+            var other = game.activity.players.find((player) => player.id !== this.playerId).character;
             if (newCollisionBox.intersects(other.collisionBox)) {
                 if (other.collisionBox.pos.x === 0 || other.collisionBox.pos.x === game.activity.stage.size.x - other.collisionBox.size.x) this.speed.x = 0;
                 var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(this.speed.x, 0)), other.collisionBox.size);
 
                 newCollisionBox.pos.x = (otherNewCollisionBox.pos.x + otherNewCollisionBox.size.x / 2 < newCollisionBox.pos.x + newCollisionBox.size.x / 2 ? otherNewCollisionBox.pos.x + otherNewCollisionBox.size.x : otherNewCollisionBox.pos.x - newCollisionBox.size.x) + other.speed.x;
 
-                [newCollisionBox, otherNewCollisionBox].forEach(collisionBox => {
+                [newCollisionBox, otherNewCollisionBox].forEach((collisionBox) => {
                     if (!collisionBox.isIncludedIn(game.activity.stage)) collisionBox.pos.x = collisionBox.pos.x < 0 ? 0 : game.activity.stage.size.x - collisionBox.size.x;
                 });
                 other.collisionBox = otherNewCollisionBox;
@@ -142,7 +142,7 @@ class Character {
             this.collisionBox = newCollisionBox;
         };
 
-        this.moveY = game => {
+        this.moveY = (game) => {
             if (this.AERIAL_ACTIONS.includes(this.command) && !this.AERIAL_ATTACKS.includes(this.lastAction)) this.speed.y -= this.jumpHeight;
             this.speed.y += this.gravity.y;
 
@@ -164,16 +164,29 @@ class Character {
             }
         };
 
-        this.updateDirection = game => {
-            var other = game.activity.players.find(player => player.id !== this.playerId).character.collisionBox;
+        this.updateDirection = (game) => {
+            var other = game.activity.players.find((player) => player.id !== this.playerId).character.collisionBox;
             this.direction = this.collisionBox.pos.x + this.collisionBox.size.x / 2 === other.pos.x + other.size.x / 2 ? this.direction : this.collisionBox.pos.x + this.collisionBox.size.x / 2 < other.pos.x + other.size.x / 2;
         };
 
-        this.getNewStatus = game => {
+        this.getNewStatus = (game) => {
             var newStatus = this.status;
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') newStatus = null;
+                    if (this.status === 'BLOCK' && this.action === 'BLOCK_HIGH') {
+                        var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                        var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
+                        otherHitboxes.forEach((hitBox) => {
+                            this.health -= hitBox.might;
+                            if (hitBox.status === false) {
+                                newStatus = 'HIT';
+                                this.frame = hitBox.stun;
+                            } else if (hitBox.status === true) {
+                                newStatus = 'EJECTED';
+                            }
+                        });
+                    }
                     if (this.status === 'BLOCK' && this.action !== 'BLOCK_HIGH') newStatus = null;
                     if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
                         newStatus = 'GROUND';
@@ -182,10 +195,10 @@ class Character {
                     if (this.status === 'GROUND') newStatus = null;
                 } else if (this.status !== 'GROUND') this.frame--;
             } else {
-                var other = game.activity.players.find(player => player.id !== this.playerId).character;
-                var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
-                otherHitboxes.forEach(hitBox => {
-                    if (this.action === 'BACKWARD_HIGH') {
+                var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
+                otherHitboxes.forEach((hitBox) => {
+                    if (this.action === 'BACKWARD_HIGH' || this.action === 'BACKWARD_LOW') {
                         newStatus = 'BLOCK';
                     } else {
                         this.health -= hitBox.might;
@@ -206,71 +219,76 @@ class Character {
         // ACTIONS
         //------------------------------------------------------------------------------------------------------------------------------
 
-        this.LAND = game => {
+        this.LAND = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
         };
-        this.GET_UP = game => {};
+        this.GET_UP = (game) => {};
 
-        this.BLOCK_HIGH = game => {
-            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(42, 128)));
-        };
+        this.BACKWARD_DASH = (game) => {};
 
-        this.BACKWARD_DASH = game => {};
-
-        this.FORWARD_DASH = game => {
+        this.FORWARD_DASH = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y + 8), new Vector2D(75, 115)));
         };
 
-        this.BACKWARD_LOW = game => {
+        this.BACKWARD_LOW = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 4, center.y), new Vector2D(70, 96)));
         };
 
-        this.NEUTRAL_LOW = game => {
+        this.BLOCK_LOW = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
         };
 
-        this.FORWARD_LOW = game => {
+        this.NEUTRAL_LOW = (game) => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
+        };
+
+        this.FORWARD_LOW = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 4, center.y), new Vector2D(70, 96)));
         };
 
-        this.BACKWARD_HIGH = game => {
+        this.BACKWARD_HIGH = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x - (this.direction ? 1 : -1) * 5, center.y), new Vector2D(42, 128)));
         };
 
-        this.NEUTRAL_HIGH = game => {
+        this.BLOCK_HIGH = (game) => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y + 40), new Vector2D(42, 48)));
+        };
+
+        this.NEUTRAL_HIGH = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 7, center.y), new Vector2D(47, 128)));
         };
 
-        this.FORWARD_HIGH = game => {
+        this.FORWARD_HIGH = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(42, 128)));
         };
 
-        this.BACKWARD_AERIAL = game => {
+        this.BACKWARD_AERIAL = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
-        this.NEUTRAL_AERIAL = game => {
+        this.NEUTRAL_AERIAL = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
-        this.FORWARD_AERIAL = game => {
+        this.FORWARD_AERIAL = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
         };
 
-        this.LOW_A = game => {
+        this.LOW_A = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
@@ -279,7 +297,7 @@ class Character {
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(52, 28)));
             }
         };
-        this.LOW_B = game => {
+        this.LOW_B = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
@@ -289,7 +307,7 @@ class Character {
             }
         };
 
-        this.AERIAL_A = game => {
+        this.AERIAL_A = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 116)));
@@ -298,7 +316,7 @@ class Character {
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(32, 16)));
             }
         };
-        this.AERIAL_B = game => {
+        this.AERIAL_B = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
@@ -308,7 +326,7 @@ class Character {
             }
         };
 
-        this.HIGH_A = game => {
+        this.HIGH_A = (game) => {
             this.frame++;
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 128)));
@@ -319,7 +337,7 @@ class Character {
             }
         };
 
-        this.HIGH_B = game => {
+        this.HIGH_B = (game) => {
             this.frame++;
 
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
@@ -333,15 +351,15 @@ class Character {
             }
         };
 
-        this.QCF = game => {
+        this.QCF = (game) => {
             this.frame++;
             if (this.frame === 13) {
                 game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)), this.playerId, this.direction, new Vector2D(10, 0), 10));
             }
         };
-        this.QCB = game => {};
-        this.DP = game => {};
-        this.HCF = game => {};
+        this.QCB = (game) => {};
+        this.DP = (game) => {};
+        this.HCF = (game) => {};
 
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
@@ -384,7 +402,11 @@ class Character {
                 if ((inputs.left && !this.direction) || (inputs.right && this.direction)) {
                     return 'FORWARD_LOW';
                 } else if ((inputs.left && this.direction) || (inputs.right && !this.direction)) {
-                    return 'BACKWARD_LOW';
+                    if (this.status === 'BLOCK') {
+                        return 'BLOCK_LOW';
+                    } else {
+                        return 'BACKWARD_LOW';
+                    }
                 } else {
                     return 'NEUTRAL_LOW';
                 }
@@ -431,7 +453,7 @@ class Character {
             this.updateSize();
             if (!this.AERIAL_FULL.includes(this.action) && !this.LAG_ACTIONS.includes(this.action)) this.updateDirection(game);
 
-            if (!this.status) {
+            if (!this.status || this.status === 'BLOCK') {
                 this.moveX(game);
                 this.moveY(game);
                 if (this.action) this[this.action](game);
