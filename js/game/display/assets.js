@@ -103,6 +103,12 @@ class Assets {
         this.cm02.src = 'img/character/cm02.png';
         this.cn02 = document.createElement('img');
         this.cn02.src = 'img/character/cn02.png';
+        this.c02idle = document.createElement('img');
+        this.c02idle.src = 'img/character/c02idle.png';
+        this.c02hf = document.createElement('img');
+        this.c02hf.src = 'img/character/c02hf.png';
+        this.c02hb = document.createElement('img');
+        this.c02hb.src = 'img/character/c02hb.png';
 
         this.ci03 = document.createElement('img');
         this.ci03.src = 'img/character/ci03.png';
@@ -212,6 +218,8 @@ class Assets {
         this.dust.src = 'img/fight/dust.png';
         this.dash = document.createElement('img');
         this.dash.src = 'img/fight/dash.png';
+        this.projectile1 = document.createElement('img');
+        this.projectile1.src = 'img/fight/projectile1.png';
 
         // Fight Training
         this.infinity = document.createElement('img');

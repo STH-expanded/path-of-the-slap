@@ -53,6 +53,8 @@ class Character {
         this.lowAFrame = 12;
         this.lowBFrame = 30;
 
+        this.getUpFrame = 20;
+
         this.aerialAFrame = 20;
         this.aerialBFrame = 24;
 
@@ -61,6 +63,9 @@ class Character {
         this.qcfFrame = 32;
 
         this.canBackdash = false;
+        this.runBackDash = true;
+
+        this.canDash = true;
         this.runDash = false;
 
         // attack cancels ?
@@ -199,8 +204,16 @@ class Character {
             } else {
                 var other = game.activity.players.find((player) => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
-                otherHitboxes.forEach((hitBox) => {
-                    if ((this.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (this.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (this.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action))) {
+                var projectilesHitboxes = [];
+                game.activity.projectiles.forEach((projectile) => {
+                    projectilesHitboxes = projectile.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
+                    if (projectilesHitboxes.length) {
+                        projectile.istouchHurt();
+                    }
+                });
+                var allHitboxes = [...otherHitboxes, ...projectilesHitboxes];
+                allHitboxes.forEach((hitBox) => {
+                    if ((this.other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (this.other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (this.other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action))) {
                         newStatus = 'BLOCK';
                     } else {
                         this.health -= hitBox.might;
@@ -361,13 +374,20 @@ class Character {
         this.QCF = (game) => {
             this.frame++;
             if (this.frame === 13) {
-                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos, new Vector2D(15, 15)), this.playerId, this.direction, new Vector2D(10, 0), 10));
+                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos, new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5));
             }
         };
         this.QCB = (game) => {};
         this.DP = (game) => {};
         this.HCF = (game) => {};
-
+        this.HIT = (game) => {};
+        this.EJECTED = (game) => {};
+        this.GROUND = (game) => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(47, 128)));
+        };
+        this.RECOVER = (game) => {};
+        this.TECH = (game) => {};
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
         //------------------------------------------------------------------------------------------------------------------------------
@@ -376,8 +396,10 @@ class Character {
             var inputs = inputList[inputList.length - 1].inputs;
 
             if (this.status === 'HIT') return null;
+            if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) return 'GET_UP';
 
             if (!this.runDash && this.action === 'FORWARD_DASH' && this.frame < this.forwardDashFrame) return 'FORWARD_DASH';
+            if (!this.runBackDash && this.action === 'BACKWARD_DASH' && this.frame < this.backDashFrame) return 'BACKWARD_DASH';
 
             if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
@@ -423,13 +445,13 @@ class Character {
                 } else {
                     return 'NEUTRAL_LOW';
                 }
-            } else if (((this.runDash && inputs.right) || (!this.runDash && inputs.right && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right))) {
+            } else if (((this.runDash && inputs.right) || (!this.runDash && inputs.right && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canDash) {
                 return 'FORWARD_DASH';
-            } else if (((this.runDash && inputs.left) || (!this.runDash && inputs.left && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && !this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left))) {
+            } else if (((this.runDash && inputs.left) || (!this.runDash && inputs.left && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && !this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canDash) {
                 return 'FORWARD_DASH';
-            } else if (inputs.left && this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canBackdash) {
+            } else if (((this.runBackDash && inputs.left) || (!this.runBackDash && inputs.left && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
-            } else if (inputs.right && !this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canBackdash) {
+            } else if (((this.runBackDash && inputs.right) || (!this.runBackDash && inputs.right && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && !this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
             } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
@@ -470,6 +492,8 @@ class Character {
                 this.moveX(game);
                 this.moveY(game);
                 if (this.action) this[this.action](game);
+            } else {
+                this[this.status](game);
             }
 
             this.command = null;
