@@ -175,8 +175,9 @@ class Character {
             this.direction = this.collisionBox.pos.x + this.collisionBox.size.x / 2 === other.pos.x + other.size.x / 2 ? this.direction : this.collisionBox.pos.x + this.collisionBox.size.x / 2 < other.pos.x + other.size.x / 2;
         };
 
-        this.getNewStatus = (game) => {
+        this.getNewStatus = (game, inputList) => {
             var newStatus = this.status;
+            var inputs = inputList[inputList.length - 1].inputs;
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') {
@@ -243,7 +244,8 @@ class Character {
                 });
                 var allHitboxes = [...otherHitboxes, ...projectilesHitboxes];
                 allHitboxes.forEach((hitBox) => {
-                    if ((other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action)) || hitBox.type === 'projectile') {
+                    const blockActions = [...this.AERIAL_ACTIONS, 'BACKWARD_HIGH', 'BACKWARD_LOW'];
+                    if (((inputs.left && this.direction) || (inputs.right && !this.direction)) && (blockActions.includes(this.action) || hitBox.type === 'projectile')) {
                         newStatus = 'BLOCK';
                     } else {
                         newStatus = 'HIT';
@@ -509,7 +511,7 @@ class Character {
         //------------------------------------------------------------------------------------------------------------------------------
 
         this.update = (game, inputList) => {
-            this.status = this.getNewStatus(game);
+            this.status = this.getNewStatus(game, inputList);
 
             this.hitboxes = [];
             this.hurtboxes = [];
