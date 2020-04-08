@@ -43,7 +43,7 @@ class Character {
 
         this.hurtboxes = [];
         this.hitboxes = [];
-        this.knockbacks =[]
+        this.knockbacks = [];
 
         this.maxHealth = 1000;
         this.health = this.maxHealth;
@@ -181,7 +181,7 @@ class Character {
                 if (!this.frame) {
                     if (this.status === 'HIT') {
                         newStatus = null;
-                        this.knockbacks= []
+                        this.knockbacks = [];
                     }
                     if (this.status === 'BLOCK' && this.BLOCK_STATUS.includes(this.action) && this.status !== 'HIT') {
                         var other = game.activity.players.find((player) => player.id !== this.playerId).character;
@@ -192,6 +192,12 @@ class Character {
                                 if (hitBox.status === false) {
                                     newStatus = 'HIT';
                                     this.frame = hitBox.stun;
+                                    this.knockbacks.push({
+                                        affection: (this.collisionBox.pos.x <= 0 || this.collisionBox.pos.x + this.collisionBox.size.x >= game.activity.stage.size.x) && hitBox.type === 'storke' ? 'launcher' : 'self',
+                                        direction: hitBox.direction,
+                                        deplacement: hitBox.might,
+                                        nbframe: hitBox.stun,
+                                    });
                                 } else if (hitBox.status === true) {
                                     newStatus = 'EJECTED';
                                 }
@@ -205,30 +211,26 @@ class Character {
                     }
                     if (this.status === 'GROUND') newStatus = null;
                 } else if (this.status !== 'GROUND') {
-
                     this.knockbacks.forEach((knockback) => {
-                        var direction = knockback.direction ? 1 : -1
-                        if (knockback.affection === "launcher") {
-                                var other = game.activity.players.find(player => player.id !== this.playerId).character;
-                                var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(-1*direction * (knockback.deplacement/knockback.nbframe), 0)), other.collisionBox.size);
-                                other.collisionBox = otherNewCollisionBox;
-                           
-                        } else if (knockback.affection === "self") {
-                            var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(direction * (knockback.deplacement/knockback.nbframe), 0)), this.collisionBox.size);
+                        var direction = knockback.direction ? 1 : -1;
+                        if (knockback.affection === 'launcher') {
+                            var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                            var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(-1 * direction * (knockback.deplacement / knockback.nbframe), 0)), other.collisionBox.size);
+                            other.collisionBox = otherNewCollisionBox;
+                        } else if (knockback.affection === 'self') {
+                            var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(direction * (knockback.deplacement / knockback.nbframe), 0)), this.collisionBox.size);
                             if (!newCollisionBox.isIncludedIn(game.activity.stage)) {
                                 if (newCollisionBox.pos.x < 0) {
-                                    newCollisionBox.pos.x=0
+                                    newCollisionBox.pos.x = 0;
                                 } else {
-                                    newCollisionBox.pos.x= game.activity.stage.size.x - newCollisionBox.size.x;
+                                    newCollisionBox.pos.x = game.activity.stage.size.x - newCollisionBox.size.x;
                                 }
                             }
                             this.collisionBox = newCollisionBox;
                         }
-                        
-                       
                     });
                     this.frame--;
-                };
+                }
             } else {
                 var other = game.activity.players.find((player) => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
@@ -239,9 +241,9 @@ class Character {
                         projectile.istouchHurt();
                     }
                 });
-                var allHitboxes = [...otherHitboxes,...projectilesHitboxes]
-                allHitboxes.forEach(hitBox => {
-                    if ((other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action))) {
+                var allHitboxes = [...otherHitboxes, ...projectilesHitboxes];
+                allHitboxes.forEach((hitBox) => {
+                    if ((other.HIGH_ATTACKS.includes(other.action) && this.action === 'BACKWARD_HIGH') || (other.LOW_ATTACKS.includes(other.action) && this.action === 'BACKWARD_LOW') || (other.ATTACK_ACTIONS.includes(other.action) && this.AERIAL_FULL.includes(this.action)) || hitBox.type === 'projectile') {
                         newStatus = 'BLOCK';
                     } else {
                         newStatus = 'HIT';
@@ -250,11 +252,11 @@ class Character {
                             newStatus = 'HIT';
                             this.frame = hitBox.stun;
                             this.knockbacks.push({
-                                affection : (this.collisionBox.pos.x <= 0 || this.collisionBox.pos.x +this.collisionBox.size.x >= game.activity.stage.size.x) && hitBox.type === "storke" ? "launcher" : "self",
-                                direction : hitBox.direction,
-                                deplacement : hitBox.might ,
-                                nbframe :hitBox.stun
-                            })
+                                affection: (this.collisionBox.pos.x <= 0 || this.collisionBox.pos.x + this.collisionBox.size.x >= game.activity.stage.size.x) && hitBox.type === 'storke' ? 'launcher' : 'self',
+                                direction: hitBox.direction,
+                                deplacement: hitBox.might,
+                                nbframe: hitBox.stun,
+                            });
                         } else if (hitBox.status === true) {
                             newStatus = 'EJECTED';
                         }
@@ -347,7 +349,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 4 && this.frame < 7) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10, false, 0),this.direction);
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(75, 28), 20, 10, false, 0, this.direction));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 35), new Vector2D(52, 28)));
             }
         };
@@ -356,7 +358,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 15 && this.frame < 23) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15, true, 15,this.direction));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 50, 15, true, 15, this.direction));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
         };
@@ -366,7 +368,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 116)));
             if (this.frame > 5 && this.frame < 9) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25, false, 0,this.direction));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(40, 24), 40, 25, false, 0, this.direction));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y), new Vector2D(32, 16)));
             }
         };
@@ -375,7 +377,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(48, 128)));
             if (this.frame > 3 && this.frame < 15) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40, false, 0,this.direction));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 44), new Vector2D(75, 24), 60, 40, false, 0, this.direction));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 30, center.y + 40), new Vector2D(58, 24)));
             }
         };
@@ -385,7 +387,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 128)));
             if (this.frame > 6 && this.frame < 9) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15, false, 0,this.direction));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(80, 24), 30, 15, false, 0, this.direction));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 32, center.y - 34), new Vector2D(60, 24)));
             }
@@ -399,7 +401,7 @@ class Character {
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 15, center.y), new Vector2D(70, 128)));
 
             if (this.frame > 11 && this.frame < 18) {
-                this.hitboxes.push(new HitBox("storke",new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30, false, 0,this.direction));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(110, 32), 75, 30, false, 0, this.direction));
 
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 48, center.y - 28), new Vector2D(80, 32)));
             }
