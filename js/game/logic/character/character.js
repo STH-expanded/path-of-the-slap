@@ -53,6 +53,8 @@ class Character {
         this.lowAFrame = 12;
         this.lowBFrame = 30;
 
+        this.getUpFrame = 20;
+
         this.aerialAFrame = 20;
         this.aerialBFrame = 24;
 
@@ -62,7 +64,7 @@ class Character {
 
         this.canBackdash = false;
         this.runBackDash = true;
-        
+
         this.canDash = true;
         this.runDash = false;
 
@@ -187,12 +189,12 @@ class Character {
             } else {
                 var other = game.activity.players.find(player => player.id !== this.playerId).character;
                 var otherHitboxes = other.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
-                var projectilesHitboxes =[]
+                var projectilesHitboxes = []
                 game.activity.projectiles.forEach((projectile) => {
-                    projectilesHitboxes= projectile.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
+                    projectilesHitboxes = projectile.hitboxes.filter(hitBox => hitBox.intersectingCollisionBoxes(this.hurtboxes).some(hurtBox => hurtBox));
                     if (projectilesHitboxes.length) { projectile.istouchHurt() };
                 });
-                var allHitboxes = [...otherHitboxes,...projectilesHitboxes]
+                var allHitboxes = [...otherHitboxes, ...projectilesHitboxes]
                 allHitboxes.forEach(hitBox => {
                     newStatus = 'HIT';
                     this.health -= hitBox.might;
@@ -337,21 +339,34 @@ class Character {
         this.QCF = game => {
             this.frame++;
             if (this.frame === 13) {
-              game.activity.projectiles.push(
-                new Projectile(
-                  new CollisionBox(this.collisionBox.pos, new Vector2D(32, 32)),
-                  this.playerId,
-                  this.direction,
-                  new Vector2D(10, 0),
-                  10,
-                  5
-                )
-              );
+                game.activity.projectiles.push(
+                    new Projectile(
+                        new CollisionBox(this.collisionBox.pos, new Vector2D(32, 32)),
+                        this.playerId,
+                        this.direction,
+                        new Vector2D(10, 0),
+                        10,
+                        5
+                    )
+                );
             }
         };
         this.QCB = game => { };
         this.DP = game => { };
         this.HCF = game => { };
+        this.HIT = game => { };
+        this.EJECTED = game => { };
+        this.GROUND = game => {
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(47, 128)));
+        };
+        this.RECOVER = game => { };
+        this.TECH = game => { };
+        this.BLOCK_AERIAL = game => { };
+        this.BLOCK_HIGH = game => { };
+        this.BLOCK_LOW = game => { };
+        this.LAND = game => { };
+        this.GET_UP = game => { };
 
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
@@ -359,6 +374,8 @@ class Character {
 
         this.getCommandInput = (game, inputList) => {
             var inputs = inputList[inputList.length - 1].inputs;
+
+            if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) return 'GET_UP';
 
             if (!this.runDash && this.action === 'FORWARD_DASH' && this.frame < this.forwardDashFrame) return 'FORWARD_DASH';
             if (!this.runBackDash && this.action === 'BACKWARD_DASH' && this.frame < this.backDashFrame) return 'BACKWARD_DASH';
@@ -419,7 +436,7 @@ class Character {
                     !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b &&
                     inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
-        } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
+            } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
             } else if (((inputs.left && this.direction) || (inputs.right && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'BACKWARD_HIGH';
@@ -454,6 +471,8 @@ class Character {
                 this.moveX(game);
                 this.moveY(game);
                 if (this.action) this[this.action](game);
+            } else {
+                this[this.status](game);
             }
 
             this.command = null;
