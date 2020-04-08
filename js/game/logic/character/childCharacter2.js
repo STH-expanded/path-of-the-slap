@@ -11,7 +11,8 @@ class ChildCharacter2 extends Character {
         this.id = '02';
         this.name = 'ChildCharacter2';
 
-        this.backDashFrame = 20;
+        this.forwardDashFrame = 15;
+        this.backDashFrame = 10;
 
         this.canBackdash = true;
         this.runBackDash = false;
@@ -23,6 +24,8 @@ class ChildCharacter2 extends Character {
         this.jumpSize = new Vector2D(24, 64);
         this.crouchSize = new Vector2D(24, 64);
 
+        this.forwardDashSpeed = 8;
+        this.backDashSpeed = -8;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // PHYSIC ENGINE
@@ -71,6 +74,9 @@ class ChildCharacter2 extends Character {
             }
         };
 
+        this.QCF = game => {
+            this.frame++;
+        }
 
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS

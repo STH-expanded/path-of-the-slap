@@ -174,14 +174,6 @@ FightDisplay.drawCharacter0 = (display, player) => {
     } else {
         switch (player.action) {
             case "LAND":
-                display.cx.drawImage(display.assets.c00a0,
-                    0, 0,
-                    91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
-                );
-                break;
             case "GET_UP":
                 display.cx.drawImage(display.assets.c00a0,
                     0, 0,
@@ -220,43 +212,7 @@ FightDisplay.drawCharacter0 = (display, player) => {
                 console.log("BACKWARD_DASH");
                 break;
             case "BACKWARD_AERIAL":
-                if (player.speed.y <= 0) {
-                    display.cx.drawImage(display.assets.c00a1,
-                        0, 0,
-                        91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
-                    );
-                } else {
-                    display.cx.drawImage(display.assets.c00a2,
-                        0, 0,
-                        91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
-                    );
-                }
-                break;
             case "NEUTRAL_AERIAL":
-                if (player.speed.y <= 0) {
-                    display.cx.drawImage(display.assets.c00a1,
-                        0, 0,
-                        91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
-                    );
-                } else {
-                    display.cx.drawImage(display.assets.c00a2,
-                        0, 0,
-                        91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
-                    );
-                }
-                break;
             case "FORWARD_AERIAL":
                 if (player.speed.y <= 0) {
                     display.cx.drawImage(display.assets.c00a1,
@@ -304,23 +260,7 @@ FightDisplay.drawCharacter0 = (display, player) => {
                 );
                 break;
             case "BACKWARD_LOW":
-                display.cx.drawImage(display.assets.c00lidle,
-                    91 * Math.floor((display.frame / 8) % 6), 0,
-                    91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
-                );
-                break;
             case "NEUTRAL_LOW":
-                display.cx.drawImage(display.assets.c00lidle,
-                    91 * Math.floor((display.frame / 8) % 6), 0,
-                    91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
-                );
-                break;
             case "FORWARD_LOW":
                 display.cx.drawImage(display.assets.c00lidle,
                     91 * Math.floor((display.frame / 8) % 6), 0,
@@ -435,16 +375,53 @@ FightDisplay.drawCharacter2 = (display, player) => {
     } else {
         switch (player.action) {
             case "LAND":
+            case "GET_UP":
+                display.cx.drawImage(display.assets.c02a0,
+                    0, 0,
+                    91, 192,
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                    91 * display.zoom, 192 * display.zoom
+                );
                 break;
             case "FORWARD_DASH":
+                display.cx.drawImage(display.assets.c02df,
+                    182 * Math.floor((player.frame / 6) % 6), 0,
+                    182, 192,
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                    182 * display.zoom, 192 * display.zoom
+                );
                 break;
             case "BACKWARD_DASH":
+                display.cx.drawImage(display.assets.c02db,
+                    182 * Math.floor((player.frame / 4) % 4), 0,
+                    182, 192,
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                    182 * display.zoom, 192 * display.zoom
+                );
                 break;
             case "BACKWARD_AERIAL":
-                break;
             case "NEUTRAL_AERIAL":
-                break;
             case "FORWARD_AERIAL":
+                if (player.speed.y <= 0) {
+                    display.cx.drawImage(display.assets.c02a1,
+                        0, 0,
+                        91, 192,
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                        91 * display.zoom, 192 * display.zoom
+                    );
+                } else {
+                    display.cx.drawImage(display.assets.c02a2,
+                        0, 0,
+                        91, 192,
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                        91 * display.zoom, 192 * display.zoom
+                    );
+                }
                 break;
             case "BACKWARD_HIGH":
                 display.cx.drawImage(display.assets.c02hb,
@@ -474,10 +451,15 @@ FightDisplay.drawCharacter2 = (display, player) => {
                 );
                 break;
             case "BACKWARD_LOW":
-                break;
             case "NEUTRAL_LOW":
-                break;
             case "FORWARD_LOW":
+                display.cx.drawImage(display.assets.c02lidle,
+                    91 * Math.floor((display.frame / 8) % 5), 0,
+                    91, 192,
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
+                    (-48 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
+                    91 * display.zoom, 192 * display.zoom
+                );
                 break;
             case "AERIAL_A":
                 break;

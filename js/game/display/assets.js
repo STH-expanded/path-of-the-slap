@@ -105,10 +105,22 @@ class Assets {
         this.cn02.src = 'img/character/cn02.png';
         this.c02idle = document.createElement('img');
         this.c02idle.src = 'img/character/c02idle.png';
+        this.c02lidle = document.createElement('img');
+        this.c02lidle.src = 'img/character/c02lidle.png';
         this.c02hf = document.createElement('img');
         this.c02hf.src = 'img/character/c02hf.png';
         this.c02hb = document.createElement('img');
         this.c02hb.src = 'img/character/c02hb.png';
+        this.c02df = document.createElement('img');
+        this.c02df.src = 'img/character/c02df.png';
+        this.c02db = document.createElement('img');
+        this.c02db.src = 'img/character/c02db.png';
+        this.c02a0 = document.createElement('img');
+        this.c02a0.src = 'img/character/c02a0.png';
+        this.c02a1 = document.createElement('img');
+        this.c02a1.src = 'img/character/c02a1.png';
+        this.c02a2 = document.createElement('img');
+        this.c02a2.src = 'img/character/c02a2.png';
 
         this.ci03 = document.createElement('img');
         this.ci03.src = 'img/character/ci03.png';
