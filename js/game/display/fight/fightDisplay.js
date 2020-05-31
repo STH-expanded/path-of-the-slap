@@ -11,54 +11,54 @@ FightDisplay.update = display => {
 
     // Viewport
     var view = {
-        xOffset: middle - display.canvas.width / 2 / display.zoom,
+        xOffset: middle - display.width / 2,
         yOffset: 0,
-        w: display.canvas.width / display.zoom,
-        h: display.canvas.height / display.zoom
+        w: display.width,
+        h: display.height
     };
 
     // Viewport borders
     if (view.xOffset < 0) view.xOffset = 0;
-    if (view.xOffset > fight.stage.size.x - display.canvas.width / display.zoom) view.xOffset = fight.stage.size.x - display.canvas.width / display.zoom;
+    if (view.xOffset > fight.stage.size.x - display.width) view.xOffset = fight.stage.size.x - display.width;
 
-    display.cx.translate(-view.xOffset * display.zoom, 0);
+    display.cx.translate(-view.xOffset, 0);
 
     // Background
     FightDisplay.perspectiveLayer(display, fight, view);
 
-    display.cx.translate(view.xOffset * display.zoom, 0);
+    display.cx.translate(view.xOffset, 0);
 
     // GUI
     GUI.update(display);
 
-    display.cx.translate(-view.xOffset * display.zoom, 0);
+    display.cx.translate(-view.xOffset, 0);
 
     if (display.debugMode) {
         //Projectile
         fight.projectiles.forEach(projectile => {
             display.cx.fillStyle = '#00f4';
             display.cx.fillRect(
-                projectile.collisionBox.pos.x * display.zoom,
-                projectile.collisionBox.pos.y * display.zoom,
-                projectile.collisionBox.size.x * display.zoom,
-                projectile.collisionBox.size.y * display.zoom
+                projectile.collisionBox.pos.x,
+                projectile.collisionBox.pos.y,
+                projectile.collisionBox.size.x,
+                projectile.collisionBox.size.y
             );
             display.cx.fillStyle = "#0f04";
             projectile.hurtboxes.forEach(hurtbox => {
                 display.cx.fillRect(
-                    hurtbox.pos.x * display.zoom,
-                    hurtbox.pos.y * display.zoom,
-                    hurtbox.size.x * display.zoom,
-                    hurtbox.size.y * display.zoom
+                    hurtbox.pos.x,
+                    hurtbox.pos.y,
+                    hurtbox.size.x,
+                    hurtbox.size.y
                 );
             });
             display.cx.fillStyle = "#f004";
             projectile.hitboxes.forEach(hitbox => {
                 display.cx.fillRect(
-                    hitbox.pos.x * display.zoom,
-                    hitbox.pos.y * display.zoom,
-                    hitbox.size.x * display.zoom,
-                    hitbox.size.y * display.zoom
+                    hitbox.pos.x,
+                    hitbox.pos.y,
+                    hitbox.size.x,
+                    hitbox.size.y
                 );
             });
         });
@@ -72,16 +72,16 @@ FightDisplay.update = display => {
             // Player
             display.cx.fillStyle = '#00f4';
             display.cx.fillRect(
-                player.collisionBox.pos.x * display.zoom, player.collisionBox.pos.y * display.zoom,
-                player.collisionBox.size.x * display.zoom, player.collisionBox.size.y * display.zoom
+                player.collisionBox.pos.x, player.collisionBox.pos.y,
+                player.collisionBox.size.x, player.collisionBox.size.y
             );
 
             // Hurtboxes
             display.cx.fillStyle = '#0f04';
             player.hurtboxes.forEach(hurtbox => {
                 display.cx.fillRect(
-                    hurtbox.pos.x * display.zoom, hurtbox.pos.y * display.zoom,
-                    hurtbox.size.x * display.zoom, hurtbox.size.y * display.zoom
+                    hurtbox.pos.x, hurtbox.pos.y,
+                    hurtbox.size.x, hurtbox.size.y
                 );
             });
 
@@ -89,25 +89,25 @@ FightDisplay.update = display => {
             display.cx.fillStyle = '#f004';
             player.hitboxes.forEach(hitbox => {
                 display.cx.fillRect(
-                    hitbox.pos.x * display.zoom, hitbox.pos.y * display.zoom,
-                    hitbox.size.x * display.zoom, hitbox.size.y * display.zoom
+                    hitbox.pos.x, hitbox.pos.y,
+                    hitbox.size.x, hitbox.size.y
                 );
             });
 
             // State
             display.cx.textAlign = 'center';
             display.cx.fillStyle = '#fff';
-            display.cx.font = 10 * display.zoom + 'px serif';
+            display.cx.font = 10 + 'px serif';
             display.cx.fillText(
                 'action: ' + player.action,
-                (player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom,
-                (player.collisionBox.pos.y - 6) * display.zoom
+                (player.collisionBox.pos.x + player.collisionBox.size.x / 2),
+                (player.collisionBox.pos.y - 6)
             );
             if (player.status) {
                 display.cx.fillText(
                     'status: ' + player.status,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom,
-                    (player.collisionBox.pos.y - 16) * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2),
+                    (player.collisionBox.pos.y - 16)
                 );
             }
         }
@@ -118,20 +118,20 @@ FightDisplay.update = display => {
         display.cx.save();
         fight.projectiles.forEach(projectile => {
             if (!projectile.direction) {
-                display.flipHorizontally((projectile.collisionBox.pos.x + projectile.collisionBox.size.x / 2) * display.zoom);
+                display.flipHorizontally((projectile.collisionBox.pos.x + projectile.collisionBox.size.x / 2));
             }
-            display.cx.drawImage(display.assets.projectile1,
+            display.cx.drawImage(display.assets.images.projectile1,
                 0, 0,
                 128, 64,
-                (projectile.collisionBox.pos.x + projectile.collisionBox.size.x / 2 - 64) * display.zoom,
-                (projectile.collisionBox.pos.y + projectile.collisionBox.size.y / 2 - 32) * display.zoom,
-                128 * display.zoom, 64 * display.zoom
+                (projectile.collisionBox.pos.x + projectile.collisionBox.size.x / 2 - 64),
+                (projectile.collisionBox.pos.y + projectile.collisionBox.size.y / 2 - 32),
+                128, 64
             );
         });
         display.cx.restore();
     });
 
-    display.cx.translate(view.xOffset * display.zoom, 0);
+    display.cx.translate(view.xOffset, 0);
 
     // PauseMenu
     if (fight.pauseMenu) fight.pauseMenu.display.update(display);
@@ -140,18 +140,18 @@ FightDisplay.drawCharacter0 = (display, player) => {
 
     display.cx.save();
     if (!player.direction) {
-        display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom);
+        display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2));
     }
 
     if (player.status) {
         switch (player.status) {
             case "HIT":
-                display.cx.drawImage(display.assets.c00stun,
+                display.cx.drawImage(display.assets.images.c00stun,
                     0, 0,
                     91, 192,
-                    (Math.floor(Math.random() * player.frame / 2) - player.frame / 4 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (Math.floor(Math.random() * player.frame / 2) - player.frame / 4 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "EJECTED":
@@ -180,36 +180,36 @@ FightDisplay.drawCharacter0 = (display, player) => {
         switch (player.action) {
             case "LAND":
             case "GET_UP":
-                display.cx.drawImage(display.assets.c00a0,
+                display.cx.drawImage(display.assets.images.c00a0,
                     0, 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "FORWARD_DASH":
-                display.cx.drawImage(display.assets.c00df,
+                display.cx.drawImage(display.assets.images.c00df,
                     0, 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
-                display.cx.drawImage(display.assets.dust,
+                display.cx.drawImage(display.assets.images.dust,
                     128 * Math.floor((player.frame / 2) % 20), 0,
                     128, 128,
-                    (-(Math.floor(player.frame / 2) * player.forwardDashSpeed) + player.collisionBox.pos.x - 128) * display.zoom,
-                    (8 + player.collisionBox.pos.y + player.collisionBox.size.y - 128) * display.zoom,
-                    128 * display.zoom, 128 * display.zoom
+                    (-(Math.floor(player.frame / 2) * player.forwardDashSpeed) + player.collisionBox.pos.x - 128),
+                    (8 + player.collisionBox.pos.y + player.collisionBox.size.y - 128),
+                    128, 128
                 );
                 display.cx.globalAlpha = 0.25;
-                display.cx.drawImage(display.assets.dash,
+                display.cx.drawImage(display.assets.images.dash,
                     128 * Math.floor((player.frame / 4) % 20), 0,
                     128, 128,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x) * display.zoom,
-                    (player.collisionBox.pos.y + player.collisionBox.size.y - 128) * display.zoom,
-                    128 * display.zoom, 128 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x),
+                    (player.collisionBox.pos.y + player.collisionBox.size.y - 128),
+                    128, 128
                 );
                 display.cx.globalAlpha = 1;
                 break;
@@ -220,122 +220,122 @@ FightDisplay.drawCharacter0 = (display, player) => {
             case "NEUTRAL_AERIAL":
             case "FORWARD_AERIAL":
                 if (player.speed.y <= 0) {
-                    display.cx.drawImage(display.assets.c00a1,
+                    display.cx.drawImage(display.assets.images.c00a1,
                         0, 0,
                         91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                        91, 192
                     );
                 } else {
-                    display.cx.drawImage(display.assets.c00a2,
+                    display.cx.drawImage(display.assets.images.c00a2,
                         0, 0,
                         91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                        (player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                        91, 192
                     );
                 }
                 break;
             case "BACKWARD_HIGH":
-                display.cx.drawImage(display.assets.c00hb,
+                display.cx.drawImage(display.assets.images.c00hb,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "NEUTRAL_HIGH":
-                display.cx.drawImage(display.assets.c00idle,
+                display.cx.drawImage(display.assets.images.c00idle,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "FORWARD_HIGH":
-                display.cx.drawImage(display.assets.c00hf,
+                display.cx.drawImage(display.assets.images.c00hf,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "BACKWARD_LOW":
             case "NEUTRAL_LOW":
             case "FORWARD_LOW":
-                display.cx.drawImage(display.assets.c00lidle,
+                display.cx.drawImage(display.assets.images.c00lidle,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "AERIAL_A":
-                display.cx.drawImage(display.assets.c00aa,
+                display.cx.drawImage(display.assets.images.c00aa,
                     91 * Math.floor((player.frame / 5) % 4), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "AERIAL_B":
-                display.cx.drawImage(display.assets.c00ab,
+                display.cx.drawImage(display.assets.images.c00ab,
                     182 * Math.floor((player.frame / 4) % 6), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "HIGH_A":
-                display.cx.drawImage(display.assets.c00ha,
+                display.cx.drawImage(display.assets.images.c00ha,
                     182 * Math.floor((player.frame / 4) % 4), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "HIGH_B":
-                display.cx.drawImage(display.assets.c00hab,
+                display.cx.drawImage(display.assets.images.c00hab,
                     182 * Math.floor((player.frame / 5) % 6), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "LOW_A":
-                display.cx.drawImage(display.assets.c00la,
+                display.cx.drawImage(display.assets.images.c00la,
                     182 * Math.floor((player.frame / 3) % 4), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "LOW_B":
-                display.cx.drawImage(display.assets.c00lab,
+                display.cx.drawImage(display.assets.images.c00lab,
                     182 * Math.floor((player.frame / 5) % 6), 0,
                     182, 192,
-                    (32 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (32 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "QCF":
-                display.cx.drawImage(display.assets.c00qcf,
+                display.cx.drawImage(display.assets.images.c00qcf,
                     182 * Math.floor((player.frame / 4) % 8), 0,
                     182, 192,
-                    (16 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (16 + player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
         }
@@ -348,7 +348,7 @@ FightDisplay.drawCharacter2 = (display, player) => {
 
     display.cx.save();
     if (!player.direction) {
-        display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2) * display.zoom);
+        display.flipHorizontally((player.collisionBox.pos.x + player.collisionBox.size.x / 2));
     }
 
     if (player.status) {
@@ -381,89 +381,89 @@ FightDisplay.drawCharacter2 = (display, player) => {
         switch (player.action) {
             case "LAND":
             case "GET_UP":
-                display.cx.drawImage(display.assets.c02a0,
+                display.cx.drawImage(display.assets.images.c02a0,
                     0, 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "FORWARD_DASH":
-                display.cx.drawImage(display.assets.c02df,
+                display.cx.drawImage(display.assets.images.c02df,
                     182 * Math.floor((player.frame / 6) % 6), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "BACKWARD_DASH":
-                display.cx.drawImage(display.assets.c02db,
+                display.cx.drawImage(display.assets.images.c02db,
                     182 * Math.floor((player.frame / 4) % 4), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "BACKWARD_AERIAL":
             case "NEUTRAL_AERIAL":
             case "FORWARD_AERIAL":
                 if (player.speed.y <= 0) {
-                    display.cx.drawImage(display.assets.c02a1,
+                    display.cx.drawImage(display.assets.images.c02a1,
                         0, 0,
                         91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                        91, 192
                     );
                 } else {
-                    display.cx.drawImage(display.assets.c02a2,
+                    display.cx.drawImage(display.assets.images.c02a2,
                         0, 0,
                         91, 192,
-                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                        91 * display.zoom, 192 * display.zoom
+                        (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                        (-16 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                        91, 192
                     );
                 }
                 break;
             case "BACKWARD_HIGH":
-                display.cx.drawImage(display.assets.c02hb,
+                display.cx.drawImage(display.assets.images.c02hb,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "NEUTRAL_HIGH":
-                display.cx.drawImage(display.assets.c02idle,
+                display.cx.drawImage(display.assets.images.c02idle,
                     91 * Math.floor((display.frame / 8) % 6), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "FORWARD_HIGH":
-                display.cx.drawImage(display.assets.c02hf,
+                display.cx.drawImage(display.assets.images.c02hf,
                     182 * Math.floor((display.frame / 8) % 9), 0,
                     182, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91) * display.zoom,
-                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    182 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 91),
+                    (-32 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    182, 192
                 );
                 break;
             case "BACKWARD_LOW":
             case "NEUTRAL_LOW":
             case "FORWARD_LOW":
-                display.cx.drawImage(display.assets.c02lidle,
+                display.cx.drawImage(display.assets.images.c02lidle,
                     91 * Math.floor((display.frame / 8) % 5), 0,
                     91, 192,
-                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45) * display.zoom,
-                    (-48 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96) * display.zoom,
-                    91 * display.zoom, 192 * display.zoom
+                    (player.collisionBox.pos.x + player.collisionBox.size.x / 2 - 45),
+                    (-48 + player.collisionBox.pos.y + player.collisionBox.size.y / 2 - 96),
+                    91, 192
                 );
                 break;
             case "AERIAL_A":
@@ -487,8 +487,8 @@ FightDisplay.drawCharacter2 = (display, player) => {
 }
 
 FightDisplay.perspectiveLayer = (display, fight, view) => {
-    if (display.assets['s' + fight.stage.id + 'l0']) {
-        display.cx.drawImage(display.assets['s' + fight.stage.id + 'l0'], -view.xOffset, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom);
+    if (display.assets.images['s' + fight.stage.id + 'l0']) {
+        display.cx.drawImage(display.assets.images['s' + fight.stage.id + 'l0'], -view.xOffset, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x, (fight.stage.size.y + 16));
     }
 
     var img = {
@@ -518,19 +518,19 @@ FightDisplay.perspectiveLayer = (display, fight, view) => {
     var m2 = Math.tan(Math.atan2(y4 - y2, x4 - x2));
     var b2 = y4 - m2 * x4;
 
-    display.cx.translate(0, 270 * display.zoom);
+    display.cx.translate(0, 270);
     display.cx.rotate((-90 * Math.PI) / 180);
 
     for (var row = 0; row < img.w; row++) {
         var yTop = m1 * row + b1;
         var yBottom = m2 * row + b2;
-        display.cx.drawImage(display.assets['s' + fight.stage.id + 'floor'], row, img.x / 2, 1, img.h, row * display.zoom, yTop * display.zoom, 1 * display.zoom, (yBottom - yTop) * display.zoom);
+        display.cx.drawImage(display.assets.images['s' + fight.stage.id + 'floor'], row, img.x / 2, 1, img.h, row, yTop, 1, (yBottom - yTop));
     }
 
     display.cx.rotate((90 * Math.PI) / 180);
-    display.cx.translate(0, -270 * display.zoom);
+    display.cx.translate(0, -270);
 
-    if (display.assets['s' + fight.stage.id + 'l1']) {
-        display.cx.drawImage(display.assets['s' + fight.stage.id + 'l1'], -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x * display.zoom, (fight.stage.size.y + 16) * display.zoom);
+    if (display.assets.images['s' + fight.stage.id + 'l1']) {
+        display.cx.drawImage(display.assets.images['s' + fight.stage.id + 'l1'], -view.xOffset / 2, 0, fight.stage.size.x, fight.stage.size.y + 16, 0, 0, fight.stage.size.x, (fight.stage.size.y + 16));
     }
 };

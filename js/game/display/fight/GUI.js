@@ -9,84 +9,84 @@ GUI.update = display => {
         if (nb.length === 1) nb = "0" + nb;
         for (let i = 0; i < nb.length; i++) {
             display.cx.drawImage(
-                display.assets.timerNumbers,
+                display.assets.images.timerNumbers,
                 14 * nb[i], 0,
                 14, 20,
-                display.cx.canvas.width / 2 + (-14 + i * 14) * display.zoom,
-                12 * display.zoom,
-                14 * display.zoom,
-                20 * display.zoom
+                display.width / 2 + (-14 + i * 14),
+                12,
+                14,
+                20
             );
         }
     } else {
         display.cx.drawImage(
-            display.assets.infinity,
+            display.assets.images.infinity,
             0, 0,
             28, 20,
-            226 * display.zoom, 12 * display.zoom,
-            28 * display.zoom, 20 * display.zoom
+            226, 12,
+            28, 20
         );
     }
 
     // P1
     display.cx.save();
-    display.flipHorizontally(32 * display.zoom);
+    display.flipHorizontally(32);
     display.cx.drawImage(
-        display.assets.hudmugshot,
+        display.assets.images.hudmugshot,
         0, 0,
-        64 * display.zoom,
-        64 * display.zoom
+        64,
+        64
     );
     display.cx.drawImage(
-        display.assets['cm' + fight.player1.character.id],
-        6 * display.zoom,
-        6 * display.zoom,
-        52 * display.zoom,
-        52 * display.zoom
+        display.assets.images['cm' + fight.player1.character.id],
+        6,
+        6,
+        52,
+        52
     );
     display.cx.restore();
 
     display.cx.drawImage(
-        display.assets.hudlife,
-        64 * display.zoom,
-        8 * display.zoom,
-        160 * display.zoom,
-        16 * display.zoom
+        display.assets.images.hudlife,
+        64,
+        8,
+        160,
+        16
     );
     display.cx.fillStyle = '#0080ff';
     display.cx.fillRect(
-        66 * display.zoom + (156 * display.zoom - (156 * (fight.player1.character.health / fight.player1.character.maxHealth) * display.zoom)),
-        10 * display.zoom,
-        156 * (fight.player1.character.health / fight.player1.character.maxHealth) * display.zoom,
-        12 * display.zoom
+        66 + (156 - (156 * (fight.player1.character.health / fight.player1.character.maxHealth))),
+        10,
+        156 * (fight.player1.character.health / fight.player1.character.maxHealth),
+        12
     );
 
-    var imgci1 = display.assets['ci' + fight.player1.character.id];
+    var imgci1 = display.assets.images['ci' + fight.player1.character.id];
     display.cx.drawImage(
         imgci1,
-        64 * display.zoom,
-        24 * display.zoom,
-        imgci1.naturalWidth * display.zoom,
-        16 * display.zoom
+        64,
+        24,
+        imgci1.naturalWidth,
+        16
     );
 
     if (!fight.trainingMode) {
         for (let i = 0; i < fight.playoff; i++) {
             if (i < fight.player1.winCount) {
                 display.cx.drawImage(
-                    display.assets.winScore,
-                    (208 - 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
+                    display.assets.images.winScore,
+                    (208 - 16 * i),
+                    24,
+                    16,
+                    16
                 );
             } else {
                 display.cx.drawImage(
-                    display.assets.scoreImg,
-                    (208 - 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
+                    display.assets.images.scoreImg,
+                    (208 - 16 * i),
+                    24,
+                    16,
+                    16
                 );
             }
         }
@@ -94,61 +94,61 @@ GUI.update = display => {
 
     //P2
     display.cx.drawImage(
-        display.assets.hudmugshot,
-        display.cx.canvas.width - 64 * display.zoom,
+        display.assets.images.hudmugshot,
+        display.width - 64,
         0,
-        64 * display.zoom,
-        64 * display.zoom
+        64,
+        64
     );
     display.cx.drawImage(
-        display.assets['cm' + fight.player2.character.id],
-        display.cx.canvas.width - 58 * display.zoom,
-        6 * display.zoom,
-        52 * display.zoom,
-        52 * display.zoom
+        display.assets.images['cm' + fight.player2.character.id],
+        display.width - 58,
+        6,
+        52,
+        52
     );
 
     display.cx.drawImage(
-        display.assets.hudlife,
-        256 * display.zoom,
-        8 * display.zoom,
-        160 * display.zoom,
-        16 * display.zoom
+        display.assets.images.hudlife,
+        256,
+        8,
+        160,
+        16
     );
     display.cx.fillStyle = '#0080ff';
     display.cx.fillRect(
-        258 * display.zoom,
-        10 * display.zoom,
-        156 * (fight.player2.character.health / fight.player2.character.maxHealth) * display.zoom,
-        12 * display.zoom
+        258,
+        10,
+        156 * (fight.player2.character.health / fight.player2.character.maxHealth),
+        12
     );
 
-    var imgci2 = display.assets['ci' + fight.player2.character.id];
+    var imgci2 = display.assets.images['ci' + fight.player2.character.id];
     display.cx.drawImage(
         imgci2,
-        (416 - imgci2.naturalWidth) * display.zoom,
-        24 * display.zoom,
-        imgci2.naturalWidth * display.zoom,
-        16 * display.zoom
+        (416 - imgci2.naturalWidth),
+        24,
+        imgci2.naturalWidth,
+        16
     );
 
     if (!fight.trainingMode) {
         for (let i = 0; i < fight.playoff; i++) {
             if (i < fight.player2.winCount) {
                 display.cx.drawImage(
-                    display.assets.winScore,
-                    (256 + 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
+                    display.assets.images.winScore,
+                    (256 + 16 * i),
+                    24,
+                    16,
+                    16
                 );
             } else {
                 display.cx.drawImage(
-                    display.assets.scoreImg,
-                    (256 + 16 * i) * display.zoom,
-                    24 * display.zoom,
-                    16 * display.zoom,
-                    16 * display.zoom
+                    display.assets.images.scoreImg,
+                    (256 + 16 * i),
+                    24,
+                    16,
+                    16
                 );
             }
         }
@@ -158,18 +158,18 @@ GUI.update = display => {
     if (fight.trainingMode) TrainingDisplay.update(display);
     else {
         if (fight.entranceAnimFrame < fight.entranceAnimEndFrame) {
-            display.cx.drawImage(display.assets.entranceImg, 0, 0, 480 * display.zoom, 270 * display.zoom);
+            display.cx.drawImage(display.assets.images.entranceImg, 0, 0, 480, 270);
         } else if (fight.roundAnimFrame < fight.roundAnimEndFrame) {
-            display.cx.drawImage(display.assets['round' + (1 + fight.player1.winCount + fight.player2.winCount)], 0, 0, 480 * display.zoom, 270 * display.zoom);
+            display.cx.drawImage(display.assets.images['round' + (1 + fight.player1.winCount + fight.player2.winCount)], 0, 0, 480, 270);
         }
         if (fight.roundIsOver) {
             if (fight.roundEndAnimFrame < fight.roundEndAnimEndFrame) {
-                display.cx.drawImage(display.assets[fight.timer === 0 ? 'timeover' : 'ko'], 0, 0, 480 * display.zoom, 270 * display.zoom);
+                display.cx.drawImage(display.assets.images[fight.timer === 0 ? 'timeover' : 'ko'], 0, 0, 480, 270);
             } else if (fight.endAnimFrame < fight.endAnimEndFrame) {
                 display.cx.drawImage(
-                    display.assets['result' + (fight.player1.winCount === fight.player2.winCount && fight.player1.winCount === fight.playoff ? 3 :
+                    display.assets.images['result' + (fight.player1.winCount === fight.player2.winCount && fight.player1.winCount === fight.playoff ? 3 :
                     (fight.players.findIndex(player => player.winCount === fight.playoff) + 1))],
-                    0, 0, 480 * display.zoom, 270 * display.zoom
+                    0, 0, 480, 270
                 );
             }
         }

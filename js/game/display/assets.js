@@ -1,248 +1,154 @@
 class Assets {
     constructor() {
-        // Opening
-        this.openingImg = document.createElement('img');
-        this.openingImg.src = 'img/opening.png';
+        this.imageDataList = [
+            // Opening
+            { id: 'opening', src: 'img/opening.png' },
 
-        // Menu
-        this.titleScreen = document.createElement('img');
-        this.titleScreen.src = 'img/menu/titleScreen.png';
-        this.menucursor = document.createElement('img');
-        this.menucursor.src = 'img/menu/menucursor.png';
-        this.btnPlayerDisabled = document.createElement('img');
-        this.btnPlayerDisabled.src = 'img/menu/btnvsplayerdisabled.png';
-        this.btnPlayer = document.createElement('img');
-        this.btnPlayer.src = 'img/menu/btnvsplayer.png';
-        this.btnComputer = document.createElement('img');
-        this.btnComputer.src = 'img/menu/btnvscomputer.png';
-        this.btnTraining = document.createElement('img');
-        this.btnTraining.src = 'img/menu/btntraining.png';
-        this.btnRematch = document.createElement('img');
-        this.btnRematch.src = 'img/menu/btnrematch.png';
-        this.btnResume = document.createElement('img');
-        this.btnResume.src = 'img/menu/btnresume.png';
-        this.btnMainMenu = document.createElement('img');
-        this.btnMainMenu.src = 'img/menu/btnreturntomenu.png';
-        this.btnCharacterSelection = document.createElement('img');
-        this.btnCharacterSelection.src = 'img/menu/btncharacterselection.png';
+            // Menu
+            { id: 'titleScreen', src: 'img/menu/titleScreen.png' },
+            { id: 'menucursor', src: 'img/menu/menucursor.png' },
+            { id: 'btnPlayerDisabled', src: 'img/menu/btnvsplayerdisabled.png' },
+            { id: 'btnPlayer', src: 'img/menu/btnvsplayer.png' },
+            { id: 'btnComputer', src: 'img/menu/btnvscomputer.png' },
+            { id: 'btnTraining', src: 'img/menu/btntraining.png' },
+            { id: 'btnRematch', src: 'img/menu/btnrematch.png' },
+            { id: 'btnResume', src: 'img/menu/btnresume.png' },
+            { id: 'btnMainMenu', src: 'img/menu/btnreturntomenu.png' },
+            { id: 'btnCharacterSelection', src: 'img/menu/btncharacterselection.png' },
 
-        // Character
-        this.ci00 = document.createElement('img');
-        this.ci00.src = 'img/character/ci00.png';
-        this.cp00 = document.createElement('img');
-        this.cp00.src = 'img/character/cp00.png';
-        this.cp00shadow = document.createElement('img');
-        this.cp00shadow.src = 'img/character/cp00shadow.png';
-        this.cp00active = document.createElement('img');
-        this.cp00active.src = 'img/character/cp00active.png';
-        this.cp00activeShadow = document.createElement('img');
-        this.cp00activeShadow.src = 'img/character/cp00activeShadow.png';
-        this.cm00 = document.createElement('img');
-        this.cm00.src = 'img/character/cm00.png';
-        this.cn00 = document.createElement('img');
-        this.cn00.src = 'img/character/cn00.png';
-        this.c00idle = document.createElement('img');
-        this.c00idle.src = 'img/character/c00idle.png';
-        this.c00hf = document.createElement('img');
-        this.c00hf.src = 'img/character/c00hf.png';
-        this.c00hb = document.createElement('img');
-        this.c00hb.src = 'img/character/c00hb.png';
-        this.c00df = document.createElement('img');
-        this.c00df.src = 'img/character/c00df.png';
-        this.c00ha = document.createElement('img');
-        this.c00ha.src = 'img/character/c00ha.png';
-        this.c00hab = document.createElement('img');
-        this.c00hab.src = 'img/character/c00hab.png';
-        this.c00lidle = document.createElement('img');
-        this.c00lidle.src = 'img/character/c00lidle.png';
-        this.c00la = document.createElement('img');
-        this.c00la.src = 'img/character/c00la.png';
-        this.c00lab = document.createElement('img');
-        this.c00lab.src = 'img/character/c00lab.png';
-        this.c00a0 = document.createElement('img');
-        this.c00a0.src = 'img/character/c00a0.png';
-        this.c00a1 = document.createElement('img');
-        this.c00a1.src = 'img/character/c00a1.png';
-        this.c00a2 = document.createElement('img');
-        this.c00a2.src = 'img/character/c00a2.png';
-        this.c00stun = document.createElement('img');
-        this.c00stun.src = 'img/character/c00stun.png';
-        this.c00aa = document.createElement('img');
-        this.c00aa.src = 'img/character/c00aa.png';
-        this.c00ab = document.createElement('img');
-        this.c00ab.src = 'img/character/c00ab.png';
-        this.c00qcf = document.createElement('img');
-        this.c00qcf.src = 'img/character/c00qcf.png';
+            // Character
+            { id: 'ci00', src: 'img/character/ci00.png' },
+            { id: 'cp00', src: 'img/character/cp00.png' },
+            { id: 'cp00shadow', src: 'img/character/cp00shadow.png' },
+            { id: 'cp00active', src: 'img/character/cp00active.png' },
+            { id: 'cp00activeShadow', src: 'img/character/cp00activeShadow.png' },
+            { id: 'cm00', src: 'img/character/cm00.png' },
+            { id: 'cn00', src: 'img/character/cn00.png' },
+            { id: 'c00idle', src: 'img/character/c00idle.png' },
+            { id: 'c00hf', src: 'img/character/c00hf.png' },
+            { id: 'c00hb', src: 'img/character/c00hb.png' },
+            { id: 'c00df', src: 'img/character/c00df.png' },
+            { id: 'c00ha', src: 'img/character/c00ha.png' },
+            { id: 'c00hab', src: 'img/character/c00hab.png' },
+            { id: 'c00lidle', src: 'img/character/c00lidle.png' },
+            { id: 'c00la', src: 'img/character/c00la.png' },
+            { id: 'c00lab', src: 'img/character/c00lab.png' },
+            { id: 'c00a0', src: 'img/character/c00a0.png' },
+            { id: 'c00a1', src: 'img/character/c00a1.png' },
+            { id: 'c00a2', src: 'img/character/c00a2.png' },
+            { id: 'c00stun', src: 'img/character/c00stun.png' },
+            { id: 'c00aa', src: 'img/character/c00aa.png' },
+            { id: 'c00ab', src: 'img/character/c00ab.png' },
+            { id: 'c00qcf', src: 'img/character/c00qcf.png' },
 
-        this.ci01 = document.createElement('img');
-        this.ci01.src = 'img/character/ci01.png';
-        this.cp01 = document.createElement('img');
-        this.cp01.src = 'img/character/cp01.png';
-        this.cp01shadow = document.createElement('img');
-        this.cp01shadow.src = 'img/character/cp01shadow.png';
-        this.cp01active = document.createElement('img');
-        this.cp01active.src = 'img/character/cp01active.png';
-        this.cp01activeShadow = document.createElement('img');
-        this.cp01activeShadow.src = 'img/character/cp01activeShadow.png';
-        this.cm01 = document.createElement('img');
-        this.cm01.src = 'img/character/cm01.png';
-        this.cn01 = document.createElement('img');
-        this.cn01.src = 'img/character/cn01.png';
+            { id: 'ci01', src: 'img/character/ci01.png' },
+            { id: 'cp01', src: 'img/character/cp01.png' },
+            { id: 'cp01shadow', src: 'img/character/cp01shadow.png' },
+            { id: 'cp01active', src: 'img/character/cp01active.png' },
+            { id: 'cp01activeShadow', src: 'img/character/cp01activeShadow.png' },
+            { id: 'cm01', src: 'img/character/cm01.png' },
+            { id: 'cn01', src: 'img/character/cn01.png' },
 
-        this.ci02 = document.createElement('img');
-        this.ci02.src = 'img/character/ci02.png';
-        this.cp02 = document.createElement('img');
-        this.cp02.src = 'img/character/cp02.png';
-        this.cp02shadow = document.createElement('img');
-        this.cp02shadow.src = 'img/character/cp02shadow.png';
-        this.cp02active = document.createElement('img');
-        this.cp02active.src = 'img/character/cp02active.png';
-        this.cp02activeShadow = document.createElement('img');
-        this.cp02activeShadow.src = 'img/character/cp02activeShadow.png';
-        this.cm02 = document.createElement('img');
-        this.cm02.src = 'img/character/cm02.png';
-        this.cn02 = document.createElement('img');
-        this.cn02.src = 'img/character/cn02.png';
-        this.c02idle = document.createElement('img');
-        this.c02idle.src = 'img/character/c02idle.png';
-        this.c02lidle = document.createElement('img');
-        this.c02lidle.src = 'img/character/c02lidle.png';
-        this.c02hf = document.createElement('img');
-        this.c02hf.src = 'img/character/c02hf.png';
-        this.c02hb = document.createElement('img');
-        this.c02hb.src = 'img/character/c02hb.png';
-        this.c02df = document.createElement('img');
-        this.c02df.src = 'img/character/c02df.png';
-        this.c02db = document.createElement('img');
-        this.c02db.src = 'img/character/c02db.png';
-        this.c02a0 = document.createElement('img');
-        this.c02a0.src = 'img/character/c02a0.png';
-        this.c02a1 = document.createElement('img');
-        this.c02a1.src = 'img/character/c02a1.png';
-        this.c02a2 = document.createElement('img');
-        this.c02a2.src = 'img/character/c02a2.png';
+            { id: 'ci02', src: 'img/character/ci02.png' },
+            { id: 'cp02', src: 'img/character/cp02.png' },
+            { id: 'cp02shadow', src: 'img/character/cp02shadow.png' },
+            { id: 'cp02active', src: 'img/character/cp02active.png' },
+            { id: 'cp02activeShadow', src: 'img/character/cp02activeShadow.png' },
+            { id: 'cm02', src: 'img/character/cm02.png' },
+            { id: 'cn02', src: 'img/character/cn02.png' },
+            { id: 'c02idle', src: 'img/character/c02idle.png' },
+            { id: 'c02lidle', src: 'img/character/c02lidle.png' },
+            { id: 'c02hf', src: 'img/character/c02hf.png' },
+            { id: 'c02hb', src: 'img/character/c02hb.png' },
+            { id: 'c02df', src: 'img/character/c02df.png' },
+            { id: 'c02db', src: 'img/character/c02db.png' },
+            { id: 'c02a0', src: 'img/character/c02a0.png' },
+            { id: 'c02a1', src: 'img/character/c02a1.png' },
+            { id: 'c02a2', src: 'img/character/c02a2.png' },
 
-        this.ci03 = document.createElement('img');
-        this.ci03.src = 'img/character/ci03.png';
-        this.cp03 = document.createElement('img');
-        this.cp03.src = 'img/character/cp03.png';
-        this.cp03shadow = document.createElement('img');
-        this.cp03shadow.src = 'img/character/cp03shadow.png';
-        this.cp03active = document.createElement('img');
-        this.cp03active.src = 'img/character/cp03active.png';
-        this.cp03activeShadow = document.createElement('img');
-        this.cp03activeShadow.src = 'img/character/cp03activeShadow.png';
-        this.cm03 = document.createElement('img');
-        this.cm03.src = 'img/character/cm03.png';
-        this.cn03 = document.createElement('img');
-        this.cn03.src = 'img/character/cn03.png';
+            { id: 'ci03', src: 'img/character/ci03.png' },
+            { id: 'cp03', src: 'img/character/cp03.png' },
+            { id: 'cp03shadow', src: 'img/character/cp03shadow.png' },
+            { id: 'cp03active', src: 'img/character/cp03active.png' },
+            { id: 'cp03activeShadow', src: 'img/character/cp03activeShadow.png' },
+            { id: 'cm03', src: 'img/character/cm03.png' },
+            { id: 'cn03', src: 'img/character/cn03.png' },
 
-        // Character Selection
-        this.characterSelect = document.createElement('img');
-        this.characterSelect.src = 'img/characterSelect/characterSelect.png';
-        this.stageSelect = document.createElement('img');
-        this.stageSelect.src = 'img/characterSelect/stageSelect.png';
-        this.stageSelectCursor = document.createElement('img');
-        this.stageSelectCursor.src = 'img/characterSelect/stageCursor.png';
-        this.characterSelectBackBlue = document.createElement('img');
-        this.characterSelectBackBlue.src = 'img/characterSelect/characterSelectBackBlue.png';
-        this.characterSelectBackRed = document.createElement('img');
-        this.characterSelectBackRed.src = 'img/characterSelect/characterSelectBackRed.png';
-        this.characterSelectP1 = document.createElement('img');
-        this.characterSelectP1.src = 'img/characterSelect/charSelectCursorP1.png';
-        this.characterSelectP2 = document.createElement('img');
-        this.characterSelectP2.src = 'img/characterSelect/charSelectCursorP2.png';
-        this.characterSelectInfo = document.createElement('img');
-        this.characterSelectInfo.src = 'img/characterSelect/characterSelectInfo.png';
-        this.characterSelectInfo2 = document.createElement('img');
-        this.characterSelectInfo2.src = 'img/characterSelect/characterSelectInfo2.png';
-        this.characterSelectInfo3 = document.createElement('img');
-        this.characterSelectInfo3.src = 'img/characterSelect/characterSelectInfo3.png';
-        this.whiteMugshot = document.createElement('img');
-        this.whiteMugshot.src = 'img/characterSelect/mugshot.png';
-        this.characterSelectKeyboard = document.createElement('img');
-        this.characterSelectKeyboard.src = 'img/characterSelect/keyboard.png';
-        this.characterSelectGamepad = document.createElement('img');
-        this.characterSelectGamepad.src = 'img/characterSelect/gamepad.png';
-        this.randomImg = document.createElement('img');
-        this.randomImg.src = 'img/characterSelect/random.png';
-        this.random2Img = document.createElement('img');
-        this.random2Img.src = 'img/characterSelect/random2.png';
-        this.lockImg = document.createElement('img');
-        this.lockImg.src = 'img/characterSelect/lock.png';
+            // Character Selection
+            { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },
+            { id: 'stageSelect', src: 'img/characterSelect/stageSelect.png' },
+            { id: 'stageSelectCursor', src: 'img/characterSelect/stageCursor.png' },
+            { id: 'characterSelectBackBlue', src: 'img/characterSelect/characterSelectBackBlue.png' },
+            { id: 'characterSelectBackRed', src: 'img/characterSelect/characterSelectBackRed.png' },
+            { id: 'characterSelectP1', src: 'img/characterSelect/charSelectCursorP1.png' },
+            { id: 'characterSelectP2', src: 'img/characterSelect/charSelectCursorP2.png' },
+            { id: 'characterSelectInfo', src: 'img/characterSelect/characterSelectInfo.png' },
+            { id: 'characterSelectInfo2', src: 'img/characterSelect/characterSelectInfo2.png' },
+            { id: 'characterSelectInfo3', src: 'img/characterSelect/characterSelectInfo3.png' },
+            { id: 'whiteMugshot', src: 'img/characterSelect/mugshot.png' },
+            { id: 'characterSelectKeyboard', src: 'img/characterSelect/keyboard.png' },
+            { id: 'characterSelectGamepad', src: 'img/characterSelect/gamepad.png' },
+            { id: 'randomImg', src: 'img/characterSelect/random.png' },
+            { id: 'random2Img', src: 'img/characterSelect/random2.png' },
+            { id: 'lockImg', src: 'img/characterSelect/lock.png' },
 
-        // Stage
-        this.s0floor = document.createElement('img');
-        this.s0floor.src = 'img/stage/s0floor.png';
-        this.s0l0 = document.createElement('img');
-        this.s0l0.src = 'img/stage/s0l0.png';
-        this.s0l1 = document.createElement('img');
-        this.s0l1.src = 'img/stage/s0l1.png';
-        this.s0preview = document.createElement('img');
-        this.s0preview.src = 'img/stage/s0preview.png';
+            // Stage
+            { id: 's0floor', src: 'img/stage/s0floor.png' },
+            { id: 's0l0', src: 'img/stage/s0l0.png' },
+            { id: 's0l1', src: 'img/stage/s0l1.png' },
+            { id: 's0preview', src: 'img/stage/s0preview.png' },
 
-        this.s1floor = document.createElement('img');
-        this.s1floor.src = 'img/stage/s1floor.png';
-        this.s1l0 = document.createElement('img');
-        this.s1l0.src = 'img/stage/s1l0.png';
-        this.s1l1 = document.createElement('img');
-        this.s1l1.src = 'img/stage/s1l1.png';
-        this.s1preview = document.createElement('img');
-        this.s1preview.src = 'img/stage/s1preview.png';
+            { id: 's1floor', src: 'img/stage/s1floor.png' },
+            { id: 's1l0', src: 'img/stage/s1l0.png' },
+            { id: 's1l1', src: 'img/stage/s1l1.png' },
+            { id: 's1preview', src: 'img/stage/s1preview.png' },
 
-        this.s2floor = document.createElement('img');
-        this.s2floor.src = 'img/stage/s2floor.png';
-        this.s2l1 = document.createElement('img');
-        this.s2l1.src = 'img/stage/s2l1.png';
-        this.s2preview = document.createElement('img');
-        this.s2preview.src = 'img/stage/s2preview.png';
+            { id: 's2floor', src: 'img/stage/s2floor.png' },
+            { id: 's2l1', src: 'img/stage/s2l1.png' },
+            { id: 's2preview', src: 'img/stage/s2preview.png' },
 
-        // Fight
-        this.hudmugshot = document.createElement('img');
-        this.hudmugshot.src = 'img/fight/hudMugshot.png';
-        this.hudlife = document.createElement('img');
-        this.hudlife.src = 'img/fight/hudLife.png';
-        this.scoreImg = document.createElement('img');
-        this.scoreImg.src = 'img/fight/score.png';
-        this.winScore = document.createElement('img');
-        this.winScore.src = 'img/fight/winScore.png';
-        this.timerNumbers = document.createElement('img');
-        this.timerNumbers.src = 'img/fight/numbers2.png';
-        this.entranceImg = document.createElement('img');
-        this.entranceImg.src = 'img/fight/entrance.png';
-        this.round1 = document.createElement('img');
-        this.round1.src = 'img/fight/round1.png';
-        this.round2 = document.createElement('img');
-        this.round2.src = 'img/fight/round2.png';
-        this.round3 = document.createElement('img');
-        this.round3.src = 'img/fight/round3.png';
-        this.ko = document.createElement('img');
-        this.ko.src = 'img/fight/ko.png';
-        this.result1 = document.createElement('img');
-        this.result1.src = 'img/fight/result1.png';
-        this.result2 = document.createElement('img');
-        this.result2.src = 'img/fight/result2.png';
-        this.result3 = document.createElement('img');
-        this.result3.src = 'img/fight/result3.png';
-        this.timeover = document.createElement('img');
-        this.timeover.src = 'img/fight/timeover.png';
-        this.dust = document.createElement('img');
-        this.dust.src = 'img/fight/dust.png';
-        this.dash = document.createElement('img');
-        this.dash.src = 'img/fight/dash.png';
-        this.projectile1 = document.createElement('img');
-        this.projectile1.src = 'img/fight/projectile1.png';
+            // Fight
+            { id: 'hudmugshot', src: 'img/fight/hudMugshot.png' },
+            { id: 'hudlife', src: 'img/fight/hudLife.png' },
+            { id: 'scoreImg', src: 'img/fight/score.png' },
+            { id: 'winScore', src: 'img/fight/winScore.png' },
+            { id: 'timerNumbers', src: 'img/fight/numbers2.png' },
+            { id: 'entranceImg', src: 'img/fight/entrance.png' },
+            { id: 'round1', src: 'img/fight/round1.png' },
+            { id: 'round2', src: 'img/fight/round2.png' },
+            { id: 'round3', src: 'img/fight/round3.png' },
+            { id: 'ko', src: 'img/fight/ko.png' },
+            { id: 'result1', src: 'img/fight/result1.png' },
+            { id: 'result2', src: 'img/fight/result2.png' },
+            { id: 'result3', src: 'img/fight/result3.png' },
+            { id: 'timeover', src: 'img/fight/timeover.png' },
+            { id: 'dust', src: 'img/fight/dust.png' },
+            { id: 'dash', src: 'img/fight/dash.png' },
+            { id: 'projectile1', src: 'img/fight/projectile1.png' },
 
-        // Fight Training
-        this.infinity = document.createElement('img');
-        this.infinity.src = 'img/training/infinity.png';
-        this.aBtn = document.createElement('img');
-        this.aBtn.src = 'img/training/a-button.png';
-        this.bBtn = document.createElement('img');
-        this.bBtn.src = 'img/training/b-button.png';
-        this.arrows = document.createElement('img');
-        this.arrows.src = 'img/training/arrows.png';
-        this.trainingNumbers = document.createElement('img');
-        this.trainingNumbers.src = 'img/training/numbers.png';
+            // Fight Training
+            { id: 'infinity', src: 'img/training/infinity.png' },
+            { id: 'aBtn', src: 'img/training/a-button.png' },
+            { id: 'bBtn', src: 'img/training/b-button.png' },
+            { id: 'arrows', src: 'img/training/arrows.png' },
+            { id: 'trainingNumbers', src: 'img/training/numbers.png' }
+        ];
+        
+        this.images = new Object();
+        this.imageDataList.forEach(imageData => {
+            this.images[imageData.id] = new Image();
+            this.images[imageData.id].src = imageData.src;
+        });
+
+        this.loadStep = 20 / Object.keys(this.images).length;
+        this.loadPercent = 0;
     }
+
+    load = () => Promise.all(Object.keys(this.images).map((key, index) => new Promise(resolve => this.images[key].onload = () => {
+        resolve();
+        this.loadPercent += this.loadStep;
+        document.getElementById("load").innerHTML = "LOADING: [" +
+            "=".repeat(Math.round(this.loadPercent)) +
+            "] " + (5 * Math.round(this.loadPercent)) + "%";
+    })));
 }

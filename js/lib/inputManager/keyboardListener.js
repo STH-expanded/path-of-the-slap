@@ -8,7 +8,7 @@ class KeyboardListener {
             "a": false,
             "b": false,
             "start": false
-        };
+        }
 
         this.keyCodes = {
             q: "left",
@@ -18,13 +18,13 @@ class KeyboardListener {
             o: "a",
             p: "b",
             Enter: "start"
-        };
-
-        this.handler = event => {
-            if (event.key in this.keyCodes) this.keys[this.keyCodes[event.key]] = event.type === "keydown";
         }
 
         document.body.addEventListener("keydown", this.handler);
         document.body.addEventListener("keyup", this.handler);
+    }
+
+    handler = event => {
+        if (event.key in this.keyCodes) this.keys[this.keyCodes[event.key]] = event.type === "keydown";
     }
 }

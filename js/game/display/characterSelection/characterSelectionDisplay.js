@@ -4,41 +4,41 @@ CharacterSelectionDisplay.update = display => {
 
     // Colored Moving Background
     display.cx.drawImage(
-        display.assets.characterSelectBackBlue,
+        display.assets.images.characterSelectBackBlue,
         0, 0,
         270, 270,
-        0 * display.zoom,
-        (-270 + (display.frame / 8) % 270) * display.zoom,
-        270 * display.zoom,
-        270 * display.zoom
+        0,
+        (-270 + (display.frame / 8) % 270),
+        270,
+        270
     );
     display.cx.drawImage(
-        display.assets.characterSelectBackBlue,
+        display.assets.images.characterSelectBackBlue,
         0, 0,
         270, 270,
-        0 * display.zoom,
-        ((display.frame / 8) % 270) * display.zoom,
-        270 * display.zoom,
-        270 * display.zoom
+        0,
+        ((display.frame / 8) % 270),
+        270,
+        270
     );
 
     display.cx.drawImage(
-        display.assets.characterSelectBackRed,
+        display.assets.images.characterSelectBackRed,
         0, 0,
         270, 270,
-        240 * display.zoom,
-        (270 - (display.frame / 8) % 270) * display.zoom,
-        270 * display.zoom,
-        270 * display.zoom
+        240,
+        (270 - (display.frame / 8) % 270),
+        270,
+        270
     );
     display.cx.drawImage(
-        display.assets.characterSelectBackRed,
+        display.assets.images.characterSelectBackRed,
         0, 0,
         270, 270,
-        240 * display.zoom,
-        ((-display.frame / 8) % 270) * display.zoom,
-        270 * display.zoom,
-        270 * display.zoom
+        240,
+        ((-display.frame / 8) % 270),
+        270,
+        270
     );
 
     var cursor1 = charSelect.cursors[0];
@@ -73,157 +73,157 @@ CharacterSelectionDisplay.update = display => {
     if (character1) {
         if (cursor1.ready) {
             display.cx.drawImage(
-                display.assets['cp' + character1.id + 'activeShadow'],
+                display.assets.images['cp' + character1.id + 'activeShadow'],
                 0, 0,
                 202, 270,
-                (-8 + cursor1.profileFrame) * display.zoom,
-                (8 - cursor1.profileFrame) * display.zoom,
-                (194 + cursor1.profileFrame) * display.zoom,
-                (278 - cursor1.profileFrame) * display.zoom
+                (-8 + cursor1.profileFrame),
+                (8 - cursor1.profileFrame),
+                (194 + cursor1.profileFrame),
+                (278 - cursor1.profileFrame)
             );
             display.cx.drawImage(
-                display.assets['cp' + character1.id + 'active'],
+                display.assets.images['cp' + character1.id + 'active'],
                 0, 0,
                 202, 270,
-                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
-                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
-                (202 + cursor1.profileFrame ** 2) * display.zoom,
-                (270 + cursor1.profileFrame ** 2) * display.zoom
+                (0 - cursor1.profileFrame ** 2 / 2),
+                (0 - cursor1.profileFrame ** 2 / 2),
+                (202 + cursor1.profileFrame ** 2),
+                (270 + cursor1.profileFrame ** 2)
             );
             if (cursor1.infoFrame) {
                 display.cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
                 display.cx.fillStyle = "#fff";
-                display.cx.fillRect(0, 0, 240 * display.zoom, 270 * display.zoom);
+                display.cx.fillRect(0, 0, 240, 270);
                 display.cx.globalAlpha = 1;
             }
         } else {
             display.cx.drawImage(
-                display.assets['cp' + character1.id + 'shadow'],
+                display.assets.images['cp' + character1.id + 'shadow'],
                 0, 0,
                 202, 270,
-                (-8 + cursor1.profileFrame) * display.zoom,
-                (8 - cursor1.profileFrame) * display.zoom,
-                (194 + cursor1.profileFrame) * display.zoom,
-                (278 - cursor1.profileFrame) * display.zoom
+                (-8 + cursor1.profileFrame),
+                (8 - cursor1.profileFrame),
+                (194 + cursor1.profileFrame),
+                (278 - cursor1.profileFrame)
             );
             display.cx.drawImage(
-                display.assets['cp' + character1.id],
+                display.assets.images['cp' + character1.id],
                 0, 0,
                 202, 270,
-                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
-                (0 - cursor1.profileFrame ** 2 / 2) * display.zoom,
-                (202 + cursor1.profileFrame ** 2) * display.zoom,
-                (270 + cursor1.profileFrame ** 2) * display.zoom
+                (0 - cursor1.profileFrame ** 2 / 2),
+                (0 - cursor1.profileFrame ** 2 / 2),
+                (202 + cursor1.profileFrame ** 2),
+                (270 + cursor1.profileFrame ** 2)
             );
         }
     }
     if (character2) {
         if (cursor2.ready) {
             display.cx.drawImage(
-                display.assets['cp' + character2.id + 'activeShadow'],
+                display.assets.images['cp' + character2.id + 'activeShadow'],
                 0, 0,
                 202, 270,
-                (270 + cursor2.profileFrame) * display.zoom,
-                (8 - cursor2.profileFrame) * display.zoom,
-                (194 + cursor2.profileFrame) * display.zoom,
-                (278 - cursor2.profileFrame) * display.zoom
+                (270 + cursor2.profileFrame),
+                (8 - cursor2.profileFrame),
+                (194 + cursor2.profileFrame),
+                (278 - cursor2.profileFrame)
             );
             display.cx.drawImage(
-                display.assets['cp' + character2.id + 'active'],
+                display.assets.images['cp' + character2.id + 'active'],
                 0, 0,
                 202, 270,
-                (278 - cursor2.profileFrame ** 2 / 2) * display.zoom,
-                (0 - cursor2.profileFrame ** 2 / 2) * display.zoom,
-                (202 + cursor2.profileFrame ** 2) * display.zoom,
-                (270 + cursor2.profileFrame ** 2) * display.zoom
+                (278 - cursor2.profileFrame ** 2 / 2),
+                (0 - cursor2.profileFrame ** 2 / 2),
+                (202 + cursor2.profileFrame ** 2),
+                (270 + cursor2.profileFrame ** 2)
             );
             if (cursor2.infoFrame) {
                 display.cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
                 display.cx.fillStyle = "#fff";
-                display.cx.fillRect(240 * display.zoom, 0, 240 * display.zoom, 270 * display.zoom);
+                display.cx.fillRect(240, 0, 240, 270);
                 display.cx.globalAlpha = 1;
             }
         } else {
             display.cx.drawImage(
-                display.assets['cp' + character2.id + 'shadow'],
+                display.assets.images['cp' + character2.id + 'shadow'],
                 0, 0,
                 202, 270,
-                (270 + cursor2.profileFrame) * display.zoom,
-                (8 - cursor2.profileFrame) * display.zoom,
-                (194 + cursor2.profileFrame) * display.zoom,
-                (278 - cursor2.profileFrame) * display.zoom
+                (270 + cursor2.profileFrame),
+                (8 - cursor2.profileFrame),
+                (194 + cursor2.profileFrame),
+                (278 - cursor2.profileFrame)
             );
             display.cx.drawImage(
-                display.assets['cp' + character2.id],
+                display.assets.images['cp' + character2.id],
                 0, 0,
                 202, 270,
-                (278 - cursor2.profileFrame ** 2 / 2) * display.zoom,
-                (0 - cursor2.profileFrame ** 2 / 2) * display.zoom,
-                (202 + cursor2.profileFrame ** 2) * display.zoom,
-                (270 + cursor2.profileFrame ** 2) * display.zoom
+                (278 - cursor2.profileFrame ** 2 / 2),
+                (0 - cursor2.profileFrame ** 2 / 2),
+                (202 + cursor2.profileFrame ** 2),
+                (270 + cursor2.profileFrame ** 2)
             );
         }
     }
 
     // Player Input
-    var p1Input = cursor1.player.id === 'computer' ? null : display.assets['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    var p1Input = cursor1.player.id === 'computer' ? null : display.assets.images['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p1Input) {
         display.cx.drawImage(
             p1Input,
             0, 0,
             16, 16,
-            182 * display.zoom,
-            0 * display.zoom,
-            16 * display.zoom,
-            16 * display.zoom
+            182,
+            0,
+            16,
+            16
         );
     }
-    var p2Input = cursor2.player.id === 'computer' ? null : display.assets['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    var p2Input = cursor2.player.id === 'computer' ? null : display.assets.images['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p2Input) {
         display.cx.drawImage(
             p2Input,
             0, 0,
             16, 16,
-            462 * display.zoom,
-            0 * display.zoom,
-            16 * display.zoom,
-            16 * display.zoom
+            462,
+            0,
+            16,
+            16
         );
     }
 
     if (charSelect.initAnimFrame) {
         // Background 2nd Layer
         display.cx.drawImage(
-            display.assets.characterSelect,
+            display.assets.images.characterSelect,
             0, 0,
             480, 270,
-            0 * display.zoom,
-            0 * display.zoom,
-            480 * display.zoom,
-            270 * display.zoom
+            0,
+            0,
+            480,
+            270
         );
 
         // Character Names
         if (character1) {
             display.cx.drawImage(
-                display.assets['cn' + character1.id],
+                display.assets.images['cn' + character1.id],
                 0, 0,
                 62, 136,
-                (0 + cursor1.profileFrame ** 2 * 1) * display.zoom,
-                (0 - cursor1.profileFrame ** 2 * 4) * display.zoom,
-                62 * display.zoom,
-                136 * display.zoom
+                (0 + cursor1.profileFrame ** 2 * 1),
+                (0 - cursor1.profileFrame ** 2 * 4),
+                62,
+                136
             );
         }
         if (character2) {
             display.cx.drawImage(
-                display.assets['cn' + character2.id],
+                display.assets.images['cn' + character2.id],
                 0, 0,
                 62, 136,
-                (419 + cursor2.profileFrame ** 2 * 1) * display.zoom,
-                (134 - cursor2.profileFrame ** 2 * 4) * display.zoom,
-                62 * display.zoom,
-                136 * display.zoom
+                (419 + cursor2.profileFrame ** 2 * 1),
+                (134 - cursor2.profileFrame ** 2 * 4),
+                62,
+                136
             );
         }
 
@@ -231,16 +231,16 @@ CharacterSelectionDisplay.update = display => {
         var width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
         display.cx.fillStyle = '#000';
         display.cx.fillRect(
-            0 * display.zoom,
-            0 * display.zoom,
-            width * 240 * display.zoom,
-            270 * display.zoom
+            0,
+            0,
+            width * 240,
+            270
         );
         display.cx.fillRect(
-            (480 - width * 240) * display.zoom,
-            0 * display.zoom,
-            width * 240 * display.zoom,
-            270 * display.zoom
+            (480 - width * 240),
+            0,
+            width * 240,
+            270
         );
 
         // Mugshot animation
@@ -248,56 +248,56 @@ CharacterSelectionDisplay.update = display => {
             for (let y = 0; y < charSelect.size.y; y++) {
                 if (charSelect.mugshotOrder[x][y] >= charSelect.initAnimFrame) {
                     display.cx.drawImage(
-                        display.assets.whiteMugshot,
+                        display.assets.images.whiteMugshot,
                         0, 0,
                         52, 52,
-                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                        52 * display.zoom,
-                        52 * display.zoom
+                        192 + x * 44 - y * 11,
+                        10 + y * 44 + x * 11,
+                        52,
+                        52
                     );
                     var character = charSelect.selectCharacter(new Vector2D(x, y));
                     if (character) {
-                        var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.whiteMugshot : display.assets['cm' + character.id];
+                        var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.images.whiteMugshot : display.assets.images['cm' + character.id];
                         display.cx.drawImage(
                             mugshotImg,
                             0, 0,
                             52, 52,
-                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                            52 * display.zoom,
-                            52 * display.zoom
+                            192 + x * 44 - y * 11,
+                            10 + y * 44 + x * 11,
+                            52,
+                            52
                         );
                     }
                     else if (x === 1 && y === 2 && charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
                         display.cx.drawImage(
-                            display.assets.random2Img,
+                            display.assets.images.random2Img,
                             0, 0,
                             52, 52,
-                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom + Math.sin(display.frame * 0.05) * 2 * display.zoom,
-                            52 * display.zoom,
-                            52 * display.zoom
+                            192 + x * 44 - y * 11,
+                            10 + y * 44 + x * 11 + Math.sin(display.frame * 0.05) * 2,
+                            52,
+                            52
                         );
                         display.cx.drawImage(
-                            display.assets.randomImg,
+                            display.assets.images.randomImg,
                             0, 0,
                             52, 52,
-                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
-                            52 * display.zoom,
-                            52 * display.zoom
+                            192 + x * 44 - y * 11,
+                            10 + y * 44 + x * 11 - Math.sin(display.frame * 0.05),
+                            52,
+                            52
                         );
                     }
                     else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
                         display.cx.drawImage(
-                            display.assets.lockImg,
+                            display.assets.images.lockImg,
                             0, 0,
                             52, 52,
-                            192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                            10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                            52 * display.zoom,
-                            52 * display.zoom
+                            192 + x * 44 - y * 11,
+                            10 + y * 44 + x * 11,
+                            52,
+                            52
                         );
                     }
                 }
@@ -307,132 +307,132 @@ CharacterSelectionDisplay.update = display => {
 
         // Background 2nd Layer
         display.cx.drawImage(
-            display.assets.characterSelect,
+            display.assets.images.characterSelect,
             0, 0,
             480, 270,
-            0 * display.zoom,
-            0 * display.zoom,
-            480 * display.zoom,
-            270 * display.zoom
+            0,
+            0,
+            480,
+            270
         );
 
         // Character Names
         if (character1) {
             display.cx.drawImage(
-                display.assets['cn' + character1.id],
+                display.assets.images['cn' + character1.id],
                 0, 0,
                 62, 136,
-                (0 + cursor1.profileFrame ** 2 * 1) * display.zoom,
-                (0 - cursor1.profileFrame ** 2 * 4) * display.zoom,
-                62 * display.zoom,
-                136 * display.zoom
+                (0 + cursor1.profileFrame ** 2 * 1),
+                (0 - cursor1.profileFrame ** 2 * 4),
+                62,
+                136
             );
         }
         if (character2) {
             display.cx.drawImage(
-                display.assets['cn' + character2.id],
+                display.assets.images['cn' + character2.id],
                 0, 0,
                 62, 136,
-                (419 + cursor2.profileFrame ** 2 * 1) * display.zoom,
-                (134 - cursor2.profileFrame ** 2 * 4) * display.zoom,
-                62 * display.zoom,
-                136 * display.zoom
+                (419 + cursor2.profileFrame ** 2 * 1),
+                (134 - cursor2.profileFrame ** 2 * 4),
+                62,
+                136
             );
         }
 
         // Informations
         display.cx.drawImage(
-            display.assets.characterSelectInfo2,
+            display.assets.images.characterSelectInfo2,
             0, cursor1.ready ? 24 : 0,
             72, 24,
-            (147 + (cursor1.infoFrame / 2) ** 2 * 4) * display.zoom,
-            (231 + (cursor1.infoFrame / 2) ** 2 * 1) * display.zoom,
-            72 * display.zoom,
-            24 * display.zoom
+            (147 + (cursor1.infoFrame / 2) ** 2 * 4),
+            (231 + (cursor1.infoFrame / 2) ** 2 * 1),
+            72,
+            24
         );
         display.cx.drawImage(
-            display.assets.characterSelectInfo2,
+            display.assets.images.characterSelectInfo2,
             0, cursor2.ready ? 24 : 0,
             72, 24,
-            ((cursor2.ready ? 295 : 261) - (cursor2.infoFrame / 2) ** 2 * 4) * display.zoom,
-            ((cursor2.ready ? 23 : 15) - (cursor2.infoFrame / 2) ** 2 * 1) * display.zoom,
-            72 * display.zoom,
-            24 * display.zoom
+            ((cursor2.ready ? 295 : 261) - (cursor2.infoFrame / 2) ** 2 * 4),
+            ((cursor2.ready ? 23 : 15) - (cursor2.infoFrame / 2) ** 2 * 1),
+            72,
+            24
         );
 
         display.cx.drawImage(
-            display.assets.characterSelectInfo3,
+            display.assets.images.characterSelectInfo3,
             0, 0,
             58, 26,
-            (142 + (charSelect.initInfo3Frame / 2) ** 2 * 4) * display.zoom,
-            (244 + (charSelect.initInfo3Frame / 2) ** 2 * 1) * display.zoom,
-            58 * display.zoom,
-            26 * display.zoom
+            (142 + (charSelect.initInfo3Frame / 2) ** 2 * 4),
+            (244 + (charSelect.initInfo3Frame / 2) ** 2 * 1),
+            58,
+            26
         );
         var info3multiplier = charSelect.mode === 'Player' ? 1 : 2;
         display.cx.drawImage(
-            display.assets.characterSelectInfo3,
+            display.assets.images.characterSelectInfo3,
             0, 26 * info3multiplier,
             58, 26,
-            (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4) * display.zoom,
-            (1 - (charSelect.initInfo3Frame / 2) ** 2 * 1) * display.zoom,
-            58 * display.zoom,
-            26 * display.zoom
+            (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4),
+            (1 - (charSelect.initInfo3Frame / 2) ** 2 * 1),
+            58,
+            26
         );
 
         // Mugshots
         for (let x = 0; x < charSelect.size.x; x++) {
             for (let y = 0; y < charSelect.size.y; y++) {
                 display.cx.drawImage(
-                    display.assets.whiteMugshot,
+                    display.assets.images.whiteMugshot,
                     0, 0,
                     52, 52,
-                    192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                    10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                    52 * display.zoom,
-                    52 * display.zoom
+                    192 + x * 44 - y * 11,
+                    10 + y * 44 + x * 11,
+                    52,
+                    52
                 );
                 var character = charSelect.selectCharacter(new Vector2D(x, y));
                 if (character) {
                     display.cx.drawImage(
-                        display.assets['cm' + character.id],
+                        display.assets.images['cm' + character.id],
                         0, 0,
                         52, 52,
-                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                        52 * display.zoom,
-                        52 * display.zoom
+                        192 + x * 44 - y * 11,
+                        10 + y * 44 + x * 11,
+                        52,
+                        52
                     );
                 }
                 else if (x === 1 && y === 2) {
                     display.cx.drawImage(
-                        display.assets.random2Img,
+                        display.assets.images.random2Img,
                         0, 0,
                         52, 52,
-                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom + Math.sin(display.frame * 0.05) * 2 * display.zoom,
-                        52 * display.zoom,
-                        52 * display.zoom
+                        192 + x * 44 - y * 11,
+                        10 + y * 44 + x * 11 + Math.sin(display.frame * 0.05) * 2,
+                        52,
+                        52
                     );
                     display.cx.drawImage(
-                        display.assets.randomImg,
+                        display.assets.images.randomImg,
                         0, 0,
                         52, 52,
-                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom - Math.sin(display.frame * 0.05) * display.zoom,
-                        52 * display.zoom,
-                        52 * display.zoom
+                        192 + x * 44 - y * 11,
+                        10 + y * 44 + x * 11 - Math.sin(display.frame * 0.05),
+                        52,
+                        52
                     );
                 }
                 else {
                     display.cx.drawImage(
-                        display.assets.lockImg,
+                        display.assets.images.lockImg,
                         0, 0,
                         52, 52,
-                        192 * display.zoom + x * 44 * display.zoom - y * 11 * display.zoom,
-                        10 * display.zoom + y * 44 * display.zoom + x * 11 * display.zoom,
-                        52 * display.zoom,
-                        52 * display.zoom
+                        192 + x * 44 - y * 11,
+                        10 + y * 44 + x * 11,
+                        52,
+                        52
                     );
                 }
             }
@@ -444,12 +444,12 @@ CharacterSelectionDisplay.update = display => {
                 var frameMax = 4;
                 var frameSpeed = display.frame / 16;
                 display.cx.drawImage(
-                    display.assets['characterSelectP' + (index + 1)],
+                    display.assets.images['characterSelectP' + (index + 1)],
                     (Math.floor(frameSpeed) % frameMax) * 64, 0,
                     64, 64,
-                    186 * display.zoom + cursor.pos.x * 44 * display.zoom - cursor.pos.y * 11 * display.zoom,
-                    4 * display.zoom + cursor.pos.y * 44 * display.zoom + cursor.pos.x * 11 * display.zoom,
-                    64 * display.zoom, 64 * display.zoom
+                    186 + cursor.pos.x * 44 - cursor.pos.y * 11,
+                    4 + cursor.pos.y * 44 + cursor.pos.x * 11,
+                    64, 64
                 );
             }
         });
@@ -458,12 +458,12 @@ CharacterSelectionDisplay.update = display => {
         [cursor1, cursor2].forEach((cursor, index) => {
             if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player.id !== 'computer' || cursor1.ready)))) {
                 display.cx.drawImage(
-                    display.assets.characterSelectInfo,
+                    display.assets.images.characterSelectInfo,
                     index * 24, 0,
                     24, 24,
-                    (index * 40 + 186) * display.zoom + cursor.pos.x * 44 * display.zoom - cursor.pos.y * 11 * display.zoom,
-                    (index * 32 + 8) * display.zoom + cursor.pos.y * 44 * display.zoom + cursor.pos.x * 11 * display.zoom,
-                    24 * display.zoom, 24 * display.zoom
+                    (index * 40 + 186) + cursor.pos.x * 44 - cursor.pos.y * 11,
+                    (index * 32 + 8) + cursor.pos.y * 44 + cursor.pos.x * 11,
+                    24, 24
                 );
             }
         });

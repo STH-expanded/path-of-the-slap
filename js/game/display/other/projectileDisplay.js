@@ -7,8 +7,8 @@ ProjectileDisplay.update = display => {
 
     fight.projectiles.forEach((element) => {
         display.cx.fillRect(
-            element.collisionBox.pos.x * display.zoom, element.collisionBox.pos.y * display.zoom,
-            element.collisionBox.size.x * display.zoom, element.collisionBox.size.y * display.zoom
+            element.collisionBox.pos.x, element.collisionBox.pos.y,
+            element.collisionBox.size.x, element.collisionBox.size.y
         );
     });
 

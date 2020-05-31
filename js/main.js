@@ -1,31 +1,35 @@
 window.onload = () => {
-    var startGame = () => {
-        clearInterval(helpAnimation);
-        document.body.innerHTML = '';
-        document.body.onclick = null;
-        document.body.onkeypress = null;
+    // Initialize game
+    const inputManager = new InputManager();
+    const game = new Game(inputManager.inputList);
+    const display = new Display(game);
 
-        var inputManager = new InputManager();
-        var game = new Game(inputManager.inputList);
-        var display = new Display(game);
+    // Initialize body
+    const loadElem = document.createElement("p");
+    loadElem.id = "load";
+    document.body.appendChild(loadElem);
+    document.body.oncontextmenu = () => false;
 
-        var frame = () => {
-            inputManager.update();
-            game.update();
-            display.update();            
+    // Load assets then start game
+    display.assets.load().then(() => {
+        loadElem.innerHTML += "<br>Press any key to continue";
 
-            requestAnimationFrame(frame);
+        const startGame = () => {
+            document.body.innerHTML = "";
+            document.body.onclick = () => false;
+            document.body.onkeypress = () => false;
+            document.body.appendChild(display.canvas);
+    
+            // Game loop
+            const animationFrame = () => {
+                inputManager.update();
+                game.update();
+                display.update();            
+                requestAnimationFrame(animationFrame);
+            }
+            requestAnimationFrame(animationFrame);
         }
-        requestAnimationFrame(frame);
-    }
-
-    var help = document.createElement("p");
-    help.innerHTML = "Press any key to continue...";
-    document.body.appendChild(help);
-
-    document.body.onclick = () => startGame();
-    document.body.onkeypress = () => startGame();
-    var helpAnimation = setInterval(() => {
-        help.innerHTML = help.innerHTML.match(/[a-z|A-Z|0-9]+[^_]+_{1}$/) ? help.innerHTML.slice(0, -1) : help.innerHTML + '_';
-    }, 1000);
+        document.body.onclick = () => startGame();
+        document.body.onkeypress = () => startGame();
+    });
 }

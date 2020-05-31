@@ -4,10 +4,10 @@ TrainingDisplay.update = display => {
 
     display.cx.fillStyle = "rgba(0, 0, 0, 0.5)";
     display.cx.fillRect(
-        0 * display.zoom,
-        64 * display.zoom,
-        76 * display.zoom,
-        (4 + player.inputList.length * 12) * display.zoom
+        0,
+        64,
+        76,
+        (4 + player.inputList.length * 12)
     );
 
     player.inputList.forEach((inputObject, index) => {
@@ -21,36 +21,36 @@ TrainingDisplay.update = display => {
         else if (inputObject.inputs.down) arrow = [1, 2];
         else if (inputObject.inputs.left) arrow = [0, 1];
 
-        display.cx.drawImage(display.assets.arrows,
+        display.cx.drawImage(display.assets.images.arrows,
             8 * arrow[0], 8 * arrow[1], 8, 8,
-            8 * display.zoom,
-            (68 + 12 * index) * display.zoom,
-            8 * display.zoom,
-            8 * display.zoom
+            8,
+            (68 + 12 * index),
+            8,
+            8
         );
-        display.cx.drawImage(display.assets.aBtn,
+        display.cx.drawImage(display.assets.images.aBtn,
             8 * (inputObject.inputs.a ? 1 : 0), 0, 8, 8,
-            24 * display.zoom,
-            (68 + 12 * index) * display.zoom,
-            8 * display.zoom,
-            8 * display.zoom
+            24,
+            (68 + 12 * index),
+            8,
+            8
         );
-        display.cx.drawImage(display.assets.bBtn,
+        display.cx.drawImage(display.assets.images.bBtn,
             8 * (inputObject.inputs.b ? 1 : 0), 0, 8, 8,
-            36 * display.zoom,
-            (68 + 12 * index) * display.zoom,
-            8 * display.zoom,
-            8 * display.zoom
+            36,
+            (68 + 12 * index),
+            8,
+            8
         );
 
         var frame = inputObject.frames > 999 ? "999" : inputObject.frames.toString();
         for (let i = 0; i < frame.length; i++) {
-            display.cx.drawImage(display.assets.trainingNumbers,
+            display.cx.drawImage(display.assets.images.trainingNumbers,
                 5 * frame[i], 0, 5, 8,
-                (52 + i * 5) * display.zoom,
-                (68 + 12 * index) * display.zoom,
-                5 * display.zoom,
-                8 * display.zoom
+                (52 + i * 5),
+                (68 + 12 * index),
+                5,
+                8
             );
         }
     });

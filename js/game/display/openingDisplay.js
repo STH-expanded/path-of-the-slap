@@ -1,24 +1,26 @@
 class OpeningDisplay extends ActivityDisplay {}
 OpeningDisplay.update = display => {
-    var opening = display.game.activity;
+    const cx = display.cx;
+    const opening = display.game.activity;
 
-    display.cx.fillStyle = '#000';
-    display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom)
+    // Background
+    cx.fillStyle = '#000';
+    cx.fillRect(0, 0, display.width, display.height);
 
-    display.cx.drawImage(
-        display.assets.openingImg,
+    cx.drawImage(
+        display.assets.images.opening,
         0, 0,
         128, 24,
-        display.cx.canvas.width / 2 - 64 * display.zoom,
-        display.cx.canvas.height / 2 - 12 * display.zoom,
-        128 * display.zoom,
-        24 * display.zoom
+        display.width / 2 - 64,
+        display.height / 2 - 12,
+        128,
+        24
     );
 
-    // Transitions
+    // Animation
     if (opening.initAnimFrame > opening.initAnimInitFrame * 0.75) {
-        display.cx.fillStyle = '#000';
-        display.cx.fillRect(0 * display.zoom, 0 * display.zoom, 480 * display.zoom, 270 * display.zoom)
+        cx.fillStyle = '#000';
+        cx.fillRect(0, 0, display.width, display.height);
     } else if (opening.initAnimFrame === Math.floor(opening.initAnimInitFrame * 0.75)) {
         display.audioManager.play(new Sound('sfx', 'audio/smw_coin.wav'));
     }
