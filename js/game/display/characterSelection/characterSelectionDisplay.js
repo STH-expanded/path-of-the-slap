@@ -1,10 +1,12 @@
 class CharacterSelectionDisplay extends ActivityDisplay {}
 CharacterSelectionDisplay.update = display => {
-    var charSelect = display.game.activity;
+    const cx = display.cx;
+    const images = display.assets.images;
+    const charSelect = display.game.activity;
 
     // Colored Moving Background
-    display.cx.drawImage(
-        display.assets.images.characterSelectBackBlue,
+    cx.drawImage(
+        images.characterSelectBackBlue,
         0, 0,
         270, 270,
         0,
@@ -12,8 +14,8 @@ CharacterSelectionDisplay.update = display => {
         270,
         270
     );
-    display.cx.drawImage(
-        display.assets.images.characterSelectBackBlue,
+    cx.drawImage(
+        images.characterSelectBackBlue,
         0, 0,
         270, 270,
         0,
@@ -22,8 +24,8 @@ CharacterSelectionDisplay.update = display => {
         270
     );
 
-    display.cx.drawImage(
-        display.assets.images.characterSelectBackRed,
+    cx.drawImage(
+        images.characterSelectBackRed,
         0, 0,
         270, 270,
         240,
@@ -31,8 +33,8 @@ CharacterSelectionDisplay.update = display => {
         270,
         270
     );
-    display.cx.drawImage(
-        display.assets.images.characterSelectBackRed,
+    cx.drawImage(
+        images.characterSelectBackRed,
         0, 0,
         270, 270,
         240,
@@ -41,15 +43,15 @@ CharacterSelectionDisplay.update = display => {
         270
     );
 
-    var cursor1 = charSelect.cursors[0];
-    var cursor2 = charSelect.cursors[1];
+    const cursor1 = charSelect.cursors[0];
+    const cursor2 = charSelect.cursors[1];
 
-    var character1 = charSelect.selectCharacter(cursor1.pos);
-    var character2 = charSelect.selectCharacter(cursor2.pos);
+    let character1 = charSelect.selectCharacter(cursor1.pos);
+    let character2 = charSelect.selectCharacter(cursor2.pos);
 
     // if random pick
     if (cursor1.pos.x === 1 && cursor1.pos.y === 2) {
-        var randPos;
+        let randPos;
         do {
             randPos = new Vector2D(
                 Math.round(Math.random() * 2),
@@ -59,7 +61,7 @@ CharacterSelectionDisplay.update = display => {
         character1 = charSelect.selectCharacter(randPos);
     }
     if (cursor2.pos.x === 1 && cursor2.pos.y === 2) {
-        var randPos;
+        let randPos;
         do {
             randPos = new Vector2D(
                 Math.round(Math.random() * 2),
@@ -72,8 +74,8 @@ CharacterSelectionDisplay.update = display => {
     // Character Profiles
     if (character1) {
         if (cursor1.ready) {
-            display.cx.drawImage(
-                display.assets.images['cp' + character1.id + 'activeShadow'],
+            cx.drawImage(
+                images['cp' + character1.id + 'activeShadow'],
                 0, 0,
                 202, 270,
                 (-8 + cursor1.profileFrame),
@@ -81,8 +83,8 @@ CharacterSelectionDisplay.update = display => {
                 (194 + cursor1.profileFrame),
                 (278 - cursor1.profileFrame)
             );
-            display.cx.drawImage(
-                display.assets.images['cp' + character1.id + 'active'],
+            cx.drawImage(
+                images['cp' + character1.id + 'active'],
                 0, 0,
                 202, 270,
                 (0 - cursor1.profileFrame ** 2 / 2),
@@ -91,14 +93,14 @@ CharacterSelectionDisplay.update = display => {
                 (270 + cursor1.profileFrame ** 2)
             );
             if (cursor1.infoFrame) {
-                display.cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
-                display.cx.fillStyle = "#fff";
-                display.cx.fillRect(0, 0, 240, 270);
-                display.cx.globalAlpha = 1;
+                cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
+                cx.fillStyle = "#fff";
+                cx.fillRect(0, 0, 240, 270);
+                cx.globalAlpha = 1;
             }
         } else {
-            display.cx.drawImage(
-                display.assets.images['cp' + character1.id + 'shadow'],
+            cx.drawImage(
+                images['cp' + character1.id + 'shadow'],
                 0, 0,
                 202, 270,
                 (-8 + cursor1.profileFrame),
@@ -106,8 +108,8 @@ CharacterSelectionDisplay.update = display => {
                 (194 + cursor1.profileFrame),
                 (278 - cursor1.profileFrame)
             );
-            display.cx.drawImage(
-                display.assets.images['cp' + character1.id],
+            cx.drawImage(
+                images['cp' + character1.id],
                 0, 0,
                 202, 270,
                 (0 - cursor1.profileFrame ** 2 / 2),
@@ -119,8 +121,8 @@ CharacterSelectionDisplay.update = display => {
     }
     if (character2) {
         if (cursor2.ready) {
-            display.cx.drawImage(
-                display.assets.images['cp' + character2.id + 'activeShadow'],
+            cx.drawImage(
+                images['cp' + character2.id + 'activeShadow'],
                 0, 0,
                 202, 270,
                 (270 + cursor2.profileFrame),
@@ -128,8 +130,8 @@ CharacterSelectionDisplay.update = display => {
                 (194 + cursor2.profileFrame),
                 (278 - cursor2.profileFrame)
             );
-            display.cx.drawImage(
-                display.assets.images['cp' + character2.id + 'active'],
+            cx.drawImage(
+                images['cp' + character2.id + 'active'],
                 0, 0,
                 202, 270,
                 (278 - cursor2.profileFrame ** 2 / 2),
@@ -138,14 +140,14 @@ CharacterSelectionDisplay.update = display => {
                 (270 + cursor2.profileFrame ** 2)
             );
             if (cursor2.infoFrame) {
-                display.cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
-                display.cx.fillStyle = "#fff";
-                display.cx.fillRect(240, 0, 240, 270);
-                display.cx.globalAlpha = 1;
+                cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
+                cx.fillStyle = "#fff";
+                cx.fillRect(240, 0, 240, 270);
+                cx.globalAlpha = 1;
             }
         } else {
-            display.cx.drawImage(
-                display.assets.images['cp' + character2.id + 'shadow'],
+            cx.drawImage(
+                images['cp' + character2.id + 'shadow'],
                 0, 0,
                 202, 270,
                 (270 + cursor2.profileFrame),
@@ -153,8 +155,8 @@ CharacterSelectionDisplay.update = display => {
                 (194 + cursor2.profileFrame),
                 (278 - cursor2.profileFrame)
             );
-            display.cx.drawImage(
-                display.assets.images['cp' + character2.id],
+            cx.drawImage(
+                images['cp' + character2.id],
                 0, 0,
                 202, 270,
                 (278 - cursor2.profileFrame ** 2 / 2),
@@ -166,9 +168,9 @@ CharacterSelectionDisplay.update = display => {
     }
 
     // Player Input
-    var p1Input = cursor1.player.id === 'computer' ? null : display.assets.images['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p1Input = cursor1.player.id === 'computer' ? null : images['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p1Input) {
-        display.cx.drawImage(
+        cx.drawImage(
             p1Input,
             0, 0,
             16, 16,
@@ -178,9 +180,9 @@ CharacterSelectionDisplay.update = display => {
             16
         );
     }
-    var p2Input = cursor2.player.id === 'computer' ? null : display.assets.images['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p2Input = cursor2.player.id === 'computer' ? null : images['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p2Input) {
-        display.cx.drawImage(
+        cx.drawImage(
             p2Input,
             0, 0,
             16, 16,
@@ -193,8 +195,8 @@ CharacterSelectionDisplay.update = display => {
 
     if (charSelect.initAnimFrame) {
         // Background 2nd Layer
-        display.cx.drawImage(
-            display.assets.images.characterSelect,
+        cx.drawImage(
+            images.characterSelect,
             0, 0,
             480, 270,
             0,
@@ -205,8 +207,8 @@ CharacterSelectionDisplay.update = display => {
 
         // Character Names
         if (character1) {
-            display.cx.drawImage(
-                display.assets.images['cn' + character1.id],
+            cx.drawImage(
+                images['cn' + character1.id],
                 0, 0,
                 62, 136,
                 (0 + cursor1.profileFrame ** 2 * 1),
@@ -216,8 +218,8 @@ CharacterSelectionDisplay.update = display => {
             );
         }
         if (character2) {
-            display.cx.drawImage(
-                display.assets.images['cn' + character2.id],
+            cx.drawImage(
+                images['cn' + character2.id],
                 0, 0,
                 62, 136,
                 (419 + cursor2.profileFrame ** 2 * 1),
@@ -228,15 +230,15 @@ CharacterSelectionDisplay.update = display => {
         }
 
         // Background transition
-        var width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
-        display.cx.fillStyle = '#000';
-        display.cx.fillRect(
+        const width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
+        cx.fillStyle = '#000';
+        cx.fillRect(
             0,
             0,
             width * 240,
             270
         );
-        display.cx.fillRect(
+        cx.fillRect(
             (480 - width * 240),
             0,
             width * 240,
@@ -247,8 +249,8 @@ CharacterSelectionDisplay.update = display => {
         for (let x = 0; x < charSelect.size.x; x++) {
             for (let y = 0; y < charSelect.size.y; y++) {
                 if (charSelect.mugshotOrder[x][y] >= charSelect.initAnimFrame) {
-                    display.cx.drawImage(
-                        display.assets.images.whiteMugshot,
+                    cx.drawImage(
+                        images.whiteMugshot,
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -256,10 +258,10 @@ CharacterSelectionDisplay.update = display => {
                         52,
                         52
                     );
-                    var character = charSelect.selectCharacter(new Vector2D(x, y));
+                    const character = charSelect.selectCharacter(new Vector2D(x, y));
                     if (character) {
-                        var mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? display.assets.images.whiteMugshot : display.assets.images['cm' + character.id];
-                        display.cx.drawImage(
+                        const mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? images.whiteMugshot : images['cm' + character.id];
+                        cx.drawImage(
                             mugshotImg,
                             0, 0,
                             52, 52,
@@ -270,8 +272,8 @@ CharacterSelectionDisplay.update = display => {
                         );
                     }
                     else if (x === 1 && y === 2 && charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
-                        display.cx.drawImage(
-                            display.assets.images.random2Img,
+                        cx.drawImage(
+                            images.random2Img,
                             0, 0,
                             52, 52,
                             192 + x * 44 - y * 11,
@@ -279,8 +281,8 @@ CharacterSelectionDisplay.update = display => {
                             52,
                             52
                         );
-                        display.cx.drawImage(
-                            display.assets.images.randomImg,
+                        cx.drawImage(
+                            images.randomImg,
                             0, 0,
                             52, 52,
                             192 + x * 44 - y * 11,
@@ -290,8 +292,8 @@ CharacterSelectionDisplay.update = display => {
                         );
                     }
                     else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
-                        display.cx.drawImage(
-                            display.assets.images.lockImg,
+                        cx.drawImage(
+                            images.lockImg,
                             0, 0,
                             52, 52,
                             192 + x * 44 - y * 11,
@@ -306,8 +308,8 @@ CharacterSelectionDisplay.update = display => {
     } else {
 
         // Background 2nd Layer
-        display.cx.drawImage(
-            display.assets.images.characterSelect,
+        cx.drawImage(
+            images.characterSelect,
             0, 0,
             480, 270,
             0,
@@ -318,8 +320,8 @@ CharacterSelectionDisplay.update = display => {
 
         // Character Names
         if (character1) {
-            display.cx.drawImage(
-                display.assets.images['cn' + character1.id],
+            cx.drawImage(
+                images['cn' + character1.id],
                 0, 0,
                 62, 136,
                 (0 + cursor1.profileFrame ** 2 * 1),
@@ -329,8 +331,8 @@ CharacterSelectionDisplay.update = display => {
             );
         }
         if (character2) {
-            display.cx.drawImage(
-                display.assets.images['cn' + character2.id],
+            cx.drawImage(
+                images['cn' + character2.id],
                 0, 0,
                 62, 136,
                 (419 + cursor2.profileFrame ** 2 * 1),
@@ -341,8 +343,8 @@ CharacterSelectionDisplay.update = display => {
         }
 
         // Informations
-        display.cx.drawImage(
-            display.assets.images.characterSelectInfo2,
+        cx.drawImage(
+            images.characterSelectInfo2,
             0, cursor1.ready ? 24 : 0,
             72, 24,
             (147 + (cursor1.infoFrame / 2) ** 2 * 4),
@@ -350,8 +352,8 @@ CharacterSelectionDisplay.update = display => {
             72,
             24
         );
-        display.cx.drawImage(
-            display.assets.images.characterSelectInfo2,
+        cx.drawImage(
+            images.characterSelectInfo2,
             0, cursor2.ready ? 24 : 0,
             72, 24,
             ((cursor2.ready ? 295 : 261) - (cursor2.infoFrame / 2) ** 2 * 4),
@@ -360,8 +362,8 @@ CharacterSelectionDisplay.update = display => {
             24
         );
 
-        display.cx.drawImage(
-            display.assets.images.characterSelectInfo3,
+        cx.drawImage(
+            images.characterSelectInfo3,
             0, 0,
             58, 26,
             (142 + (charSelect.initInfo3Frame / 2) ** 2 * 4),
@@ -369,9 +371,9 @@ CharacterSelectionDisplay.update = display => {
             58,
             26
         );
-        var info3multiplier = charSelect.mode === 'Player' ? 1 : 2;
-        display.cx.drawImage(
-            display.assets.images.characterSelectInfo3,
+        const info3multiplier = charSelect.mode === 'Player' ? 1 : 2;
+        cx.drawImage(
+            images.characterSelectInfo3,
             0, 26 * info3multiplier,
             58, 26,
             (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4),
@@ -383,8 +385,8 @@ CharacterSelectionDisplay.update = display => {
         // Mugshots
         for (let x = 0; x < charSelect.size.x; x++) {
             for (let y = 0; y < charSelect.size.y; y++) {
-                display.cx.drawImage(
-                    display.assets.images.whiteMugshot,
+                cx.drawImage(
+                    images.whiteMugshot,
                     0, 0,
                     52, 52,
                     192 + x * 44 - y * 11,
@@ -392,10 +394,10 @@ CharacterSelectionDisplay.update = display => {
                     52,
                     52
                 );
-                var character = charSelect.selectCharacter(new Vector2D(x, y));
+                const character = charSelect.selectCharacter(new Vector2D(x, y));
                 if (character) {
-                    display.cx.drawImage(
-                        display.assets.images['cm' + character.id],
+                    cx.drawImage(
+                        images['cm' + character.id],
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -405,8 +407,8 @@ CharacterSelectionDisplay.update = display => {
                     );
                 }
                 else if (x === 1 && y === 2) {
-                    display.cx.drawImage(
-                        display.assets.images.random2Img,
+                    cx.drawImage(
+                        images.random2Img,
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -414,8 +416,8 @@ CharacterSelectionDisplay.update = display => {
                         52,
                         52
                     );
-                    display.cx.drawImage(
-                        display.assets.images.randomImg,
+                    cx.drawImage(
+                        images.randomImg,
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -425,8 +427,8 @@ CharacterSelectionDisplay.update = display => {
                     );
                 }
                 else {
-                    display.cx.drawImage(
-                        display.assets.images.lockImg,
+                    cx.drawImage(
+                        images.lockImg,
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -441,10 +443,10 @@ CharacterSelectionDisplay.update = display => {
         // Cursor
         [cursor1, cursor2].forEach((cursor, index) => {
             if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player.id !== 'computer' || cursor1.ready)))) {
-                var frameMax = 4;
-                var frameSpeed = display.frame / 16;
-                display.cx.drawImage(
-                    display.assets.images['characterSelectP' + (index + 1)],
+                const frameMax = 4;
+                const frameSpeed = display.frame / 16;
+                cx.drawImage(
+                    images['characterSelectP' + (index + 1)],
                     (Math.floor(frameSpeed) % frameMax) * 64, 0,
                     64, 64,
                     186 + cursor.pos.x * 44 - cursor.pos.y * 11,
@@ -457,8 +459,8 @@ CharacterSelectionDisplay.update = display => {
         // Bubble
         [cursor1, cursor2].forEach((cursor, index) => {
             if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player.id !== 'computer' || cursor1.ready)))) {
-                display.cx.drawImage(
-                    display.assets.images.characterSelectInfo,
+                cx.drawImage(
+                    images.characterSelectInfo,
                     index * 24, 0,
                     24, 24,
                     (index * 40 + 186) + cursor.pos.x * 44 - cursor.pos.y * 11,

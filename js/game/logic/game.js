@@ -63,7 +63,7 @@ class Game {
                 );
             }
             return nextActivity;
-        };
+        }
 
         // End Menu
         this.endMenuOptions = ['Rematch', 'CharacterSelection', 'MainMenu'];
@@ -82,19 +82,19 @@ class Game {
                     break;
             }
             return nextActivity;
-        };
+        }
+    }
+    
+    update = () => {
+        if (this.inputList.size !== this.players.size) {
+            this.inputList.forEach((input, id) => {
+                if (!this.players.find(player => player.id === id)) this.players.push(new Player(id));
+            });
+        }
 
-        this.update = () => {
-            if (this.inputList.size !== this.players.size) {
-                this.inputList.forEach((input, id) => {
-                    if (!this.players.find(player => player.id === id)) this.players.push(new Player(id));
-                });
-            }
+        this.activity.update(this);
 
-            this.activity.update(this);
-
-            this.inputList.forEach((input, id) => this.lastInputList.set(id, { ...input }));
-            this.frame++;
-        };
+        this.inputList.forEach((input, id) => this.lastInputList.set(id, { ...input }));
+        this.frame++;
     }
 }

@@ -1,29 +1,32 @@
 class MenuDisplay extends ActivityDisplay {}
 MenuDisplay.update = display => {
-    var menu = display.game.activity instanceof Fight ? display.game.activity.pauseMenu : display.game.activity;
+    const cx = display.cx;
+    const activity = display.game.activity;
+    const menu = activity instanceof Fight ? activity.pauseMenu : activity;
 
+    // Background
     if (menu.optionYCenter === display.game.mainMenuOptionYCenter) {
-        display.cx.drawImage(display.assets.images.titleScreen, 0, 0, 480, 270, 0, 0, 480, 270);
+        cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, 0, display.width, display.height);
     }
     else {
-        display.cx.fillStyle = display.game.activity instanceof Fight ? '#0008' : '#000';
-        display.cx.fillRect(0, 0, 480, 270);
+        cx.fillStyle = menu === activity ? '#000' : '#0008';
+        cx.fillRect(0, 0, display.width, display.height);
     }
 
     // Options
-    var drawMenuElement = (asset, index, offset) => {
-        display.cx.drawImage(
-            asset,
-            0, 0, 128, 32,
-            176 + offset, ((display.height - display.height / menu.optionYCenter) - menu.options.length / 2 * 32 + 32 * index),
-            128, 32
-        );
-    };
-
     menu.options.forEach((option, index) => {
         option += option === 'Player' && display.game.players.length < 2 ? 'Disabled' : '';
-        drawMenuElement(display.assets.images['btn' + option], index, 0);
-        var cursor = display.game.activity instanceof Fight ? display.game.activity.pauseMenu.cursor : display.game.activity.cursor;
-        if (cursor === index) drawMenuElement(display.assets.images.menucursor, index, Math.sin(display.frame * 0.1) * 4);
+        MenuDisplay.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
+        var cursor = activity instanceof Fight ? activity.pauseMenu.cursor : activity.cursor;
+        if (cursor === index) MenuDisplay.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(display.frame * 0.1) * 4);
     });
+}
+
+MenuDisplay.drawMenuElement = (display, menu, asset, index, offset) => {
+    display.cx.drawImage(
+        asset,
+        0, 0, 128, 32,
+        176 + offset, ((display.height - display.height / menu.optionYCenter) - menu.options.length / 2 * 32 + 32 * index),
+        128, 32
+    );
 }

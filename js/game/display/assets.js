@@ -144,11 +144,9 @@ class Assets {
         this.loadPercent = 0;
     }
 
-    load = () => Promise.all(Object.keys(this.images).map((key, index) => new Promise(resolve => this.images[key].onload = () => {
+    load = () => Promise.all(Object.keys(this.images).map(key => new Promise(resolve => this.images[key].onload = () => {
         resolve();
         this.loadPercent += this.loadStep;
-        document.getElementById("load").innerHTML = "LOADING: [" +
-            "=".repeat(Math.round(this.loadPercent)) +
-            "] " + (5 * Math.round(this.loadPercent)) + "%";
+        document.getElementById("load").innerHTML = "LOADING: [" + "=".repeat(Math.round(this.loadPercent)) + "] " + (5 * Math.round(this.loadPercent)) + "%";
     })));
 }
