@@ -204,6 +204,7 @@ class Character {
                     if (this.status === 'BLOCK' && !this.BLOCK_STATUS.includes(this.action)) newStatus = null;
                     if (this.status === 'EJECTED' && this.collisionBox.pos.y + this.collisionBox.size.y === game.activity.stage.size.y) {
                         newStatus = 'GROUND';
+                        console.log('uo')
                         this.frame = 1;
                     }
                     if (this.status === 'GROUND') newStatus = null;
@@ -448,7 +449,7 @@ class Character {
 
             if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
-            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) || (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.right && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.right && inputList[inputList.length - 2].input.right && inputList[inputList.length - 3].input.down) || (inputs.right && !inputList[inputList.length - 2].input.right && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
             } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.left && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.left && inputList[inputList.length - 2].input.left && inputList[inputList.length - 3].input.down) || (inputs.left && !inputList[inputList.length - 2].input.left && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
