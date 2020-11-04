@@ -49,7 +49,7 @@ class CharacterSelection extends Activity {
 
     updateStageSelection = (game, cursor) => {
         // Get cursor input
-        const player = game.players[cursor.player === 'computer' ? this.cursors[0].player : cursor.player];
+        const player = cursor.player;
         const currentInput = player.inputHistory.frame[player.inputHistory.frame.length - 1];
         const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
 
@@ -147,9 +147,9 @@ class CharacterSelection extends Activity {
                 if (cursor.profileFrame) cursor.profileFrame--;
             });
             // Update computer cursors if every player cursor is ready else update them
-            if (!this.cursors.some(cursor => cursor.player !== 'computer' && !cursor.ready)) {
-                this.cursors.filter(cursor => cursor.player === 'computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
-            } else this.cursors.filter(cursor => cursor.player !== 'computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
+            if (!this.cursors.some(cursor => cursor.player.constructor.name !== 'Computer' && !cursor.ready)) {
+                this.cursors.filter(cursor => cursor.player.constructor.name === 'Computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
+            } else this.cursors.filter(cursor => cursor.player.constructor.name !== 'Computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
         } else {
             // Else if stage is not selected
             if (!this.stageReady) {
