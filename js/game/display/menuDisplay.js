@@ -5,19 +5,19 @@ MenuDisplay.update = display => {
     const menu = activity instanceof Fight ? activity.pauseMenu : activity;
 
     // Background
-    if (menu.optionYCenter === display.game.mainMenuOptionYCenter) {
+    if (menu instanceof MainMenu) {
         cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, 0, display.width, display.height);
     }
     else {
-        cx.fillStyle = menu === activity ? '#000' : '#0008';
+        cx.fillStyle = menu instanceof PauseMenu ? '#0008' : '#000';
         cx.fillRect(0, 0, display.width, display.height);
     }
 
     // Options
     menu.options.forEach((option, index) => {
-        option += option === 'Player' && display.game.players.length < 2 ? 'Disabled' : '';
+        option += option === 'Player' && Object.keys(display.game.players).length < 2 ? 'Disabled' : '';
         MenuDisplay.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
-        var cursor = activity instanceof Fight ? activity.pauseMenu.cursor : activity.cursor;
+        const cursor = activity instanceof Fight ? activity.pauseMenu.cursor : activity.cursor;
         if (cursor === index) MenuDisplay.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(display.frame * 0.1) * 4);
     });
 }

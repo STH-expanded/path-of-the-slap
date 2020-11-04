@@ -46,8 +46,8 @@ CharacterSelectionDisplay.update = display => {
     const cursor1 = charSelect.cursors[0];
     const cursor2 = charSelect.cursors[1];
 
-    let character1 = charSelect.selectCharacter(cursor1.pos);
-    let character2 = charSelect.selectCharacter(cursor2.pos);
+    let Character1 = charSelect.selectCharacter(cursor1.pos);
+    let Character2 = charSelect.selectCharacter(cursor2.pos);
 
     // if random pick
     if (cursor1.pos.x === 1 && cursor1.pos.y === 2) {
@@ -57,8 +57,8 @@ CharacterSelectionDisplay.update = display => {
                 Math.round(Math.random() * 2),
                 Math.round(Math.random() * 4),
             );
-        } while (!charSelect.selectCharacter(randPos, null));
-        character1 = charSelect.selectCharacter(randPos);
+        } while (!charSelect.selectCharacter(randPos));
+        Character1 = charSelect.selectCharacter(randPos);
     }
     if (cursor2.pos.x === 1 && cursor2.pos.y === 2) {
         let randPos;
@@ -67,15 +67,15 @@ CharacterSelectionDisplay.update = display => {
                 Math.round(Math.random() * 2),
                 Math.round(Math.random() * 4),
             );
-        } while (!charSelect.selectCharacter(randPos, null));
-        character2 = charSelect.selectCharacter(randPos);
+        } while (!charSelect.selectCharacter(randPos));
+        Character2 = charSelect.selectCharacter(randPos);
     }
 
     // Character Profiles
-    if (character1) {
+    if (Character1) {
         if (cursor1.ready) {
             cx.drawImage(
-                images['cp' + character1.id + 'activeShadow'],
+                images['cp' + Character1.id + 'activeShadow'],
                 0, 0,
                 202, 270,
                 (-8 + cursor1.profileFrame),
@@ -84,7 +84,7 @@ CharacterSelectionDisplay.update = display => {
                 (278 - cursor1.profileFrame)
             );
             cx.drawImage(
-                images['cp' + character1.id + 'active'],
+                images['cp' + Character1.id + 'active'],
                 0, 0,
                 202, 270,
                 (0 - cursor1.profileFrame ** 2 / 2),
@@ -100,7 +100,7 @@ CharacterSelectionDisplay.update = display => {
             }
         } else {
             cx.drawImage(
-                images['cp' + character1.id + 'shadow'],
+                images['cp' + Character1.id + 'shadow'],
                 0, 0,
                 202, 270,
                 (-8 + cursor1.profileFrame),
@@ -109,7 +109,7 @@ CharacterSelectionDisplay.update = display => {
                 (278 - cursor1.profileFrame)
             );
             cx.drawImage(
-                images['cp' + character1.id],
+                images['cp' + Character1.id],
                 0, 0,
                 202, 270,
                 (0 - cursor1.profileFrame ** 2 / 2),
@@ -119,10 +119,10 @@ CharacterSelectionDisplay.update = display => {
             );
         }
     }
-    if (character2) {
+    if (Character2) {
         if (cursor2.ready) {
             cx.drawImage(
-                images['cp' + character2.id + 'activeShadow'],
+                images['cp' + Character2.id + 'activeShadow'],
                 0, 0,
                 202, 270,
                 (270 + cursor2.profileFrame),
@@ -131,7 +131,7 @@ CharacterSelectionDisplay.update = display => {
                 (278 - cursor2.profileFrame)
             );
             cx.drawImage(
-                images['cp' + character2.id + 'active'],
+                images['cp' + Character2.id + 'active'],
                 0, 0,
                 202, 270,
                 (278 - cursor2.profileFrame ** 2 / 2),
@@ -147,7 +147,7 @@ CharacterSelectionDisplay.update = display => {
             }
         } else {
             cx.drawImage(
-                images['cp' + character2.id + 'shadow'],
+                images['cp' + Character2.id + 'shadow'],
                 0, 0,
                 202, 270,
                 (270 + cursor2.profileFrame),
@@ -156,7 +156,7 @@ CharacterSelectionDisplay.update = display => {
                 (278 - cursor2.profileFrame)
             );
             cx.drawImage(
-                images['cp' + character2.id],
+                images['cp' + Character2.id],
                 0, 0,
                 202, 270,
                 (278 - cursor2.profileFrame ** 2 / 2),
@@ -168,7 +168,7 @@ CharacterSelectionDisplay.update = display => {
     }
 
     // Player Input
-    const p1Input = cursor1.player.id === 'computer' ? null : images['characterSelect' + (cursor1.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p1Input = cursor1.player === 'computer' ? null : images['characterSelect' + (cursor1.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p1Input) {
         cx.drawImage(
             p1Input,
@@ -180,7 +180,7 @@ CharacterSelectionDisplay.update = display => {
             16
         );
     }
-    const p2Input = cursor2.player.id === 'computer' ? null : images['characterSelect' + (cursor2.player.id === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p2Input = cursor2.player === 'computer' ? null : images['characterSelect' + (cursor2.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p2Input) {
         cx.drawImage(
             p2Input,
@@ -206,9 +206,9 @@ CharacterSelectionDisplay.update = display => {
         );
 
         // Character Names
-        if (character1) {
+        if (Character1) {
             cx.drawImage(
-                images['cn' + character1.id],
+                images['cn' + Character1.id],
                 0, 0,
                 62, 136,
                 (0 + cursor1.profileFrame ** 2 * 1),
@@ -217,9 +217,9 @@ CharacterSelectionDisplay.update = display => {
                 136
             );
         }
-        if (character2) {
+        if (Character2) {
             cx.drawImage(
-                images['cn' + character2.id],
+                images['cn' + Character2.id],
                 0, 0,
                 62, 136,
                 (419 + cursor2.profileFrame ** 2 * 1),
@@ -258,9 +258,9 @@ CharacterSelectionDisplay.update = display => {
                         52,
                         52
                     );
-                    const character = charSelect.selectCharacter(new Vector2D(x, y));
-                    if (character) {
-                        const mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? images.whiteMugshot : images['cm' + character.id];
+                    const Character = charSelect.selectCharacter(new Vector2D(x, y));
+                    if (Character) {
+                        const mugshotImg = charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? images.whiteMugshot : images['cm' + Character.id];
                         cx.drawImage(
                             mugshotImg,
                             0, 0,
@@ -319,9 +319,9 @@ CharacterSelectionDisplay.update = display => {
         );
 
         // Character Names
-        if (character1) {
+        if (Character1) {
             cx.drawImage(
-                images['cn' + character1.id],
+                images['cn' + Character1.id],
                 0, 0,
                 62, 136,
                 (0 + cursor1.profileFrame ** 2 * 1),
@@ -330,9 +330,9 @@ CharacterSelectionDisplay.update = display => {
                 136
             );
         }
-        if (character2) {
+        if (Character2) {
             cx.drawImage(
-                images['cn' + character2.id],
+                images['cn' + Character2.id],
                 0, 0,
                 62, 136,
                 (419 + cursor2.profileFrame ** 2 * 1),
@@ -394,10 +394,10 @@ CharacterSelectionDisplay.update = display => {
                     52,
                     52
                 );
-                const character = charSelect.selectCharacter(new Vector2D(x, y));
-                if (character) {
+                const Character = charSelect.selectCharacter(new Vector2D(x, y));
+                if (Character) {
                     cx.drawImage(
-                        images['cm' + character.id],
+                        images['cm' + Character.id],
                         0, 0,
                         52, 52,
                         192 + x * 44 - y * 11,
@@ -442,7 +442,7 @@ CharacterSelectionDisplay.update = display => {
 
         // Cursor
         [cursor1, cursor2].forEach((cursor, index) => {
-            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player.id !== 'computer' || cursor1.ready)))) {
+            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player !== 'computer' || cursor1.ready)))) {
                 const frameMax = 4;
                 const frameSpeed = display.frame / 16;
                 cx.drawImage(
@@ -458,7 +458,7 @@ CharacterSelectionDisplay.update = display => {
 
         // Bubble
         [cursor1, cursor2].forEach((cursor, index) => {
-            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player.id !== 'computer' || cursor1.ready)))) {
+            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player !== 'computer' || cursor1.ready)))) {
                 cx.drawImage(
                     images.characterSelectInfo,
                     index * 24, 0,

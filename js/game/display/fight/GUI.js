@@ -40,7 +40,7 @@ GUI.update = display => {
         64
     );
     cx.drawImage(
-        images['cm' + fight.player1.character.id],
+        images['cm' + fight.player1.selectedCharacter.id],
         6,
         6,
         52,
@@ -63,7 +63,7 @@ GUI.update = display => {
         12
     );
 
-    const imgci1 = images['ci' + fight.player1.character.id];
+    const imgci1 = images['ci' + fight.player1.selectedCharacter.id];
     cx.drawImage(
         imgci1,
         64,
@@ -103,7 +103,7 @@ GUI.update = display => {
         64
     );
     cx.drawImage(
-        images['cm' + fight.player2.character.id],
+        images['cm' + fight.player2.selectedCharacter.id],
         display.width - 58,
         6,
         52,
@@ -125,7 +125,7 @@ GUI.update = display => {
         12
     );
 
-    const imgci2 = images['ci' + fight.player2.character.id];
+    const imgci2 = images['ci' + fight.player2.selectedCharacter.id];
     cx.drawImage(
         imgci2,
         (416 - imgci2.naturalWidth),

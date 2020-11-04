@@ -1,7 +1,7 @@
 class Projectile {
 	constructor(collisionBox, launcher, direction, speed, damage, stun, action) {
 		this.collisionBox = collisionBox; // CollisionBox
-		this.launcher = launcher; //playerId
+		this.launcher = launcher; //player
 		this.direction = direction; //Boolean
 		this.speed = speed; // Vecteur2D
 		this.damage = damage;

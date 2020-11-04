@@ -6,6 +6,9 @@ FightDisplay.update = display => {
     // Players
     const player1 = fight.player1.character;
     const player2 = fight.player2.character;
+    
+    const char1 = fight.player1.selectedCharacter;
+    const char2 = fight.player2.selectedCharacter;
 
     // Fight middle
     const middle = (player1.collisionBox.pos.x + player1.collisionBox.size.x / 2 + player2.collisionBox.pos.x + player2.collisionBox.size.x / 2) / 2;
@@ -81,8 +84,8 @@ FightDisplay.update = display => {
             }
         }
 
-        if (player.id === '00') FightDisplay.drawCharacter0(display, player);
-        if (player.id === '02') FightDisplay.drawCharacter2(display, player);
+        if (player.constructor.id === '00') FightDisplay.drawCharacter0(display, player);
+        if (player.constructor.id === '02') FightDisplay.drawCharacter2(display, player);
     });
     
     // Projectiles

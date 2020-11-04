@@ -1,13 +1,13 @@
 class Display {
-    constructor(game) {
+    constructor(game, assets) {
         // Temporary or deprecated variables
         this.frame = 0;
         this.debugMode = true;
 
         // Game data
         this.game = game;
+        this.assets = assets;
         this.audioManager = new AudioManager();
-        this.assets = new Assets();
 
         // Display data
         this.canvas = document.createElement('canvas');
@@ -18,6 +18,9 @@ class Display {
 
         this.resize();
         window.addEventListener('resize', this.resize);
+
+        document.body.innerHTML = "";
+        document.body.appendChild(this.canvas);
     }
 
     // Display loop
