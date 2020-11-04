@@ -272,7 +272,11 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y - 4), new Vector2D(50, 106)));
         };
-        this.GET_UP = (game) => {};
+        this.GET_UP = (game) => {
+            this.frame++;
+            var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(0, 0)));
+        };
 
         this.BACKWARD_DASH = (game) => {};
 
@@ -418,7 +422,7 @@ class Character {
         this.EJECTED = (game) => {};
         this.GROUND = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
-            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(47, 128)));
+            this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(0, 0)));
         };
         this.RECOVER = (game) => {};
         this.TECH = (game) => {};
@@ -430,16 +434,21 @@ class Character {
             var inputs = inputList.length > 0 ? inputList[inputList.length - 1].input : {};
 
             if (this.status === 'HIT') return null;
-            if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) return 'GET_UP';
+            if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) {
+                this.status = null;
+                return 'GET_UP';
+            }
+            if (this.action === 'GET_UP') {
+                if(this.frame > 10) return 'NEUTRAL_HIGH'
+                else return 'GET_UP'
+            }
 
             if (!this.runDash && this.action === 'FORWARD_DASH' && this.frame < this.forwardDashFrame) return 'FORWARD_DASH';
             if (!this.runBackDash && this.action === 'BACKWARD_DASH' && this.frame < this.backDashFrame) return 'BACKWARD_DASH';
 
             if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
-            } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
-                return 'GET_UP';
-            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.right && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.right && inputList[inputList.length - 2].input.right && inputList[inputList.length - 3].input.down) || (inputs.right && !inputList[inputList.length - 2].input.right && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) || (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
             } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.left && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.left && inputList[inputList.length - 2].input.left && inputList[inputList.length - 3].input.down) || (inputs.left && !inputList[inputList.length - 2].input.left && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
