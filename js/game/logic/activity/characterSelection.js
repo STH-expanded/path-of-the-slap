@@ -147,9 +147,9 @@ class CharacterSelection extends Activity {
                 if (cursor.profileFrame) cursor.profileFrame--;
             });
             // Update computer cursors if every player cursor is ready else update them
-            if (!this.cursors.some(cursor => cursor.player !== 'computer' && !cursor.ready)) {
-                this.cursors.filter(cursor => cursor.player === 'computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
-            } else this.cursors.filter(cursor => cursor.player !== 'computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
+            if (!this.cursors.some(cursor => cursor.player.constructor.name !== 'Computer' && !cursor.ready)) {
+                this.cursors.filter(cursor => cursor.player.constructor.name === 'Computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
+            } else this.cursors.filter(cursor => cursor.player.constructor.name !== 'Computer').forEach(cursor => this.updateCharacterSelection(game, cursor));
         } else {
             // Else if stage is not selected
             if (!this.stageReady) {
