@@ -1,36 +1,27 @@
 class Player {
-    constructor(id) {
-        this.id = id;
-        this.inputList = [];
+    constructor() {
+        this.inputHistory = {
+            frame: [],
+            state: []
+        }
+        this.selectedCharacter = null;
         this.character = null;
         this.winCount = 0;
     }
 
-    update = game => {
-        this.updateLastInputs(this.socdCleaner(this.id !== 'computer' ? {...game.inputList.get(this.id)} : {}));
-        if (game.activity) this.character.update(game, this.inputList);
-    }
-
-    socdCleaner = inputs => {
-        const cleanedInputs = inputs;
-        if (cleanedInputs.left && cleanedInputs.right) {
-            cleanedInputs.left = false;
-            cleanedInputs.right = false;
-        }
-        if (cleanedInputs.up && cleanedInputs.down) {
-            cleanedInputs.down = false;
-        }
-        return cleanedInputs;
-    }
-
-    updateLastInputs = inputs => {
-        if (this.inputList.length > 0 && JSON.stringify(inputs) === JSON.stringify(this.inputList[this.inputList.length - 1].inputs)) {
-            this.inputList[this.inputList.length - 1].frames++;
+    updateInput = input => {
+        // New frame input
+        if (this.inputHistory.frame.length === 10) this.inputHistory.frame.splice(0, 1);
+        this.inputHistory.frame.push(input);
+        // Increment frame count if same state input as last frame
+        if (this.inputHistory.state.length > 0 && JSON.stringify(input) === JSON.stringify(this.inputHistory.state[this.inputHistory.state.length - 1].input)) {
+            this.inputHistory.state[this.inputHistory.state.length - 1].frameCount++;
         } else {
-            if (this.inputList.length === 10) this.inputList.splice(0, 1);
-            this.inputList.push({
-                inputs: inputs,
-                frames: 1
+            // New state input
+            if (this.inputHistory.state.length === 10) this.inputHistory.state.splice(0, 1);
+            this.inputHistory.state.push({
+                input: input,
+                frameCount: 1
             });
         }
     }

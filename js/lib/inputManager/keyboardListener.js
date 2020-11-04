@@ -1,13 +1,13 @@
 class KeyboardListener {
     constructor() {
         this.keys = {
-            "left": false,
-            "up": false,
-            "right": false,
-            "down": false,
-            "a": false,
-            "b": false,
-            "start": false
+            left: false,
+            up: false,
+            right: false,
+            down: false,
+            a: false,
+            b: false,
+            start: false
         }
 
         this.keyCodes = {
@@ -20,8 +20,8 @@ class KeyboardListener {
             Enter: "start"
         }
 
-        document.body.addEventListener("keydown", this.handler);
-        document.body.addEventListener("keyup", this.handler);
+        document.body.onkeydown = event => this.handler(event);
+        document.body.onkeyup = event => this.handler(event);
     }
 
     handler = event => {

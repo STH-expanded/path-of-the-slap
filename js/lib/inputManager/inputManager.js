@@ -1,33 +1,46 @@
 class InputManager {
     constructor() {
-        this.inputList = new Map();
-        addEventListener('gamepadconnected', this.connectGamepad);
-        addEventListener('gamepaddisconnected', this.disconnectGamepad);
-        addEventListener('keydown', this.listenKeyboard);
+        this.inputList = new Object();
+        this.keyboardListener = null;
+        document.body.ongamepadconnected = event => this.connectGamepad(event);
+        document.body.ongamepaddisconnected = event => this.disconnectGamepad(event);
+        document.body.onkeypress = () => this.listenKeyboard();
     }
 
     update = () => {
-        const gamepads = Array.from(navigator.getGamepads());
-        gamepads.forEach(gamepad => {
-            if (gamepad) {
-                this.inputList.set(gamepad.id, {
-                    left: gamepad.axes[0] < -0.5,
-                    up: gamepad.axes[1] < -0.5,
-                    right: gamepad.axes[0] > 0.5,
-                    down: gamepad.axes[1] > 0.5,
-                    a: gamepad.buttons[1].value,
-                    b: gamepad.buttons[0].value,
-                    start: gamepad.buttons[2].value,
-                });
-            }
+        // Update gamepads input
+        Array.from(navigator.getGamepads()).filter(gamepad => gamepad).forEach(gamepad => {
+            this.inputList[gamepad.id] = this.socdClean({
+                left: gamepad.axes[0] < -0.5,
+                up: gamepad.axes[1] < -0.5,
+                right: gamepad.axes[0] > 0.5,
+                down: gamepad.axes[1] > 0.5,
+                a: gamepad.buttons[1].value,
+                b: gamepad.buttons[0].value,
+                start: gamepad.buttons[2].value,
+            });
         });
+        // Update keyboard input
+        if (this.keyboardListener) this.inputList['keyboard'] = this.socdClean(this.keyboardListener.keys);
     }
 
-    listenKeyboard = event => {
-        if (!this.inputList.has('keyboard')) {
-            console.log('Keyboard connected');
-            this.inputList.set('keyboard', new KeyboardListener().keys);
+    // Simultaneous Opposite Cardinal Directions
+    socdClean = input => {
+        return {
+            left: input.left && !input.right,
+            up: input.up && !input.down,
+            right: input.right && !input.left,
+            down: input.down && !input.up,
+            a: input.a,
+            b: input.b,
+            start: input.start
         }
+    }
+
+    listenKeyboard = () => {
+        console.log('Keyboard connected');
+        this.keyboardListener = new KeyboardListener();
+        document.body.onkeypress = event => event.preventDefault();
     }
 
     connectGamepad = event => {
@@ -36,6 +49,6 @@ class InputManager {
 
     disconnectGamepad = event => {
         console.log('Gamepad disconnected : ' + event.gamepad.id);
-        this.inputList.delete(event.gamepad.id);
+        delete this.inputList[event.gamepad.id];
     }
 }

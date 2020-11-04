@@ -1,13 +1,9 @@
 class Character {
-    constructor(playerId) {
-        this.playerId = playerId;
+    constructor() {
 
         //------------------------------------------------------------------------------------------------------------------------------
         // DATA
         //------------------------------------------------------------------------------------------------------------------------------
-
-        this.id = '00';
-        this.name = 'ParentCharacter';
 
         this.HIT_STATUS = ['HIT', 'EJECTED', 'GROUND'];
         this.INVINCIBLE_STATUS = ['RECOVER', 'TECH'];
@@ -133,7 +129,7 @@ class Character {
             var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(this.speed.x, 0)), this.collisionBox.size);
             if (!newCollisionBox.isIncludedIn(game.activity.stage)) newCollisionBox.pos.x = newCollisionBox.pos.x < 0 ? 0 : game.activity.stage.size.x - newCollisionBox.size.x;
 
-            var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+            var other = game.activity.players.find(player => player.character !== this).character;
             if (newCollisionBox.intersects(other.collisionBox)) {
                 if (other.collisionBox.pos.x === 0 || other.collisionBox.pos.x === game.activity.stage.size.x - other.collisionBox.size.x) this.speed.x = 0;
                 var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(this.speed.x, 0)), other.collisionBox.size);
@@ -171,13 +167,13 @@ class Character {
         };
 
         this.updateDirection = (game) => {
-            var other = game.activity.players.find((player) => player.id !== this.playerId).character.collisionBox;
+            var other = game.activity.players.find(player => player.character !== this).character.collisionBox;
             this.direction = this.collisionBox.pos.x + this.collisionBox.size.x / 2 === other.pos.x + other.size.x / 2 ? this.direction : this.collisionBox.pos.x + this.collisionBox.size.x / 2 < other.pos.x + other.size.x / 2;
         };
 
         this.getNewStatus = (game, inputList) => {
             var newStatus = this.status;
-            var inputs = inputList[inputList.length - 1].inputs;
+            var inputs = inputList.length > 0 ? inputList[inputList.length - 1].input : {};
             if (this.status) {
                 if (!this.frame) {
                     if (this.status === 'HIT') {
@@ -185,7 +181,7 @@ class Character {
                         this.knockbacks = [];
                     }
                     if (this.status === 'BLOCK' && this.BLOCK_STATUS.includes(this.action) && this.status !== 'HIT') {
-                        var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                        var other = game.activity.players.find(player => player.character !== this).character;
                         var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
                         otherHitboxes.forEach((hitBox) => {
                             if ((!other.HIGH_ATTACKS.includes(other.action) && this.action === 'BLOCK_HIGH') || (!other.LOW_ATTACKS.includes(other.action) && this.action === 'BLOCK_LOW')) {
@@ -215,7 +211,7 @@ class Character {
                     this.knockbacks.forEach((knockback) => {
                         var direction = knockback.direction ? 1 : -1;
                         if (knockback.affection === 'launcher') {
-                            var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                            var other = game.activity.players.find(player => player.character !== this).character;
                             var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(-1 * direction * (knockback.deplacement / knockback.nbframe), 0)), other.collisionBox.size);
                             other.collisionBox = otherNewCollisionBox;
                         } else if (knockback.affection === 'self') {
@@ -233,7 +229,7 @@ class Character {
                     this.frame--;
                 }
             } else {
-                var other = game.activity.players.find((player) => player.id !== this.playerId).character;
+                var other = game.activity.players.find(player => player.character !== this).character;
                 var otherHitboxes = other.hitboxes.filter((hitBox) => hitBox.intersectingCollisionBoxes(this.hurtboxes).some((hurtBox) => hurtBox));
                 var projectilesHitboxes = [];
                 game.activity.projectiles.forEach((projectile) => {
@@ -431,7 +427,7 @@ class Character {
         //------------------------------------------------------------------------------------------------------------------------------
 
         this.getCommandInput = (game, inputList) => {
-            var inputs = inputList[inputList.length - 1].inputs;
+            var inputs = inputList.length > 0 ? inputList[inputList.length - 1].input : {};
 
             if (this.status === 'HIT') return null;
             if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) return 'GET_UP';
@@ -443,9 +439,9 @@ class Character {
                 return 'LAND';
             } else if (!inputs.down && this.LOW_ACTIONS.includes(this.action)) {
                 return 'GET_UP';
-            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) || (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.right && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.right && inputList[inputList.length - 2].input.right && inputList[inputList.length - 3].input.down) || (inputs.right && !inputList[inputList.length - 2].input.right && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
-            } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.left && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.left && inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 3].inputs.down) || (inputs.left && !inputList[inputList.length - 2].inputs.left && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.left && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.left && inputList[inputList.length - 2].input.left && inputList[inputList.length - 3].input.down) || (inputs.left && !inputList[inputList.length - 2].input.left && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
             } else if (((inputs.a && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_A') && this.frame < this.highAFrame) {
                 return 'HIGH_A';
@@ -483,13 +479,13 @@ class Character {
                 } else {
                     return 'NEUTRAL_LOW';
                 }
-            } else if (((this.runDash && inputs.right) || (!this.runDash && inputs.right && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canDash) {
+            } else if (((this.runDash && inputs.right) || (!this.runDash && inputs.right && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].input.down && !inputList[inputList.length - 2].input.up && !inputList[inputList.length - 2].input.a && !inputList[inputList.length - 2].input.b && inputList[inputList.length - 2].frameCount < 8 && inputList[inputList.length - 3].input.right)) && this.canDash) {
                 return 'FORWARD_DASH';
-            } else if (((this.runDash && inputs.left) || (!this.runDash && inputs.left && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && !this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canDash) {
+            } else if (((this.runDash && inputs.left) || (!this.runDash && inputs.left && this.lastAction !== 'FORWARD_DASH' && this.action !== 'FORWARD_DASH')) && !this.direction && (this.action === 'FORWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].input.down && !inputList[inputList.length - 2].input.up && !inputList[inputList.length - 2].input.a && !inputList[inputList.length - 2].input.b && inputList[inputList.length - 2].frameCount < 8 && inputList[inputList.length - 3].input.left)) && this.canDash) {
                 return 'FORWARD_DASH';
-            } else if (((this.runBackDash && inputs.left) || (!this.runBackDash && inputs.left && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.left)) && this.canBackdash) {
+            } else if (((this.runBackDash && inputs.left) || (!this.runBackDash && inputs.left && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].input.down && !inputList[inputList.length - 2].input.up && !inputList[inputList.length - 2].input.a && !inputList[inputList.length - 2].input.b && inputList[inputList.length - 2].frameCount < 8 && inputList[inputList.length - 3].input.left)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
-            } else if (((this.runBackDash && inputs.right) || (!this.runBackDash && inputs.right && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && !this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].inputs.down && !inputList[inputList.length - 2].inputs.up && !inputList[inputList.length - 2].inputs.a && !inputList[inputList.length - 2].inputs.b && inputList[inputList.length - 2].frames < 8 && inputList[inputList.length - 3].inputs.right)) && this.canBackdash) {
+            } else if (((this.runBackDash && inputs.right) || (!this.runBackDash && inputs.right && this.lastAction !== 'BACKWARD_DASH' && this.action !== 'BACKWARD_DASH')) && !this.direction && (this.action === 'BACKWARD_DASH' || (this.action === 'NEUTRAL_HIGH' && inputList.length > 2 && !inputList[inputList.length - 2].input.down && !inputList[inputList.length - 2].input.up && !inputList[inputList.length - 2].input.a && !inputList[inputList.length - 2].input.b && inputList[inputList.length - 2].frameCount < 8 && inputList[inputList.length - 3].input.right)) && this.canBackdash) {
                 return 'BACKWARD_DASH';
             } else if (((inputs.right && this.direction) || (inputs.left && !this.direction)) && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action)) {
                 return 'FORWARD_HIGH';
@@ -511,17 +507,17 @@ class Character {
         //------------------------------------------------------------------------------------------------------------------------------
 
         this.update = (game, inputList) => {
-            this.status = this.getNewStatus(game, inputList);
+            this.status = this.getNewStatus(game, inputList.state);
 
             this.hitboxes = [];
             this.hurtboxes = [];
 
-            this.command = this.getCommandInput(game, inputList);
+            this.command = this.getCommandInput(game, inputList.state);
             if (this.command !== this.action && this.status !== 'HIT') {
                 this.lastAction = this.action;
                 this.frame = 0;
             }
-            this.action = this.command ? this.command : this.action;
+            if (this.command) this.action = this.command;
 
             this.updateSize();
             if (!this.AERIAL_FULL.includes(this.action) && !this.LAG_ACTIONS.includes(this.action)) this.updateDirection(game);
@@ -539,3 +535,4 @@ class Character {
         };
     }
 }
+Character.id = '00';

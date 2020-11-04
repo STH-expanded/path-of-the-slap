@@ -1,35 +1,37 @@
 window.onload = () => {
-    // Initialize game
-    const inputManager = new InputManager();
-    const game = new Game(inputManager.inputList);
-    const display = new Display(game);
-
     // Initialize body
     const loadElem = document.createElement("p");
     loadElem.id = "load";
     document.body.appendChild(loadElem);
-    document.body.oncontextmenu = () => false;
+    document.body.oncontextmenu = event => event.preventDefault();
 
-    // Load assets then start game
-    display.assets.load().then(() => {
-        loadElem.innerHTML += "<br>Press any key to continue";
-
-        const startGame = () => {
-            document.body.innerHTML = "";
-            document.body.onclick = () => false;
-            document.body.onkeypress = () => false;
-            document.body.appendChild(display.canvas);
+    // Load assets then listen to player input to start game
+    const assets = new Assets();
+    assets.load().then(() => {
+        const listenEvent = callback => ["onclick", "onkeypress"].forEach(name => document.body[name] = event => callback(event));
+        const startGame = event => {
+            // Remove event listeners
+            listenEvent(event => event.preventDefault);
     
+            // Initialize game
+            const game = new Game();
+            const display = new Display(game, assets);
+            const inputManager = new InputManager();
+
             // Game loop
             const animationFrame = () => {
+                // Update players input
                 inputManager.update();
-                game.update();
+                // Update game logic
+                game.update(inputManager.inputList);
+                // Update game display
                 display.update();            
                 requestAnimationFrame(animationFrame);
             }
             requestAnimationFrame(animationFrame);
         }
-        document.body.onclick = () => startGame();
-        document.body.onkeypress = () => startGame();
+        // Add event listeners
+        listenEvent(startGame);
+        loadElem.innerHTML += "<br>Press any key to continue";
     });
 }

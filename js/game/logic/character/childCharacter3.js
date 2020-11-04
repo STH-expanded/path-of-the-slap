@@ -1,15 +1,11 @@
 class ChildCharacter3 extends Character {
-    constructor(playerId) {
-        super(playerId);
-
+    constructor() {
+        super();
 
         //------------------------------------------------------------------------------------------------------------------------------
         // DATA
         //------------------------------------------------------------------------------------------------------------------------------
 
-
-        this.id = '03';
-        this.name = 'ChildCharacter3';
 
         this.idleSize = new Vector2D(24, 96);
         this.jumpSize = new Vector2D(24, 64);
@@ -77,3 +73,4 @@ class ChildCharacter3 extends Character {
         // DEFAULT
     }
 }
+ChildCharacter3.id = '03';

@@ -1,15 +1,11 @@
 class ChildCharacter2 extends Character {
-    constructor(playerId) {
-        super(playerId);
-
+    constructor() {
+        super();
 
         //------------------------------------------------------------------------------------------------------------------------------
         // DATA
         //------------------------------------------------------------------------------------------------------------------------------
 
-
-        this.id = '02';
-        this.name = 'ChildCharacter2';
 
         this.forwardDashFrame = 15;
         this.backDashFrame = 10;
@@ -96,3 +92,4 @@ class ChildCharacter2 extends Character {
         // DEFAULT
     }
 }
+ChildCharacter2.id = '02';

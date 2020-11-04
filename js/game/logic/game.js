@@ -1,100 +1,28 @@
 class Game {
-    constructor(inputList) {
-        this.frame = 0;
-        this.inputList = inputList;
-        this.lastInputList = new Map();
-
+    constructor() {
         this.activity = new Opening();
-
-        this.players = [];
-
+        this.players = {}
         this.lastFight = {
             players: [],
             stage: null
         }
-
-        this.stages = [
-            Stage,
-            ChildStage,
-            ChildStage,
-            Stage,
-            Stage,
-            Stage,
-            ChildStage,
-            Stage,
-            ChildStage,
-            ChildStage,
-            Stage
-        ];
-
-
-        this.characters = [
-            null,
-            null,
-            null,
-            null,
-            ChildCharacter2,
-            null,
-            Character,
-            null,
-            ChildCharacter,
-            null,
-            ChildCharacter3,
-            null,
-            null,
-            null,
-            null
-        ];
-
-        // Main Menu
-        this.mainMenuOptions = ['Computer', 'Player', 'Training'];
-        this.mainMenuOptionYCenter = 4;
-        this.mainMenuHandler = (game, options, cursor) => {
-            var nextActivity = null;
-            if (!(options[cursor] === 'Player' && game.players.length < 2)) {
-                nextActivity = new CharacterSelection(
-                    options[cursor],
-                    game.characters,
-                    game.stages,
-                    [
-                        game.players[0],
-                        options[cursor] === 'Player' ? game.players[1] : new Player('computer')
-                    ]
-                );
-            }
-            return nextActivity;
-        }
-
-        // End Menu
-        this.endMenuOptions = ['Rematch', 'CharacterSelection', 'MainMenu'];
-        this.endMenuOptionYCenter = 2;
-        this.endMenuHandler = (game, options, cursor) => {
-            var nextActivity = null;
-            switch (options[cursor]) {
-                case 'Rematch':
-                    nextActivity = new Fight(game.lastFight.players, game.lastFight.stage, false, true,0);
-                    break;
-                case 'CharacterSelection':
-                    nextActivity = new CharacterSelection(options[cursor], game.characters, game.stages, game.lastFight.players);
-                    break;
-                case 'MainMenu':
-                    nextActivity = new Menu(game.mainMenuOptions, game.mainMenuOptionYCenter, game.mainMenuHandler);
-                    break;
-            }
-            return nextActivity;
-        }
     }
-    
-    update = () => {
-        if (this.inputList.size !== this.players.size) {
-            this.inputList.forEach((input, id) => {
-                if (!this.players.find(player => player.id === id)) this.players.push(new Player(id));
-            });
-        }
 
-        this.activity.update(this);
-
-        this.inputList.forEach((input, id) => this.lastInputList.set(id, { ...input }));
-        this.frame++;
+    update = inputList => {
+        // Add new player if new input is detected
+        Object.keys(inputList).filter(id => !this.players[id]).forEach(id => this.players[id] = new Player());
+        // Update players input
+        Object.keys(inputList).forEach(id => this.players[id].updateInput(inputList[id]));
+        // Update activity
+        this.activity.updateTransition(this);
     }
 }
+Game.TRAINING_STAGE = TrainingStage;
+Game.STAGES = [Stage, ChildStage];
+Game.CHARACTERS = [
+    null, null, null,
+    null, ChildCharacter2, null,
+    Character, null, ChildCharacter,
+    null, ChildCharacter3, null,
+    null, null, null
+];

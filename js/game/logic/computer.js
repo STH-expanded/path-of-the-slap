@@ -1,0 +1,1 @@
+class Computer extends Player {}
