@@ -2,6 +2,7 @@ class Game {
     constructor() {
         this.activity = new Opening();
         this.players = {}
+        this.computer = new Computer();
         this.lastFight = {
             players: [],
             stage: null
@@ -12,6 +13,7 @@ class Game {
         // Add new player if new input is detected
         Object.keys(inputList).filter(id => !this.players[id]).forEach(id => this.players[id] = new Player());
         // Update players input
+        this.computer.updateInput(this.computer.getInput(this.activity));
         Object.keys(inputList).forEach(id => this.players[id].updateInput(inputList[id]));
         // Update activity
         this.activity.updateTransition(this);
