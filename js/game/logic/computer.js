@@ -194,16 +194,14 @@ class Computer extends Player {
     getInput = (activity) => {
         let input = null;
 
-        if (activity instanceof Fight) {
-            input = this.sequence.steps[Object.keys(this.sequence.steps).reverse().find(step => step <= this.sequenceIndex)](activity, this.character);
+        input = this.sequence.steps[Object.keys(this.sequence.steps).reverse().find(step => step <= this.sequenceIndex)](activity, this.character);
 
-            this.sequenceIndex++;
-            if (this.sequenceIndex > this.sequence.frames) {
-                this.sequenceIndex = 0;
-                const max_fitness = Math.max.apply(Math, this.sequences.map(sequence => sequence.fit(activity, this.character)));
-                const possibleSequences = this.sequences.filter(sequence => sequence.fit(activity, this.character) === max_fitness);
-                this.sequence = possibleSequences[Math.floor(Math.random() * possibleSequences.length)];
-            }
+        this.sequenceIndex++;
+        if (this.sequenceIndex > this.sequence.frames) {
+            this.sequenceIndex = 0;
+            const max_fitness = Math.max.apply(Math, this.sequences.map(sequence => sequence.fit(activity, this.character)));
+            const possibleSequences = this.sequences.filter(sequence => sequence.fit(activity, this.character) === max_fitness);
+            this.sequence = possibleSequences[Math.floor(Math.random() * possibleSequences.length)];
         }
 
         return input;

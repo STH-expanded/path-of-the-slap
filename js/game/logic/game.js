@@ -13,7 +13,7 @@ class Game {
         // Add new player if new input is detected
         Object.keys(inputList).filter(id => !this.players[id]).forEach(id => this.players[id] = new Player());
         // Update players input
-        this.computer.updateInput(this.computer.getInput(this.activity));
+        if (this.activity instanceof Fight && this.activity.player2 instanceof Computer) this.computer.updateInput(this.computer.getInput(this.activity));
         Object.keys(inputList).forEach(id => this.players[id].updateInput(inputList[id]));
         // Update activity
         this.activity.updateTransition(this);
