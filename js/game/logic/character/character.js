@@ -188,6 +188,7 @@ class Character {
                                 this.health -= hitBox.power;
                                 if (hitBox.status === false) {
                                     newStatus = 'HIT';
+                                    this.knockbacks = [];
                                     this.frame = hitBox.stun;
                                     this.knockbacks.push({
                                         affection: (this.collisionBox.pos.x <= 0 || this.collisionBox.pos.x + this.collisionBox.size.x >= game.activity.stage.size.x) && hitBox.type === 'storke' ? 'launcher' : 'self',
@@ -258,6 +259,7 @@ class Character {
                         this.health -= hitBox.power;
                         if (hitBox.status === false) {
                             newStatus = 'HIT';
+                            this.knockbacks = [];
                             this.frame = hitBox.stun;
                             this.knockbacks.push({
                                 affection: (this.collisionBox.pos.x <= 0 || this.collisionBox.pos.x + this.collisionBox.size.x >= game.activity.stage.size.x) && hitBox.type === 'storke' ? 'launcher' : 'self',
