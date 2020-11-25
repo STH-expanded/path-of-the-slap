@@ -451,7 +451,7 @@ class Character {
         this.getCommandInput = (game, inputList) => {
             var inputs = inputList.length > 0 ? inputList[inputList.length - 1].input : {};
 
-            if (this.status === 'HIT') return null;
+            if (this.status === 'HIT') return 'NEUTRAL_HIGH';
             if (this.status === 'GROUND' && (inputs.left || inputs.right || inputs.down || inputs.up || inputs.a || inputs.b)) {
                 this.status = null;
                 return 'GET_UP';
@@ -459,6 +459,9 @@ class Character {
             if (this.action === 'GET_UP') {
                 if (this.frame > 10) return 'NEUTRAL_HIGH'
                 else return 'GET_UP'
+            }
+            if (this.status === 'EJECTED') {
+                return 'NEUTRAL_HIGH';
             }
 
             if (!this.runDash && this.action === 'FORWARD_DASH' && this.frame < this.forwardDashFrame) return 'FORWARD_DASH';
