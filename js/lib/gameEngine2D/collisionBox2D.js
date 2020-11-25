@@ -26,5 +26,18 @@ class CollisionBox {
             this.pos.x + this.size.x > collisionBox.pos.x + collisionBox.size.x || this.pos.x < collisionBox.pos.x
         );
     }
+
+    isIncludedInX = collisionBox => {
+        return !(
+            this.pos.x + this.size.x > collisionBox.pos.x + collisionBox.size.x || this.pos.x < collisionBox.pos.x
+        );
+    }
+
+    isIncludedInY = collisionBox => {
+        return (
+            this.pos.y + this.size.y <= collisionBox.pos.y + collisionBox.size.y 
+        );
+    }
+
     includingCollisionBoxes = collisionBoxList => collisionBoxList.map(collisionBox => this.isIncludedIn(collisionBox));
 }
