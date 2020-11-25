@@ -1,5 +1,5 @@
 class HitBox extends CollisionBox {
-    constructor(type,pos, size, might, stun, status, power,direction) {
+    constructor(type, pos, size, might, stun, status, power, direction) {
         super();
         this.type = type;
         this.size = size;
@@ -8,6 +8,6 @@ class HitBox extends CollisionBox {
         this.stun = stun;
         this.status = status;
         this.power = power;
-        this.direction =direction;
+        this.direction = direction;
     }
 }
