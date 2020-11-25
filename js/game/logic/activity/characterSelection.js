@@ -49,7 +49,7 @@ class CharacterSelection extends Activity {
 
     updateStageSelection = (game, cursor) => {
         // Get cursor input
-        const player = cursor.player;
+        const player = cursor.player instanceof Computer ? this.cursors[0].player : cursor.player;
         const currentInput = player.inputHistory.frame[player.inputHistory.frame.length - 1];
         const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
 
