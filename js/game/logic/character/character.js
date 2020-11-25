@@ -197,6 +197,15 @@ class Character {
                                     });
                                 } else if (hitBox.status === true) {
                                     newStatus = 'EJECTED';
+                                    this.knockbacks = [];
+                                    this.frame = hitBox.stun;
+                                    this.knockbacks.push({
+                                        affection: 'self',
+                                        direction: hitBox.direction,
+                                        deplacement: hitBox.might,
+                                        nbframe: hitBox.stun,
+                                        ejection: true
+                                    });
                                 }
                             }
                         });
@@ -215,7 +224,7 @@ class Character {
                             var otherNewCollisionBox = new CollisionBox(other.collisionBox.pos.plus(new Vector2D(-1 * direction * (knockback.deplacement / knockback.nbframe), 0)), other.collisionBox.size);
                             other.collisionBox = otherNewCollisionBox;
                         } else if (knockback.affection === 'self') {
-                            var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(direction * (knockback.deplacement / knockback.nbframe), 0)), this.collisionBox.size);
+                            var newCollisionBox = new CollisionBox(this.collisionBox.pos.plus(new Vector2D(direction * (knockback.deplacement / knockback.nbframe), knockback.ejection ? -10 : 0)), this.collisionBox.size);
                             if (!newCollisionBox.isIncludedIn(game.activity.stage)) {
                                 if (newCollisionBox.pos.x < 0) {
                                     newCollisionBox.pos.x = 0;
@@ -257,6 +266,15 @@ class Character {
                             });
                         } else if (hitBox.status === true) {
                             newStatus = 'EJECTED';
+                            this.knockbacks = [];
+                            this.frame = hitBox.stun;
+                            this.knockbacks.push({
+                                affection: 'self',
+                                direction: hitBox.direction,
+                                deplacement: hitBox.might,
+                                nbframe: hitBox.stun,
+                                ejection: true
+                            });
                         }
                     }
                 });
@@ -448,7 +466,7 @@ class Character {
 
             if (this.collisionBox.pos.y + this.collisionBox.size.y >= game.activity.stage.size.y && this.AERIAL_FULL.includes(this.action)) {
                 return 'LAND';
-            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frames < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].inputs.right && !inputList[inputList.length - 2].inputs.down && inputList[inputList.length - 3].inputs.down) || (inputs.right && inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 3].inputs.down) || (inputs.right && !inputList[inputList.length - 2].inputs.right && inputList[inputList.length - 2].inputs.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
+            } else if (((inputs.a && this.direction && !inputs.down && !inputs.left && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.right && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.right && inputList[inputList.length - 2].input.right && inputList[inputList.length - 3].input.down) || (inputs.right && !inputList[inputList.length - 2].input.right && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
             } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.left && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.left && inputList[inputList.length - 2].input.left && inputList[inputList.length - 3].input.down) || (inputs.left && !inputList[inputList.length - 2].input.left && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
@@ -531,7 +549,7 @@ class Character {
             this.updateSize();
             if (!this.AERIAL_FULL.includes(this.action) && !this.LAG_ACTIONS.includes(this.action)) this.updateDirection(game);
 
-            if (!this.status || this.status === 'BLOCK') {
+            if (!this.status || this.status === 'BLOCK' || this.status === 'EJECTED') {
                 this.moveX(game);
                 this.moveY(game);
                 if (this.action) this[this.action](game);
