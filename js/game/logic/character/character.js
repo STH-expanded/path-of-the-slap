@@ -296,7 +296,7 @@ class Character {
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(0, 0)));
         };
 
-        this.BACKWARD_DASH = (game) => {};
+        this.BACKWARD_DASH = (game) => { };
 
         this.FORWARD_DASH = (game) => {
             this.frame++;
@@ -430,20 +430,20 @@ class Character {
         this.QCF = (game) => {
             this.frame++;
             if (this.frame === 13) {
-                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos, new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5));
+                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos.plus(new Vector2D(0, 16)), new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5));
             }
         };
-        this.QCB = (game) => {};
-        this.DP = (game) => {};
-        this.HCF = (game) => {};
-        this.HIT = (game) => {};
-        this.EJECTED = (game) => {};
+        this.QCB = (game) => { };
+        this.DP = (game) => { };
+        this.HCF = (game) => { };
+        this.HIT = (game) => { };
+        this.EJECTED = (game) => { };
         this.GROUND = (game) => {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x + 7, center.y), new Vector2D(0, 0)));
         };
-        this.RECOVER = (game) => {};
-        this.TECH = (game) => {};
+        this.RECOVER = (game) => { };
+        this.TECH = (game) => { };
         //------------------------------------------------------------------------------------------------------------------------------
         // INPUTS
         //------------------------------------------------------------------------------------------------------------------------------
@@ -457,7 +457,7 @@ class Character {
                 return 'GET_UP';
             }
             if (this.action === 'GET_UP') {
-                if(this.frame > 10) return 'NEUTRAL_HIGH'
+                if (this.frame > 10) return 'NEUTRAL_HIGH'
                 else return 'GET_UP'
             }
 
