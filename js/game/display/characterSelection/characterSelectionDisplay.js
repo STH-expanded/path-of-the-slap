@@ -168,7 +168,7 @@ CharacterSelectionDisplay.update = display => {
     }
 
     // Player Input
-    const p1Input = cursor1.player === 'computer' ? null : images['characterSelect' + (cursor1.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p1Input = cursor1.player instanceof Computer ? null : images['characterSelect' + (cursor1.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p1Input) {
         cx.drawImage(
             p1Input,
@@ -180,7 +180,7 @@ CharacterSelectionDisplay.update = display => {
             16
         );
     }
-    const p2Input = cursor2.player === 'computer' ? null : images['characterSelect' + (cursor2.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p2Input = cursor2.player instanceof Computer ? null : images['characterSelect' + (cursor2.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p2Input) {
         cx.drawImage(
             p2Input,
@@ -442,7 +442,7 @@ CharacterSelectionDisplay.update = display => {
 
         // Cursor
         [cursor1, cursor2].forEach((cursor, index) => {
-            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player !== 'computer' || cursor1.ready)))) {
+            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (!(cursor.player instanceof Computer) || cursor1.ready)))) {
                 const frameMax = 4;
                 const frameSpeed = display.frame / 16;
                 cx.drawImage(
@@ -458,7 +458,7 @@ CharacterSelectionDisplay.update = display => {
 
         // Bubble
         [cursor1, cursor2].forEach((cursor, index) => {
-            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (cursor.player !== 'computer' || cursor1.ready)))) {
+            if (cursor && (charSelect.mode === 'Player' || (!cursor.ready && (!(cursor.player instanceof Computer) || cursor1.ready)))) {
                 cx.drawImage(
                     images.characterSelectInfo,
                     index * 24, 0,
