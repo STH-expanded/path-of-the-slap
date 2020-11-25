@@ -168,7 +168,7 @@ CharacterSelectionDisplay.update = display => {
     }
 
     // Player Input
-    const p1Input = cursor1.player instanceof Computer ? null : images['characterSelect' + (cursor1.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p1Input = cursor1.player instanceof Computer ? null : images['characterSelect' + (Object.keys(display.game.players)[0] === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p1Input) {
         cx.drawImage(
             p1Input,
@@ -180,7 +180,7 @@ CharacterSelectionDisplay.update = display => {
             16
         );
     }
-    const p2Input = cursor2.player instanceof Computer ? null : images['characterSelect' + (cursor2.player === 'keyboard' ? 'Keyboard' : 'Gamepad')];
+    const p2Input = cursor2.player instanceof Computer ? null : images['characterSelect' + (Object.keys(display.game.players)[1]  === 'keyboard' ? 'Keyboard' : 'Gamepad')];
     if (p2Input) {
         cx.drawImage(
             p2Input,
