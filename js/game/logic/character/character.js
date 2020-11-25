@@ -384,7 +384,7 @@ class Character {
             var center = new Vector2D(this.collisionBox.pos.x + this.collisionBox.size.x / 2, this.collisionBox.pos.y + this.collisionBox.size.y / 2);
             this.hurtboxes.push(new HurtBox(new Vector2D(center.x, center.y), new Vector2D(70, 96)));
             if (this.frame > 15 && this.frame < 23) {
-                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 40, 1, true, 15, this.direction, 40));
+                this.hitboxes.push(new HitBox('storke', new Vector2D(center.x + (this.direction ? 1 : -1) * 50, center.y + 36), new Vector2D(105, 25), 0, 1, true, 15, this.direction, 0));
                 this.hurtboxes.push(new HurtBox(new Vector2D(center.x + (this.direction ? 1 : -1) * 40, center.y + 36), new Vector2D(90, 25)));
             }
         };
