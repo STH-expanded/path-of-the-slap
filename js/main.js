@@ -3,7 +3,7 @@ window.onload = () => {
     const loadElem = document.createElement("p");
     loadElem.id = "load";
     document.body.appendChild(loadElem);
-    document.body.oncontextmenu = event => event.preventDefault();
+    // document.body.oncontextmenu = event => event.preventDefault();
 
     // Load assets then listen to player input to start game
     const assets = new Assets();
@@ -33,5 +33,11 @@ window.onload = () => {
         // Add event listeners
         listenEvent(startGame);
         loadElem.innerHTML += "<br>Press any key to continue";
+        loadElem.style.animation = "3s ease-in-out infinite blink-animation";
     });
 }
+
+let debugMode = {
+    cpu: true,
+    display: true
+};
