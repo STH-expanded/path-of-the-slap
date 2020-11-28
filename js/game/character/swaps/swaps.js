@@ -29,7 +29,6 @@ class Swaps extends Sling {
         //------------------------------------------------------------------------------------------------------------------------------
 
         this.BACKWARD_DASH = game => {
-            this.frame++;
             this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-25, -103)), new Vector2D(50, 106)));
         };
 
@@ -38,8 +37,6 @@ class Swaps extends Sling {
         }
 
         this.HIGH_B = game => {
-            this.frame++;
-
             this.hurtboxes.push(new HurtBox(
                 this.collisionBox.center().plus(new Vector2D(-16, -56)),
                 new Vector2D(32, 112)

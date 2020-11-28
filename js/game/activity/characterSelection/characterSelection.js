@@ -1,6 +1,4 @@
 class CharacterSelection extends Activity {
-    display = CharacterSelectionDisplay;
-
     initInfo3Frame = 16;
     mugshotOrder = [
         [56, 36, 32, 44, 48],

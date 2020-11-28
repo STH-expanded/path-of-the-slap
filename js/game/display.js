@@ -1,23 +1,16 @@
 class Display {
-    constructor(game, assets) {
-        // Temporary or deprecated variables
-        this.frame = 0;
+    audioManager = new AudioManager();
+    canvas = document.createElement('canvas');
+    cx = this.canvas.getContext('2d');
+    width = 480;
+    height = 270;
 
-        // Game data
+    constructor(game, assets) {
         this.game = game;
         this.assets = assets;
-        this.audioManager = new AudioManager();
-
-        // Display data
-        this.canvas = document.createElement('canvas');
-        this.cx = this.canvas.getContext('2d');
-        
-        this.width = 480;
-        this.height = 270;
-
+        // Init HTML
         this.resize();
         window.addEventListener('resize', this.resize);
-
         document.body.innerHTML = "";
         document.body.appendChild(this.canvas);
     }
@@ -26,10 +19,7 @@ class Display {
     update = () => {
         this.cx.save();
         this.cx.scale(this.zoom, this.zoom);
-
-        this.game.activity.display.update(this);
-        this.frame++;
-
+        this.game.activity.constructor.display(this);
         this.cx.restore();
     }
 
@@ -50,11 +40,7 @@ class Display {
 
     // Resize canvas
     resize = () => {
-        if (innerWidth >= 1920 && innerHeight >= 1080) this.zoom = 4;
-        else if (innerWidth >= 1440 && innerHeight >= 810) this.zoom = 3;
-        else if (innerWidth >= 960 && innerHeight >= 540) this.zoom = 2;
-        else this.zoom = 1;
-
+        this.zoom = Math.max(1, Math.min(Math.floor(innerWidth / this.width), Math.floor(innerHeight / this.height)));
         this.canvas.width = this.width * this.zoom;
         this.canvas.height = this.height * this.zoom;
         this.cx.imageSmoothingEnabled = false;

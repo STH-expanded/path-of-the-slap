@@ -277,17 +277,17 @@ class Character {
                 return 'QCF';
             } else if (((inputs.a && !this.direction && !inputs.down && !inputs.right && inputList.length > 2 && inputList[inputList.length - 2].frameCount < 8 && this.GROUND_ACTIONS.includes(this.action) && !this.DASH_ACTIONS.includes(this.action) && ((inputList[inputList.length - 2].input.left && !inputList[inputList.length - 2].input.down && inputList[inputList.length - 3].input.down) || (inputs.left && inputList[inputList.length - 2].input.left && inputList[inputList.length - 3].input.down) || (inputs.left && !inputList[inputList.length - 2].input.left && inputList[inputList.length - 2].input.down))) || this.action === 'QCF') && this.frame < this.qcfFrame) {
                 return 'QCF';
-            } else if (((inputs.a && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_A') && this.frame < this.highAFrame) {
+            } else if (this.action !== 'HIGH_A' && inputs.a && this.HIGH_ACTIONS.includes(this.action) || this.action === 'HIGH_A' && this.frame < this.highAFrame) {
                 return 'HIGH_A';
-            } else if (((inputs.b && this.HIGH_ACTIONS.includes(this.action)) || this.action === 'HIGH_B') && this.frame < this.highBFrame) {
+            } else if (this.action !== 'HIGH_B' && inputs.b && this.HIGH_ACTIONS.includes(this.action) || this.action === 'HIGH_B' && this.frame < this.highBFrame) {
                 return 'HIGH_B';
-            } else if (((inputs.a && this.LOW_ACTIONS.includes(this.action)) || this.action === 'LOW_A') && this.frame < this.lowAFrame) {
+            } else if (this.action !== 'LOW_A' && inputs.a && this.LOW_ACTIONS.includes(this.action) || this.action === 'LOW_A' && this.frame < this.lowAFrame) {
                 return 'LOW_A';
-            } else if (((inputs.b && this.LOW_ACTIONS.includes(this.action)) || this.action === 'LOW_B') && this.frame < this.lowBFrame) {
+            } else if (this.action !== 'LOW_B' && inputs.b && this.LOW_ACTIONS.includes(this.action) || this.action === 'LOW_B' && this.frame < this.lowBFrame) {
                 return 'LOW_B';
-            } else if (((inputs.a && this.AERIAL_ACTIONS.includes(this.action)) || this.action === 'AERIAL_A') && this.frame < this.aerialAFrame) {
+            } else if (this.action !== 'AERIAL_A' && inputs.a && this.AERIAL_ACTIONS.includes(this.action) || this.action === 'AERIAL_A' && this.frame < this.aerialAFrame) {
                 return 'AERIAL_A';
-            } else if (((inputs.b && this.AERIAL_ACTIONS.includes(this.action)) || this.action === 'AERIAL_B') && this.frame < this.aerialBFrame) {
+            } else if (this.action !== 'AERIAL_B' && inputs.b && this.AERIAL_ACTIONS.includes(this.action) || this.action === 'AERIAL_B' && this.frame < this.aerialBFrame) {
                 return 'AERIAL_B';
             } else if ((inputs.up && this.GROUND_ACTIONS.includes(this.action)) || this.AERIAL_ATTACKS.includes(this.action)) {
                 if ((inputs.left && !this.direction) || (inputs.right && this.direction) || (this.AERIAL_ATTACKS.includes(this.action) && this.lastAction === 'FORWARD_AERIAL')) {
@@ -359,7 +359,8 @@ class Character {
             if (!this.status || this.status === 'BLOCK' || this.status === 'EJECTED') {
                 this.moveX(game);
                 this.moveY(game);
-                if (this.action) this[this.action](game);
+                this.frame++;
+                this[this.action](game);
             } else {
                 this[this.status](game);
             }

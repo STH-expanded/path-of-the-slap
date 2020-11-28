@@ -3,8 +3,6 @@ window.onload = () => {
     const loadElem = document.createElement("p");
     loadElem.id = "load";
     document.body.appendChild(loadElem);
-    // document.body.oncontextmenu = event => event.preventDefault();
-
     // Load assets then listen to player input to start game
     const assets = new Assets();
     assets.load().then(() => {
@@ -12,12 +10,10 @@ window.onload = () => {
         const startGame = event => {
             // Remove event listeners
             listenEvent(event => event.preventDefault);
-    
             // Initialize game
             const game = new Game();
             const display = new Display(game, assets);
             const inputManager = new InputManager();
-
             // Game loop
             const animationFrame = () => {
                 // Update players input
@@ -25,7 +21,7 @@ window.onload = () => {
                 // Update game logic
                 game.update(inputManager.inputList);
                 // Update game display
-                display.update();            
+                display.update();
                 requestAnimationFrame(animationFrame);
             }
             requestAnimationFrame(animationFrame);

@@ -1,9 +1,8 @@
 class Fight extends Activity {
-	display = FightDisplay;
-	
 	pauseMenu = null;
 	isOver = false;
 
+	roundDuration = 5400;
 	winCount = [0, 0];
 	playoff = 2;
 
@@ -41,7 +40,7 @@ class Fight extends Activity {
 		this.projectiles = [];
 
 		// Init timer
-		this.timer = 5400;
+		this.timer = this.roundDuration;
 	}
 	
 	update = game => {

@@ -1,0 +1,1 @@
+Fight.drawCharacter01 = (display, player) => {}

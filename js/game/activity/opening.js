@@ -1,5 +1,12 @@
-class OpeningDisplay extends ActivityDisplay {}
-OpeningDisplay.update = display => {
+class Opening extends Activity {
+    constructor(initAnimInitFrame, endAnimEndFrame) {
+        super(initAnimInitFrame, endAnimEndFrame);
+    }
+
+    update = game => this.nextActivity = new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4);
+}
+
+Opening.display = display => {
     const cx = display.cx;
     const opening = display.game.activity;
 
