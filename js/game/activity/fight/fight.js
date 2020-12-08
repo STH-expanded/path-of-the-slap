@@ -6,14 +6,14 @@ class Fight extends Activity {
 	winCount = [0, 0];
 	playoff = 2;
 
-	constructor(initAnimInitFrame, endAnimEndFrame, players, selectedStage, trainingMode) {
+	constructor(initAnimInitFrame, endAnimEndFrame, players, stage, trainingMode) {
 		super(initAnimInitFrame, endAnimEndFrame);
-		this.selectedStage = selectedStage;
+		this.stage = stage;
 		this.trainingMode = trainingMode;
 		this.players = players;
 
 		// Init stage
-		this.stage = new(selectedStage)();
+		this.stage = new(stage)();
 
 		// Init round
 		this.initRound();
@@ -29,15 +29,12 @@ class Fight extends Activity {
 		
 		// Init characters
 		this.players.forEach((player, index) => {
-			player.inputHistory = {
-				frame: [],
-				state: []
-			}
-			player.character = new(player.selectedCharacter)("NEUTRAL_HIGH", index % 2 === 0, Math.floor((this.stage.size.x / 3) * (1 + index)));
+			player.resetInput();
+			player.character = new Character(characterData, "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
 		});
 
-		// Init projectiles
-		this.projectiles = [];
+		// Init actors
+		this.actors = [];
 
 		// Init timer
 		this.timer = this.roundDuration;
@@ -58,17 +55,17 @@ class Fight extends Activity {
 		// Update players
 		this.players.forEach(player => {
 			// Update characters
-			player.character.update(game, player.inputHistory);
+			player.character.update(game, player.inputList);
 			// Check pause menu
 			if (player !== game.computer) {
-				const currentInput = player.inputHistory.frame.length > 0 ? player.inputHistory.frame[player.inputHistory.frame.length - 1] : {};
-				const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
+				const currentInput = player.inputList.frame.length > 0 ? player.inputList.frame[player.inputList.frame.length - 1] : {};
+				const lastInput = player.inputList.frame.length > 1 ? player.inputList.frame[player.inputList.frame.length - 2] : {};
 				this.pauseMenu = currentInput.start && !lastInput.start ? new PauseMenu(0, 0, ["Resume", "Rematch", "CharacterSelection", "MainMenu"], 2, this) : this.pauseMenu;	
 			}
 		});
-		// Update projectiles
-		this.projectiles = this.projectiles.filter(projectile => projectile.active);
-		this.projectiles.forEach(projectile => projectile.update(game));
+		// Update actors
+		this.actors = this.actors.filter(actor => actor.action !== "BREAK");
+		this.actors.forEach(actor => actor.update(game));
 		// Check win conditions
 		if (!this.trainingMode) {
 			const p1Health = this.players[0].character.health;

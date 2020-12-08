@@ -8,7 +8,7 @@ Fight.display = display => {
     // Viewport
     const view = { xOffset: (char1.collisionBox.center().x + char2.collisionBox.center().x) / 2 - display.width / 2, yOffset: 0, w: display.width, h: display.height };
     if (view.xOffset < 0) view.xOffset = 0;
-    if (view.xOffset > fight.stage.size.x - display.width) view.xOffset = fight.stage.size.x - display.width;
+    if (view.xOffset > fight.stage.collisionBox.size.x - display.width) view.xOffset = fight.stage.collisionBox.size.x - display.width;
     cx.translate(-view.xOffset, 0);
 
     // Background
@@ -22,16 +22,45 @@ Fight.display = display => {
     // Characters
     [char1, char2].forEach(character => {
         if (debugMode.display) Fight.debugActor(display, character);
-        Fight["drawCharacter" + character.constructor.id](display, character);
+        const animation = character.actions[character.action].animation;
+        if (animation) {
+            const image = display.assets.images["CHARACTER_" + character.id + "_" + (animation.altImg && animation.altImg.condition(display.game, character) ? animation.altImg.action : character.action)];
+            if (image) {
+                cx.save();
+                if (!character.direction) display.flipHorizontally(character.collisionBox.center().x);
+                cx.drawImage(
+                    image,
+                    animation.size.x * (Math.floor(character.actionIndex * animation.speed) % animation.frameCount), 0,
+                    animation.size.x, animation.size.y,
+                    character.collisionBox.pos.x + animation.offset.x,
+                    character.collisionBox.pos.y + animation.offset.y,
+                    animation.size.x, animation.size.y
+                );
+                cx.restore();
+            }
+        }
     });
     
-    // Projectiles
-    fight.projectiles.forEach(projectile => {
-        if (debugMode.display) Fight.debugActor(display, projectile);
-        cx.save();
-        if (!projectile.direction) display.flipHorizontally(projectile.collisionBox.center().x);
-        cx.drawImage(display.assets.images.projectile1, 0, 0, 128, 64, projectile.collisionBox.center().x - 64, projectile.collisionBox.center().y - 32, 128, 64);
-        cx.restore();
+    // Actors
+    fight.actors.forEach(actor => {
+        if (debugMode.display) Fight.debugActor(display, actor);
+        const animation = actor.actions[actor.action].animation;
+        if (animation) {
+            const image = display.assets.images["ACTOR_00_" + actor.action];
+            if (image) {
+                cx.save();
+                if (!actor.direction) display.flipHorizontally(actor.collisionBox.center().x);
+                cx.drawImage(
+                    image,
+                    animation.size.x * (Math.floor(actor.actionIndex * animation.speed) % animation.frameCount), 0,
+                    animation.size.x, animation.size.y,
+                    actor.collisionBox.pos.x + animation.offset.x,
+                    actor.collisionBox.pos.y + animation.offset.y,
+                    animation.size.x, animation.size.y
+                );
+                cx.restore();
+            }
+        }
     });
 
     cx.translate(view.xOffset, 0);
@@ -44,6 +73,8 @@ Fight.debugActor = (display, actor) => {
     const cx = display.cx;
     cx.lineWidth = 4 / display.zoom;
     cx.strokeStyle = '#00f';
+    cx.fillStyle = '#00f2';
+    cx.fillRect(actor.collisionBox.pos.x, actor.collisionBox.pos.y, actor.collisionBox.size.x, actor.collisionBox.size.y);
     cx.strokeRect(actor.collisionBox.pos.x, actor.collisionBox.pos.y, actor.collisionBox.size.x, actor.collisionBox.size.y);
     cx.lineWidth = 2 / display.zoom;
     cx.strokeStyle = '#0f0';
@@ -58,11 +89,13 @@ Fight.debugActor = (display, actor) => {
         cx.fillRect(hitbox.pos.x, hitbox.pos.y, hitbox.size.x, hitbox.size.y);
         cx.strokeRect(hitbox.pos.x, hitbox.pos.y, hitbox.size.x, hitbox.size.y);
     });
+    cx.lineWidth = 4 / display.zoom;
     cx.textAlign = 'center';
     cx.fillStyle = '#fff';
-    cx.font = 10 + 'px serif';
-    cx.fillText('action: ' + actor.action, actor.collisionBox.center().x, actor.collisionBox.pos.y - 6);
-    if (actor.status) cx.fillText('status: ' + actor.status, actor.collisionBox.center().x, actor.collisionBox.pos.y - 16);
+    cx.strokeStyle = '#000';
+    cx.font = 12 + 'px serif';
+    cx.strokeText(actor.action, actor.collisionBox.center().x, actor.collisionBox.pos.y - 6);
+    cx.fillText(actor.action, actor.collisionBox.center().x, actor.collisionBox.pos.y - 6);
 }
 
 Fight.perspectiveLayer = (display, fight, view) => {
@@ -72,7 +105,7 @@ Fight.perspectiveLayer = (display, fight, view) => {
 
     // Background layer 0
     if (images['s' + stage.id + 'l0']) {
-        cx.drawImage(images['s' + stage.id + 'l0'], -view.xOffset, 0, stage.size.x, stage.size.y + 16, 0, 0, stage.size.x, stage.size.y + 16);
+        cx.drawImage(images['s' + stage.id + 'l0'], -view.xOffset, 0, stage.collisionBox.size.x, stage.collisionBox.size.y + 16, 0, 0, stage.collisionBox.size.x, stage.collisionBox.size.y + 16);
     }
 
     // Background floor
@@ -110,7 +143,7 @@ Fight.perspectiveLayer = (display, fight, view) => {
 
     // Background layer 1
     if (images['s' + stage.id + 'l1']) {
-        cx.drawImage(images['s' + stage.id + 'l1'], -view.xOffset / 2, 0, stage.size.x, stage.size.y + 16, 0, 0, stage.size.x, stage.size.y + 16);
+        cx.drawImage(images['s' + stage.id + 'l1'], -view.xOffset / 2, 0, stage.collisionBox.size.x, stage.collisionBox.size.y + 16, 0, 0, stage.collisionBox.size.x, stage.collisionBox.size.y + 16);
     }
 }
 
@@ -140,7 +173,7 @@ Fight.GUI = display => {
     cx.fillStyle = '#0080ff';
     cx.fillRect(66 + (156 - (156 * (player1.character.health / player1.character.maxHealth))), 10, 156 * (player1.character.health / player1.character.maxHealth), 12);
     const imgci1 = images['ci' + player1.selectedCharacter.id];
-    cx.drawImage(imgci1, 64, 24, imgci1.naturalWidth, 16);
+    cx.drawImage(imgci1, 64, 24, imgci1.naturalWidth, 18);
     if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[0] ? "winScore" : "scoreImg"], 208 - 16 * i, 24, 16, 16);
 
     //P2
@@ -150,7 +183,7 @@ Fight.GUI = display => {
     cx.fillStyle = '#0080ff';
     cx.fillRect(258, 10, 156 * (player2.character.health / player2.character.maxHealth), 12);
     const imgci2 = images['ci' + player2.selectedCharacter.id];
-    cx.drawImage(imgci2, 416 - imgci2.naturalWidth, 24, imgci2.naturalWidth, 16);
+    cx.drawImage(imgci2, 416 - imgci2.naturalWidth, 24, imgci2.naturalWidth, 18);
     if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[1] ? "winScore" : "scoreImg"], 256 + 16 * i, 24, 16, 16);
 
     // Training or Fight Animation Display
@@ -170,9 +203,9 @@ Fight.trainingGUI = display => {
     const player = display.game.activity.players[0];
 
     cx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    cx.fillRect(0, 64, 76, 4 + player.inputHistory.state.length * 12);
+    cx.fillRect(0, 64, 76, 4 + player.inputList.state.length * 12);
 
-    player.inputHistory.state.forEach((inputObject, index) => {
+    player.inputList.state.forEach((inputObject, index) => {
         let arrow = [1, 1];
         if (inputObject.input.right && inputObject.input.up) arrow = [2, 0];
         else if (inputObject.input.right && inputObject.input.down) arrow = [2, 2];

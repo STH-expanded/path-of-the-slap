@@ -1,23 +1,56 @@
 class Player {
-    inputHistory = {
-        frame: [],
-        state: []
-    }
-    
-    selectedCharacter = null;
     character = null;
+    selectedCharacter = null;
 
-    updateInput = input => {
+    constructor() {
+        this.resetInput();
+    }
+
+    resetInput = () => {
+        this.inputList = {
+            frame: new Array(8).fill({}),
+            state: new Array(8).fill({
+                input: {},
+                frameCount: 1
+            })
+        }
+    }
+
+    formatInput = rawKeys => {
+        // Arcade stick format
+        // -------------
+        // | 7 | 8 | 9 |
+        // -------------
+        // | 4 | 5 | 6 |
+        // -------------
+        // | 1 | 2 | 3 |
+        // -------------
+        let stick = 5;
+        if (rawKeys.left) stick--;
+        if (rawKeys.right) stick++;
+        if (rawKeys.up) stick += 3;
+        if (rawKeys.down && !rawKeys.up) stick -= 3;
+        return {
+            stick: stick,
+            a: rawKeys.a,
+            b: rawKeys.b,
+            start: rawKeys.start
+        }
+    }
+
+    updateInput = rawKeys => {
+        const input = this.formatInput({
+            ...rawKeys
+        });
         // New frame input
-        if (this.inputHistory.frame.length === 10) this.inputHistory.frame.splice(0, 1);
-        this.inputHistory.frame.push(input);
+        this.inputList.frame.pop();
+        this.inputList.frame.unshift(input);
         // Increment frame count if same state input as last frame
-        if (this.inputHistory.state.length > 0 && JSON.stringify(input) === JSON.stringify(this.inputHistory.state[this.inputHistory.state.length - 1].input)) {
-            this.inputHistory.state[this.inputHistory.state.length - 1].frameCount++;
-        } else {
+        if (this.inputList.state.length > 0 && JSON.stringify(input) === JSON.stringify(this.inputList.state[0].input)) this.inputList.state[0].frameCount++;
+        else {
             // New state input
-            if (this.inputHistory.state.length === 10) this.inputHistory.state.splice(0, 1);
-            this.inputHistory.state.push({
+            this.inputList.state.pop();
+            this.inputList.state.unshift({
                 input: input,
                 frameCount: 1
             });

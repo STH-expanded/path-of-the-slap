@@ -23,7 +23,7 @@ class InputManager {
     update = () => {
         // Update gamepads input
         Array.from(navigator.getGamepads()).filter(gamepad => gamepad).forEach(gamepad => {
-            this.inputList[gamepad.id] = this.socdClean({
+            this.inputList[gamepad.id] = {
                 left: gamepad.axes[0] < -0.5,
                 up: gamepad.axes[1] < -0.5,
                 right: gamepad.axes[0] > 0.5,
@@ -31,22 +31,11 @@ class InputManager {
                 a: gamepad.buttons[1].value,
                 b: gamepad.buttons[0].value,
                 start: gamepad.buttons[2].value,
-            });
+            }
         });
         // Update keyboard input
-        if (this.keyboardListener) this.inputList['keyboard'] = this.socdClean(this.keyboardListener.keys);
+        if (this.keyboardListener) this.inputList['keyboard'] = this.keyboardListener.keys;
     }
-
-    // Simultaneous Opposite Cardinal Directions
-    socdClean = input => ({
-        left: input.left && !input.right,
-        up: input.up && !input.down,
-        right: input.right && !input.left,
-        down: input.down && !input.up,
-        a: input.a,
-        b: input.b,
-        start: input.start
-    });
 
     listenKeyboard = () => {
         console.log('Keyboard connected');

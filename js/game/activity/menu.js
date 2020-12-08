@@ -9,12 +9,11 @@ class AbstractMenu extends Activity {
 
     update = game => {
         Object.values(game.players).forEach(player => {
-            const currentInput = player.inputHistory.frame[player.inputHistory.frame.length - 1];
-            const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
-            if (currentInput.a && !lastInput.a) this.nextActivity = this.optionHandler(game);
+            if (player.inputList.frame[0].a && !player.inputList.frame[1].a) this.nextActivity = this.optionHandler(game);
             else {
-                if (currentInput.up && !lastInput.up) this.cursor = (((this.cursor - 1) % this.options.length) + this.options.length) % this.options.length;
-                if (currentInput.down && !lastInput.down) this.cursor = (this.cursor + 1) % this.options.length;
+                if (player.inputList.frame[0].stick > 6 &&
+                    player.inputList.frame[1].stick < 7) this.cursor = (((this.cursor - 1) % this.options.length) + this.options.length) % this.options.length;
+                if (player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) this.cursor = (this.cursor + 1) % this.options.length;
             }
         });
     }
@@ -72,13 +71,12 @@ class PauseMenu extends AbstractMenu {
 
     update = game => {
         this.fight.players.forEach(player => {
-            const currentInput = player.inputHistory.frame.length > 0 ? player.inputHistory.frame[player.inputHistory.frame.length - 1] : {};
-            const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
-            if (currentInput.a && !lastInput.a) this.nextActivity = this.optionHandler(game);
-            else if (currentInput.start && !lastInput.start) this.fight.pauseMenu = null;
+            if (player.inputList.frame[0].a && !player.inputList.frame[1].a) this.nextActivity = this.optionHandler(game);
+            else if (player.inputList.frame[0].start && !player.inputList.frame[1].start) this.fight.pauseMenu = null;
             else {
-                if (currentInput.up && !lastInput.up) this.cursor = (((this.cursor - 1) % this.options.length) + this.options.length) % this.options.length;
-                if (currentInput.down && !lastInput.down) this.cursor = (this.cursor + 1) % this.options.length;
+                if (player.inputList.frame[0].stick > 6 &&
+                    player.inputList.frame[1].stick < 7) this.cursor = (((this.cursor - 1) % this.options.length) + this.options.length) % this.options.length;
+                if (player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) this.cursor = (this.cursor + 1) % this.options.length;
             }
         });
     }

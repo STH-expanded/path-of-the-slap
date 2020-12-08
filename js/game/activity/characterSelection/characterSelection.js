@@ -41,14 +41,10 @@ class CharacterSelection extends Activity {
     selectCharacter = pos => this.characters[pos.x + pos.y * 3] ? this.characters[pos.x + pos.y * 3] : null;
 
     updateStageSelection = cursor => {
-        // Get cursor input
         const player = cursor.player;
-        const currentInput = player.inputHistory.frame[player.inputHistory.frame.length - 1];
-        const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
-
         // If validate : stage is ready
-        if (currentInput.a && !lastInput.a) this.stageReady = true;
-        else if (currentInput.b && !lastInput.b && !this.stageReady) {
+        if (player.inputList.frame[0].a && !player.inputList.frame[1].a) this.stageReady = true;
+        else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !this.stageReady) {
             // If cancel and stage is not ready : reset cursors & return to character selection
             this.cursors.forEach((cursor, index) => {
                 cursor.ready = false;
@@ -60,8 +56,8 @@ class CharacterSelection extends Activity {
             this.stageFrame = this.stageInitFrame;
         } else {
             // Else if input directions
-            [{ input: "up", val: -1}, { input: "down", val: 1}].forEach(({input, val}) => {
-                if (currentInput[input] && !lastInput[input] && !this.stageReady) {
+            [{ stick: 8, fixStick: [7, 8, 9], val: -1}, { stick: 2, fixStick: [1, 2, 3], val: 1}].forEach(({stick, fixStick, val}) => {
+                if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !this.stageReady) {
                     this.stageCursor = (((this.stageCursor + val) % this.stages.length) + this.stages.length) % this.stages.length;
                     this.selectStageFrame = val * this.selectStageInitFrame;
                 }
@@ -70,13 +66,9 @@ class CharacterSelection extends Activity {
     }
 
     updateCharacterSelection = cursor => {
-        // Get cursor input
         const player = cursor.player instanceof Computer ? this.cursors[0].player : cursor.player;
-        const currentInput = player.inputHistory.frame[player.inputHistory.frame.length - 1];
-        const lastInput = player.inputHistory.frame.length > 1 ? player.inputHistory.frame[player.inputHistory.frame.length - 2] : {};
-
         // If validate cursor position
-        if (currentInput.a && !lastInput.a && !cursor.ready &&
+        if (player.inputList.frame[0].a && !player.inputList.frame[1].a && !cursor.ready &&
             (this.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
             // If random pick random character
             if (new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2))) {
@@ -90,7 +82,7 @@ class CharacterSelection extends Activity {
             // Cursor is now ready
             cursor.ready = true;
             cursor.infoFrame = this.cursorInfoInitFrame;
-        } else if (currentInput.b && !lastInput.b) {
+        } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
             // Else if cancel last action
             if (cursor.player instanceof Computer) {
                 // If cancel while choosing computer character : undo player 1 choice
@@ -106,9 +98,9 @@ class CharacterSelection extends Activity {
             }
         } else if (!cursor.ready) {
             // Else if input directions
-            [{ input: "up", axis: "y", val: -1}, { input: "down", axis: "y", val: 1},
-            { input: "left", axis: "x", val: -1}, { input: "right", axis: "x", val: 1}].forEach(({input, axis, val}) => {
-                if (currentInput[input] && !lastInput[input]) {
+            [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1}, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1},
+            { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1}, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1}].forEach(({stick, fixStick, axis, val}) => {
+                if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) {
                     cursor.pos[axis] = (((cursor.pos[axis] + val) % this.size[axis]) + this.size[axis]) % this.size[axis];
                     cursor.profileFrame = this.cursorProfileInitFrame;
                 }

@@ -3,7 +3,18 @@ class Opening extends Activity {
         super(initAnimInitFrame, endAnimEndFrame);
     }
 
-    update = game => this.nextActivity = new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4);
+    update = game => {
+        // Debug mode
+        if (debugMode.fight) {
+            game.players["keyboard"].selectedCharacter = Sling;
+            game.computer.selectedCharacter = Sling;
+            this.nextActivity = new Fight(60, 60,
+                [game.players["keyboard"], game.computer],
+                Game.TRAINING_STAGE,
+                false
+            );
+        } else this.nextActivity = new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4);
+    }
 }
 
 Opening.display = display => {

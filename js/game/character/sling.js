@@ -1,6 +1,6 @@
 class Sling extends Character {
-    constructor(action, direction, position) {
-        super(action, direction, position);
+    constructor(data, action, direction, position) {
+        super(data, action, direction, position);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // DATA
@@ -161,7 +161,7 @@ class Sling extends Character {
 
         this.QCF = game => {
             if (this.frame === 13) {
-                game.activity.projectiles.push(new Projectile(new CollisionBox(this.collisionBox.pos.plus(new Vector2D(this.collisionBox.size.x / 2, 16)), new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5, false, 5));
+                game.activity.actors.push(new Projectile(new CollisionBox(this.collisionBox.pos.plus(new Vector2D(this.collisionBox.size.x / 2, 16)), new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5, false, 5));
             }
         };
         this.QCB = game => { };

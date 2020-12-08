@@ -33,7 +33,9 @@ window.onload = () => {
     });
 }
 
+const urlParams = new URLSearchParams(window.location.search);
 let debugMode = {
-    cpu: true,
-    display: true
+    fight: urlParams.get('fight'),
+    cpu: urlParams.get('cpu'),
+    display: urlParams.get('display')
 };
