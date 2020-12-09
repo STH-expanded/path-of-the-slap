@@ -78,13 +78,18 @@ class Actor {
             if (actionData[actionElement]) {
                 const elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
                 elements.forEach(element => {
-                        const size = new Vector2D(element.size.x, element.size.y);
-                        const pos = new Vector2D(
-                            this.collisionBox.pos.x + (this.direction ? element.offset.x : this.collisionBox.size.x - element.offset.x - size.x),
-                            this.collisionBox.pos.y + element.offset.y
-                        );
-                        if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
-                        else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
+                    const size = new Vector2D(element.size.x, element.size.y);
+                    const pos = new Vector2D(
+                        this.collisionBox.pos.x + (this.direction ? element.offset.x : this.collisionBox.size.x - element.offset.x - size.x),
+                        this.collisionBox.pos.y + element.offset.y
+                    );
+                    if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
+                    else {
+                        this.hitboxes.push(new HitBox(pos, size, element.damage,
+                            element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
+                            new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y), null
+                        ));
+                    }
                 });
             }
         });
