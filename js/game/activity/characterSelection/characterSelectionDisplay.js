@@ -11,28 +11,28 @@ CharacterSelection.display = display => {
 
     const cursor1 = charSelect.cursors[0];
     const cursor2 = charSelect.cursors[1];
-    let Character1 = charSelect.selectCharacter(cursor1.pos);
-    let Character2 = charSelect.selectCharacter(cursor2.pos);
+    let char1 = charSelect.selectCharacter(cursor1.pos);
+    let char2 = charSelect.selectCharacter(cursor2.pos);
 
     // if random pick
     if (cursor1.pos.x === 1 && cursor1.pos.y === 2) {
         let randPos;
         do randPos = new Vector2D(Math.round(Math.random() * 2), Math.round(Math.random() * 4));
         while (!charSelect.selectCharacter(randPos));
-        Character1 = charSelect.selectCharacter(randPos);
+        char1 = charSelect.selectCharacter(randPos);
     }
     if (cursor2.pos.x === 1 && cursor2.pos.y === 2) {
         let randPos;
         do randPos = new Vector2D(Math.round(Math.random() * 2), Math.round(Math.random() * 4));
         while (!charSelect.selectCharacter(randPos));
-        Character2 = charSelect.selectCharacter(randPos);
+        char2 = charSelect.selectCharacter(randPos);
     }
 
     // Character Profiles
-    if (Character1) {
+    if (char1) {
         if (cursor1.ready) {
-            cx.drawImage(images['cp' + Character1.id + 'activeShadow'], 0, 0, 202, 270, (-8 + cursor1.profileFrame), (8 - cursor1.profileFrame), (194 + cursor1.profileFrame), (278 - cursor1.profileFrame));
-            cx.drawImage(images['cp' + Character1.id + 'active'], 0, 0, 202, 270, (0 - cursor1.profileFrame ** 2 / 2), (0 - cursor1.profileFrame ** 2 / 2), (202 + cursor1.profileFrame ** 2), (270 + cursor1.profileFrame ** 2));
+            cx.drawImage(images['CHARACTER_' + char1.id + '_ACTIVE_PROFILE_SHADOW'], 0, 0, 202, 270, (-8 + cursor1.profileFrame), (8 - cursor1.profileFrame), (194 + cursor1.profileFrame), (278 - cursor1.profileFrame));
+            cx.drawImage(images['CHARACTER_' + char1.id + '_ACTIVE_PROFILE'], 0, 0, 202, 270, (0 - cursor1.profileFrame ** 2 / 2), (0 - cursor1.profileFrame ** 2 / 2), (202 + cursor1.profileFrame ** 2), (270 + cursor1.profileFrame ** 2));
             if (cursor1.infoFrame) {
                 cx.globalAlpha = cursor1.infoFrame / charSelect.cursorInfoInitFrame;
                 cx.fillStyle = "#fff";
@@ -40,14 +40,14 @@ CharacterSelection.display = display => {
                 cx.globalAlpha = 1;
             }
         } else {
-            cx.drawImage(images['cp' + Character1.id + 'shadow'], 0, 0, 202, 270, (-8 + cursor1.profileFrame), (8 - cursor1.profileFrame), (194 + cursor1.profileFrame), (278 - cursor1.profileFrame));
-            cx.drawImage(images['cp' + Character1.id], 0, 0, 202, 270, (0 - cursor1.profileFrame ** 2 / 2), (0 - cursor1.profileFrame ** 2 / 2), (202 + cursor1.profileFrame ** 2), (270 + cursor1.profileFrame ** 2));
+            cx.drawImage(images['CHARACTER_' + char1.id + '_PROFILE_SHADOW'], 0, 0, 202, 270, (-8 + cursor1.profileFrame), (8 - cursor1.profileFrame), (194 + cursor1.profileFrame), (278 - cursor1.profileFrame));
+            cx.drawImage(images['CHARACTER_' + char1.id + '_PROFILE'], 0, 0, 202, 270, (0 - cursor1.profileFrame ** 2 / 2), (0 - cursor1.profileFrame ** 2 / 2), (202 + cursor1.profileFrame ** 2), (270 + cursor1.profileFrame ** 2));
         }
     }
-    if (Character2) {
+    if (char2) {
         if (cursor2.ready) {
-            cx.drawImage(images['cp' + Character2.id + 'activeShadow'], 0, 0, 202, 270, (270 + cursor2.profileFrame), (8 - cursor2.profileFrame), (194 + cursor2.profileFrame), (278 - cursor2.profileFrame));
-            cx.drawImage(images['cp' + Character2.id + 'active'], 0, 0, 202, 270, (278 - cursor2.profileFrame ** 2 / 2), (0 - cursor2.profileFrame ** 2 / 2), (202 + cursor2.profileFrame ** 2), (270 + cursor2.profileFrame ** 2));
+            cx.drawImage(images['CHARACTER_' + char2.id + '_ACTIVE_PROFILE_SHADOW'], 0, 0, 202, 270, (270 + cursor2.profileFrame), (8 - cursor2.profileFrame), (194 + cursor2.profileFrame), (278 - cursor2.profileFrame));
+            cx.drawImage(images['CHARACTER_' + char2.id + '_ACTIVE_PROFILE'], 0, 0, 202, 270, (278 - cursor2.profileFrame ** 2 / 2), (0 - cursor2.profileFrame ** 2 / 2), (202 + cursor2.profileFrame ** 2), (270 + cursor2.profileFrame ** 2));
             if (cursor2.infoFrame) {
                 cx.globalAlpha = cursor2.infoFrame / charSelect.cursorInfoInitFrame;
                 cx.fillStyle = "#fff";
@@ -55,8 +55,8 @@ CharacterSelection.display = display => {
                 cx.globalAlpha = 1;
             }
         } else {
-            cx.drawImage(images['cp' + Character2.id + 'shadow'], 0, 0, 202, 270, (270 + cursor2.profileFrame), (8 - cursor2.profileFrame), (194 + cursor2.profileFrame), (278 - cursor2.profileFrame));
-            cx.drawImage(images['cp' + Character2.id], 0, 0, 202, 270, (278 - cursor2.profileFrame ** 2 / 2), (0 - cursor2.profileFrame ** 2 / 2), (202 + cursor2.profileFrame ** 2), (270 + cursor2.profileFrame ** 2));
+            cx.drawImage(images['CHARACTER_' + char2.id + '_PROFILE_SHADOW'], 0, 0, 202, 270, (270 + cursor2.profileFrame), (8 - cursor2.profileFrame), (194 + cursor2.profileFrame), (278 - cursor2.profileFrame));
+            cx.drawImage(images['CHARACTER_' + char2.id + '_PROFILE'], 0, 0, 202, 270, (278 - cursor2.profileFrame ** 2 / 2), (0 - cursor2.profileFrame ** 2 / 2), (202 + cursor2.profileFrame ** 2), (270 + cursor2.profileFrame ** 2));
         }
     }
 
@@ -71,8 +71,8 @@ CharacterSelection.display = display => {
         cx.drawImage(images.characterSelect, 0, 0, 480, 270, 0, 0, 480, 270);
 
         // Character Names
-        if (Character1) cx.drawImage(images['cn' + Character1.id], 0, 0, 62, 136, (0 + cursor1.profileFrame ** 2 * 1), (0 - cursor1.profileFrame ** 2 * 4), 62, 136);
-        if (Character2) cx.drawImage(images['cn' + Character2.id], 0, 0, 62, 136, (419 + cursor2.profileFrame ** 2 * 1), (134 - cursor2.profileFrame ** 2 * 4), 62, 136);
+        if (char1) cx.drawImage(images['CHARACTER_' + char1.id + "_SKEWED_NAME"], 0, 0, 62, 136, (0 + cursor1.profileFrame ** 2 * 1), (0 - cursor1.profileFrame ** 2 * 4), 62, 136);
+        if (char2) cx.drawImage(images['CHARACTER_' + char2.id + "_SKEWED_NAME"], 0, 0, 62, 136, (419 + cursor2.profileFrame ** 2 * 1), (134 - cursor2.profileFrame ** 2 * 4), 62, 136);
 
         // Background transition
         const width = charSelect.initAnimFrame / 20 > 1 ? 1 : charSelect.initAnimFrame / 20;
@@ -85,8 +85,8 @@ CharacterSelection.display = display => {
             for (let y = 0; y < charSelect.size.y; y++) {
                 if (charSelect.mugshotOrder[x][y] >= charSelect.initAnimFrame) {
                     cx.drawImage(images.whiteMugshot, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
-                    const Character = charSelect.selectCharacter(new Vector2D(x, y));
-                    if (Character) cx.drawImage(charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? images.whiteMugshot : images['cm' + Character.id], 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
+                    const char = charSelect.selectCharacter(new Vector2D(x, y));
+                    if (char) cx.drawImage(charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame < 5 ? images.whiteMugshot : images['CHARACTER_' + char.id + "_MUGSHOT"], 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
                     else if (x === 1 && y === 2 && charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) {
                         cx.drawImage(images.random2Img, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 + Math.sin(charSelect.animationFrame * 0.05) * 2, 52, 52);
                         cx.drawImage(images.randomImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 - Math.sin(charSelect.animationFrame * 0.05), 52, 52);
@@ -100,8 +100,8 @@ CharacterSelection.display = display => {
         cx.drawImage(images.characterSelect, 0, 0, 480, 270, 0, 0, 480, 270);
 
         // Character Names
-        if (Character1) cx.drawImage(images['cn' + Character1.id], 0, 0, 62, 136, (0 + cursor1.profileFrame ** 2 * 1), (0 - cursor1.profileFrame ** 2 * 4), 62, 136);
-        if (Character2) cx.drawImage(images['cn' + Character2.id], 0, 0, 62, 136, (419 + cursor2.profileFrame ** 2 * 1), (134 - cursor2.profileFrame ** 2 * 4), 62, 136);
+        if (char1) cx.drawImage(images['CHARACTER_' + char1.id + "_SKEWED_NAME"], 0, 0, 62, 136, (0 + cursor1.profileFrame ** 2 * 1), (0 - cursor1.profileFrame ** 2 * 4), 62, 136);
+        if (char2) cx.drawImage(images['CHARACTER_' + char2.id + "_SKEWED_NAME"], 0, 0, 62, 136, (419 + cursor2.profileFrame ** 2 * 1), (134 - cursor2.profileFrame ** 2 * 4), 62, 136);
 
         // Informations
         cx.drawImage(images.characterSelectInfo2, 0, cursor1.ready ? 24 : 0, 72, 24, (147 + (cursor1.infoFrame / 2) ** 2 * 4), (231 + (cursor1.infoFrame / 2) ** 2 * 1), 72, 24);
@@ -113,8 +113,8 @@ CharacterSelection.display = display => {
         for (let x = 0; x < charSelect.size.x; x++) {
             for (let y = 0; y < charSelect.size.y; y++) {
                 cx.drawImage(images.whiteMugshot, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
-                const Character = charSelect.selectCharacter(new Vector2D(x, y));
-                if (Character) cx.drawImage(images['cm' + Character.id], 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
+                const char = charSelect.selectCharacter(new Vector2D(x, y));
+                if (char) cx.drawImage(images['CHARACTER_' + char.id + "_MUGSHOT"], 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
                 else if (x === 1 && y === 2) {
                     cx.drawImage(images.random2Img, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 + Math.sin(charSelect.animationFrame * 0.05) * 2, 52, 52);
                     cx.drawImage(images.randomImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 - Math.sin(charSelect.animationFrame * 0.05), 52, 52);

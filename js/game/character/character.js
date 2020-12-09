@@ -39,17 +39,22 @@ class Character {
 
     takeDamage = damage => this.health = Math.max(0, Math.min(this.maxHealth, this.health - damage));
 
+    canBlock = fight => this.isHit(fight) && !this.direction === this.getEnemy(fight).direction;
+
     updateAction = (fight, inputList) => {
-        if (this.action !== 'HIT' && this.isHit(fight)) {
+        if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
                 this.hitstun = Math.round(hitbox.damage * 0.25);
-                this.takeDamage(hitbox.damage);
+                if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
+                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
+                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
+                    this.takeDamage(hitbox.damage);
                 this.hitstunVelocity = hitbox.hitstunVelocity;
             }
         }
-        if (this.action === 'HIT') this.hitstun--;
+        if (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) this.hitstun--;
         this.actionIndex++;
         const newAction = this.actionsBlueprint.find(action => action.condition(fight, this, inputList)).action || this.action;
         if (newAction !== this.action || this.actionIndex >= this.actions[this.action].duration) {
@@ -67,8 +72,7 @@ class Character {
 
     updateVelocity = (fight, inputList, actionData) => {
         const velocity = actionData.velocity[Object.keys(actionData.velocity).reverse().find(index => index <= this.actionIndex)](fight, this, inputList);
-        this.velocity = this.action === 'HIT' ? this.hitstunVelocity : velocity;
-        this.velocity = this.action === 'EJECTED' ? this.hitstunVelocity : velocity;
+        this.velocity = (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) ? this.hitstunVelocity : velocity;
     }
 
     updateSize = actionData => {

@@ -167,22 +167,22 @@ Fight.GUI = display => {
     cx.save();
     display.flipHorizontally(32);
     cx.drawImage(images.hudmugshot, 0, 0, 64, 64);
-    cx.drawImage(images['cm' + player1.selectedCharacter.id], 6, 6, 52, 52);
+    cx.drawImage(images['CHARACTER_' + player1.selectedCharacter.id + "_MUGSHOT"], 6, 6, 52, 52);
     cx.restore();
     cx.drawImage(images.hudlife, 64, 8, 160, 16);
     cx.fillStyle = '#0080ff';
     cx.fillRect(66 + (156 - (156 * (player1.character.health / player1.character.maxHealth))), 10, 156 * (player1.character.health / player1.character.maxHealth), 12);
-    const imgci1 = images['ci' + player1.selectedCharacter.id];
+    const imgci1 = images['CHARACTER_' + player1.selectedCharacter.id + "_NAME"];
     cx.drawImage(imgci1, 64, 24, imgci1.naturalWidth, 18);
     if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[0] ? "winScore" : "scoreImg"], 208 - 16 * i, 24, 16, 16);
 
     //P2
     cx.drawImage(images.hudmugshot, display.width - 64, 0, 64, 64);
-    cx.drawImage(images['cm' + player2.selectedCharacter.id], display.width - 58, 6, 52, 52);
+    cx.drawImage(images['CHARACTER_' + player2.selectedCharacter.id + "_MUGSHOT"], display.width - 58, 6, 52, 52);
     cx.drawImage(images.hudlife, 256, 8, 160, 16);
     cx.fillStyle = '#0080ff';
     cx.fillRect(258, 10, 156 * (player2.character.health / player2.character.maxHealth), 12);
-    const imgci2 = images['ci' + player2.selectedCharacter.id];
+    const imgci2 = images['CHARACTER_' + player2.selectedCharacter.id + "_NAME"];
     cx.drawImage(imgci2, 416 - imgci2.naturalWidth, 24, imgci2.naturalWidth, 18);
     if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[1] ? "winScore" : "scoreImg"], 256 + 16 * i, 24, 16, 16);
 

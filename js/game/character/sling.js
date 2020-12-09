@@ -5,6 +5,18 @@ const SLING = {
     actionsBlueprint: [
         // Status actions
         {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
+            action: "BLOCK",
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'AERIAL_BLOCK' && character.hitstun,
+            action: "AERIAL_BLOCK"
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'LOW_BLOCK' && character.hitstun,
+            action: "LOW_BLOCK"
+        },
+        {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
         },
@@ -604,9 +616,54 @@ const SLING = {
         QCB: {},
         DP: {},
         HCF: {},
-        AERIAL_BLOCK: {},
-        BLOCK: {},
-        LOW_BLOCK: {},
+        AERIAL_BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        LOW_BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
         HIT: {
             duration: 1,
             cancellable: true,
