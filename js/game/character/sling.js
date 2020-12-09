@@ -1,179 +1,614 @@
-class Sling extends Character {
-    constructor(data, action, direction, position) {
-        super(data, action, direction, position);
+const SLING = {
+    id: "00",
+    health: 1000,
 
-        //------------------------------------------------------------------------------------------------------------------------------
-        // DATA
-        //------------------------------------------------------------------------------------------------------------------------------
+    actionsBlueprint: [
+        // Status actions
+        {
+            condition: (fight, character, inputList) => character.hitstun,
+            action: "HIT"
+        },
+        {
+            condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
+            action: "IDLE" // TODO "LAND" action & landing lag
+        },
+        {
+            condition: (fight, character, inputList) => !character.actions[character.action].cancellable && character.actionIndex < character.actions[character.action].duration,
+            action: null // Return an action for its duration if not cancellable
+        },
+        // Aerial actions
+        {
+            condition: (fight, character, inputList) => !character.isGrounded(fight) && inputList.state[0].input.a,
+            action: "AERIAL_LIGHT"
+        },
+        {
+            condition: (fight, character, inputList) => !character.isGrounded(fight) && inputList.state[0].input.b,
+            action: "AERIAL_HEAVY"
+        },
+        {
+            condition: (fight, character, inputList) => !character.isGrounded(fight),
+            action: "AERIAL"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick > 6,
+            action: "JUMP"
+        },
+        // Crouch actions
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.a,
+            action: "LOW_LIGHT"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.b,
+            action: "LOW_HEAVY"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick < 4,
+            action: "CROUCH"
+        },
+        // Dash
+        {
+            condition: (fight, character, inputList) => (inputList.state[0].input.stick === 6 && character.direction || inputList.state[0].input.stick === 4 && !character.direction) &&
+                inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
+            action: "FORWARD_DASH"
+        },
+        // {
+        //     condition: (fight, character, inputList) => (inputList.state[0].input.stick === 6 && !character.direction || inputList.state[0].input.stick === 4 && character.direction) &&
+        //         inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 &&
+        //         inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
+        //     action: "BACK_DASH"
+        // },
+        // Standing actions
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
+                ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2)),
+            action: "QCF"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.a,
+            action: "LIGHT"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.b,
+            action: "HEAVY"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick === 6 && character.direction || inputList.state[0].input.stick === 4 && !character.direction,
+            action: "WALK_FORWARD"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.stick === 6 && !character.direction || inputList.state[0].input.stick === 4 && character.direction,
+            action: "WALK_BACK"
+        },
+        {
+            condition: (fight, character, inputList) => true,
+            action: "IDLE"
+        }
+    ],
 
-        this.maxHealth = 1000;
-        this.health = this.maxHealth;
-
-        this.highAFrame = 15;
-        this.highBFrame = 30;
-
-        this.lowAFrame = 12;
-        this.lowBFrame = 30;
-
-        this.getUpFrame = 20;
-
-        this.aerialAFrame = 20;
-        this.aerialBFrame = 24;
-
-        this.forwardDashFrame = 20;
-
-        this.qcfFrame = 32;
-
-        this.canBackdash = false;
-        this.runBackDash = true;
-
-        this.canDash = true;
-        this.runDash = false;
-
-        // attack cancels ?
-
-        this.idleSize = new Vector2D(32, 128);
-        this.jumpSize = new Vector2D(32, 96);
-        this.crouchSize = new Vector2D(32, 96);
-
-        this.moveForwardSpeed = 1;
-        this.moveBackwardSpeed = -2;
-        this.forwardDashSpeed = 8;
-        this.backDashSpeed = -6;
-
-        this.forwardJumpSpeed = 6;
-        this.backJumpSpeed = -4;
-        this.jumpHeight = 16;
-        this.gravity = new Vector2D(0, 1);
-
-        this.collisionBox = new CollisionBox(new Vector2D(position - this.idleSize.x / 2, 270 - 16 - this.idleSize.y), this.idleSize.times(1));
-        
-        //------------------------------------------------------------------------------------------------------------------------------
-        // ACTIONS
-        //------------------------------------------------------------------------------------------------------------------------------
-
-        this.LAND = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-25, -53)), new Vector2D(50, 106)));
-        };
-        this.GET_UP = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center(), new Vector2D(0, 0)));
-        };
-
-        this.BACKWARD_DASH = game => { };
-
-        this.FORWARD_DASH = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-40, -60)), new Vector2D(75, 115)));
-        };
-
-        this.BACKWARD_LOW = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-        };
-
-        this.BLOCK_LOW = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-        };
-
-        this.NEUTRAL_LOW = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-        };
-
-        this.FORWARD_LOW = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-        };
-
-        this.BACKWARD_HIGH = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(42, 128)));
-        };
-
-        this.BLOCK_HIGH = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(42, 128)));
-        };
-
-        this.NEUTRAL_HIGH = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-24, -64)), new Vector2D(48, 128)));
-        };
-
-        this.FORWARD_HIGH = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(42, 128)));
-        };
-
-        this.BACKWARD_AERIAL = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(48, 128)));
-        };
-
-        this.BLOCK_AERIAL = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(48, 128)));
-        };
-
-        this.NEUTRAL_AERIAL = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(48, 128)));
-        };
-
-        this.FORWARD_AERIAL = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-21, -64)), new Vector2D(48, 128)));
-        };
-
-        this.LOW_A = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-            if (this.frame > 4 && this.frame < 7) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -26, 24)), new Vector2D(75, 28), 'storke', 20, 10, false, 20, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -26, 24)), new Vector2D(52, 28)));
+    actions: {
+        IDLE: {
+            duration: 48,
+            cancellable: true,
+            fixedDirection: false,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 64 } },
+                    { offset: { x: 0, y: 64 }, size: { x: 48, y: 64 } }
+                ],
+                16: [
+                    { offset: { x: 8, y: 0 }, size: { x: 48, y: 64 } },
+                    { offset: { x: 0, y: 64 }, size: { x: 48, y: 64 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
-        };
-        this.LOW_B = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -48)), new Vector2D(70, 96)));
-            if (this.frame > 15 && this.frame < 23) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -45, 25)), new Vector2D(105, 25), 'storke', 0, 1, true, 15, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -45, 25)), new Vector2D(90, 25)));
+        },
+        WALK_FORWARD: {
+            duration: 48,
+            cancellable: true,
+            fixedDirection: false,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.direction ? 1 : -1, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
-        };
+        },
+        WALK_BACK: {
+            duration: 48,
+            cancellable: true,
+            fixedDirection: false,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
+            }
+        },
+        FORWARD_DASH: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 6 * (character.direction ? 1 : -1), y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 16, y: 16 }, size: { x: 56, y: 48 } },
+                    { offset: { x: -24, y: 64 }, size: { x: 64, y: 64 } }
+                ]
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        CROUCH: {
+            duration: 48,
+            cancellable: true,
+            fixedDirection: false,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 96 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -80 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
+            }
+        },
+        AERIAL: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => {
+                    const velocity = character.velocity;
+                    // Apply gravity
+                    const newVelocity = { x: velocity.x, y: velocity.y + 0.75 };
+                    // Apply x axis velocity
+                    if (inputList.state[0].input.stick % 3 === 1 && character.velocity.x > -3) newVelocity.x = -3;
+                    if (inputList.state[0].input.stick % 3 === 0 && character.velocity.x < 3) newVelocity.x = 3;
+                    return newVelocity;
+                }
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                altImg: {
+                    action: "FALL",
+                    condition: (fight, character) => character.velocity.y > 0
+                },
+                offset: { x: -29, y: -24 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        JUMP: {
+            duration: 6,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            jumpXVelocity: null,
+            velocity: {
+                0: (fight, character, inputList) => {
+                    this.jumpXVelocity = character.velocity.x;
+                    return { x: 0, y: 0 }
+                },
+                1: (fight, character, inputList) => ({ x: 0, y: 0 }),
+                5: (fight, character, inputList) => {
+                    let x = this.jumpXVelocity
+                    this.jumpXVelocity = null;
+                    return { x: x, y: -12 }
+                }
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        LIGHT: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                6: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            }
+        },
+        HEAVY: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.5 * (character.direction ? 1 : -1), y: 0 }),
+                16: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                12: [
+                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunVelocity: { x: 3, y: 0 } }
+                ],
+                18: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 80, y: 128 } },
+                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 16 } }
+                ],
+                24: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 6
+            }
+        },
+        LOW_LIGHT: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } }
+                ],
+                6: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } },
+                    { offset: { x: 32, y: 84 }, size: { x: 48, y: 12 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } }
+                ]
+            },
+            animation: {
+                offset: { x: -58, y: -80 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            }
+        },
+        LOW_HEAVY: {
+            duration: 36,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                18: [
+                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 100, hitstunVelocity: { x: 0, y: 0 } }
+                ],
+                24: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } }
+                ],
+                12: [
+                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } },
+                    { offset: { x: 32, y: 80 }, size: { x: 48, y: 16 } }
+                ],
+                24: [
+                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } }
+                ]
+            },
+            animation: {
+                offset: { x: -58, y: -80 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 6,
+                frameCount: 6
+            }
+        },
+        AERIAL_LIGHT: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 48 }, size: { x: 32, y: 32 }, damage: 50, hitstunVelocity: { x: 1, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 112 } }
+                ],
+                6: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 112 } },
+                    { offset: { x: 32, y: 48 }, size: { x: 24, y: 24 } }
+                ],
+                12: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 112 } }
+                ],
+            },
+            animation: {
+                offset: { x: -29, y: -24 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            }
+        },
+        AERIAL_HEAVY: {
+            duration: 24,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
+            },
+            hitboxes: {
+                0: [],
+                8: [
+                    { offset: { x: 32, y: 80 }, size: { x: 64, y: 32 }, damage: 100, hitstunVelocity: { x: 1, y: 0 } }
+                ],
+                14: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } }
+                ],
+                6: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } },
+                    { offset: { x: 32, y: 64 }, size: { x: 48, y: 48 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -58, y: -24 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 6
+            }
+        },
+        QCF: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            actors: {
+                0: [],
+                16: [
+                    {
+                        offset: { x: 32, y: -48 },
+                        data: {
+                            id: "00",
+                            health: 1,
 
-        this.AERIAL_A = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-24, -58)), new Vector2D(48, 116)));
-            if (this.frame > 5 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -16, 10)), new Vector2D(40, 24), 'storke', 40, 25, false, 40, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -16, 10)), new Vector2D(32, 16)));
-            }
-        };
-        this.AERIAL_B = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-24, -64)), new Vector2D(48, 128)));
-            if (this.frame > 3 && this.frame < 15) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -29, 48)), new Vector2D(75, 24), 'storke', 60, 40, false, 60, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -29, 48)), new Vector2D(58, 24)));
-            }
-        };
+                            actionsBlueprint: [
+                                {
+                                    condition: (fight, actor) => !actor.actions[actor.action].cancellable && actor.actionIndex < actor.actions[actor.action].duration,
+                                    action: null
+                                },
+                                {
+                                    condition: (fight, actor) => actor.action === "HIT",
+                                    action: "BREAK"
+                                },
+                                {
+                                    condition: (fight, actor) => actor.isHit(fight) || actor.hitEnemy(fight) || actor.collisionBox.pos.x === 0 || actor.collisionBox.pos.x + actor.collisionBox.size.x === fight.stage.collisionBox.size.x,
+                                    action: "HIT"
+                                },
+                                {
+                                    condition: (fight, actor) => true,
+                                    action: "IDLE"
+                                }
+                            ],
 
-        this.HIGH_A = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -64)), new Vector2D(70, 128)));
-            if (this.frame > 6 && this.frame < 9) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -30, -48)), new Vector2D(80, 24), 'storke', 30, 15, false, 30, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -30, -48)), new Vector2D(60, 24)));
+                            actions: {
+                                IDLE: {
+                                    duration: 2,
+                                    cancellable: true,
+                                    size: { x: 32, y: 32 },
+                                    velocity: {
+                                        0: (fight, actor) => ({ x: 4 * (actor.direction ? 1 : -1), y: 0 })
+                                    },
+                                    hitboxes: {
+                                        0: [
+                                            { offset: { x: 0, y: 0 }, size: { x: 32, y: 32 }, damage: 30, hitstunVelocity: { x: 1, y: 0 } }
+                                        ]
+                                    },
+                                    animation: {
+                                        offset: { x: -64, y: -16 },
+                                        size: { x: 128, y: 64 },
+                                        speed: 1,
+                                        frameCount: 2
+                                    }
+                                },
+                                HIT: {
+                                    duration: 8,
+                                    cancellable: false,
+                                    size: { x: 32, y: 32 },
+                                    velocity: {
+                                        0: (fight, actor) => ({ x: 0, y: 0 })
+                                    },
+                                    animation: {
+                                        offset: { x: -16, y: 0 },
+                                        size: { x: 64, y: 30 },
+                                        speed: 1,
+                                        frameCount: 2
+                                    }
+                                },
+                                BREAK: {
+                                    duration: 0,
+                                    cancellable: false
+                                }
+                            }
+                        }
+                    }
+                ],
+                17: [],
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } },
+                    { offset: { x: 32, y: 16 }, size: { x: 48, y: 24 } }
+                ],
+                24: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 8
             }
-        };
-
-        this.HIGH_B = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D(-35, -64)), new Vector2D(70, 128)));
-            if (this.frame > 11 && this.frame < 18) {
-                this.hitboxes.push(new HitBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -40, -48)), new Vector2D(110, 32), 'storke', 75, 30, false, 75, this.direction, 0));
-                this.hurtboxes.push(new HurtBox(this.collisionBox.center().plus(new Vector2D((this.direction ? -0.5 : 2.5) * -40, -48)), new Vector2D(80, 32)));
+        },
+        QCB: {},
+        DP: {},
+        HCF: {},
+        AERIAL_BLOCK: {},
+        BLOCK: {},
+        LOW_BLOCK: {},
+        HIT: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
             }
-        };
-
-        this.QCF = game => {
-            if (this.frame === 13) {
-                game.activity.actors.push(new Projectile(new CollisionBox(this.collisionBox.pos.plus(new Vector2D(this.collisionBox.size.x / 2, 16)), new Vector2D(32, 32)), this.playerId, this.direction, new Vector2D(10, 0), 10, 5, false, 5));
-            }
-        };
-        this.QCB = game => { };
-        this.DP = game => { };
-        this.HCF = game => { };
-        this.HIT = game => { };
-        this.EJECTED = game => { };
-        this.GROUND = game => {
-            this.hurtboxes.push(new HurtBox(this.collisionBox.center(), new Vector2D(0, 0)));
-        };
-        this.RECOVER = game => { };
-        this.TECH = game => { };
+        },
+        EJECTED: {},
+        GROUND: {},
+        LAND: {},
+        GET_UP: {},
+        RECOVER: {},
+        TECH: {},
+        GRAB: {},
+        GRAB_TECH: {},
+        GRABBED: {}
     }
 }
-Sling.id = '00';

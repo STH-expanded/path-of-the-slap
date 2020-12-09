@@ -6,8 +6,8 @@ class Opening extends Activity {
     update = game => {
         // Debug mode
         if (debugMode.fight) {
-            game.players["keyboard"].selectedCharacter = Sling;
-            game.computer.selectedCharacter = Sling;
+            game.players["keyboard"].selectedCharacter = SLING;
+            game.computer.selectedCharacter = SLING;
             this.nextActivity = new Fight(60, 60,
                 [game.players["keyboard"], game.computer],
                 Game.TRAINING_STAGE,

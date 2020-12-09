@@ -40,7 +40,7 @@ Fight.display = display => {
             }
         }
     });
-    
+
     // Actors
     fight.actors.forEach(actor => {
         if (debugMode.display) Fight.debugActor(display, actor);
@@ -131,7 +131,7 @@ Fight.perspectiveLayer = (display, fight, view) => {
     const b1 = y3 - m1 * x3;
     const m2 = Math.tan(Math.atan2(y4 - y2, x4 - x2));
     const b2 = y4 - m2 * x4;
-    
+
     for (let row = 0; row < img.w; row++) {
         const yTop = m1 * row + b1;
         const yBottom = m2 * row + b2;
@@ -207,14 +207,17 @@ Fight.trainingGUI = display => {
 
     player.inputList.state.forEach((inputObject, index) => {
         let arrow = [1, 1];
-        if (inputObject.input.right && inputObject.input.up) arrow = [2, 0];
-        else if (inputObject.input.right && inputObject.input.down) arrow = [2, 2];
-        else if (inputObject.input.left && inputObject.input.down) arrow = [0, 2];
-        else if (inputObject.input.left && inputObject.input.up) arrow = [0, 0];
-        else if (inputObject.input.up) arrow = [1, 0];
-        else if (inputObject.input.right) arrow = [2, 1];
-        else if (inputObject.input.down) arrow = [1, 2];
-        else if (inputObject.input.left) arrow = [0, 1];
+        switch (inputObject.input.stick) {
+            case 1: arrow = [0, 2]; break;
+            case 2: arrow = [1, 2]; break;
+            case 3: arrow = [2, 2]; break;
+            case 4: arrow = [0, 1]; break;
+            case 6: arrow = [2, 1]; break;
+            case 7: arrow = [0, 0]; break;
+            case 8: arrow = [1, 0]; break;
+            case 9: arrow = [2, 0]; break;
+            default: break;
+        }
 
         cx.drawImage(images.arrows, 8 * arrow[0], 8 * arrow[1], 8, 8, 8, 68 + 12 * index, 8, 8);
         cx.drawImage(images.aBtn, 8 * (inputObject.input.a ? 1 : 0), 0, 8, 8, 24, 68 + 12 * index, 8, 8);

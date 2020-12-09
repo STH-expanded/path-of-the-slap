@@ -21,8 +21,8 @@ Game.TRAINING_STAGE = TrainingStage;
 Game.STAGES = [ChruchStage, JungleStage];
 Game.CHARACTERS = [
     null, null, null,
-    null, Swaps, null,
-    Sling, null, Shaggy,
-    null, Chama, null,
+    null, SLING, null,
+    SLING, null, SLING,
+    null, SLING, null,
     null, null, null
 ];

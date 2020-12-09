@@ -7,8 +7,7 @@ class Actor {
 	hurtboxes = [];
 	hitboxes = [];
 
-    constructor(master, data, action, direction, position) {
-        this.master = master;
+    constructor(data, action, offset, master) {
         this.data = data;
         this.id = data.id;
         this.maxHealth = data.health;
@@ -18,8 +17,12 @@ class Actor {
         this.actions = data.actions;
         this.action = action;
 
-        this.direction = direction;
-        this.collisionBox = new CollisionBox(position, this.actions[action].size);
+        this.master = master;
+        this.direction = master.direction;
+        this.collisionBox = new CollisionBox(
+            master.collisionBox.center().plus(new Vector2D(offset.x * (master.direction ? 1 : -1), offset.y)),
+            this.actions[action].size
+        );
     }
 
     getEnemy = fight => fight.players.find(player => player.character !== this.master).character;
@@ -36,78 +39,64 @@ class Actor {
 
 	isOut = game => !this.collisionBox.includedIn(game.activity.stage.collisionBox);
 
-	update = game => {
-        const fight = game.activity;
-        // Update status action
+    updateAction = fight => {
         if (this.action !== 'HIT' && this.isHit(fight)) {
             let hitbox = null;
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) this.takeDamage(hitbox.damage);
         }
-
-        // Update action
         this.actionIndex++;
         const newAction = this.actionsBlueprint.find(action => action.condition(fight, this)).action || this.action;
         if (newAction !== this.action || this.actionIndex >= this.actions[this.action].duration) {
             this.action = newAction;
             this.actionIndex = 0;
         }
+    }
 
+    updateVelocity = (fight, actionData) => {
+        if (actionData.velocity) this.velocity = actionData.velocity[Object.keys(actionData.velocity).reverse().find(index => index <= this.actionIndex)](fight, this);
+    }
 
-        const actionData = this.actions[this.action];
-
-
-        // Update size
+    updateSize = actionData => {
         if (actionData.size && this.actionIndex === 0) {
             const size = actionData.size;
             this.collisionBox.pos.y += this.collisionBox.size.y - size.y;
             this.collisionBox.size = new Vector2D(size.x, size.y);
         }
+    }
 
-
-        // Update direction
-
-
-        // Update velocity
-        if (actionData.velocity) this.velocity = actionData.velocity[Object.keys(actionData.velocity).reverse().find(index => index <= this.actionIndex)](fight, this);
-
-        
-        // Update position
+    updatePosition = fight => {
         this.collisionBox.pos = this.collisionBox.pos.plus(this.velocity);
         // Clip updated position to stage
         if (!this.collisionBox.includedIn(fight.stage.collisionBox)) fight.stage.clipCollisionBox(this.collisionBox);
+    }
 
-
-        const actorData = this.data;
-        
-
-        // Update hurtboxes
-        this.hurtboxes = [];
-        if (actorData.actions[this.action].hurtboxes) {
-            const hurtboxes = actorData.actions[this.action].hurtboxes[Object.keys(actorData.actions[this.action].hurtboxes).reverse().find(index => index <= this.actionIndex)];
-            hurtboxes.forEach(hurtbox => {
-                const size = new Vector2D(hurtbox.size.x, hurtbox.size.y);
-                const pos = new Vector2D(
-                    this.collisionBox.pos.x + (this.direction ? hurtbox.offset.x : this.collisionBox.size.x - hurtbox.offset.x - size.x),
-                    this.collisionBox.pos.y + hurtbox.offset.y
-                );
-                this.hurtboxes.push(new CollisionBox(pos, size));
-            });
-        }
-        
-
-        // Update hitboxes
+    updateActionElements = actionData => {
         this.hitboxes = [];
-        if (actorData.actions[this.action].hitboxes) {
-            const hitboxes = actorData.actions[this.action].hitboxes[Object.keys(actorData.actions[this.action].hitboxes).reverse().find(index => index <= this.actionIndex)];
-            hitboxes.forEach(hitbox => {
-                const size = new Vector2D(hitbox.size.x, hitbox.size.y);
-                const pos = new Vector2D(
-                    this.collisionBox.pos.x + (this.direction ? hitbox.offset.x : this.collisionBox.size.x - hitbox.offset.x - size.x),
-                    this.collisionBox.pos.y + hitbox.offset.y
-                );
-                this.hitboxes.push(new HitBox(pos, size, hitbox.damage, new Vector2D(hitbox.hitstunVelocity.x * (this.direction ? 1 : -1), hitbox.hitstunVelocity.y)));
-            });
-        }
+        this.hurtboxes = [];
+        ["hitboxes", "hurtboxes"].forEach(actionElement => {
+            if (actionData[actionElement]) {
+                const elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
+                elements.forEach(element => {
+                        const size = new Vector2D(element.size.x, element.size.y);
+                        const pos = new Vector2D(
+                            this.collisionBox.pos.x + (this.direction ? element.offset.x : this.collisionBox.size.x - element.offset.x - size.x),
+                            this.collisionBox.pos.y + element.offset.y
+                        );
+                        if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
+                        else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
+                });
+            }
+        });
+    }
+
+	update = game => {
+        const fight = game.activity;
+        this.updateAction(fight);
+        const actionData = this.actions[this.action];
+        this.updateVelocity(fight, actionData);
+        this.updateSize(actionData);
+        this.updatePosition(fight);
+        this.updateActionElements(actionData);
 	}
 }
