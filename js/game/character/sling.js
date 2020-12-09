@@ -21,6 +21,19 @@ const SLING = {
             action: "HIT"
         },
         {
+            condition: (fight, character, inputList) => character.action == "GROUND" && (inputList.state[0].input.stick != 5 || inputList.state[0].input.a || inputList.state[0].input.b) ,
+            action: "GET_UP" // TODO "LAND" action & landing lag
+        },
+        {
+            condition: (fight, character, inputList) => (character.action == "EJECTED" && character.isGrounded(fight) )||character.action == "GROUND",
+            action: "GROUND"
+        },
+        {
+            condition: (fight, character, inputList) => character.action == "HIT",
+            action: "EJECTED"
+        },
+
+        {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
             action: "IDLE" // TODO "LAND" action & landing lag
         },
@@ -106,6 +119,7 @@ const SLING = {
             fixedDirection: false,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
@@ -132,6 +146,7 @@ const SLING = {
             fixedDirection: false,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.direction ? 1 : -1, y: 0 })
             },
@@ -153,6 +168,7 @@ const SLING = {
             fixedDirection: false,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
             },
@@ -174,6 +190,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 6 * (character.direction ? 1 : -1), y: 0 })
             },
@@ -196,6 +213,7 @@ const SLING = {
             fixedDirection: false,
             isAerial: false,
             size: { x: 32, y: 96 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
@@ -217,6 +235,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: true,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => {
                     const velocity = character.velocity;
@@ -250,6 +269,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             jumpXVelocity: null,
             velocity: {
                 0: (fight, character, inputList) => {
@@ -281,6 +301,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
             },
@@ -316,6 +337,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:2,y:-2},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.5 * (character.direction ? 1 : -1), y: 0 }),
                 16: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -352,6 +374,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 96 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
@@ -387,6 +410,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 96 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
@@ -422,6 +446,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: true,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
             },
@@ -457,6 +482,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: true,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
             },
@@ -492,6 +518,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
@@ -643,6 +670,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
@@ -658,10 +686,73 @@ const SLING = {
                 frameCount: 1
             }
         },
-        EJECTED: {},
-        GROUND: {},
+        EJECTED: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
+            velocity: {
+                0: (fight, character, inputList) => ({ x:0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        GROUND: {
+            duration: 0,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        GET_UP: {
+            duration: 0,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            ejectes: {x:0,y:0},
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
+                ]
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
         LAND: {},
-        GET_UP: {},
         RECOVER: {},
         TECH: {},
         GRAB: {},
