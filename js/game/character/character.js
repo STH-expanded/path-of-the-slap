@@ -68,6 +68,7 @@ class Character {
     updateVelocity = (fight, inputList, actionData) => {
         const velocity = actionData.velocity[Object.keys(actionData.velocity).reverse().find(index => index <= this.actionIndex)](fight, this, inputList);
         this.velocity = this.action === 'HIT' ? this.hitstunVelocity : velocity;
+        this.velocity = this.action === 'EJECTED' ? this.hitstunVelocity : velocity;
     }
 
     updateSize = actionData => {
