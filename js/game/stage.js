@@ -33,3 +33,8 @@ class TrainingStage extends Stage {
     id = 2;
 }
 TrainingStage.id = 2;
+
+class DesertStage extends Stage {
+    id = 3;
+}
+DesertStage.id = 3;

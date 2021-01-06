@@ -111,6 +111,11 @@ class Assets {
         { id: 's2floor', src: 'img/stage/s2floor.png' },
         { id: 's2l1', src: 'img/stage/s2l1.png' },
         { id: 's2preview', src: 'img/stage/s2preview.png' },
+        
+        { id: 's3floor', src: 'img/stage/s3floor.png' },
+        { id: 's3l0', src: 'img/stage/s3l0.png' },
+        { id: 's3l1', src: 'img/stage/s3l1.png' },
+        { id: 's3preview', src: 'img/stage/s3preview.png' },
 
         // Fight
         { id: 'hudmugshot', src: 'img/fight/hudMugshot.png' },

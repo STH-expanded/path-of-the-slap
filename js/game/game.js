@@ -18,7 +18,7 @@ class Game {
     }
 }
 Game.TRAINING_STAGE = TrainingStage;
-Game.STAGES = [ChruchStage, JungleStage];
+Game.STAGES = [ChruchStage, JungleStage, DesertStage];
 Game.CHARACTERS = [
     null, null, null,
     null, SLING, null,
