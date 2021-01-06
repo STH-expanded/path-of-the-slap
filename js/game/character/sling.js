@@ -520,7 +520,7 @@ const SLING = {
                                     action: "BREAK"
                                 },
                                 {
-                                    condition: (fight, actor) => actor.isHit(fight) || actor.hitEnemy(fight) || actor.collisionBox.pos.x === 0 || actor.collisionBox.pos.x + actor.collisionBox.size.x === fight.stage.collisionBox.size.x,
+                                    condition: (fight, actor) => actor.hitEnemy(fight) || actor.collisionBox.pos.x === 0 || actor.collisionBox.pos.x + actor.collisionBox.size.x === fight.stage.collisionBox.size.x,
                                     action: "HIT"
                                 },
                                 {
@@ -647,10 +647,10 @@ const SLING = {
             duration: 1,
             cancellable: true,
             fixedDirection: true,
-            isAerial: false,
+            isAerial: true,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
             },
             hurtboxes: {
                 0: [
@@ -661,7 +661,12 @@ const SLING = {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
-                frameCount: 1
+                frameCount: 1,
+                effects: {
+                    0: [
+                        { name: 'shake' }
+                    ]
+                }
             }
         },
         EJECTED: {

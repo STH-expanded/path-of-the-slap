@@ -5,35 +5,45 @@ Fight.display = display => {
     const char1 = fight.players[0].character;
     const char2 = fight.players[1].character;
 
+    cx.fillStyle = '#000';
+    cx.fillRect(0, 0, display.width, display.height);
+
     // Viewport
-    const view = { xOffset: (char1.collisionBox.center().x + char2.collisionBox.center().x) / 2 - display.width / 2, yOffset: 0, w: display.width, h: display.height };
+    const view = { xOffset: (char1.collisionBox.center().x + char2.collisionBox.center().x) / 2 - display.width / 2 + Math.cos(fight.timer * 0.01) * 4, yOffset: Math.sin(fight.timer * 0.01) * 4, w: display.width, h: display.height };
     if (view.xOffset < 0) view.xOffset = 0;
     if (view.xOffset > fight.stage.collisionBox.size.x - display.width) view.xOffset = fight.stage.collisionBox.size.x - display.width;
-    cx.translate(-view.xOffset, 0);
+    cx.translate(-view.xOffset, -view.yOffset);
 
     // Background
     Fight.perspectiveLayer(display, fight, view);
 
     // GUI
-    cx.translate(view.xOffset, 0);
+    cx.translate(view.xOffset, view.yOffset);
     Fight.GUI(display);
-    cx.translate(-view.xOffset, 0);
+    cx.translate(-view.xOffset, -view.yOffset);
 
-    // Characters
-    [char1, char2].forEach(character => {
-        if (debugMode.display) Fight.debugActor(display, character);
-        const animation = character.actions[character.action].animation;
+    // Characters & actors
+    [char1, char2, ...fight.actors].forEach(element => {
+        if (debugMode.display) Fight.debugActor(display, element);
+        const animation = element.actions[element.action].animation;
         if (animation) {
-            const image = display.assets.images["CHARACTER_" + character.id + "_" + (animation.altImg && animation.altImg.condition(display.game, character) ? animation.altImg.action : character.action)];
+            const image = display.assets.images[(element instanceof Actor ? "ACTOR_" : "CHARACTER_") + element.id + "_" + (animation.altImg && animation.altImg.condition(display.game, element) ? animation.altImg.action : element.action)];
             if (image) {
                 cx.save();
-                if (!character.direction) display.flipHorizontally(character.collisionBox.center().x);
+                if (!element.direction) display.flipHorizontally(element.collisionBox.center().x);
+                if (animation.effects) {
+                    const effects = animation.effects[Object.keys(animation.effects).reverse().find(index => index <= element.actionIndex)];
+                    console.log(effects)
+                    effects.forEach(effect => {
+                        display[effect.name + "Effect"](element.hitstun, element.hitstun);
+                    });
+                }
                 cx.drawImage(
                     image,
-                    animation.size.x * (Math.floor(character.actionIndex * animation.speed) % animation.frameCount), 0,
+                    animation.size.x * (Math.floor(element.actionIndex * animation.speed) % animation.frameCount), 0,
                     animation.size.x, animation.size.y,
-                    character.collisionBox.pos.x + animation.offset.x,
-                    character.collisionBox.pos.y + animation.offset.y,
+                    element.collisionBox.pos.x + animation.offset.x,
+                    element.collisionBox.pos.y + animation.offset.y,
                     animation.size.x, animation.size.y
                 );
                 cx.restore();
@@ -41,29 +51,7 @@ Fight.display = display => {
         }
     });
 
-    // Actors
-    fight.actors.forEach(actor => {
-        if (debugMode.display) Fight.debugActor(display, actor);
-        const animation = actor.actions[actor.action].animation;
-        if (animation) {
-            const image = display.assets.images["ACTOR_00_" + actor.action];
-            if (image) {
-                cx.save();
-                if (!actor.direction) display.flipHorizontally(actor.collisionBox.center().x);
-                cx.drawImage(
-                    image,
-                    animation.size.x * (Math.floor(actor.actionIndex * animation.speed) % animation.frameCount), 0,
-                    animation.size.x, animation.size.y,
-                    actor.collisionBox.pos.x + animation.offset.x,
-                    actor.collisionBox.pos.y + animation.offset.y,
-                    animation.size.x, animation.size.y
-                );
-                cx.restore();
-            }
-        }
-    });
-
-    cx.translate(view.xOffset, 0);
+    cx.translate(view.xOffset, view.yOffset);
 
     // Pause menu
     if (fight.pauseMenu) fight.pauseMenu.constructor.display(display);
@@ -71,23 +59,18 @@ Fight.display = display => {
 
 Fight.debugActor = (display, actor) => {
     const cx = display.cx;
-    cx.lineWidth = 4 / display.zoom;
-    cx.strokeStyle = '#00f';
-    cx.fillStyle = '#00f2';
-    cx.fillRect(actor.collisionBox.pos.x, actor.collisionBox.pos.y, actor.collisionBox.size.x, actor.collisionBox.size.y);
-    cx.strokeRect(actor.collisionBox.pos.x, actor.collisionBox.pos.y, actor.collisionBox.size.x, actor.collisionBox.size.y);
-    cx.lineWidth = 2 / display.zoom;
-    cx.strokeStyle = '#0f0';
-    cx.fillStyle = '#0f04';
-    actor.hurtboxes.forEach(hurtbox => {
-        cx.fillRect(hurtbox.pos.x, hurtbox.pos.y, hurtbox.size.x, hurtbox.size.y);
-        cx.strokeRect(hurtbox.pos.x, hurtbox.pos.y, hurtbox.size.x, hurtbox.size.y);
-    });
-    cx.strokeStyle = '#f00';
-    cx.fillStyle = '#f004';
-    actor.hitboxes.forEach(hitbox => {
-        cx.fillRect(hitbox.pos.x, hitbox.pos.y, hitbox.size.x, hitbox.size.y);
-        cx.strokeRect(hitbox.pos.x, hitbox.pos.y, hitbox.size.x, hitbox.size.y);
+    [
+        { stroke: '#00f', fill: '#00f4', line: 4, elements: [actor.collisionBox] },
+        { stroke: '#0f0', fill: '#0f04', line: 2, elements: actor.hurtboxes },
+        { stroke: '#f00', fill: '#f004', line: 2, elements: actor.hitboxes },
+    ].forEach(({ stroke, fill, line, elements }) => {
+        cx.lineWidth = line / display.zoom;
+        cx.strokeStyle = stroke;
+        cx.fillStyle = fill;
+        elements.forEach(element => {
+            cx.fillRect(element.pos.x, element.pos.y, element.size.x, element.size.y);
+            cx.strokeRect(element.pos.x, element.pos.y, element.size.x, element.size.y);
+        });
     });
     cx.lineWidth = 4 / display.zoom;
     cx.textAlign = 'center';
@@ -152,9 +135,6 @@ Fight.GUI = display => {
     const images = display.assets.images;
     const fight = display.game.activity;
 
-    const player1 = fight.players[0];
-    const player2 = fight.players[1];
-
     // TIMER
     if (!fight.trainingMode) {
         const timer = (fight.timer - (fight.timer % 60)) / 60;
@@ -163,28 +143,40 @@ Fight.GUI = display => {
         for (let i = 0; i < nb.length; i++) cx.drawImage(images.timerNumbers, 14 * nb[i], 0, 14, 20, display.width / 2 + (-14 + i * 14), 12, 14, 20);
     } else cx.drawImage(images.infinity, 0, 0, 28, 20, 226, 12, 28, 20);
 
-    // P1
-    cx.save();
-    display.flipHorizontally(32);
-    cx.drawImage(images.hudmugshot, 0, 0, 64, 64);
-    cx.drawImage(images['CHARACTER_' + player1.selectedCharacter.id + "_MUGSHOT"], 6, 6, 52, 52);
-    cx.restore();
-    cx.drawImage(images.hudlife, 64, 8, 160, 16);
-    cx.fillStyle = '#0080ff';
-    cx.fillRect(66 + (156 - (156 * (player1.character.health / player1.character.maxHealth))), 10, 156 * (player1.character.health / player1.character.maxHealth), 12);
-    const imgci1 = images['CHARACTER_' + player1.selectedCharacter.id + "_NAME"];
-    cx.drawImage(imgci1, 64, 24, imgci1.naturalWidth, 18);
-    if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[0] ? "winScore" : "scoreImg"], 208 - 16 * i, 24, 16, 16);
-
-    //P2
-    cx.drawImage(images.hudmugshot, display.width - 64, 0, 64, 64);
-    cx.drawImage(images['CHARACTER_' + player2.selectedCharacter.id + "_MUGSHOT"], display.width - 58, 6, 52, 52);
-    cx.drawImage(images.hudlife, 256, 8, 160, 16);
-    cx.fillStyle = '#0080ff';
-    cx.fillRect(258, 10, 156 * (player2.character.health / player2.character.maxHealth), 12);
-    const imgci2 = images['CHARACTER_' + player2.selectedCharacter.id + "_NAME"];
-    cx.drawImage(imgci2, 416 - imgci2.naturalWidth, 24, imgci2.naturalWidth, 18);
-    if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[1] ? "winScore" : "scoreImg"], 256 + 16 * i, 24, 16, 16);
+    fight.players.forEach((player, index) => {
+        const character = player.character;
+        // Name
+        const nameImg = images['CHARACTER_' + character.id + "_NAME"];
+        cx.drawImage(nameImg, index ? 416 - nameImg.naturalWidth : 64, 24, nameImg.naturalWidth, 18);
+        cx.save();
+        if (index) display.flipHorizontally(display.width / 2);
+        // Mugshot
+        cx.save();
+        display.flipHorizontally(32);
+        cx.drawImage(images.hudmugshot, 0, 0, 64, 64);
+        cx.drawImage(images['CHARACTER_' + character.id + "_MUGSHOT"], 6, 6, 52, 52);
+        cx.restore();
+        // Health bar
+        cx.drawImage(images.hudlife, 64, 8, 160, 16);
+        const healthCoef = character.health / character.maxHealth;
+        const maxLength = 156;
+        const length = Math.round(maxLength * healthCoef);
+        const {color1, color2} = healthCoef === 1 ? {color1: '#6888fc', color2: '#0000c4'}
+            : healthCoef > 0.5 ? {color1: '#58d858', color2: '#007800'}
+            : healthCoef > 0.25 ? {color1: '#fcb800', color2: '#ac8000'}
+            : {color1: '#fc3800', color2: '#8c1800'};
+        cx.fillStyle = color2;
+        cx.fillRect(66 + maxLength - length, 10, length, 12);
+        cx.fillStyle = color1;
+        cx.fillRect(66 + maxLength - length, 12, length, 8);
+        cx.fillStyle = color2;
+        cx.fillRect(66 + maxLength - length, 18, length, 1);
+        cx.fillStyle = '#fff';
+        cx.fillRect(66 + maxLength - length, 14, length, 2);
+        // Win count
+        if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[index] ? "winScore" : "scoreImg"], 208 - 16 * i, 24, 16, 16);
+        cx.restore();
+    });
 
     // Training or Fight Animation Display
     if (!fight.trainingMode) {
