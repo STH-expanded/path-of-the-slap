@@ -29,6 +29,10 @@ const SLING = {
             action: "GROUND"
         },
         {
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
+            action: "TECH"
+        },
+        {
             condition: (fight, character, inputList) => character.ejection,
             action: "EJECTED"
         },
@@ -723,7 +727,22 @@ const SLING = {
         },
         LAND: {},
         RECOVER: {},
-        TECH: {},
+        TECH: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
         GRAB: {},
         GRAB_TECH: {},
         GRABBED: {}
