@@ -1,8 +1,24 @@
 const SLING = {
     id: "00",
-    health: 1000,
+    health: 10,
 
     actionsBlueprint: [
+        {
+            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff,
+            action: "VICTORYPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff,
+            action: "LOOSERPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver ,
+            action: "KO",
+        },
+        {
+            condition: (fight, character, inputList) => fight.roundIsOver ,
+            action: "ALIVEROUNDOVER",
+        },
         // Status actions
         {
             condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
@@ -735,16 +751,60 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-            animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1,
-                frameCount: 1
             }
         },
         GRAB: {},
         GRAB_TECH: {},
-        GRABBED: {}
+        GRABBED: {},
+        ENTERMATCH: { 
+            duration: 15,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        KO:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        ALIVEROUNDOVER:{ 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        VICTORYPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        LOOSERPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        }
     }
 }

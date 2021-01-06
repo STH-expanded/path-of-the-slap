@@ -30,7 +30,7 @@ class Fight extends Activity {
 		// Init characters
 		this.players.forEach((player, index) => {
 			player.resetInput();
-			player.character = new Character(player.selectedCharacter, "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
+			player.character = new Character(player.selectedCharacter, this.winCount.filter((element)=>element == 0).length == 2  ? "ENTERMATCH" : "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
 		});
 
 		// Init actors
@@ -49,9 +49,6 @@ class Fight extends Activity {
 			else this.initRound();
 		} else if (this.pauseMenu) this.pauseMenu.handler(game);
 		else this.roundHandler(game);
-	}
-
-	roundHandler = game => {
 		// Update players
 		this.players.forEach(player => {
 			// Update characters
@@ -66,6 +63,10 @@ class Fight extends Activity {
 		// Update actors
 		this.actors = this.actors.filter(actor => actor.action !== "BREAK");
 		this.actors.forEach(actor => actor.update(game));
+	}
+
+	roundHandler = game => {
+		
 		// Check win conditions
 		if (!this.trainingMode) {
 			const p1Health = this.players[0].character.health;
