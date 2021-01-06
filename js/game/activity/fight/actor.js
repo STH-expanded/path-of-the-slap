@@ -2,17 +2,17 @@ class Actor {
 
     velocity = new Vector2D(0, 0);
 
-	actionIndex = 0;
-	
-	hurtboxes = [];
-	hitboxes = [];
+    actionIndex = 0;
+
+    hurtboxes = [];
+    hitboxes = [];
 
     constructor(data, action, offset, master) {
         this.data = data;
         this.id = data.id;
         this.maxHealth = data.health;
         this.health = data.health;
-        
+
         this.actionsBlueprint = data.actionsBlueprint;
         this.actions = data.actions;
         this.action = action;
@@ -37,12 +37,12 @@ class Actor {
 
     takeDamage = damage => this.health = Math.max(0, Math.min(this.maxHealth, this.health - damage));
 
-	isOut = game => !this.collisionBox.includedIn(game.activity.stage.collisionBox);
+    isOut = game => !this.collisionBox.includedIn(game.activity.stage.collisionBox);
 
     updateAction = fight => {
         if (this.action !== 'HIT' && this.isHit(fight)) {
             let hitbox = null;
-            this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
+            //this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) this.takeDamage(hitbox.damage);
         }
         this.actionIndex++;
@@ -95,7 +95,7 @@ class Actor {
         });
     }
 
-	update = game => {
+    update = game => {
         const fight = game.activity;
         this.updateAction(fight);
         const actionData = this.actions[this.action];
@@ -103,5 +103,5 @@ class Actor {
         this.updateSize(actionData);
         this.updatePosition(fight);
         this.updateActionElements(actionData);
-	}
+    }
 }

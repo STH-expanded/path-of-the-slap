@@ -15,11 +15,331 @@ class Computer extends Player {
         }
     },
     {
+        //lowA + highA + highB
         frames: 65,
         fit: (fight, character) => {
             const p1 = fight.players[0].character.collisionBox;
             const p2 = fight.players[1].character.collisionBox;
-            const dist = Math.abs(p1.center().x - p2.center().x) - p1.size.x / 2 - p2.size.x / 2;
+            const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
+            const hit_dist = 80 - character.collisionBox.size.x / 2;
+            return hit_dist >= dist ? 1 : 0;
+        },
+        steps: {
+            0: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            3: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: true,
+                a: true,
+                b: false,
+                start: false
+            }),
+            4: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            17: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            18: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            34: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: true,
+                start: false
+            }),
+            35: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
+    },
+    {
+        // QCF + dash
+        frames: 60,
+        fit: (fight, character) => .05,
+        steps: {
+            0: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            3: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            4: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            5: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            6: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            39: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            40: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            41: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            42: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
+    },
+    {
+        // dash + AerialB
+        frames: 60,
+        fit: (fight, character) => .05,
+        steps: {
+            0: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            5: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            11: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            17: (fight, character) => ({
+                left: !character.direction,
+                up: true,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            28: (fight, character) => ({
+                left: !character.direction,
+                up: true,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: true,
+                start: false
+            }),
+            42: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
+    },
+    {
+        // AerialB + HighA + HighA + HighB
+        frames: 90,
+        fit: (fight, character) => {
+            const p1 = fight.players[0].character.collisionBox;
+            const p2 = fight.players[1].character.collisionBox;
+            const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
+            const hit_dist = 80 - character.collisionBox.size.x / 2;
+            return hit_dist >= dist ? 1 : 0;
+        },
+        steps: {
+            0: (fight, character) => ({
+                left: false,
+                up: true,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            1: (fight, character) => ({
+                left: false,
+                up: true,
+                right: false,
+                down: false,
+                a: false,
+                b: true,
+                start: false
+            }),
+            2: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            25: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            26: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            41: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            42: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            57: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: true,
+                start: false
+            }),
+            58: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
+    },
+    {
+        // LowB + AerialA + HighB
+        frames: 90,
+        fit: (fight, character) => {
+            const p1 = fight.players[0].character.collisionBox;
+            const p2 = fight.players[1].character.collisionBox;
+            const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
             const hit_dist = 80 - character.collisionBox.size.x / 2;
             return hit_dist >= dist ? 1 : 0;
         },
@@ -38,29 +358,11 @@ class Computer extends Player {
                 up: false,
                 right: false,
                 down: true,
-                a: true,
-                b: false,
+                a: false,
+                b: true,
                 start: false
             }),
             2: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            15: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: true,
-                b: false,
-                start: false
-            }),
-            16: (fight, character) => ({
                 left: false,
                 up: false,
                 right: false,
@@ -71,89 +373,23 @@ class Computer extends Player {
             }),
             32: (fight, character) => ({
                 left: false,
-                up: false,
+                up: true,
                 right: false,
                 down: false,
                 a: false,
-                b: true,
+                b: false,
                 start: false
             }),
             33: (fight, character) => ({
                 left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            })
-        }
-    },
-    {
-        frames: 60,
-        fit: (fight, character) => (0),
-        steps: {
-            0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
-            }),
-            1: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: true,
-                start: false
-            }),
-            2: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            })
-        }
-    },
-    {
-        frames: 60,
-        fit: (fight, character) => .05,
-        steps: {
-            0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
-            }),
-            1: (fight, character) => ({
-                left: true,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            2: (fight, character) => ({
-                left: false,
-                up: false,
+                up: true,
                 right: false,
                 down: false,
                 a: true,
                 b: false,
                 start: false
             }),
-            3: (fight, character) => ({
+            34: (fight, character) => ({
                 left: false,
                 up: false,
                 right: false,
@@ -162,34 +398,16 @@ class Computer extends Player {
                 b: false,
                 start: false
             }),
-            36: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            37: (fight, character) => ({
+            59: (fight, character) => ({
                 left: false,
                 up: false,
                 right: false,
                 down: false,
                 a: false,
-                b: false,
+                b: true,
                 start: false
             }),
-            38: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            39: (fight, character) => ({
+            60: (fight, character) => ({
                 left: false,
                 up: false,
                 right: false,
