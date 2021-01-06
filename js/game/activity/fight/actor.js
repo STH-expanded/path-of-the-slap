@@ -2,17 +2,17 @@ class Actor {
 
     velocity = new Vector2D(0, 0);
 
-	actionIndex = 0;
-	
-	hurtboxes = [];
-	hitboxes = [];
+    actionIndex = 0;
+
+    hurtboxes = [];
+    hitboxes = [];
 
     constructor(data, action, offset, master) {
         this.data = data;
         this.id = data.id;
         this.maxHealth = data.health;
         this.health = data.health;
-        
+
         this.actionsBlueprint = data.actionsBlueprint;
         this.actions = data.actions;
         this.action = action;
@@ -37,12 +37,12 @@ class Actor {
 
     takeDamage = damage => this.health = Math.max(0, Math.min(this.maxHealth, this.health - damage));
 
-	isOut = game => !this.collisionBox.includedIn(game.activity.stage.collisionBox);
+    isOut = game => !this.collisionBox.includedIn(game.activity.stage.collisionBox);
 
     updateAction = fight => {
         if (this.action !== 'HIT' && this.isHit(fight)) {
             let hitbox = null;
-            this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
+            //this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) this.takeDamage(hitbox.damage);
         }
         this.actionIndex++;
@@ -78,19 +78,19 @@ class Actor {
             if (actionData[actionElement]) {
                 const elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
                 elements.forEach(element => {
-                        const size = new Vector2D(element.size.x, element.size.y);
-                        const pos = new Vector2D(
-                            this.collisionBox.pos.x + (this.direction ? element.offset.x : this.collisionBox.size.x - element.offset.x - size.x),
-                            this.collisionBox.pos.y + element.offset.y
-                        );
-                        if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
-                        else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
+                    const size = new Vector2D(element.size.x, element.size.y);
+                    const pos = new Vector2D(
+                        this.collisionBox.pos.x + (this.direction ? element.offset.x : this.collisionBox.size.x - element.offset.x - size.x),
+                        this.collisionBox.pos.y + element.offset.y
+                    );
+                    if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
+                    else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
                 });
             }
         });
     }
 
-	update = game => {
+    update = game => {
         const fight = game.activity;
         this.updateAction(fight);
         const actionData = this.actions[this.action];
@@ -98,5 +98,5 @@ class Actor {
         this.updateSize(actionData);
         this.updatePosition(fight);
         this.updateActionElements(actionData);
-	}
+    }
 }
