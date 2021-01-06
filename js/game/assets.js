@@ -143,6 +143,11 @@ class Assets {
         { id: 'trainingNumbers', src: 'img/training/numbers.png' }
     ];
     
+    sounds = new Object
+    soundDataList = [
+        { id: 'coin', url: 'audio/smw_coin.wav' }
+    ];
+    
     loadPercent = 0;
     
     constructor() {
@@ -150,13 +155,23 @@ class Assets {
             this.images[imageData.id] = new Image;
             this.images[imageData.id].src = imageData.src;
         });
-        this.loadStep = 20 / Object.keys(this.images).length;
+
+        this.soundDataList.forEach(soundData => {
+            this.sounds[soundData.id] = new Audio(soundData.url);
+        });
+        
+        this.loadStep = 20 / (Object.keys(this.images).length + Object.keys(this.sounds).length);
     }
 
-    load = () => Promise.all(Object.keys(this.images).map(key => new Promise(resolve => this.images[key].onload = () => {
+    load = () => Promise.all([...Object.keys(this.images).map(key => new Promise(resolve => this.images[key].onload = () => {
         resolve();
         this.loadPercent += this.loadStep;
         const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
         document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
-    })));
+    })), ...Object.keys(this.sounds).map(key => new Promise(resolve => this.sounds[key].oncanplaythrough = () => {
+        resolve();
+        this.loadPercent += this.loadStep;
+        const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
+        document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
+    }))]);
 }

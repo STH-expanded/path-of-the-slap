@@ -1,5 +1,4 @@
 class Display {
-    audioManager = new AudioManager();
     canvas = document.createElement('canvas');
     cx = this.canvas.getContext('2d');
     width = 480;
