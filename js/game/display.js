@@ -38,6 +38,11 @@ class Display {
         this.cx.globalAlpha = 1;
     }
 
+    // Shake effect
+    shakeEffect = (xAmplitude, yAmplitude) => {
+        this.cx.translate(Math.floor(Math.random() * xAmplitude), Math.floor(Math.random() * yAmplitude));
+    }
+
     // Resize canvas
     resize = () => {
         this.zoom = Math.max(1, Math.min(Math.floor(innerWidth / this.width), Math.floor(innerHeight / this.height)));

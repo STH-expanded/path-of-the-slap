@@ -22,7 +22,7 @@ Game.STAGES = [ChruchStage, JungleStage];
 Game.CHARACTERS = [
     null, null, null,
     null, SLING, null,
-    SLING, null, SLING,
-    null, SLING, null,
+    SLING, null, SWAPS,
+    null, SWAPS, null,
     null, null, null
 ];

@@ -30,7 +30,7 @@ class Fight extends Activity {
 		// Init characters
 		this.players.forEach((player, index) => {
 			player.resetInput();
-			player.character = new Character(SLING, "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
+			player.character = new Character(player.selectedCharacter, "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
 		});
 
 		// Init actors

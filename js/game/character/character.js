@@ -9,6 +9,9 @@ class Character {
 
     hitstunVelocity = new Vector2D(0, 0);
     hitstun = 0;
+    
+    ejectionVelocity = new Vector2D(0, 0);
+    ejection = 0;
 
     constructor(data, action, direction, position) {
         this.data = data;
@@ -39,17 +42,31 @@ class Character {
 
     takeDamage = damage => this.health = Math.max(0, Math.min(this.maxHealth, this.health - damage));
 
+    canBlock = fight => this.isHit(fight) && !this.direction === this.getEnemy(fight).direction;
+
     updateAction = (fight, inputList) => {
-        if (this.action !== 'HIT' && this.isHit(fight)) {
+        if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
-                this.hitstun = Math.round(hitbox.damage * 0.25);
-                this.takeDamage(hitbox.damage);
+                this.hitstun = hitbox.hitstunFrame;
+                if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
+                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
+                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
+                    this.takeDamage(hitbox.damage);
+                    if (hitbox.ejectionVelocity) {
+                        this.ejection = 1;
+                        this.ejectionVelocity = new Vector2D(hitbox.ejectionVelocity.x, hitbox.ejectionVelocity.y);
+                    }
                 this.hitstunVelocity = hitbox.hitstunVelocity;
             }
         }
-        if (this.action === 'HIT') this.hitstun--;
+        if (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) this.hitstun--;
+        if (this.ejection && this.action === 'EJECTED') {
+            if (this.ejection === 1) this.velocity = this.ejectionVelocity;
+            if ((this.ejectionVelocity.y === 0 || this.ejection > 1) && this.isGrounded(fight)) this.ejection = 0;
+            else this.ejection++;
+        }
         this.actionIndex++;
         const newAction = this.actionsBlueprint.find(action => action.condition(fight, this, inputList)).action || this.action;
         if (newAction !== this.action || this.actionIndex >= this.actions[this.action].duration) {
@@ -67,7 +84,7 @@ class Character {
 
     updateVelocity = (fight, inputList, actionData) => {
         const velocity = actionData.velocity[Object.keys(actionData.velocity).reverse().find(index => index <= this.actionIndex)](fight, this, inputList);
-        this.velocity = this.action === 'HIT' ? this.hitstunVelocity : velocity;
+        this.velocity = (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) ? this.hitstunVelocity : velocity;
     }
 
     updateSize = actionData => {
@@ -120,7 +137,12 @@ class Character {
                             this.collisionBox.pos.y + element.offset.y
                         );
                         if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
-                        else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
+                        else {
+                            this.hitboxes.push(new HitBox(pos, size, element.damage, element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
+                                new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y),
+                                element.ejectionVelocity ? new Vector2D(element.ejectionVelocity.x * (this.direction ? 1 : -1), element.ejectionVelocity.y) : null
+                            ));
+                        }
                     }
                 });
             }

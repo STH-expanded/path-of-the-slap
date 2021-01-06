@@ -5,8 +5,32 @@ const SLING = {
     actionsBlueprint: [
         // Status actions
         {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
+            action: "BLOCK",
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'AERIAL_BLOCK' && character.hitstun,
+            action: "AERIAL_BLOCK"
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'LOW_BLOCK' && character.hitstun,
+            action: "LOW_BLOCK"
+        },
+        {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) ,
+            action: "GET_UP"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
+            action: "GROUND"
+        },
+        {
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -52,12 +76,6 @@ const SLING = {
                 inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
             action: "FORWARD_DASH"
         },
-        // {
-        //     condition: (fight, character, inputList) => (inputList.state[0].input.stick === 6 && !character.direction || inputList.state[0].input.stick === 4 && character.direction) &&
-        //         inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 &&
-        //         inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
-        //     action: "BACK_DASH"
-        // },
         // Standing actions
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
@@ -311,7 +329,7 @@ const SLING = {
             hitboxes: {
                 0: [],
                 12: [
-                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunVelocity: { x: 3, y: 0 } }
+                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -8 } }
                 ],
                 18: []
             },
@@ -381,7 +399,7 @@ const SLING = {
             hitboxes: {
                 0: [],
                 18: [
-                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 100, hitstunVelocity: { x: 0, y: 0 } }
+                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 100, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 0, y: 0 } }
                 ],
                 24: []
             },
@@ -577,10 +595,7 @@ const SLING = {
         QCB: {},
         DP: {},
         HCF: {},
-        AERIAL_BLOCK: {},
-        BLOCK: {},
-        LOW_BLOCK: {},
-        HIT: {
+        AERIAL_BLOCK: {
             duration: 1,
             cancellable: true,
             fixedDirection: true,
@@ -588,6 +603,54 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        LOW_BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        HIT: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
             },
             hurtboxes: {
                 0: [
@@ -598,13 +661,67 @@ const SLING = {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
+                frameCount: 1,
+                effects: {
+                    0: [
+                        { name: 'shake' }
+                    ]
+                }
+            }
+        },
+        EJECTED: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
+            },
+            animation: {
+                altImg: {
+                    action: "HIT",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
                 frameCount: 1
             }
         },
-        EJECTED: {},
-        GROUND: {},
+        GROUND: {
+            duration: 0,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        GET_UP: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
         LAND: {},
-        GET_UP: {},
         RECOVER: {},
         TECH: {},
         GRAB: {},

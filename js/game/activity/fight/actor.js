@@ -84,7 +84,12 @@ class Actor {
                         this.collisionBox.pos.y + element.offset.y
                     );
                     if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
-                    else this.hitboxes.push(new HitBox(pos, size, element.damage, new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y)));
+                    else {
+                        this.hitboxes.push(new HitBox(pos, size, element.damage,
+                            element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
+                            new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y), null
+                        ));
+                    }
                 });
             }
         });
