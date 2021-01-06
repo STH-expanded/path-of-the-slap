@@ -99,6 +99,9 @@ class Character {
         const enemyCollisionBox = this.getEnemy(fight).collisionBox;
         this.collisionBox.pos = this.collisionBox.pos.plus(this.velocity);
         // Clip updated position to stage
+        if (this.action === 'EJECTED' && (this.collisionBox.pos.x < 5 || this.collisionBox.pos.x + this.collisionBox.size.x >= fight.stage.collisionBox.size.x)) {
+            this.velocity.x = -this.velocity.x
+        }
         if (!this.collisionBox.includedIn(fight.stage.collisionBox)) {
             fight.stage.clipCollisionBox(this.collisionBox);
             // If player is hit and had to be clipped to stage, apply reverse hitstun force to other player

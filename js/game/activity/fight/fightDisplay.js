@@ -33,7 +33,6 @@ Fight.display = display => {
                 if (!element.direction) display.flipHorizontally(element.collisionBox.center().x);
                 if (animation.effects) {
                     const effects = animation.effects[Object.keys(animation.effects).reverse().find(index => index <= element.actionIndex)];
-                    console.log(effects)
                     effects.forEach(effect => {
                         display[effect.name + "Effect"](element.hitstun, element.hitstun);
                     });
