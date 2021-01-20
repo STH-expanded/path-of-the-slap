@@ -67,6 +67,9 @@ class Character {
             if ((this.ejectionVelocity.y === 0 || this.ejection > 1) && this.isGrounded(fight)) this.ejection = 0;
             else this.ejection++;
         }
+        if (this.action === "TECH") {
+            this.ejection = 0;
+        }
         this.actionIndex++;
         const newAction = this.actionsBlueprint.find(action => action.condition(fight, this, inputList)).action || this.action;
         if (newAction !== this.action || this.actionIndex >= this.actions[this.action].duration) {
