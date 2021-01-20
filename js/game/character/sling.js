@@ -1,23 +1,27 @@
 const SLING = {
     id: "00",
-    health: 10,
+    health: 150,
 
     actionsBlueprint: [
         {
-            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff,
+            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
             action: "VICTORYPOSE",
         },
         {
-            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff,
+            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
             action: "LOOSERPOSE",
         },
         {
-            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver ,
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight) ,
             action: "KO",
         },
         {
-            condition: (fight, character, inputList) => fight.roundIsOver ,
+            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight) ,
             action: "ALIVEROUNDOVER",
+        },
+        {
+            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "ENTERMATCH" && character.isGrounded(fight),
+            action: "WAITING",
         },
         // Status actions
         {
@@ -757,10 +761,11 @@ const SLING = {
         GRAB_TECH: {},
         GRABBED: {},
         ENTERMATCH: { 
-            duration: 15,
+            duration: 1,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             size: { x: 32, y: 32 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -771,6 +776,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             size: { x: 128, y: 32 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -781,6 +787,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -791,6 +798,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -801,10 +809,23 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             size: { x: 128, y: 32 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
+        },
+        WAITING:{
+            duration: 1,
+            cancellable: false,
+            fixedDirection: false,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+           
         }
     }
 }
