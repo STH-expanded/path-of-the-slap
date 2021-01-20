@@ -1,6 +1,6 @@
 const SLING = {
     id: "00",
-    health: 150,
+    health: 1000,
 
     actionsBlueprint: [
         {
