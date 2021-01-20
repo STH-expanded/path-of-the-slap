@@ -1,6 +1,6 @@
 const SWAPS = {
     id: "02",
-    health: 150,
+    health: 1250,
 
     actionsBlueprint: [
         {
