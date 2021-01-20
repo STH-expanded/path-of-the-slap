@@ -828,5 +828,36 @@ const SLING = {
             },
             animation: {}
         },
+        FORWARD_THROW: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
+                16: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                12: [
+                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -15 } }
+                ],
+                18: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
+                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
+                ],
+                24: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {}
+        },
     }
 }
