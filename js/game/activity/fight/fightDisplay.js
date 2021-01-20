@@ -31,18 +31,19 @@ Fight.display = display => {
             if (image) {
                 cx.save();
                 if (!element.direction) display.flipHorizontally(element.collisionBox.center().x);
+                cx.translate(element.collisionBox.pos.x, element.collisionBox.pos.y);
                 if (animation.effects) {
                     const effects = animation.effects[Object.keys(animation.effects).reverse().find(index => index <= element.actionIndex)];
                     effects.forEach(effect => {
-                        display[effect.name + "Effect"](element.hitstun, element.hitstun);
+                        if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
+                        if (effect.name === "rotate") display[effect.name + "Effect"](element);
                     });
                 }
                 cx.drawImage(
                     image,
                     animation.size.x * (Math.floor(element.actionIndex * animation.speed) % animation.frameCount), 0,
                     animation.size.x, animation.size.y,
-                    element.collisionBox.pos.x + animation.offset.x,
-                    element.collisionBox.pos.y + animation.offset.y,
+                    animation.offset.x, animation.offset.y,
                     animation.size.x, animation.size.y
                 );
                 cx.restore();

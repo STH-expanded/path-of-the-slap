@@ -42,6 +42,14 @@ class Display {
     shakeEffect = (xAmplitude, yAmplitude) => {
         this.cx.translate(Math.floor(Math.random() * xAmplitude), Math.floor(Math.random() * yAmplitude));
     }
+    
+    // Rotate effect
+    rotateEffect = element => {
+        this.cx.translate(element.collisionBox.size.x / 2, element.collisionBox.size.y / 2);
+        this.cx.rotate(-45 * Math.PI / 180);
+        this.cx.translate(-element.collisionBox.size.x / 2, -element.collisionBox.size.y / 2);
+        if (element.velocity.x < 0) this.flipHorizontally(element.collisionBox.center().x);
+    }
 
     // Resize canvas
     resize = () => {

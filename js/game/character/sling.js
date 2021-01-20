@@ -686,7 +686,12 @@ const SLING = {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
-                frameCount: 1
+                frameCount: 1,
+                effects: {
+                    0: [
+                        { name: 'rotate' }
+                    ]
+                }
             }
         },
         GROUND: {

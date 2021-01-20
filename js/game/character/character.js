@@ -44,6 +44,8 @@ class Character {
 
     canBlock = fight => this.isHit(fight) && !this.direction === this.getEnemy(fight).direction;
 
+    wallBounce = fight => this.action === 'EJECTED' && (this.collisionBox.pos.x < 1 || this.collisionBox.pos.x + this.collisionBox.size.x >= fight.stage.collisionBox.size.x);
+
     updateAction = (fight, inputList) => {
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
@@ -98,10 +100,8 @@ class Character {
     updatePosition = fight => {
         const enemyCollisionBox = this.getEnemy(fight).collisionBox;
         this.collisionBox.pos = this.collisionBox.pos.plus(this.velocity);
+        if (this.wallBounce(fight)) this.velocity.x = -this.velocity.x;
         // Clip updated position to stage
-        if (this.action === 'EJECTED' && (this.collisionBox.pos.x < 5 || this.collisionBox.pos.x + this.collisionBox.size.x >= fight.stage.collisionBox.size.x)) {
-            this.velocity.x = -this.velocity.x
-        }
         if (!this.collisionBox.includedIn(fight.stage.collisionBox)) {
             fight.stage.clipCollisionBox(this.collisionBox);
             // If player is hit and had to be clipped to stage, apply reverse hitstun force to other player
