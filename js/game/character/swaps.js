@@ -3,10 +3,58 @@ const SWAPS = {
     health: 1250,
 
     actionsBlueprint: [
+        {
+            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
+            action: "VICTORYPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
+            action: "LOOSERPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight) ,
+            action: "KO",
+        },
+        {
+            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight) ,
+            action: "ALIVEROUNDOVER",
+        },
+        {
+            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "ENTERMATCH" && character.isGrounded(fight),
+            action: "WAITING",
+        },
         // Status actions
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
+            action: "BLOCK",
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'AERIAL_BLOCK' && character.hitstun,
+            action: "AERIAL_BLOCK"
+        },
+        {
+            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'LOW_BLOCK' && character.hitstun,
+            action: "LOW_BLOCK"
+        },
         {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) ,
+            action: "GET_UP"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
+            action: "GROUND"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
+            action: "TECH"
+        },
+        {
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -499,10 +547,7 @@ const SWAPS = {
         QCB: {},
         DP: {},
         HCF: {},
-        AERIAL_BLOCK: {},
-        BLOCK: {},
-        LOW_BLOCK: {},
-        HIT: {
+        AERIAL_BLOCK: {
             duration: 1,
             cancellable: true,
             fixedDirection: true,
@@ -510,6 +555,54 @@ const SWAPS = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        LOW_BLOCK: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 96 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        HIT: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
             },
             hurtboxes: {
                 0: [
@@ -520,17 +613,130 @@ const SWAPS = {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
+                frameCount: 1,
+                effects: {
+                    0: [
+                        { name: 'shake' }
+                    ]
+                }
+            }
+        },
+        EJECTED: {
+            duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
+            },
+            animation: {
+                altImg: {
+                    action: "HIT",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
                 frameCount: 1
             }
         },
-        EJECTED: {},
-        GROUND: {},
+        GROUND: {
+            duration: 0,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        GET_UP: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
         LAND: {},
-        GET_UP: {},
         RECOVER: {},
-        TECH: {},
+        TECH: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
         GRAB: {},
         GRAB_TECH: {},
-        GRABBED: {}
+        GRABBED: {},
+        ENTERMATCH: { 
+            duration: 150,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        KO:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        ALIVEROUNDOVER:{ 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        VICTORYPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        LOOSERPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        }
     }
 }
