@@ -3,6 +3,26 @@ const SLING = {
     health: 1000,
 
     actionsBlueprint: [
+        {
+            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
+            action: "VICTORYPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
+            action: "LOOSERPOSE",
+        },
+        {
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight) ,
+            action: "KO",
+        },
+        {
+            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight) ,
+            action: "ALIVEROUNDOVER",
+        },
+        {
+            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "ENTERMATCH" && character.isGrounded(fight),
+            action: "WAITING",
+        },
         // Status actions
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.b,
@@ -47,6 +67,10 @@ const SLING = {
         {
             condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
             action: "GROUND"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
+            action: "TECH"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -741,7 +765,6 @@ const SLING = {
         },
         LAND: {},
         RECOVER: {},
-        TECH: {},
         GRAB: {
             duration: 32,
             cancellable: false,
@@ -861,5 +884,82 @@ const SLING = {
             },
             animation: {}
         },
+        TECH: {
+            duration: 16,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        ENTERMATCH: { 
+            duration: 1,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 32, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        KO:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        ALIVEROUNDOVER:{ 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        VICTORYPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        LOOSERPOSE:  { 
+            duration: 45,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 128, y: 32 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        WAITING:{
+            duration: 1,
+            cancellable: false,
+            fixedDirection: false,
+            isAerial: false,
+            disableMenu : true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+           
+        }
     }
 }
