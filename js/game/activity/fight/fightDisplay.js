@@ -37,6 +37,12 @@ Fight.display = display => {
                         display[effect.name + "Effect"](element.hitstun, element.hitstun);
                     });
                 }
+                if (animation.sfx) {
+                    const sfxs = animation.sfx[Object.keys(animation.sfx).reverse().find(index => index <= element.actionIndex)];
+                    sfxs.forEach(sfx => {
+                        display.assets.sounds[sfx.name].play();
+                    })
+                }
                 cx.drawImage(
                     image,
                     animation.size.x * (Math.floor(element.actionIndex * animation.speed) % animation.frameCount), 0,
@@ -160,10 +166,10 @@ Fight.GUI = display => {
         const healthCoef = character.health / character.maxHealth;
         const maxLength = 156;
         const length = Math.round(maxLength * healthCoef);
-        const {color1, color2} = healthCoef === 1 ? {color1: '#6888fc', color2: '#0000c4'}
-            : healthCoef > 0.5 ? {color1: '#58d858', color2: '#007800'}
-            : healthCoef > 0.25 ? {color1: '#fcb800', color2: '#ac8000'}
-            : {color1: '#fc3800', color2: '#8c1800'};
+        const { color1, color2 } = healthCoef === 1 ? { color1: '#6888fc', color2: '#0000c4' }
+            : healthCoef > 0.5 ? { color1: '#58d858', color2: '#007800' }
+                : healthCoef > 0.25 ? { color1: '#fcb800', color2: '#ac8000' }
+                    : { color1: '#fc3800', color2: '#8c1800' };
         cx.fillStyle = color2;
         cx.fillRect(66 + maxLength - length, 10, length, 12);
         cx.fillStyle = color1;

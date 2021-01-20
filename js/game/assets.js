@@ -111,7 +111,7 @@ class Assets {
         { id: 's2floor', src: 'img/stage/s2floor.png' },
         { id: 's2l1', src: 'img/stage/s2l1.png' },
         { id: 's2preview', src: 'img/stage/s2preview.png' },
-        
+
         { id: 's3floor', src: 'img/stage/s3floor.png' },
         { id: 's3l0', src: 'img/stage/s3l0.png' },
         { id: 's3l1', src: 'img/stage/s3l1.png' },
@@ -142,14 +142,15 @@ class Assets {
         { id: 'arrows', src: 'img/training/arrows.png' },
         { id: 'trainingNumbers', src: 'img/training/numbers.png' }
     ];
-    
+
     sounds = new Object
     soundDataList = [
-        { id: 'coin', url: 'audio/smw_coin.wav' }
+        { id: 'coin', url: 'audio/smw_coin.wav' },
+        { id: 'hitASling', url: 'audio/coupSling.mp3' }
     ];
-    
+
     loadPercent = 0;
-    
+
     constructor() {
         this.imageDataList.forEach(imageData => {
             this.images[imageData.id] = new Image;
@@ -159,7 +160,7 @@ class Assets {
         this.soundDataList.forEach(soundData => {
             this.sounds[soundData.id] = new Audio(soundData.url);
         });
-        
+
         this.loadStep = 20 / (Object.keys(this.images).length + Object.keys(this.sounds).length);
     }
 

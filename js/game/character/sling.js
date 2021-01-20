@@ -21,7 +21,7 @@ const SLING = {
             action: "HIT"
         },
         {
-            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) ,
+            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
             action: "GET_UP"
         },
         {
@@ -658,6 +658,11 @@ const SLING = {
                 ]
             },
             animation: {
+                sfx: {
+                    0: [
+                        { name: 'hitASling' }
+                    ]
+                },
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,

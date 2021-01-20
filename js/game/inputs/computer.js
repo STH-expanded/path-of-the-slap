@@ -417,6 +417,56 @@ class Computer extends Player {
                 start: false
             })
         }
+    },
+    {
+        // move forward 
+        frames: 121,
+        fit: (fight, character) => .05,
+        steps: {
+            0: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            120: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
+    },
+    {
+        // move backward
+        frames: 121,
+        fit: (fight, character) => .05,
+        steps: {
+            0: (fight, character) => ({
+                left: character.direction,
+                up: false,
+                right: !character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            120: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
     }];
     sequence = this.sequences[0];
     sequenceIndex = 1;
