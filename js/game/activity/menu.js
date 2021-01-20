@@ -28,7 +28,7 @@ AbstractMenu.display = display => {
 
     // Background
     if (menu instanceof MainMenu) {
-        cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, 0, display.width, display.height);
+        cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, Math.sin(menu.animationFrame * 0.02) * 4, display.width, display.height);
     }
     else {
         cx.fillStyle = menu instanceof PauseMenu ? '#0008' : '#000';
@@ -41,6 +41,29 @@ AbstractMenu.display = display => {
         AbstractMenu.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
         if (menu.cursor === index) AbstractMenu.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(menu.animationFrame * 0.1) * 4);
     });
+
+    // Sound
+    Object.values(display.game.players).forEach(player => {
+        if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
+            display.assets.sounds.se14.play();
+        } else {
+            if (player.inputList.frame[0].stick > 6 &&
+                player.inputList.frame[1].stick < 7) display.assets.sounds.select.play();
+            if (player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) display.assets.sounds.select.play();
+        }
+    });
+
+    // Music
+    if (menu instanceof MainMenu && menu.initAnimFrame === menu.initAnimInitFrame) {
+        display.assets.sounds.mainMenu.currentTime = 0;
+        display.assets.sounds.mainMenu.play();
+    }
+    if (menu instanceof MainMenu && menu.nextActivity) {
+        display.assets.sounds.mainMenu.pause();
+    }
+
+    // Animation
+    if (menu instanceof MainMenu && menu.endAnimFrame) display.fadeEffect('#000', menu.endAnimFrame, menu.endAnimEndFrame);
 }
 
 AbstractMenu.drawMenuElement = (display, menu, asset, index, offset) => {
@@ -57,7 +80,7 @@ class MainMenu extends AbstractMenu {
     optionHandler = game => {
         const players = Object.values(game.players);
         return this.options[this.cursor] === 'Player' && players.length < 2 ? null :
-            new CharacterSelection(60, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
+            new CharacterSelection(300, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
                 [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
             );
     }
@@ -89,12 +112,12 @@ class PauseMenu extends AbstractMenu {
                 game.lastFight.stage,
                 game.activity.trainingMode
             ) :
-            this.options[this.cursor] === "CharacterSelection" ? new CharacterSelection(60, 10,
+            this.options[this.cursor] === "CharacterSelection" ? new CharacterSelection(300, 10,
                 game.activity.trainingMode ? "Training" : game.activity.players[1] instanceof Computer ? "Computer" : "Player",
                 Game.CHARACTERS, Game.STAGES,
                 game.lastFight.players
             ) :
-            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4) : null;
+            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null;
     }
 }
 
@@ -104,6 +127,6 @@ class EndMenu extends AbstractMenu {
     }
 
     optionHandler = game => (this.options[this.cursor] === 'Rematch' ? new Fight(60, 60, game.lastFight.players, game.lastFight.stage, false) :
-        this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(60, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
-        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4) : null);
+        this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
+        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null);
 }

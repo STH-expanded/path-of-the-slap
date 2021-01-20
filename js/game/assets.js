@@ -145,7 +145,13 @@ class Assets {
     
     sounds = new Object
     soundDataList = [
-        { id: 'coin', url: 'audio/smw_coin.wav' }
+        { id: 'coin', url: 'audio/smw_coin.wav' },
+        { id: 'select', url: 'audio/select.wav' },
+        { id: 'mainMenu', url: 'audio/main-menu.mp3' },
+        { id: 'fight', url: 'audio/fight.mp3' },
+        { id: 'charSelect', url: 'audio/char-select.mp3' },
+        { id: 'se1', url: 'audio/se1.mp3' },
+        { id: 'se14', url: 'audio/se14.mp3' }
     ];
     
     loadPercent = 0;
@@ -167,11 +173,11 @@ class Assets {
         resolve();
         this.loadPercent += this.loadStep;
         const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
-        document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
+        if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
     })), ...Object.keys(this.sounds).map(key => new Promise(resolve => this.sounds[key].oncanplaythrough = () => {
         resolve();
         this.loadPercent += this.loadStep;
         const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
-        document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
+        if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
     }))]);
 }

@@ -92,6 +92,11 @@ CharacterSelection.display = display => {
                         cx.drawImage(images.randomImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 - Math.sin(charSelect.animationFrame * 0.05), 52, 52);
                     }
                     else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) cx.drawImage(images.lockImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
+                    if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame === 0) {
+                        if (!display.assets.sounds.se1.paused) display.assets.sounds.se1.pause();
+                        display.assets.sounds.se1.currentTime = 0;
+                        display.assets.sounds.se1.play();
+                    }
                 }
             }
         }
@@ -139,6 +144,15 @@ CharacterSelection.display = display => {
     }
 
     if (![cursor1, cursor2].find(cursor => !cursor.ready || cursor.infoFrame) && charSelect.mode !== 'Training') CharacterSelection.displayStage(display);
+
+    // Music
+    if (charSelect.initAnimFrame === charSelect.initAnimInitFrame) {
+        display.assets.sounds.charSelect.currentTime = 0;
+        display.assets.sounds.charSelect.play();
+    }
+    if (charSelect.nextActivity) {
+        display.assets.sounds.charSelect.pause();
+    }
 
     // Transition
     if (charSelect.endAnimFrame) display.fadeEffect('#000', charSelect.endAnimFrame, charSelect.endAnimEndFrame);

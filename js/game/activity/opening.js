@@ -13,7 +13,7 @@ class Opening extends Activity {
                 Game.TRAINING_STAGE,
                 false
             );
-        } else this.nextActivity = new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4);
+        } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4);
     }
 }
 
@@ -31,7 +31,6 @@ Opening.display = display => {
         cx.fillStyle = '#000';
         cx.fillRect(0, 0, display.width, display.height);
     } else if (opening.initAnimFrame === Math.floor(opening.initAnimInitFrame * 0.75)) {
-        display.assets.sounds.coin.volume = 1
         display.assets.sounds.coin.play();
     }
     if (opening.endAnimFrame) display.fadeEffect('#000', opening.endAnimFrame, opening.endAnimEndFrame);

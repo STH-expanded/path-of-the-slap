@@ -1,9 +1,9 @@
 class CharacterSelection extends Activity {
     initInfo3Frame = 16;
     mugshotOrder = [
-        [56, 36, 32, 44, 48],
-        [52, 40, 28, 40, 52],
-        [48, 44, 32, 36, 56]
+        [224, 144, 128, 176, 192],
+        [208, 160, 112, 160, 208],
+        [192, 176, 128, 144, 224]
     ];
     
     stageInitFrame = 6;
@@ -94,7 +94,7 @@ class CharacterSelection extends Activity {
                     cursor.ready = false;
                     cursor.infoFrame = this.cursorInfoInitFrame;
                     // If cancel while not having choosed character : return to main menu
-                } else this.nextActivity = new MainMenu(10, 10, ['Computer', 'Player', 'Training'], 4);
+                } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4);
             }
         } else if (!cursor.ready) {
             // Else if input directions

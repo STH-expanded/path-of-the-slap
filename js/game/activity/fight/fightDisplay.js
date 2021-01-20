@@ -39,6 +39,7 @@ Fight.display = display => {
                         if (effect.name === "rotate") display[effect.name + "Effect"](element);
                     });
                 }
+
                 cx.drawImage(
                     image,
                     animation.size.x * (Math.floor(element.actionIndex * animation.speed) % animation.frameCount), 0,
@@ -52,6 +53,18 @@ Fight.display = display => {
     });
 
     cx.translate(view.xOffset, view.yOffset);
+
+    // Music
+    if (fight.initAnimFrame === fight.initAnimInitFrame) {
+        display.assets.sounds.fight.play();
+        display.assets.sounds.fight.currentTime = 0;
+    }
+    if (!fight.pauseMenu && display.assets.sounds.fight.paused) {
+        display.assets.sounds.fight.play();
+    }
+    if (fight.nextActivity || fight.pauseMenu) {
+        display.assets.sounds.fight.pause();
+    }
 
     // Pause menu
     if (fight.pauseMenu) fight.pauseMenu.constructor.display(display);
