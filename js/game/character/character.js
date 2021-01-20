@@ -54,7 +54,6 @@ class Character {
                 this.hitstun = hitbox.hitstunFrame;
                 if (this.getEnemies(fight)[0].action === "GRAB") {
                     this.grabbed = true;
-                    console.log(this.getEnemies(fight)[0].action)
                 }
                 if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
@@ -118,7 +117,7 @@ class Character {
             }
         }
         // Update other player position with same velocity if colliding with updated position
-        if (this.collisionBox.intersects(enemyCollisionBox)) {
+        if (this.collisionBox.intersects(enemyCollisionBox) && !this.actions[this.action].collisionBoxDisable) {
             enemyCollisionBox.pos = enemyCollisionBox.pos.plus(new Vector2D(this.velocity.x, 0));
             fight.stage.xClipCollisionBoxes(enemyCollisionBox, this.collisionBox);
             // Apply horizontal force to both players if still colliding

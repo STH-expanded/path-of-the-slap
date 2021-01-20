@@ -690,6 +690,7 @@ const SLING = {
             cancellable: true,
             fixedDirection: true,
             isAerial: true,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
@@ -710,6 +711,7 @@ const SLING = {
             cancellable: true,
             fixedDirection: true,
             isAerial: false,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
