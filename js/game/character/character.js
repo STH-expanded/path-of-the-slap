@@ -13,6 +13,8 @@ class Character {
     ejectionVelocity = new Vector2D(0, 0);
     ejection = 0;
 
+    grabbed = false;
+
     constructor(data, action, direction, position) {
         this.data = data;
         this.id = data.id;
@@ -50,11 +52,15 @@ class Character {
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
+                if (this.getEnemies(fight)[0].action === "GRAB") {
+                    this.grabbed = true;
+                }
                 if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
+                        this.grabbed = false;
                         this.ejection = 1;
                         this.ejectionVelocity = new Vector2D(hitbox.ejectionVelocity.x, hitbox.ejectionVelocity.y);
                     }
@@ -66,6 +72,9 @@ class Character {
             if (this.ejection === 1) this.velocity = this.ejectionVelocity;
             if ((this.ejectionVelocity.y === 0 || this.ejection > 1) && this.isGrounded(fight)) this.ejection = 0;
             else this.ejection++;
+        }
+        if (this.action === "TECH") {
+            this.ejection = 0;
         }
         this.actionIndex++;
         const newAction = this.actionsBlueprint.find(action => action.condition(fight, this, inputList)).action || this.action;
@@ -111,7 +120,7 @@ class Character {
             }
         }
         // Update other player position with same velocity if colliding with updated position
-        if (this.collisionBox.intersects(enemyCollisionBox)) {
+        if (this.collisionBox.intersects(enemyCollisionBox) && !this.actions[this.action].collisionBoxDisable) {
             enemyCollisionBox.pos = enemyCollisionBox.pos.plus(new Vector2D(this.velocity.x, 0));
             fight.stage.xClipCollisionBoxes(enemyCollisionBox, this.collisionBox);
             // Apply horizontal force to both players if still colliding

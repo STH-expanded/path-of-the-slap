@@ -30,7 +30,7 @@ class Fight extends Activity {
 		// Init characters
 		this.players.forEach((player, index) => {
 			player.resetInput();
-			player.character = new Character(player.selectedCharacter, "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
+			player.character = new Character(player.selectedCharacter, this.winCount.filter((element)=>element == 0).length == 2  ? "ENTERMATCH" : "IDLE", !index % 2, new Vector2D(Math.floor((this.stage.collisionBox.size.x / 3) * (1 + index)), this.stage.collisionBox.size.y));
 		});
 
 		// Init actors
@@ -49,23 +49,26 @@ class Fight extends Activity {
 			else this.initRound();
 		} else if (this.pauseMenu) this.pauseMenu.handler(game);
 		else this.roundHandler(game);
-	}
-
-	roundHandler = game => {
 		// Update players
-		this.players.forEach(player => {
-			// Update characters
-			player.character.update(game, player.inputList);
-			// Check pause menu
-			if (player !== game.computer) {
-				const currentInput = player.inputList.frame.length > 0 ? player.inputList.frame[player.inputList.frame.length - 1] : {};
-				const lastInput = player.inputList.frame.length > 1 ? player.inputList.frame[player.inputList.frame.length - 2] : {};
-				this.pauseMenu = currentInput.start && !lastInput.start ? new PauseMenu(0, 0, ["Resume", "Rematch", "CharacterSelection", "MainMenu"], 2, this) : this.pauseMenu;	
-			}
+		this.players.forEach((player,index) => {
+				// Update characters
+				if (!this.pauseMenu) {
+					player.character.update(game, player.inputList);
+				}
+				// Check pause menu
+				if (player !== game.computer  && !player.character.actions[player.character.action].disableMenu===true) {
+					const currentInput = player.inputList.frame.length > 0 ? player.inputList.frame[player.inputList.frame.length - 1] : {};
+					const lastInput = player.inputList.frame.length > 1 ? player.inputList.frame[player.inputList.frame.length - 2] : {};
+					this.pauseMenu = currentInput.start && !lastInput.start ? new PauseMenu(0, 0, ["Resume", "Rematch", "CharacterSelection", "MainMenu"], 2, this) : this.pauseMenu;	
+				}
 		});
 		// Update actors
 		this.actors = this.actors.filter(actor => actor.action !== "BREAK");
 		this.actors.forEach(actor => actor.update(game));
+	}
+
+	roundHandler = game => {
+		
 		// Check win conditions
 		if (!this.trainingMode) {
 			const p1Health = this.players[0].character.health;
