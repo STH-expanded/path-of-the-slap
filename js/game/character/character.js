@@ -13,6 +13,8 @@ class Character {
     ejectionVelocity = new Vector2D(0, 0);
     ejection = 0;
 
+    grabbed = false;
+
     constructor(data, action, direction, position) {
         this.data = data;
         this.id = data.id;
@@ -50,11 +52,16 @@ class Character {
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
+                if (this.getEnemies(fight)[0].action === "GRAB") {
+                    this.grabbed = true;
+                    console.log(this.getEnemies(fight)[0].action)
+                }
                 if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
+                        this.grabbed = false;
                         this.ejection = 1;
                         this.ejectionVelocity = new Vector2D(hitbox.ejectionVelocity.x, hitbox.ejectionVelocity.y);
                     }

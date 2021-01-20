@@ -5,6 +5,18 @@ const SLING = {
     actionsBlueprint: [
         // Status actions
         {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.b,
+            action: "GRAB",
+        },
+        {
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && (character.direction ? inputList.state[0].input.stick === 6 : inputList.state[0].input.stick === 4),
+            action: "FORWARD_THROW",
+        },
+        {
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED",
+            action: "BACK_THROW",
+        },
+        {
             condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
             action: "BLOCK",
         },
@@ -17,6 +29,14 @@ const SLING = {
             action: "LOW_BLOCK"
         },
         {
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
+        },
+        {
+            condition: (fight, character, inputList) => character.grabbed,
+            action: "GRABBED"
+        },
+        {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
         },
@@ -27,10 +47,6 @@ const SLING = {
         {
             condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
             action: "GROUND"
-        },
-        {
-            condition: (fight, character, inputList) => character.ejection,
-            action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -724,8 +740,93 @@ const SLING = {
         LAND: {},
         RECOVER: {},
         TECH: {},
-        GRAB: {},
+        GRAB: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? 1 : -1), y: 0 }),
+                16: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                12: [
+                    { offset: { x: 32, y: 24 }, size: { x: 50, y: 44 }, damage: 0, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 } }
+                ],
+                18: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 50, y: 128 } },
+                    { offset: { x: 32, y: 24 }, size: { x: 50, y: 44 } }
+                ],
+                24: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {}
+        },
         GRAB_TECH: {},
-        GRABBED: {}
+        GRABBED: {
+            // duration: 1,
+            cancellable: true,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ],
+            },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
+            },
+            animation: {
+                altImg: {
+                    action: "HIT",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        BACK_THROW: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
+                16: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                12: [
+                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: -16, y: -15 } }
+                ],
+                18: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
+                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
+                ],
+                24: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {}
+        },
     }
 }
