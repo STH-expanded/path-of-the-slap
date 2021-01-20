@@ -80,7 +80,7 @@ class MainMenu extends AbstractMenu {
     optionHandler = game => {
         const players = Object.values(game.players);
         return this.options[this.cursor] === 'Player' && players.length < 2 ? null :
-            new CharacterSelection(300, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
+            new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
                 [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
             );
     }
@@ -112,7 +112,7 @@ class PauseMenu extends AbstractMenu {
                 game.lastFight.stage,
                 game.activity.trainingMode
             ) :
-            this.options[this.cursor] === "CharacterSelection" ? new CharacterSelection(300, 10,
+            this.options[this.cursor] === "CharacterSelection" ? new CharacterSelection(300, 60,
                 game.activity.trainingMode ? "Training" : game.activity.players[1] instanceof Computer ? "Computer" : "Player",
                 Game.CHARACTERS, Game.STAGES,
                 game.lastFight.players
@@ -127,6 +127,6 @@ class EndMenu extends AbstractMenu {
     }
 
     optionHandler = game => (this.options[this.cursor] === 'Rematch' ? new Fight(60, 60, game.lastFight.players, game.lastFight.stage, false) :
-        this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 10, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
+        this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
         this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null);
 }

@@ -700,7 +700,7 @@ const SLING = {
             animation: {
                 sfx: {
                     0: [
-                        { name: 'hitASling' }
+                        // { name: 'hitASling' }
                     ]
                 },
                 offset: { x: -29, y: -48 },
@@ -735,7 +735,7 @@ const SLING = {
                 frameCount: 1,
                 effects: {
                     0: [
-                        { name: 'rotate' }
+                        // { name: 'rotate' }
                     ]
                 }
             }

@@ -154,6 +154,50 @@ CharacterSelection.display = display => {
         display.assets.sounds.charSelect.pause();
     }
 
+    // Sound
+    if (charSelect.cursors.find(cursor => !cursor.ready)) {
+        const cursors = charSelect.cursors.filter(cursor => charSelect.cursors.some(cursor => !(cursor.player instanceof Computer) && !cursor.ready) ?
+        !(cursor.player instanceof Computer) : cursor.player instanceof Computer);
+        cursors.forEach(cursor => {
+            const player = cursor.player instanceof Computer ? charSelect.cursors[0].player : cursor.player;
+            if (player.inputList.frame[0].a && !player.inputList.frame[1].a &&
+                (charSelect.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
+                    if (!display.assets.sounds.ok.paused) display.assets.sounds.ok.pause();
+                    display.assets.sounds.ok.currentTime = 0;
+                    display.assets.sounds.ok.play();
+            } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
+                if (!display.assets.sounds.return.paused) display.assets.sounds.return.pause();
+                display.assets.sounds.return.currentTime = 0;
+                display.assets.sounds.return.play();
+            } else {
+                [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1}, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1},
+                { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1}, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1}].forEach(({stick, fixStick, axis, val}) => {
+                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) display.assets.sounds.select.play();
+                });
+            }
+        });
+    } else if (!charSelect.stageReady) {
+        charSelect.cursors.filter(cursor => !(cursor.player instanceof Computer)).forEach(cursor => {
+            const player = cursor.player;
+            if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
+                if (!display.assets.sounds.ok.paused) display.assets.sounds.ok.pause();
+                display.assets.sounds.ok.currentTime = 0;
+                display.assets.sounds.ok.play();
+            }
+            else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.stageReady) {
+                if (!display.assets.sounds.return.paused) display.assets.sounds.return.pause();
+                display.assets.sounds.return.currentTime = 0;
+                display.assets.sounds.return.play();
+            } else {
+                [{ stick: 8, fixStick: [7, 8, 9], val: -1}, { stick: 2, fixStick: [1, 2, 3], val: 1}].forEach(({stick, fixStick, val}) => {
+                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !charSelect.stageReady) {
+                        display.assets.sounds.select.play();
+                    }
+                });
+            }
+        });
+    }
+
     // Transition
     if (charSelect.endAnimFrame) display.fadeEffect('#000', charSelect.endAnimFrame, charSelect.endAnimEndFrame);
 }

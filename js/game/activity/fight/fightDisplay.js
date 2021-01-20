@@ -76,9 +76,10 @@ Fight.display = display => {
 }
 
 Fight.debugActor = (display, actor) => {
+    const collisionBoxDisable = actor.actions[actor.action].collisionBoxDisable;
     const cx = display.cx;
     [
-        { stroke: '#00f', fill: '#00f4', line: 4, elements: [actor.collisionBox] },
+        { stroke: collisionBoxDisable ? '#888' : '#00f', fill: collisionBoxDisable ? '#8884' : '#00f4', line: 4, elements: [actor.collisionBox] },
         { stroke: '#0f0', fill: '#0f04', line: 2, elements: actor.hurtboxes },
         { stroke: '#f00', fill: '#f004', line: 2, elements: actor.hitboxes },
     ].forEach(({ stroke, fill, line, elements }) => {

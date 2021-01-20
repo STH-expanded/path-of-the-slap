@@ -152,7 +152,9 @@ class Assets {
         { id: 'charSelect', url: 'audio/char-select.mp3' },
         { id: 'se1', url: 'audio/se1.mp3' },
         { id: 'se14', url: 'audio/se14.mp3' },
-        { id: 'hitASling', url: 'audio/coupSling.mp3' }
+        { id: 'ok', url: 'audio/ok.mp3' },
+        { id: 'return', url: 'audio/return.wav' }
+        // { id: 'hitASling', url: 'audio/coupSling.mp3' }
     ];
 
     loadPercent = 0;
