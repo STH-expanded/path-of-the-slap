@@ -61,14 +61,14 @@ Fight.display = display => {
 
     // Music
     if (fight.initAnimFrame === fight.initAnimInitFrame) {
-        display.assets.sounds.fight.play();
-        display.assets.sounds.fight.currentTime = 0;
+        display.music = new Sound(display.assets.sounds.fight, 0.5);
+        display.music.play();
     }
-    if (!fight.pauseMenu && display.assets.sounds.fight.paused) {
-        display.assets.sounds.fight.play();
+    if (!fight.pauseMenu && display.music.isPaused()) {
+        display.music.play();
     }
     if (fight.nextActivity || fight.pauseMenu) {
-        display.assets.sounds.fight.pause();
+        display.music.pause();
     }
 
     // Pause menu

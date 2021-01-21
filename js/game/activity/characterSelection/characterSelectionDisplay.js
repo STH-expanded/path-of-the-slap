@@ -93,9 +93,8 @@ CharacterSelection.display = display => {
                     }
                     else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) cx.drawImage(images.lockImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
                     if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame === 0) {
-                        if (!display.assets.sounds.se1.paused) display.assets.sounds.se1.pause();
-                        display.assets.sounds.se1.currentTime = 0;
-                        display.assets.sounds.se1.play();
+                        let se1Sound = new Sound(display.assets.sounds.se1, 1);
+                        se1Sound.play();
                     }
                 }
             }
@@ -147,11 +146,11 @@ CharacterSelection.display = display => {
 
     // Music
     if (charSelect.initAnimFrame === charSelect.initAnimInitFrame) {
-        display.assets.sounds.charSelect.currentTime = 0;
-        display.assets.sounds.charSelect.play();
+        display.music = new Sound(display.assets.sounds.charSelect, 0.5);
+        display.music.play();
     }
     if (charSelect.nextActivity) {
-        display.assets.sounds.charSelect.pause();
+        display.music.pause();
     }
 
     // Sound
@@ -162,17 +161,18 @@ CharacterSelection.display = display => {
             const player = cursor.player instanceof Computer ? charSelect.cursors[0].player : cursor.player;
             if (player.inputList.frame[0].a && !player.inputList.frame[1].a &&
                 (charSelect.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
-                    if (!display.assets.sounds.ok.paused) display.assets.sounds.ok.pause();
-                    display.assets.sounds.ok.currentTime = 0;
-                    display.assets.sounds.ok.play();
+                    let okSound = new Sound(display.assets.sounds.ok, 1);
+                    okSound.play();
             } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
-                if (!display.assets.sounds.return.paused) display.assets.sounds.return.pause();
-                display.assets.sounds.return.currentTime = 0;
-                display.assets.sounds.return.play();
+                let returnSound = new Sound(display.assets.sounds.return, 1);
+                returnSound.play();
             } else {
                 [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1}, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1},
                 { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1}, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1}].forEach(({stick, fixStick, axis, val}) => {
-                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) display.assets.sounds.select.play();
+                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) {
+                        let selectSound = new Sound(display.assets.sounds.select, 1);
+                        selectSound.play();
+                    }
                 });
             }
         });
@@ -180,18 +180,17 @@ CharacterSelection.display = display => {
         charSelect.cursors.filter(cursor => !(cursor.player instanceof Computer)).forEach(cursor => {
             const player = cursor.player;
             if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
-                if (!display.assets.sounds.ok.paused) display.assets.sounds.ok.pause();
-                display.assets.sounds.ok.currentTime = 0;
-                display.assets.sounds.ok.play();
+                let okSound = new Sound(display.assets.sounds.ok, 1);
+                okSound.play();
             }
             else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.stageReady) {
-                if (!display.assets.sounds.return.paused) display.assets.sounds.return.pause();
-                display.assets.sounds.return.currentTime = 0;
-                display.assets.sounds.return.play();
+                let returnSound = new Sound(display.assets.sounds.return, 1);
+                returnSound.play();
             } else {
                 [{ stick: 8, fixStick: [7, 8, 9], val: -1}, { stick: 2, fixStick: [1, 2, 3], val: 1}].forEach(({stick, fixStick, val}) => {
                     if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !charSelect.stageReady) {
-                        display.assets.sounds.select.play();
+                        let selectSound = new Sound(display.assets.sounds.select, 1);
+                        selectSound.play();
                     }
                 });
             }

@@ -45,21 +45,21 @@ AbstractMenu.display = display => {
     // Sound
     Object.values(display.game.players).forEach(player => {
         if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
-            display.assets.sounds.se14.play();
-        } else {
-            if (player.inputList.frame[0].stick > 6 &&
-                player.inputList.frame[1].stick < 7) display.assets.sounds.select.play();
-            if (player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) display.assets.sounds.select.play();
+            let se14Sound = new Sound(display.assets.sounds.se14, 1);
+            se14Sound.play();
+        } else if (player.inputList.frame[0].stick > 6 && player.inputList.frame[1].stick < 7 || player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) {
+            let selectSound = new Sound(display.assets.sounds.select, 1);
+            selectSound.play();
         }
     });
 
     // Music
     if (menu instanceof MainMenu && menu.initAnimFrame === menu.initAnimInitFrame) {
-        display.assets.sounds.mainMenu.currentTime = 0;
-        display.assets.sounds.mainMenu.play();
+        display.music = new Sound(display.assets.sounds.mainMenu, 0.5);
+        display.music.play();
     }
     if (menu instanceof MainMenu && menu.nextActivity) {
-        display.assets.sounds.mainMenu.pause();
+        display.music.pause();
     }
 
     // Animation

@@ -143,7 +143,7 @@ class Assets {
         { id: 'trainingNumbers', src: 'img/training/numbers.png' }
     ];
 
-    sounds = new Object
+    sounds = new Object;
     soundDataList = [
         { id: 'coin', url: 'audio/smw_coin.wav' },
         { id: 'select', url: 'audio/select.wav' },
@@ -172,15 +172,18 @@ class Assets {
         this.loadStep = 20 / (Object.keys(this.images).length + Object.keys(this.sounds).length);
     }
 
-    load = () => Promise.all([...Object.keys(this.images).map(key => new Promise(resolve => this.images[key].onload = () => {
-        resolve();
-        this.loadPercent += this.loadStep;
-        const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
-        if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
-    })), ...Object.keys(this.sounds).map(key => new Promise(resolve => this.sounds[key].oncanplaythrough = () => {
-        resolve();
-        this.loadPercent += this.loadStep;
-        const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
-        if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
-    }))]);
+    load = () => Promise.all([
+        ...Object.keys(this.images).map(key => new Promise(resolve => this.images[key].onload = () => {
+            resolve();
+            this.loadPercent += this.loadStep;
+            const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
+            if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
+        })),
+        ...Object.keys(this.sounds).map(key => new Promise(resolve => this.sounds[key].oncanplaythrough = () => {
+            resolve();
+            this.loadPercent += this.loadStep;
+            const percent = "... " + (5 * Math.round(this.loadPercent)) + "%";
+            if (document.getElementById("load")) document.getElementById("load").innerHTML = "LOADING" + (percent !== "... 100%" ? percent : " COMPLETE");
+        }))
+    ]);
 }

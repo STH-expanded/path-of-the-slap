@@ -3,6 +3,7 @@ class Display {
     cx = this.canvas.getContext('2d');
     width = 480;
     height = 270;
+    music = null;
 
     constructor(game, assets) {
         this.game = game;
