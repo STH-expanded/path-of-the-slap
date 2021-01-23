@@ -20,7 +20,7 @@ const SWAPS = {
             action: "ALIVEROUNDOVER",
         },
         {
-            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "ENTERMATCH" && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "INTRO" && character.isGrounded(fight),
             action: "WAITING",
         },
         // Status actions
@@ -37,6 +37,10 @@ const SWAPS = {
             action: "LOW_BLOCK"
         },
         {
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
+        },
+        {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
         },
@@ -51,10 +55,6 @@ const SWAPS = {
         {
             condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
             action: "TECH"
-        },
-        {
-            condition: (fight, character, inputList) => character.ejection,
-            action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -333,7 +333,7 @@ const SWAPS = {
             }
         },
         LIGHT: {
-            duration: 16,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -361,14 +361,14 @@ const SWAPS = {
                 ],
             },
             animation: {
-                offset: { x: -58, y: -48 },
-                size: { x: 182, y: 192 },
+                offset: { x: -52, y: -48 },
+                size: { x: 128, y: 192 },
                 speed: 1 / 4,
-                frameCount: 4
+                frameCount: 6
             }
         },
         HEAVY: {
-            duration: 32,
+            duration: 36,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -379,10 +379,10 @@ const SWAPS = {
             },
             hitboxes: {
                 0: [],
-                12: [
-                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunVelocity: { x: 3, y: 0 } }
+                20: [
+                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -8 } }
                 ],
-                18: []
+                26: []
             },
             hurtboxes: {
                 0: [
@@ -390,7 +390,6 @@ const SWAPS = {
                 ],
                 12: [
                     { offset: { x: 0, y: 0 }, size: { x: 80, y: 128 } },
-                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 16 } }
                 ],
                 24: [
                     { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
@@ -398,8 +397,8 @@ const SWAPS = {
             },
             animation: {
                 offset: { x: -58, y: -48 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 4,
+                size: { x: 160, y: 192 },
+                speed: 1 / 6,
                 frameCount: 6
             }
         },
@@ -432,10 +431,10 @@ const SWAPS = {
                 ]
             },
             animation: {
-                offset: { x: -58, y: -80 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 4,
-                frameCount: 4
+                offset: { x: -38, y: -80 },
+                size: { x: 160, y: 192 },
+                speed: 1 / 8,
+                frameCount: 2
             }
         },
         LOW_HEAVY: {
@@ -467,10 +466,10 @@ const SWAPS = {
                 ]
             },
             animation: {
-                offset: { x: -58, y: -80 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 6,
-                frameCount: 6
+                offset: { x: -38, y: -80 },
+                size: { x: 160, y: 192 },
+                speed: 1 / 8,
+                frameCount: 4
             }
         },
         AERIAL_LIGHT: {
@@ -503,7 +502,7 @@ const SWAPS = {
             },
             animation: {
                 offset: { x: -29, y: -24 },
-                size: { x: 91, y: 192 },
+                size: { x: 143, y: 192 },
                 speed: 1 / 4,
                 frameCount: 4
             }
@@ -538,9 +537,9 @@ const SWAPS = {
             },
             animation: {
                 offset: { x: -58, y: -24 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 4,
-                frameCount: 6
+                size: { x: 128, y: 192 },
+                speed: 1 / 6,
+                frameCount: 4
             }
         },
         
@@ -610,7 +609,7 @@ const SWAPS = {
                 ]
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -32 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1,
@@ -618,7 +617,12 @@ const SWAPS = {
                     0: [
                         { name: 'shake' }
                     ]
-                }
+                },
+                sfx: {
+                    0: [
+                        { name: 'CHARACTER_02_HIT' }
+                    ]
+                },
             }
         },
         EJECTED: {
@@ -626,6 +630,7 @@ const SWAPS = {
             cancellable: true,
             fixedDirection: true,
             isAerial: true,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
@@ -638,7 +643,12 @@ const SWAPS = {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
-                frameCount: 1
+                frameCount: 1,
+                effects: {
+                    0: [
+                        { name: 'rotate', params: [-45] }
+                    ]
+                }
             }
         },
         GROUND: {
@@ -646,6 +656,7 @@ const SWAPS = {
             cancellable: true,
             fixedDirection: true,
             isAerial: false,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -688,12 +699,13 @@ const SWAPS = {
         GRAB: {},
         GRAB_TECH: {},
         GRABBED: {},
-        ENTERMATCH: { 
+        INTRO: { 
             duration: 150,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            size: { x: 32, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
@@ -703,7 +715,8 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            size: { x: 128, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
@@ -713,6 +726,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -723,6 +737,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -733,7 +748,20 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            size: { x: 128, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            }
+        },
+        WAITING:{
+            duration: 1,
+            cancellable: false,
+            fixedDirection: false,
+            isAerial: false,
+            disableMenu : true,
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }

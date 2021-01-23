@@ -44,6 +44,7 @@ class Assets {
         { id: 'CHARACTER_00_AERIAL_LIGHT', src: 'img/character/CHARACTER_00_AERIAL_LIGHT.png' },
         { id: 'CHARACTER_00_AERIAL_HEAVY', src: 'img/character/CHARACTER_00_AERIAL_HEAVY.png' },
         { id: 'CHARACTER_00_QCF', src: 'img/character/CHARACTER_00_QCF.png' },
+        { id: 'CHARACTER_00_INTRO', src: 'img/character/CHARACTER_00_INTRO.png' },
 
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
@@ -62,14 +63,20 @@ class Assets {
         { id: 'CHARACTER_02_SKEWED_NAME', src: 'img/character/CHARACTER_02_SKEWED_NAME.png' },
         { id: 'CHARACTER_02_IDLE', src: 'img/character/CHARACTER_02_IDLE.png' },
         { id: 'CHARACTER_02_CROUCH', src: 'img/character/CHARACTER_02_CROUCH.png' },
+        { id: 'CHARACTER_02_LOW_LIGHT', src: 'img/character/CHARACTER_02_LOW_LIGHT.png' },
+        { id: 'CHARACTER_02_LOW_HEAVY', src: 'img/character/CHARACTER_02_LOW_HEAVY.png' },
         { id: 'CHARACTER_02_WALK_FORWARD', src: 'img/character/CHARACTER_02_WALK_FORWARD.png' },
         { id: 'CHARACTER_02_WALK_BACK', src: 'img/character/CHARACTER_02_WALK_BACK.png' },
         { id: 'CHARACTER_02_FORWARD_DASH', src: 'img/character/CHARACTER_02_FORWARD_DASH.png' },
+        { id: 'CHARACTER_02_LIGHT', src: 'img/character/CHARACTER_02_LIGHT.png' },
+        { id: 'CHARACTER_02_HEAVY', src: 'img/character/CHARACTER_02_HEAVY.png' },
         { id: 'CHARACTER_02_BACK_DASH', src: 'img/character/CHARACTER_02_BACK_DASH.png' },
         { id: 'CHARACTER_02_JUMP', src: 'img/character/CHARACTER_02_JUMP.png' },
         { id: 'CHARACTER_02_AERIAL', src: 'img/character/CHARACTER_02_AERIAL.png' },
         { id: 'CHARACTER_02_FALL', src: 'img/character/CHARACTER_02_FALL.png' },
         { id: 'CHARACTER_02_HIT', src: 'img/character/CHARACTER_02_HIT.png' },
+        { id: 'CHARACTER_02_AERIAL_LIGHT', src: 'img/character/CHARACTER_02_AERIAL_LIGHT.png' },
+        { id: 'CHARACTER_02_AERIAL_HEAVY', src: 'img/character/CHARACTER_02_AERIAL_HEAVY.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },
@@ -145,15 +152,25 @@ class Assets {
 
     sounds = new Object;
     soundDataList = [
+        // Opening
         { id: 'coin', url: 'audio/smw_coin.wav' },
-        { id: 'select', url: 'audio/select.wav' },
+        
+        // Menu
         { id: 'mainMenu', url: 'audio/main-menu.mp3' },
-        { id: 'fight', url: 'audio/fight.mp3' },
-        { id: 'charSelect', url: 'audio/char-select.mp3' },
+        { id: 'select', url: 'audio/select.wav' },
+        { id: 'ok', url: 'audio/ok.mp3' },
+        { id: 'return', url: 'audio/return.wav' },
         { id: 'se1', url: 'audio/se1.mp3' },
         { id: 'se14', url: 'audio/se14.mp3' },
-        { id: 'ok', url: 'audio/ok.mp3' },
-        { id: 'return', url: 'audio/return.wav' }
+
+        // Character Selection
+        { id: 'charSelect', url: 'audio/char-select.mp3' },
+        
+        // Fight
+        { id: 'fight', url: 'audio/fight.mp3' },
+
+        // Character
+        { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' }
         // { id: 'hitASling', url: 'audio/coupSling.mp3' }
     ];
 

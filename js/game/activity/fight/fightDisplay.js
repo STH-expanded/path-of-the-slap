@@ -36,7 +36,7 @@ Fight.display = display => {
                     const effects = animation.effects[Object.keys(animation.effects).reverse().find(index => index <= element.actionIndex)];
                     effects.forEach(effect => {
                         if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
-                        if (effect.name === "rotate") display[effect.name + "Effect"](element);
+                        if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
                     });
                 }
                 if (animation.sfx) {
@@ -61,7 +61,7 @@ Fight.display = display => {
 
     // Music
     if (fight.initAnimFrame === fight.initAnimInitFrame) {
-        display.music = new Sound(display.assets.sounds.fight, 0.5);
+        display.music = new Sound(display.assets.sounds.fight, 0.25);
         display.music.play();
     }
     if (!fight.pauseMenu && display.music.isPaused()) {

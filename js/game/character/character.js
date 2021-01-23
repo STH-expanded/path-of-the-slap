@@ -91,6 +91,7 @@ class Character {
         if (!actionData.fixedDirection && this.collisionBox.center().x !== enemyCollisionBox.center().x) {
             this.direction = this.collisionBox.center().x < enemyCollisionBox.center().x;
         }
+        if (this.action === 'EJECTED' && this.wallBounce(fight)) this.direction = !this.direction;
     }
 
     updateVelocity = (fight, inputList, actionData) => {

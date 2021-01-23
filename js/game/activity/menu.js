@@ -44,7 +44,7 @@ AbstractMenu.display = display => {
 
     // Sound
     Object.values(display.game.players).forEach(player => {
-        if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
+        if (player.inputList.frame[0].a && !player.inputList.frame[1].a && menu instanceof MainMenu) {
             let se14Sound = new Sound(display.assets.sounds.se14, 1);
             se14Sound.play();
         } else if (player.inputList.frame[0].stick > 6 && player.inputList.frame[1].stick < 7 || player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) {
@@ -55,7 +55,7 @@ AbstractMenu.display = display => {
 
     // Music
     if (menu instanceof MainMenu && menu.initAnimFrame === menu.initAnimInitFrame) {
-        display.music = new Sound(display.assets.sounds.mainMenu, 0.5);
+        display.music = new Sound(display.assets.sounds.mainMenu, 0.25);
         display.music.play();
     }
     if (menu instanceof MainMenu && menu.nextActivity) {

@@ -44,11 +44,10 @@ class Display {
     }
     
     // Rotate effect
-    rotateEffect = element => {
+    rotateEffect = (element, angle) => {
         this.cx.translate(element.collisionBox.size.x / 2, element.collisionBox.size.y / 2);
-        this.cx.rotate(-45 * Math.PI / 180);
+        this.cx.rotate(angle * Math.PI / 180);
         this.cx.translate(-element.collisionBox.size.x / 2, -element.collisionBox.size.y / 2);
-        if (element.velocity.x < 0) this.flipHorizontally(element.collisionBox.center().x);
     }
 
     // Resize canvas

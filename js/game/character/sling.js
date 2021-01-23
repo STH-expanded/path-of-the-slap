@@ -4,11 +4,11 @@ const SLING = {
 
     actionsBlueprint: [
         {
-            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
+            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element === 2).length === 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
             action: "VICTORYPOSE",
         },
         {
-            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element === 2).length === 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
             action: "LOOSERPOSE",
         },
         {
@@ -20,7 +20,7 @@ const SLING = {
             action: "ALIVEROUNDOVER",
         },
         {
-            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "ENTERMATCH" && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.roundIsOver && fight.players.find(player => player.character !== character).character.action === "INTRO" && character.isGrounded(fight),
             action: "WAITING",
         },
         // Status actions
@@ -698,11 +698,6 @@ const SLING = {
                 ]
             },
             animation: {
-                sfx: {
-                    0: [
-                        // { name: 'hitASling' }
-                    ]
-                },
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
                 speed: 1,
@@ -710,6 +705,11 @@ const SLING = {
                 effects: {
                     0: [
                         { name: 'shake' }
+                    ]
+                },
+                sfx: {
+                    0: [
+                        // { name: 'hitASling' }
                     ]
                 }
             }
@@ -735,7 +735,7 @@ const SLING = {
                 frameCount: 1,
                 effects: {
                     0: [
-                        // { name: 'rotate' }
+                        { name: 'rotate', params: [-45] }
                     ]
                 }
             }
@@ -904,15 +904,22 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        ENTERMATCH: { 
-            duration: 1,
+        INTRO: { 
+            duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             disableMenu : true,
-            size: { x: 32, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -48, y: -54 },
+                size: { x: 108, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         },
         KO:  { 
@@ -921,7 +928,8 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             disableMenu : true,
-            size: { x: 128, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
@@ -932,6 +940,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             disableMenu : true,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -943,6 +952,7 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             disableMenu : true,
+            collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -954,7 +964,8 @@ const SLING = {
             fixedDirection: true,
             isAerial: false,
             disableMenu : true,
-            size: { x: 128, y: 32 },
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
@@ -968,8 +979,7 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-           
+            }
         }
     }
 }

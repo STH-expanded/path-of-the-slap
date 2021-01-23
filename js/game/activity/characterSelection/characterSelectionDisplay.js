@@ -146,7 +146,7 @@ CharacterSelection.display = display => {
 
     // Music
     if (charSelect.initAnimFrame === charSelect.initAnimInitFrame) {
-        display.music = new Sound(display.assets.sounds.charSelect, 0.5);
+        display.music = new Sound(display.assets.sounds.charSelect, 0.25);
         display.music.play();
     }
     if (charSelect.nextActivity) {
