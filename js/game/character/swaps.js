@@ -5,22 +5,18 @@ const SWAPS = {
     actionsBlueprint: [
         {
             condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
-            action: "VICTORYPOSE",
+            action: "WIN",
         },
         {
-            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
-            action: "LOOSERPOSE",
-        },
-        {
-            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight) ,
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight),
             action: "KO",
         },
         {
-            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight) ,
-            action: "ALIVEROUNDOVER",
+            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight),
+            action: "WIN_ROUND",
         },
         {
-            condition: (fight, character, inputList) => fight.players.find(player => player.character !== character).character.action == "INTRO" && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.roundIsOver && fight.players.find(player => player.character !== character).character.action === "INTRO" && character.isGrounded(fight),
             action: "WAITING",
         },
         // Status actions
@@ -107,12 +103,12 @@ const SWAPS = {
             action: "BACK_DASH"
         },
         // Standing actions
-        // {
-        //     condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
-        //         ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2) ||
-        //             (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2)),
-        //     action: "QCF"
-        // },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
+                ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2)),
+            action: "QCF"
+        },
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a,
             action: "LIGHT"
@@ -542,8 +538,41 @@ const SWAPS = {
                 frameCount: 4
             }
         },
-        
-        QCB: {},
+        QCF: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 6 * (character.direction ? 1 : -1), y: 0 }),
+                28: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                20: [
+                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunFrame: 32, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -8 } }
+                ],
+                26: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } },
+                ],
+                24: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ],
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 178, y: 192 },
+                speed: 1 / 4,
+                frameCount: 8
+            }
+        },
         DP: {},
         HCF: {},
         AERIAL_BLOCK: {
@@ -700,17 +729,24 @@ const SWAPS = {
         GRAB_TECH: {},
         GRABBED: {},
         INTRO: { 
-            duration: 150,
+            duration: 64,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            disableMenu : true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -80, y: -52 },
+                size: { x: 140, y: 192 },
+                speed: 1 / 8,
+                frameCount: 8
             }
         },
-        KO:  { 
+        KO: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
@@ -721,7 +757,7 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        ALIVEROUNDOVER:{ 
+        WIN_ROUND: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
@@ -732,7 +768,7 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        VICTORYPOSE:  { 
+        WIN: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
@@ -743,18 +779,7 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        LOOSERPOSE:  { 
-            duration: 45,
-            cancellable: false,
-            fixedDirection: true,
-            isAerial: false,
-            collisionBoxDisable: true,
-            size: { x: 32, y: 128 },
-            velocity: {
-                0: (fight, character, inputList) => ({ x: 0, y: 0 })
-            }
-        },
-        WAITING:{
+        WAITING: {
             duration: 1,
             cancellable: false,
             fixedDirection: false,

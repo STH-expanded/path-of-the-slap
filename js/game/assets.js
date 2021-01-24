@@ -77,6 +77,8 @@ class Assets {
         { id: 'CHARACTER_02_HIT', src: 'img/character/CHARACTER_02_HIT.png' },
         { id: 'CHARACTER_02_AERIAL_LIGHT', src: 'img/character/CHARACTER_02_AERIAL_LIGHT.png' },
         { id: 'CHARACTER_02_AERIAL_HEAVY', src: 'img/character/CHARACTER_02_AERIAL_HEAVY.png' },
+        { id: 'CHARACTER_02_QCF', src: 'img/character/CHARACTER_02_QCF.png' },
+        { id: 'CHARACTER_02_INTRO', src: 'img/character/CHARACTER_02_INTRO.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },

@@ -5,19 +5,15 @@ const SLING = {
     actionsBlueprint: [
         {
             condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element === 2).length === 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
-            action: "VICTORYPOSE",
+            action: "WIN",
         },
         {
-            condition: (fight, character, inputList) => fight.winCount.filter((element)=>element === 2).length === 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] === fight.playoff && character.isGrounded(fight),
-            action: "LOOSERPOSE",
-        },
-        {
-            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight) ,
+            condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight),
             action: "KO",
         },
         {
-            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight) ,
-            action: "ALIVEROUNDOVER",
+            condition: (fight, character, inputList) => fight.roundIsOver && character.isGrounded(fight),
+            action: "WIN_ROUND",
         },
         {
             condition: (fight, character, inputList) => fight.roundIsOver && fight.players.find(player => player.character !== character).character.action === "INTRO" && character.isGrounded(fight),
@@ -934,7 +930,7 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        ALIVEROUNDOVER:{ 
+        WIN_ROUND:{ 
             duration: 45,
             cancellable: false,
             fixedDirection: true,
@@ -946,19 +942,7 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        VICTORYPOSE:  { 
-            duration: 45,
-            cancellable: false,
-            fixedDirection: true,
-            isAerial: false,
-            disableMenu : true,
-            collisionBoxDisable: true,
-            size: { x: 32, y: 128 },
-            velocity: {
-                0: (fight, character, inputList) => ({ x: 0, y: 0 })
-            }
-        },
-        LOOSERPOSE:  { 
+        WIN:  { 
             duration: 45,
             cancellable: false,
             fixedDirection: true,
