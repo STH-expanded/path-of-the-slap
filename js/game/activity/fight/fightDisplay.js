@@ -5,6 +5,8 @@ Fight.display = display => {
     const char1 = fight.players[0].character;
     const char2 = fight.players[1].character;
 
+    // let isTraining = false;
+
     cx.fillStyle = '#000';
     cx.fillRect(0, 0, display.width, display.height);
 
@@ -74,19 +76,26 @@ Fight.display = display => {
     } else Fight.trainingGUI(display);
 
     // Music
-    if (fight.initAnimFrame === fight.initAnimInitFrame) {
+    if ((fight.initAnimInitFrame === fight.initAnimFrame || fight.roundEndAnimFrame === 120) && !fight.trainingMode) {
         let fightIntro = new Sound(display.assets.sounds.fightIntro, 0.25);
         fightIntro.play();
+        display.music = new Sound(display.assets.sounds.fight, 0.25);
+        display.music.play();
     }
-    if (!fight.initAnimFrame && fight.roundAnimFrame === fight.roundAnimEndFrame - 1) {
+    if (fight.animationFrame === 0  && fight.trainingMode) {
+        let fightIntro = new Sound(display.assets.sounds.fightIntro, 0.25);
+        fightIntro.play();
         display.music = new Sound(display.assets.sounds.fight, 0.25);
         display.music.play();
     }
     if (!fight.pauseMenu && display.music && display.music.isPaused()) {
-        display.music.play();
+        display.music.resume();
     }
     if (fight.nextActivity || fight.pauseMenu) {
         display.music.pause();
+    }
+    if (display.music.audio.ended) {
+        display.music.reset();
     }
 
     // Pause menu

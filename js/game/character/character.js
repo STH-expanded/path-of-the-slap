@@ -9,7 +9,7 @@ class Character {
 
     hitstunVelocity = new Vector2D(0, 0);
     hitstun = 0;
-    
+
     ejectionVelocity = new Vector2D(0, 0);
     ejection = 0;
 
@@ -57,19 +57,23 @@ class Character {
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
-                if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
-                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
-                    && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
+
+                if (!(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'BLOCK' && this.hitstun)
+                    && !(this.canBlock(fight) && !this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'AERIAL_BLOCK' && this.hitstun)
+                    && !(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'LOW_BLOCK' && this.hitstun)) {
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
                         this.grabbed = false;
                         this.ejection = 1;
                         this.ejectionVelocity = new Vector2D(hitbox.ejectionVelocity.x, hitbox.ejectionVelocity.y);
                     }
+                }
                 this.hitstunVelocity = hitbox.hitstunVelocity;
             }
         }
-        if (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) this.hitstun--;
+        if (['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) {
+            this.hitstun--;
+        }
         if (this.ejection && this.action === 'EJECTED') {
             if (this.ejection === 1) this.velocity = this.ejectionVelocity;
             if ((this.ejectionVelocity.y === 0 || this.ejection > 1) && this.isGrounded(fight)) this.ejection = 0;
