@@ -25,9 +25,6 @@ const SWAPS = {
         },
         // Status actions
         {
-<<<<<<< HEAD
-            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
-=======
             condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b,
             action: "GRAB",
         },
@@ -40,8 +37,7 @@ const SWAPS = {
             action: "BACK_THROW",
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
->>>>>>> 3e8edb3ba554e96cbb9150e580282451b3ebb754
+            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
             action: "BLOCK",
         },
         {
@@ -53,19 +49,16 @@ const SWAPS = {
             action: "LOW_BLOCK"
         },
         {
-<<<<<<< HEAD
-=======
+            condition: (fight, character, inputList) => character.hitstun,
+            action: "HIT"
+        },
+        {
             condition: (fight, character, inputList) => character.ejection,
             action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.grabbed,
             action: "GRABBED"
-        },
-        {
->>>>>>> 3e8edb3ba554e96cbb9150e580282451b3ebb754
-            condition: (fight, character, inputList) => character.hitstun,
-            action: "HIT"
         },
         {
             condition: (fight, character, inputList) => character.ejection,
@@ -868,7 +861,7 @@ const SWAPS = {
             },
             animation: {}
         },
-        INTRO: { 
+        INTRO: {
             duration: 64,
             cancellable: false,
             fixedDirection: true,
