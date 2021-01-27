@@ -25,7 +25,7 @@ const SLING = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.b,
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b,
             action: "GRAB",
         },
         {
