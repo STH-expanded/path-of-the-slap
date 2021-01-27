@@ -36,7 +36,7 @@ const SLING = {
             condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED",
             action: "BACK_THROW",
         },
-         // Status actions
+        // Status actions
         {
             condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
             action: "BLOCK",
@@ -799,7 +799,7 @@ const SLING = {
                 },
                 sfx: {
                     0: [
-                        // { name: 'hitASling' }
+                        { name: 'hitASling' }
                     ]
                 }
             }

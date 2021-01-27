@@ -156,7 +156,7 @@ class Assets {
     soundDataList = [
         // Opening
         { id: 'coin', url: 'audio/smw_coin.wav' },
-        
+
         // Menu
         { id: 'mainMenu', url: 'audio/main-menu.mp3' },
         { id: 'select', url: 'audio/select.wav' },
@@ -167,14 +167,14 @@ class Assets {
 
         // Character Selection
         { id: 'charSelect', url: 'audio/char-select.mp3' },
-        
+
         // Fight
         { id: 'fightIntro', url: 'audio/fight-intro.wav' },
         { id: 'fight', url: 'audio/fight.mp3' },
 
         // Character
-        { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' }
-        // { id: 'hitASling', url: 'audio/coupSling.mp3' }
+        { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' },
+        { id: 'hitASling', url: 'audio/coupSling.mp3' }
     ];
 
     loadPercent = 0;
