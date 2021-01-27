@@ -44,11 +44,11 @@ AbstractMenu.display = display => {
 
     // Sound
     Object.values(display.game.players).forEach(player => {
-        if (player.inputList.frame[0].a && !player.inputList.frame[1].a && menu instanceof MainMenu) {
-            let se14Sound = new Sound(display.assets.sounds.se14, 1);
+        let se14Sound = new Sound(display.assets.sounds.se14, 1);
+        let selectSound = new Sound(display.assets.sounds.select, 1);
+        if (player.inputList.frame[0].a && !player.inputList.frame[1].a && menu instanceof MainMenu && se14Sound.isPaused() && !(menu.cursor === 1 && Object.keys(display.game.players).length < 2)) {
             se14Sound.play();
-        } else if (player.inputList.frame[0].stick > 6 && player.inputList.frame[1].stick < 7 || player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) {
-            let selectSound = new Sound(display.assets.sounds.select, 1);
+        } else if ((player.inputList.frame[0].stick > 6 && player.inputList.frame[1].stick < 7 || player.inputList.frame[0].stick < 4 && player.inputList.frame[1].stick > 3) && selectSound.isPaused()) {
             selectSound.play();
         }
     });
