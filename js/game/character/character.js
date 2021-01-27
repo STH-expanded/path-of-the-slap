@@ -49,14 +49,14 @@ class Character {
     wallBounce = fight => this.action === 'EJECTED' && (this.collisionBox.pos.x < 1 || this.collisionBox.pos.x + this.collisionBox.size.x >= fight.stage.collisionBox.size.x);
 
     updateAction = (fight, inputList) => {
+        if (this.getEnemies(fight)[0].action === "GRAB" && (((this.collisionBox.center().x - this.getEnemy(fight).collisionBox.center().x) < 70) && ((this.collisionBox.center().x - this.getEnemy(fight).collisionBox.center().x) > -70))) {
+            this.grabbed = true;
+        }
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
             this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
-                if (this.getEnemies(fight)[0].action === "GRAB") {
-                    this.grabbed = true;
-                }
                 if (!(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(this.getEnemy(fight).action))
                     && !(this.canBlock(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(this.getEnemy(fight).action))) 
