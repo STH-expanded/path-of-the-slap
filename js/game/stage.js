@@ -4,8 +4,7 @@ class Stage {
     clipCollisionBox = collisionBox => {
         if (collisionBox.pos.x < this.collisionBox.pos.x) collisionBox.pos.x = this.collisionBox.pos.x;
         else if (collisionBox.pos.x + collisionBox.size.x > this.collisionBox.size.x) collisionBox.pos.x = this.collisionBox.size.x - collisionBox.size.x;
-        if (collisionBox.pos.y < this.collisionBox.pos.x) collisionBox.pos.y = this.collisionBox.pos.x;
-        else if (collisionBox.pos.y + collisionBox.size.y > this.collisionBox.size.y) collisionBox.pos.y = this.collisionBox.size.y - collisionBox.size.y;
+        if (collisionBox.pos.y + collisionBox.size.y > this.collisionBox.size.y) collisionBox.pos.y = this.collisionBox.size.y - collisionBox.size.y;
     }
 
     xClipCollisionBoxes = (collisionBox1, collisionBox2) => {

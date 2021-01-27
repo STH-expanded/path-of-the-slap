@@ -722,26 +722,27 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
+                offset: { x: -55, y: -32 },
+                size: { x: 142, y: 192 },
                 speed: 1,
                 frameCount: 1
             }
         },
         GET_UP: {
-            duration: 16,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            collisionBoxDisable: true,
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1,
-                frameCount: 1
+                offset: { x: -48, y: -48 },
+                size: { x: 128, y: 192 },
+                speed: 1 / 4,
+                frameCount: 6
             }
         },
         LAND: {},
@@ -752,8 +753,19 @@ const SWAPS = {
             fixedDirection: true,
             isAerial: true,
             size: { x: 32, y: 128 },
+            collisionBoxDisable: true,
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "FALL",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -32 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
             }
         },
         GRAB: {
@@ -888,10 +900,20 @@ const SWAPS = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "GROUND",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -55, y: -48 },
+                size: { x: 142, y: 192 },
+                speed: 1,
+                frameCount: 1
             }
         },
         WIN_ROUND: {
-            duration: 45,
+            duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -899,10 +921,20 @@ const SWAPS = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "IDLE",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -56 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         },
         WIN: {
-            duration: 45,
+            duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -910,6 +942,12 @@ const SWAPS = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -56 },
+                size: { x: 114, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         },
         WAITING: {
