@@ -4,7 +4,7 @@ const SLING = {
 
     actionsBlueprint: [
         {
-            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element === 2).length === 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.winCount.filter((element) => element === 2).length === 1 && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
             action: "WIN",
         },
         {
@@ -25,7 +25,7 @@ const SLING = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.b,
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b,
             action: "GRAB",
         },
         {
@@ -36,21 +36,18 @@ const SLING = {
             condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED",
             action: "BACK_THROW",
         },
+         // Status actions
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
             action: "BLOCK",
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'AERIAL_BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && !character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'AERIAL_BLOCK' && character.hitstun,
             action: "AERIAL_BLOCK"
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'LOW_BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'LOW_BLOCK' && character.hitstun,
             action: "LOW_BLOCK"
-        },
-        {
-            condition: (fight, character, inputList) => character.ejection,
-            action: "EJECTED"
         },
         {
             condition: (fight, character, inputList) => character.grabbed,
@@ -61,6 +58,10 @@ const SLING = {
             action: "HIT"
         },
         {
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
+        },
+        {
             condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
             action: "GET_UP"
         },
@@ -69,7 +70,7 @@ const SLING = {
             action: "GROUND"
         },
         {
-            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({ "pos": fight.stage.collisionBox.pos.plus(new Vector2D(32, 0)), "size": fight.stage.collisionBox.size.plus(new Vector2D(-64, -32)) }),
             action: "TECH"
         },
         {
@@ -326,6 +327,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
@@ -361,6 +363,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.5 * (character.direction ? 1 : -1), y: 0 }),
@@ -397,6 +400,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'LOW',
             size: { x: 32, y: 96 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -432,6 +436,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'LOW',
             size: { x: 32, y: 96 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -467,6 +472,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: true,
+            attackType: 'AERIAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
@@ -502,6 +508,7 @@ const SLING = {
             cancellable: false,
             fixedDirection: true,
             isAerial: true,
+            attackType: 'AERIAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
@@ -574,6 +581,7 @@ const SLING = {
                                     duration: 2,
                                     cancellable: true,
                                     size: { x: 32, y: 32 },
+                                    attackType: "NORMAL",
                                     velocity: {
                                         0: (fight, actor) => ({ x: 4 * (actor.direction ? 1 : -1), y: 0 })
                                     },
@@ -776,33 +784,19 @@ const SLING = {
         LAND: {},
         RECOVER: {},
         GRAB: {
-            duration: 32,
+            duration: 25,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? 1 : -1), y: 0 }),
-                16: (fight, character, inputList) => ({ x: 0, y: 0 })
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             hitboxes: {
-                0: [],
-                12: [
-                    { offset: { x: 32, y: 24 }, size: { x: 50, y: 44 }, damage: 0, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 } }
-                ],
-                18: []
+                0: []
             },
             hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 50, y: 128 } },
-                    { offset: { x: 32, y: 24 }, size: { x: 50, y: 44 } }
-                ],
-                24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: [],
             },
             animation: {}
         },
@@ -904,12 +898,12 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        INTRO: { 
+        INTRO: {
             duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
@@ -922,48 +916,48 @@ const SLING = {
                 frameCount: 6
             }
         },
-        KO:  { 
+        KO: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        WIN_ROUND:{ 
+        WIN_ROUND: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        WIN:  { 
+        WIN: {
             duration: 45,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             }
         },
-        WAITING:{
+        WAITING: {
             duration: 48,
             cancellable: false,
             fixedDirection: false,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
