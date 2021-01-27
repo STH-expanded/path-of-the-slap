@@ -45,6 +45,9 @@ class Assets {
         { id: 'CHARACTER_00_AERIAL_HEAVY', src: 'img/character/CHARACTER_00_AERIAL_HEAVY.png' },
         { id: 'CHARACTER_00_QCF', src: 'img/character/CHARACTER_00_QCF.png' },
         { id: 'CHARACTER_00_INTRO', src: 'img/character/CHARACTER_00_INTRO.png' },
+        { id: 'CHARACTER_00_BLOCK', src: 'img/character/CHARACTER_00_BLOCK.png' },
+        { id: 'CHARACTER_00_AERIAL_BLOCK', src: 'img/character/CHARACTER_00_AERIAL_BLOCK.png' },
+        { id: 'CHARACTER_00_LOW_BLOCK', src: 'img/character/CHARACTER_00_LOW_BLOCK.png' },
 
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
@@ -79,6 +82,9 @@ class Assets {
         { id: 'CHARACTER_02_AERIAL_HEAVY', src: 'img/character/CHARACTER_02_AERIAL_HEAVY.png' },
         { id: 'CHARACTER_02_QCF', src: 'img/character/CHARACTER_02_QCF.png' },
         { id: 'CHARACTER_02_INTRO', src: 'img/character/CHARACTER_02_INTRO.png' },
+        { id: 'CHARACTER_02_BLOCK', src: 'img/character/CHARACTER_02_BLOCK.png' },
+        { id: 'CHARACTER_02_AERIAL_BLOCK', src: 'img/character/CHARACTER_02_AERIAL_BLOCK.png' },
+        { id: 'CHARACTER_02_LOW_BLOCK', src: 'img/character/CHARACTER_02_LOW_BLOCK.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },
@@ -156,7 +162,7 @@ class Assets {
     soundDataList = [
         // Opening
         { id: 'coin', url: 'audio/smw_coin.wav' },
-        
+
         // Menu
         { id: 'mainMenu', url: 'audio/main-menu.mp3' },
         { id: 'select', url: 'audio/select.wav' },
@@ -167,14 +173,14 @@ class Assets {
 
         // Character Selection
         { id: 'charSelect', url: 'audio/char-select.mp3' },
-        
+
         // Fight
         { id: 'fightIntro', url: 'audio/fight-intro.wav' },
         { id: 'fight', url: 'audio/fight.mp3' },
 
         // Character
-        { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' }
-        // { id: 'hitASling', url: 'audio/coupSling.mp3' }
+        { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' },
+        { id: 'CHARACTER_01_HIT', url: 'audio/coupSling.mp3' }
     ];
 
     loadPercent = 0;

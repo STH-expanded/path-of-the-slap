@@ -4,7 +4,7 @@ const SWAPS = {
 
     actionsBlueprint: [
         {
-            condition: (fight, character, inputList) =>  fight.winCount.filter((element)=>element == 2).length == 1  && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
+            condition: (fight, character, inputList) => fight.winCount.filter((element) => element == 2).length == 1 && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
             action: "WIN",
         },
         {
@@ -37,16 +37,24 @@ const SWAPS = {
             action: "BACK_THROW",
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['LIGHT', 'HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
             action: "BLOCK",
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL_LIGHT', 'AERIAL_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'AERIAL_BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && !character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'AERIAL_BLOCK' && character.hitstun,
             action: "AERIAL_BLOCK"
         },
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW_LIGHT', 'LOW_HEAVY'].includes(character.getEnemy(fight).action) || character.action === 'LOW_BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'LOW_BLOCK' && character.hitstun,
             action: "LOW_BLOCK"
+        },
+        {
+            condition: (fight, character, inputList) => character.hitstun,
+            action: "HIT"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({ "pos": fight.stage.collisionBox.pos.plus(new Vector2D(32, 0)), "size": fight.stage.collisionBox.size.plus(new Vector2D(-64, -32)) }),
+            action: "TECH"
         },
         {
             condition: (fight, character, inputList) => character.ejection,
@@ -57,20 +65,16 @@ const SWAPS = {
             action: "GRABBED"
         },
         {
-            condition: (fight, character, inputList) => character.hitstun,
-            action: "HIT"
+            condition: (fight, character, inputList) => character.ejection,
+            action: "EJECTED"
         },
         {
-            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) ,
+            condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
             action: "GET_UP"
         },
         {
             condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
             action: "GROUND"
-        },
-        {
-            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({"pos":fight.stage.collisionBox.pos.plus(new Vector2D(32,0)),"size":fight.stage.collisionBox.size.plus(new Vector2D(-64,-32))}),
-            action: "TECH"
         },
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
@@ -353,6 +357,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
@@ -388,6 +393,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.5 * (character.direction ? 1 : -1), y: 0 }),
@@ -423,6 +429,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'LOW',
             size: { x: 32, y: 96 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -458,6 +465,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'LOW',
             size: { x: 32, y: 96 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
@@ -493,6 +501,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: true,
+            attackType: 'AERIAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
@@ -528,6 +537,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: true,
+            attackType: 'AERIAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.75 })
@@ -563,6 +573,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 6 * (character.direction ? 1 : -1), y: 0 }),
@@ -605,7 +616,7 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -28 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
@@ -637,7 +648,7 @@ const SWAPS = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -80 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
@@ -850,12 +861,12 @@ const SWAPS = {
             },
             animation: {}
         },
-        INTRO: { 
+        INTRO: {
             duration: 64,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 128 },
             velocity: {
@@ -906,7 +917,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: false,
             isAerial: false,
-            disableMenu : true,
+            disableMenu: true,
             collisionBoxDisable: true,
             size: { x: 32, y: 120 },
             velocity: {
