@@ -100,6 +100,14 @@ const SLING = {
         },
         // Crouch actions
         {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 3 : 1) &&
+                ((inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].frameCount < 8 && inputList.state[3].input.stick === (character.direction ? 3 : 1) && inputList.state[4].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === 2 && inputList.state[2].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === 2 && inputList.state[2].input.stick === (character.direction ? 6 : 4))),
+            action: "DP"
+        },
+        {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.a,
             action: "LOW_LIGHT"
         },
@@ -118,6 +126,12 @@ const SLING = {
             action: "FORWARD_DASH"
         },
         // Standing actions
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
+                ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2 && inputList.state[4].input.stick === (character.direction ? 1 : 3) && inputList.state[5].input.stick === (character.direction ? 4 : 6)) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 1 : 3) && inputList.state[4].input.stick === (character.direction ? 4 : 6))),
+            action: "HCF"
+        },
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
                 ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2) ||
@@ -640,9 +654,77 @@ const SLING = {
                 frameCount: 8
             }
         },
+        DP: {
+            duration: 180,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                6: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            }
+        },
+        HCF: {
+            duration: 180,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+                6: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
+                ],
+                12: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ],
+            },
+            animation: {
+                offset: { x: -58, y: -48 },
+                size: { x: 182, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            }
+        },
         QCB: {},
-        DP: {},
-        HCF: {},
         AERIAL_BLOCK: {
             duration: 1,
             cancellable: true,
