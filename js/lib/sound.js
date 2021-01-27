@@ -10,6 +10,10 @@ class Sound {
         this.audio.play();
     }
 
+    resume = () => {
+        this.audio.play()
+    }
+
     isPaused = () => this.audio.paused;
 
     pause = () => {

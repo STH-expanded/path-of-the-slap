@@ -152,6 +152,9 @@ CharacterSelection.display = display => {
     if (charSelect.nextActivity) {
         display.music.pause();
     }
+    if (display.music.audio.ended) {
+        display.music.reset();
+    }
 
     // Sound
     if (charSelect.cursors.find(cursor => !cursor.ready)) {
@@ -160,16 +163,16 @@ CharacterSelection.display = display => {
         cursors.forEach(cursor => {
             const player = cursor.player instanceof Computer ? charSelect.cursors[0].player : cursor.player;
             if (player.inputList.frame[0].a && !player.inputList.frame[1].a &&
-                (charSelect.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
+                (charSelect.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2))) && !charSelect.initAnimFrame) {
                     let okSound = new Sound(display.assets.sounds.ok, 1);
                     okSound.play();
-            } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
+            } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.initAnimFrame) {
                 let returnSound = new Sound(display.assets.sounds.return, 1);
                 returnSound.play();
             } else {
                 [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1}, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1},
                 { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1}, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1}].forEach(({stick, fixStick, axis, val}) => {
-                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) {
+                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !charSelect.initAnimFrame) {
                         let selectSound = new Sound(display.assets.sounds.select, 1);
                         selectSound.play();
                     }
@@ -179,16 +182,16 @@ CharacterSelection.display = display => {
     } else if (!charSelect.stageReady) {
         charSelect.cursors.filter(cursor => !(cursor.player instanceof Computer)).forEach(cursor => {
             const player = cursor.player;
-            if (player.inputList.frame[0].a && !player.inputList.frame[1].a) {
+            if (player.inputList.frame[0].a && !player.inputList.frame[1].a && !charSelect.initAnimFrame) {
                 let okSound = new Sound(display.assets.sounds.ok, 1);
                 okSound.play();
             }
-            else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.stageReady) {
+            else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.stageReady && !charSelect.initAnimFrame) {
                 let returnSound = new Sound(display.assets.sounds.return, 1);
                 returnSound.play();
             } else {
                 [{ stick: 8, fixStick: [7, 8, 9], val: -1}, { stick: 2, fixStick: [1, 2, 3], val: 1}].forEach(({stick, fixStick, val}) => {
-                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !charSelect.stageReady) {
+                    if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !charSelect.stageReady && !charSelect.initAnimFrame) {
                         let selectSound = new Sound(display.assets.sounds.select, 1);
                         selectSound.play();
                     }
