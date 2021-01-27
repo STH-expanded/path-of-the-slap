@@ -799,7 +799,7 @@ const SLING = {
                 },
                 sfx: {
                     0: [
-                        { name: 'hitASling' }
+                        { name: 'CHARACTER_01_HIT' }
                     ]
                 }
             }
