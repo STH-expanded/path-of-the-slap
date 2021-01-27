@@ -169,6 +169,7 @@ class Assets {
         { id: 'charSelect', url: 'audio/char-select.mp3' },
         
         // Fight
+        { id: 'fightIntro', url: 'audio/fight-intro.wav' },
         { id: 'fight', url: 'audio/fight.mp3' },
 
         // Character

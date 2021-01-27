@@ -22,9 +22,9 @@ class Fight extends Activity {
 	initRound = () => {
 		this.roundIsOver = false;
 		// Round animation
-		this.roundAnimEndFrame = this.trainingMode ? 0 : 60;
+		this.roundAnimEndFrame = this.trainingMode ? 0 : 120;
 		this.roundAnimFrame = 0;
-		this.roundEndAnimEndFrame = 60;
+		this.roundEndAnimEndFrame = 120;
 		this.roundEndAnimFrame = 0;
 		
 		// Init characters

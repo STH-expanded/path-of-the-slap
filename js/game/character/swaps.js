@@ -16,7 +16,11 @@ const SWAPS = {
             action: "WIN_ROUND",
         },
         {
-            condition: (fight, character, inputList) => fight.roundIsOver && fight.players.find(player => player.character !== character).character.action === "INTRO" && character.isGrounded(fight),
+            condition: (fight, character, inputList) => character.action === "INTRO" && character.actionIndex < character.actions[character.action].duration,
+            action: "INTRO"
+        },
+        {
+            condition: (fight, character, inputList) => fight.roundAnimFrame < fight.roundAnimEndFrame || fight.roundIsOver && character.isGrounded(fight),
             action: "WAITING",
         },
         // Status actions
@@ -780,15 +784,25 @@ const SWAPS = {
             }
         },
         WAITING: {
-            duration: 1,
+            duration: 48,
             cancellable: false,
             fixedDirection: false,
             isAerial: false,
             disableMenu : true,
             collisionBoxDisable: true,
-            size: { x: 32, y: 128 },
+            size: { x: 32, y: 120 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "IDLE",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -56 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         }
     }

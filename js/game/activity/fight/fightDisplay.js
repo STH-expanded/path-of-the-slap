@@ -58,13 +58,31 @@ Fight.display = display => {
     });
 
     cx.translate(view.xOffset, view.yOffset);
+    
+    // Training or Fight Animation Display
+    if (!fight.trainingMode) {
+        if (fight.initAnimFrame) {
+            cx.fillStyle = '#000';
+            cx.fillRect(0, 0, display.width, display.height);
+            display.fadeEffect('#fff', fight.initAnimInitFrame - fight.initAnimFrame, fight.initAnimInitFrame);
+            cx.drawImage(display.assets.images.entranceImg, 0, 0, display.width, display.height);
+        } else if (fight.roundAnimFrame < fight.roundAnimEndFrame) cx.drawImage(display.assets.images['round' + (1 + fight.winCount[0] + fight.winCount[1])], 0, 0, display.width, display.height);
+        if (fight.roundIsOver) {
+            if (fight.roundEndAnimFrame < fight.roundEndAnimEndFrame) cx.drawImage(display.assets.images[fight.timer === 0 ? 'timeover' : 'ko'], 0, 0, display.width, display.height);
+            else if (fight.endAnimFrame < fight.endAnimEndFrame) cx.drawImage(display.assets.images['result' + (fight.winCount[0] === fight.playoff && fight.winCount[1] === fight.playoff ? 3 : fight.winCount.indexOf(Math.max(...fight.winCount)) + 1)], 0, 0, display.width, display.height);
+        }
+    } else Fight.trainingGUI(display);
 
     // Music
     if (fight.initAnimFrame === fight.initAnimInitFrame) {
+        let fightIntro = new Sound(display.assets.sounds.fightIntro, 0.25);
+        fightIntro.play();
+    }
+    if (!fight.initAnimFrame && fight.roundAnimFrame === fight.roundAnimEndFrame - 1) {
         display.music = new Sound(display.assets.sounds.fight, 0.25);
         display.music.play();
     }
-    if (!fight.pauseMenu && display.music.isPaused()) {
+    if (!fight.pauseMenu && display.music && display.music.isPaused()) {
         display.music.play();
     }
     if (fight.nextActivity || fight.pauseMenu) {
@@ -196,16 +214,6 @@ Fight.GUI = display => {
         if (!fight.trainingMode) for (let i = 0; i < fight.playoff; i++) cx.drawImage(images[i < fight.winCount[index] ? "winScore" : "scoreImg"], 208 - 16 * i, 24, 16, 16);
         cx.restore();
     });
-
-    // Training or Fight Animation Display
-    if (!fight.trainingMode) {
-        if (fight.initAnimFrame) cx.drawImage(images.entranceImg, 0, 0, display.width, display.height);
-        else if (fight.roundAnimFrame < fight.roundAnimEndFrame) cx.drawImage(images['round' + (1 + fight.winCount[0] + fight.winCount[1])], 0, 0, display.width, display.height);
-        if (fight.roundIsOver) {
-            if (fight.roundEndAnimFrame < fight.roundEndAnimEndFrame) cx.drawImage(images[fight.timer === 0 ? 'timeover' : 'ko'], 0, 0, display.width, display.height);
-            else if (fight.endAnimFrame < fight.endAnimEndFrame) cx.drawImage(images['result' + (fight.winCount[0] === fight.playoff && fight.winCount[1] === fight.playoff ? 3 : fight.winCount.indexOf(Math.max(...fight.winCount)) + 1)], 0, 0, display.width, display.height);
-        }
-    } else Fight.trainingGUI(display);
 }
 
 Fight.trainingGUI = display => {
