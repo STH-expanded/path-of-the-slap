@@ -2,6 +2,8 @@ Fight.display = display => {
     const cx = display.cx;
     const fight = display.game.activity;
 
+    
+
     const char1 = fight.players[0].character;
     const char2 = fight.players[1].character;
 
@@ -73,14 +75,20 @@ Fight.display = display => {
         }
     } else Fight.trainingGUI(display);
 
+
+    console.log(fight.roundAnimFrame, fight.initAnimFrame, fight.initAnimInitFrame)
+
     // Music
-    if (fight.initAnimFrame === fight.initAnimInitFrame) {
+    if (fight.initAnimInitFrame === fight.initAnimFrame && !fight.trainingMode) {
         let fightIntro = new Sound(display.assets.sounds.fightIntro, 0.25);
         fightIntro.play();
-    }
-    if (!fight.initAnimFrame && fight.roundAnimFrame === fight.roundAnimEndFrame - 1) {
+        console.log('fight intro')
         display.music = new Sound(display.assets.sounds.fight, 0.25);
         display.music.play();
+        console.log('on lance la musique')
+    }
+    if (fight.initAnimInitFrame === fight.initAnimFrame === fight.roundAnimFrame && fight.trainingMode) {
+        // TO DO MUSIC TRAINING
     }
     if (!fight.pauseMenu && display.music && display.music.isPaused()) {
         display.music.play();
