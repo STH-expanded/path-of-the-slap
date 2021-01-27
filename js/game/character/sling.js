@@ -653,7 +653,7 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -24 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
@@ -685,7 +685,7 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -80 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
