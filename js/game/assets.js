@@ -45,6 +45,9 @@ class Assets {
         { id: 'CHARACTER_00_AERIAL_HEAVY', src: 'img/character/CHARACTER_00_AERIAL_HEAVY.png' },
         { id: 'CHARACTER_00_QCF', src: 'img/character/CHARACTER_00_QCF.png' },
         { id: 'CHARACTER_00_INTRO', src: 'img/character/CHARACTER_00_INTRO.png' },
+        { id: 'CHARACTER_00_BLOCK', src: 'img/character/CHARACTER_00_BLOCK.png' },
+        { id: 'CHARACTER_00_AERIAL_BLOCK', src: 'img/character/CHARACTER_00_AERIAL_BLOCK.png' },
+        { id: 'CHARACTER_00_LOW_BLOCK', src: 'img/character/CHARACTER_00_LOW_BLOCK.png' },
 
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
@@ -79,6 +82,9 @@ class Assets {
         { id: 'CHARACTER_02_AERIAL_HEAVY', src: 'img/character/CHARACTER_02_AERIAL_HEAVY.png' },
         { id: 'CHARACTER_02_QCF', src: 'img/character/CHARACTER_02_QCF.png' },
         { id: 'CHARACTER_02_INTRO', src: 'img/character/CHARACTER_02_INTRO.png' },
+        { id: 'CHARACTER_02_BLOCK', src: 'img/character/CHARACTER_02_BLOCK.png' },
+        { id: 'CHARACTER_02_AERIAL_BLOCK', src: 'img/character/CHARACTER_02_AERIAL_BLOCK.png' },
+        { id: 'CHARACTER_02_LOW_BLOCK', src: 'img/character/CHARACTER_02_LOW_BLOCK.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },
