@@ -573,7 +573,7 @@ const SWAPS = {
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
-            attackType: 'AERIAL',
+            attackType: 'NORMAL',
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 6 * (character.direction ? 1 : -1), y: 0 }),
