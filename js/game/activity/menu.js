@@ -61,6 +61,9 @@ AbstractMenu.display = display => {
     if (menu instanceof MainMenu && menu.nextActivity) {
         display.music.pause();
     }
+    if (display.music.audio.ended) {
+        display.music.reset();
+    }
 
     // Animation
     if (menu instanceof MainMenu && menu.endAnimFrame) display.fadeEffect('#000', menu.endAnimFrame, menu.endAnimEndFrame);

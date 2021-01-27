@@ -92,7 +92,7 @@ CharacterSelection.display = display => {
                         cx.drawImage(images.randomImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11 - Math.sin(charSelect.animationFrame * 0.05), 52, 52);
                     }
                     else if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame >= 5) cx.drawImage(images.lockImg, 0, 0, 52, 52, 192 + x * 44 - y * 11, 10 + y * 44 + x * 11, 52, 52);
-                    if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame === 0 && !charSelect.initAnimFrame) {
+                    if (charSelect.mugshotOrder[x][y] - charSelect.initAnimFrame === 0) {
                         let se1Sound = new Sound(display.assets.sounds.se1, 1);
                         se1Sound.play();
                     }
@@ -151,6 +151,9 @@ CharacterSelection.display = display => {
     }
     if (charSelect.nextActivity) {
         display.music.pause();
+    }
+    if (display.music.audio.ended) {
+        display.music.reset();
     }
 
     // Sound

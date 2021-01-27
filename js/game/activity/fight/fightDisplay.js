@@ -76,7 +76,7 @@ Fight.display = display => {
     } else Fight.trainingGUI(display);
 
     // Music
-    if (fight.initAnimInitFrame === fight.initAnimFrame && !fight.trainingMode) {
+    if ((fight.initAnimInitFrame === fight.initAnimFrame || fight.roundEndAnimFrame === 120) && !fight.trainingMode) {
         let fightIntro = new Sound(display.assets.sounds.fightIntro, 0.25);
         fightIntro.play();
         display.music = new Sound(display.assets.sounds.fight, 0.25);
@@ -89,10 +89,13 @@ Fight.display = display => {
         display.music.play();
     }
     if (!fight.pauseMenu && display.music && display.music.isPaused()) {
-        display.music.play();
+        display.music.resume();
     }
     if (fight.nextActivity || fight.pauseMenu) {
         display.music.pause();
+    }
+    if (display.music.audio.ended) {
+        display.music.reset();
     }
 
     // Pause menu
