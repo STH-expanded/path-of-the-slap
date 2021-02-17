@@ -18,6 +18,8 @@ class CharacterSelection extends Activity {
     
     stageCursor = 0;
 
+    charSelected = false;
+
     constructor(initAnimInitFrame, endAnimEndFrame, mode, characters, stages, players) {
         super(initAnimInitFrame, endAnimEndFrame);
 
@@ -67,6 +69,7 @@ class CharacterSelection extends Activity {
 
     updateCharacterSelection = cursor => {
         const player = cursor.player instanceof Computer ? this.cursors[0].player : cursor.player;
+        this.charSelected = false;
         // If validate cursor position
         if (player.inputList.frame[0].a && !player.inputList.frame[1].a && !cursor.ready &&
             (this.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
@@ -80,6 +83,7 @@ class CharacterSelection extends Activity {
                 } while (!this.selectCharacter(cursor.pos));
             }
             // Cursor is now ready
+            this.charSelected = true;
             cursor.ready = true;
             cursor.infoFrame = this.cursorInfoInitFrame;
         } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
