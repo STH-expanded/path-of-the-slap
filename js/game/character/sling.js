@@ -56,7 +56,7 @@ const SLING = {
         {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
-        }, 
+        },
         {
             condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && !character.collisionBox.includedIn({ "pos": fight.stage.collisionBox.pos.plus(new Vector2D(32, 0)), "size": fight.stage.collisionBox.size.plus(new Vector2D(-64, -32)) }),
             action: "TECH"
@@ -73,7 +73,7 @@ const SLING = {
             condition: (fight, character, inputList) => character.action === "GROUND" || character.action === "EJECTED" && character.ejection === 0,
             action: "GROUND"
         },
-       
+
         {
             condition: (fight, character, inputList) => character.isGrounded(fight) && character.actions[character.action].isAerial,
             action: "IDLE" // TODO "LAND" action & landing lag
@@ -800,7 +800,7 @@ const SLING = {
                 },
                 sfx: {
                     0: [
-                        { name: 'CHARACTER_01_HIT' }
+                        { name: 'CHARACTER_00_HIT' }
                     ]
                 }
             }
