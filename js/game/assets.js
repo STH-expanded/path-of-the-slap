@@ -186,7 +186,8 @@ class Assets {
 
         // Character
         { id: 'CHARACTER_02_HIT', url: 'audio/CHARACTER_02_HIT.mp3' },
-        { id: 'CHARACTER_01_HIT', url: 'audio/coupSling.mp3' }
+        { id: 'CHARACTER_00_HIT', url: 'audio/coupSling.mp3' },
+        { id: 'CHARACTER_00_ACTIVE_PROFILE', url: "audio/CHARACTER_00_ACTIVE_PROFILE.mp3" }
     ];
 
     loadPercent = 0;
