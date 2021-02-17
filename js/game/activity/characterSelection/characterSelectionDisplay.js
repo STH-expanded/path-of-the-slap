@@ -166,7 +166,6 @@ CharacterSelection.display = display => {
                 charSelect.charSelected.selected && !charSelect.initAnimFrame) {
                 let okSound = new Sound(display.assets.sounds.ok, 1);
                 okSound.play();
-                console.log(charSelect.charSelected.id);
                 let selectedSound = new Sound(display.assets.sounds[`CHARACTER_${charSelect.charSelected.id}_ACTIVE_PROFILE`], 1);
                 selectedSound.play();
             } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.initAnimFrame) {
