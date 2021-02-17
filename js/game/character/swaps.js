@@ -358,27 +358,27 @@ const SWAPS = {
             fixedDirection: true,
             isAerial: false,
             attackType: 'NORMAL',
-            size: { x: 32, y: 128 },
+            size: { x: 32, y: 120 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
             },
             hitboxes: {
                 0: [],
                 6: [
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                    { offset: { x: 32, y: 18 }, size: { x: 37, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
                 ],
                 9: []
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
                 ],
                 6: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 45, y: 120 } },
+                    { offset: { x: 32, y: 25 }, size: { x: 15, y: 15 } }
                 ],
                 12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
                 ],
             },
             animation: {
@@ -402,19 +402,19 @@ const SWAPS = {
             hitboxes: {
                 0: [],
                 20: [
-                    { offset: { x: 32, y: 24 }, size: { x: 80, y: 24 }, damage: 100, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -8 } }
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 75 }, damage: 100, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -8 } }
                 ],
                 26: []
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                    { offset: { x: 0, y: 0 }, size: { x: 40, y: 128 } }
                 ],
                 12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 80, y: 128 } },
+                    { offset: { x: 0, y: 0 }, size: { x: 45, y: 128 } },
                 ],
                 24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                    { offset: { x: 0, y: 0 }, size: { x: 40, y: 128 } }
                 ],
             },
             animation: {
@@ -437,20 +437,20 @@ const SWAPS = {
             hitboxes: {
                 0: [],
                 6: [
-                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                    { offset: { x: 32, y: 58 }, size: { x: 90, y: 20 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
                 ],
                 9: []
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 48, y: 88 } }
                 ],
                 6: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } },
-                    { offset: { x: 32, y: 84 }, size: { x: 48, y: 12 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 48, y: 88 } },
+                    { offset: { x: 32, y: 58 }, size: { x: 37, y: 20 } }
                 ],
                 12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 96 } }
+                    { offset: { x: 0, y: 8 }, size: { x: 48, y: 88 } }
                 ]
             },
             animation: {
@@ -473,20 +473,20 @@ const SWAPS = {
             hitboxes: {
                 0: [],
                 18: [
-                    { offset: { x: 32, y: 72 }, size: { x: 64, y: 24 }, damage: 100, hitstunVelocity: { x: 0, y: 0 } }
+                    { offset: { x: 32, y: 64 }, size: { x: 90, y: 32 }, damage: 100, hitstunVelocity: { x: 0, y: 0 } }
                 ],
                 24: []
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } }
+                    { offset: { x: -16, y: 8 }, size: { x: 48, y: 88 } }
                 ],
                 12: [
-                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } },
-                    { offset: { x: 32, y: 80 }, size: { x: 48, y: 16 } }
+                    { offset: { x: -16, y: 8 }, size: { x: 65, y: 88 } },
+                    { offset: { x: 32, y: 56 }, size: { x: 30, y: 16 } }
                 ],
                 24: [
-                    { offset: { x: -16, y: 16 }, size: { x: 48, y: 80 } }
+                    { offset: { x: -16, y: 8 }, size: { x: 48, y: 88 } }
                 ]
             },
             animation: {
@@ -509,7 +509,7 @@ const SWAPS = {
             hitboxes: {
                 0: [],
                 6: [
-                    { offset: { x: 32, y: 48 }, size: { x: 32, y: 32 }, damage: 50, hitstunVelocity: { x: 1, y: 0 } }
+                    { offset: { x: 32, y: 48 }, size: { x: 70, y: 10 }, damage: 50, hitstunVelocity: { x: 1, y: 0 } }
                 ],
                 9: []
             },
@@ -519,7 +519,7 @@ const SWAPS = {
                 ],
                 6: [
                     { offset: { x: -8, y: 0 }, size: { x: 48, y: 112 } },
-                    { offset: { x: 32, y: 48 }, size: { x: 24, y: 24 } }
+                    { offset: { x: 32, y: 30 }, size: { x: 35, y: 24 } }
                 ],
                 12: [
                     { offset: { x: -8, y: 0 }, size: { x: 48, y: 112 } }
@@ -545,20 +545,20 @@ const SWAPS = {
             hitboxes: {
                 0: [],
                 8: [
-                    { offset: { x: 32, y: 80 }, size: { x: 64, y: 32 }, damage: 100, hitstunVelocity: { x: 1, y: 0 } }
+                    { offset: { x: 32, y: 70 }, size: { x: 27, y: 42 }, damage: 100, hitstunVelocity: { x: 1, y: 0 } }
                 ],
                 14: []
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } }
+                    { offset: { x: -16, y: 0 }, size: { x: 48, y: 128 } }
                 ],
                 6: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } },
-                    { offset: { x: 32, y: 64 }, size: { x: 48, y: 48 } }
+                    { offset: { x: -16, y: 0 }, size: { x: 48, y: 128 } },
+                    { offset: { x: 32, y: 60 }, size: { x: 10, y: 15 } }
                 ],
                 12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 48, y: 128 } }
+                    { offset: { x: -16, y: 0 }, size: { x: 48, y: 128 } }
                 ]
             },
             animation: {
@@ -694,6 +694,12 @@ const SWAPS = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -40, y: 10 }, size: { x: 77, y: 50 } },
+                    { offset: { x: 0, y: 50 }, size: { x: 37, y: 50 } }
+                ]
             },
             animation: {
                 altImg: {
