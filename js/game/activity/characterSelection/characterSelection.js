@@ -5,7 +5,7 @@ class CharacterSelection extends Activity {
         [208, 160, 112, 160, 208],
         [192, 176, 128, 144, 224]
     ];
-    
+
     stageInitFrame = 6;
     stageFrame = this.stageInitFrame;
     selectStageInitFrame = 6;
@@ -15,10 +15,13 @@ class CharacterSelection extends Activity {
     cursorInitPos = [new Vector2D(0, 2), new Vector2D(2, 2)];
     cursorInfoInitFrame = 16;
     cursorProfileInitFrame = 8;
-    
+
     stageCursor = 0;
 
-    charSelected = false;
+    charSelected = {
+        id: null,
+        selected: false
+    };
 
     constructor(initAnimInitFrame, endAnimEndFrame, mode, characters, stages, players) {
         super(initAnimInitFrame, endAnimEndFrame);
@@ -58,7 +61,7 @@ class CharacterSelection extends Activity {
             this.stageFrame = this.stageInitFrame;
         } else {
             // Else if input directions
-            [{ stick: 8, fixStick: [7, 8, 9], val: -1}, { stick: 2, fixStick: [1, 2, 3], val: 1}].forEach(({stick, fixStick, val}) => {
+            [{ stick: 8, fixStick: [7, 8, 9], val: -1 }, { stick: 2, fixStick: [1, 2, 3], val: 1 }].forEach(({ stick, fixStick, val }) => {
                 if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick) && !this.stageReady) {
                     this.stageCursor = (((this.stageCursor + val) % this.stages.length) + this.stages.length) % this.stages.length;
                     this.selectStageFrame = val * this.selectStageInitFrame;
@@ -69,7 +72,7 @@ class CharacterSelection extends Activity {
 
     updateCharacterSelection = cursor => {
         const player = cursor.player instanceof Computer ? this.cursors[0].player : cursor.player;
-        this.charSelected = false;
+        this.charSelected.selected = false;
         // If validate cursor position
         if (player.inputList.frame[0].a && !player.inputList.frame[1].a && !cursor.ready &&
             (this.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2)))) {
@@ -83,7 +86,8 @@ class CharacterSelection extends Activity {
                 } while (!this.selectCharacter(cursor.pos));
             }
             // Cursor is now ready
-            this.charSelected = true;
+            this.charSelected.selected = true;
+            this.charSelected.id = this.selectCharacter(cursor.pos).id;
             cursor.ready = true;
             cursor.infoFrame = this.cursorInfoInitFrame;
         } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b) {
@@ -102,8 +106,8 @@ class CharacterSelection extends Activity {
             }
         } else if (!cursor.ready) {
             // Else if input directions
-            [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1}, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1},
-            { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1}, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1}].forEach(({stick, fixStick, axis, val}) => {
+            [{ stick: 8, fixStick: [7, 8, 9], axis: "y", val: -1 }, { stick: 2, fixStick: [1, 2, 3], axis: "y", val: 1 },
+            { stick: 4, fixStick: [1, 4, 7], axis: "x", val: -1 }, { stick: 6, fixStick: [3, 6, 9], axis: "x", val: 1 }].forEach(({ stick, fixStick, axis, val }) => {
                 if (player.inputList.frame[0].stick === stick && !fixStick.includes(player.inputList.frame[1].stick)) {
                     cursor.pos[axis] = (((cursor.pos[axis] + val) % this.size[axis]) + this.size[axis]) % this.size[axis];
                     cursor.profileFrame = this.cursorProfileInitFrame;
@@ -124,7 +128,7 @@ class CharacterSelection extends Activity {
             });
             // Update computer cursors if every player cursor is ready else update them
             const cursors = this.cursors.filter(cursor => this.cursors.some(cursor => !(cursor.player instanceof Computer) && !cursor.ready) ?
-            !(cursor.player instanceof Computer) : cursor.player instanceof Computer);
+                !(cursor.player instanceof Computer) : cursor.player instanceof Computer);
             cursors.forEach(cursor => this.updateCharacterSelection(cursor));
         } else {
             // Else if stage is not selected
