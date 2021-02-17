@@ -63,7 +63,7 @@ const SLING = {
             action: "HIT"
         },
         {
-            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && (!character.collisionBox.includedInAxis({ "pos": fight.stage.collisionBox.pos.plus(new Vector2D(32, 0)), "size": fight.stage.collisionBox.size.plus(new Vector2D(-64, -32)) },"x") || character.collisionBox.collidesWith({ "pos":new Vector2D(0, fight.stage.collisionBox.size.y-32), "size": new Vector2D(fight.stage.collisionBox.size.x,40) })) && character.velocity.y >0,
+            condition: (fight, character, inputList) => character.action === "EJECTED" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b) && (!character.collisionBox.includedInAxis({ "pos": fight.stage.collisionBox.pos.plus(new Vector2D(32, 0)), "size": fight.stage.collisionBox.size.plus(new Vector2D(-64, -32)) }, "x") || character.collisionBox.collidesWith({ "pos": new Vector2D(0, fight.stage.collisionBox.size.y - 32), "size": new Vector2D(fight.stage.collisionBox.size.x, 40) })) && character.velocity.y > 0,
             action: "TECH"
         },
         {
@@ -885,7 +885,9 @@ const SLING = {
                 0: []
             },
             hurtboxes: {
-                0: [],
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
+                ]
             },
             animation: {}
         },
