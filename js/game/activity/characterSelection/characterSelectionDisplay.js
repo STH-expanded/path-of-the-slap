@@ -163,13 +163,9 @@ CharacterSelection.display = display => {
         cursors.forEach(cursor => {
             const player = cursor.player instanceof Computer ? charSelect.cursors[0].player : cursor.player;
             if (player.inputList.frame[0].a && !player.inputList.frame[1].a &&
-                (charSelect.selectCharacter(cursor.pos) || new Vector2D(cursor.pos.x, cursor.pos.y).equals(new Vector2D(1, 2))) && !charSelect.initAnimFrame) {
+                charSelect.charSelected && !charSelect.initAnimFrame) {
                 let okSound = new Sound(display.assets.sounds.ok, 1);
                 okSound.play();
-                // const idChar = charSelect.selectCharacter(cursor.pos).id;
-                // console.log(charSelect.selectCharacter(cursor.pos));
-                // let selectedSound = new Sound(display.assets.souds[`CHARACTER_${idChar}_ACTIVE_PROFILE`]);
-                // selectedSound.play();
             } else if (player.inputList.frame[0].b && !player.inputList.frame[1].b && !charSelect.initAnimFrame) {
                 let returnSound = new Sound(display.assets.sounds.return, 1);
                 returnSound.play();
