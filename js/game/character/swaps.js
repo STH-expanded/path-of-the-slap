@@ -25,16 +25,16 @@ const SWAPS = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b,
-            action: "GRAB",
-        },
-        {
             condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && (character.direction ? inputList.state[0].input.stick === 6 : inputList.state[0].input.stick === 4),
             action: "FORWARD_THROW",
         },
         {
-            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED",
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6),
             action: "BACK_THROW",
+        },
+        {
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB",
+            action: "GRAB",
         },
         {
             condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
@@ -61,7 +61,7 @@ const SWAPS = {
             action: "EJECTED"
         },
         {
-            condition: (fight, character, inputList) => character.grabbed,
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
             action: "GRABBED"
         },
         {
@@ -777,12 +777,6 @@ const SWAPS = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            hitboxes: {
-                0: []
-            },
-            hurtboxes: {
-                0: [],
-            },
             animation: {}
         },
         GRAB_TECH: {},
@@ -792,13 +786,8 @@ const SWAPS = {
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
-            hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
-                ],
-            },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y + 0.25 })
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
                 altImg: {
@@ -818,27 +807,7 @@ const SWAPS = {
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
-                16: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-            hitboxes: {
-                0: [],
-                12: [
-                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: -16, y: -15 } }
-                ],
-                18: []
-            },
-            hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
-                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
-                ],
-                24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {}
         },
@@ -849,27 +818,7 @@ const SWAPS = {
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
-                16: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-            hitboxes: {
-                0: [],
-                12: [
-                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -15 } }
-                ],
-                18: []
-            },
-            hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
-                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
-                ],
-                24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {}
         },

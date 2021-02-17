@@ -13,8 +13,6 @@ class Character {
     ejectionVelocity = new Vector2D(0, 0);
     ejection = 0;
 
-    grabbed = false;
-
     constructor(data, action, direction, position) {
         this.data = data;
         this.id = data.id;
@@ -49,8 +47,9 @@ class Character {
     wallBounce = fight => this.action === 'EJECTED' && (this.collisionBox.pos.x < 1 || this.collisionBox.pos.x + this.collisionBox.size.x >= fight.stage.collisionBox.size.x);
 
     updateAction = (fight, inputList) => {
-        if (this.getEnemies(fight)[0].action === "GRAB" && (((this.collisionBox.center().x - this.getEnemy(fight).collisionBox.center().x) < 70) && ((this.collisionBox.center().x - this.getEnemy(fight).collisionBox.center().x) > -70))) {
-            this.grabbed = true;
+        if (this.action === 'GRABBED' && ['FORWARD_THROW', 'BACK_THROW'].includes(this.getEnemy(fight).action)) {
+            this.ejection = 1;
+            this.ejectionVelocity = new Vector2D(16, -8);
         }
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
@@ -63,7 +62,6 @@ class Character {
                     && !(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'LOW_BLOCK' && this.hitstun)) {
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
-                        this.grabbed = false;
                         this.ejection = 1;
                         this.ejectionVelocity = new Vector2D(hitbox.ejectionVelocity.x, hitbox.ejectionVelocity.y);
                     }
