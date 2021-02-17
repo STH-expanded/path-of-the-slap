@@ -3,9 +3,14 @@ const SLING = {
     health: 1000,
 
     actionsBlueprint: [
+        // Fight system actions
+        {
+            condition: (fight, character, inputList) => fight.winCount.filter((element) => element === 2).length === 1 && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight) && character.actionIndex < character.actions[character.action].duration,
+            action: "WIN",
+        },
         {
             condition: (fight, character, inputList) => fight.winCount.filter((element) => element === 2).length === 1 && fight.winCount[fight.players.findIndex(player => player.character !== character)] !== fight.playoff && character.isGrounded(fight),
-            action: "WIN",
+            action: "WIN_WAITING",
         },
         {
             condition: (fight, character, inputList) => character.health === 0 && fight.roundIsOver && character.isGrounded(fight),
@@ -20,8 +25,8 @@ const SLING = {
             action: "INTRO"
         },
         {
-            condition: (fight, character, inputList) => fight.roundAnimFrame < fight.roundAnimEndFrame || fight.roundIsOver && character.isGrounded(fight),
-            action: "WAITING",
+            condition: (fight, character, inputList) => fight.roundAnimFrame < fight.roundAnimEndFrame,
+            action: "INTRO_WAITING",
         },
         // Status actions
         {
@@ -842,26 +847,27 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
+                offset: { x: -64, y: -48 },
+                size: { x: 160, y: 192 },
                 speed: 1,
                 frameCount: 1
             }
         },
         GET_UP: {
-            duration: 16,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
+            collisionBoxDisable: true,
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
                 offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1,
-                frameCount: 1
+                size: { x: 128, y: 192 },
+                speed: 1 / 4,
+                frameCount: 6
             }
         },
         LAND: {},
@@ -977,8 +983,19 @@ const SLING = {
             fixedDirection: true,
             isAerial: true,
             size: { x: 32, y: 128 },
+            collisionBoxDisable: true,
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "FALL",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -24 },
+                size: { x: 91, y: 192 },
+                speed: 1,
+                frameCount: 1
             }
         },
         INTRO: {
@@ -1009,10 +1026,20 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "GROUND",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -64, y: -48 },
+                size: { x: 160, y: 192 },
+                speed: 1,
+                frameCount: 1
             }
         },
         WIN_ROUND: {
-            duration: 45,
+            duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1021,10 +1048,20 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                altImg: {
+                    action: "IDLE",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -48 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         },
         WIN: {
-            duration: 45,
+            duration: 48,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1033,9 +1070,33 @@ const SLING = {
             size: { x: 32, y: 128 },
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -56 },
+                size: { x: 114, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
             }
         },
-        WAITING: {
+        WIN_WAITING: {
+            duration: 1,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            disableMenu: true,
+            collisionBoxDisable: true,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            animation: {
+                offset: { x: -29, y: -56 },
+                size: { x: 114, y: 192 },
+                speed: 1,
+                frameCount: 1
+            }
+        },
+        INTRO_WAITING: {
             duration: 48,
             cancellable: false,
             fixedDirection: false,

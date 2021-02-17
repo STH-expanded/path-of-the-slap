@@ -8,8 +8,8 @@ class Computer extends Player {
                 up: false,
                 right: false,
                 down: false,
-                a: true,
-                b: false,
+                a: false,
+                b: true,
                 start: false
             })
         }
