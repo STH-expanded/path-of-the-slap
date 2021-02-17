@@ -197,7 +197,7 @@ const SWAPS = {
                 ]
             },
             animation: {
-                offset: { x: -64, y: -56 },
+                offset: { x: -72, y: -56 },
                 size: { x: 182, y: 192 },
                 speed: 1 / 8,
                 frameCount: 9
