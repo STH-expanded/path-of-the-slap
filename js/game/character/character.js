@@ -49,7 +49,9 @@ class Character {
     updateAction = (fight, inputList) => {
         if (this.action === 'GRABBED' && ['FORWARD_THROW', 'BACK_THROW'].includes(this.getEnemy(fight).action)) {
             this.ejection = 1;
-            this.ejectionVelocity = new Vector2D(16, -8);
+            const enemy = this.getEnemy(fight);
+            const direction = enemy.direction && enemy.action === "FORWARD_THROW" || !enemy.direction && enemy.action === "BACK_THROW";
+            this.ejectionVelocity = new Vector2D(16 * (direction ? 1 : -1), -8);
         }
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
