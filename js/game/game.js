@@ -23,6 +23,6 @@ Game.CHARACTERS = [
     null, null, null,
     null, SLING, null,
     SLING, null, SWAPS,
-    null, SWAPS, null,
+    null, CHAMA, null,
     null, null, null
 ];
