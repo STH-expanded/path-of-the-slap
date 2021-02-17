@@ -30,6 +30,8 @@ class Character {
         );
     }
 
+    hurtnotify = enemyhit => null;
+
     getEnemy = fight => fight.players.find(player => player.character !== this).character;
 
     getEnemyActors = fight => fight.actors.filter(actor => actor.master !== this);
@@ -55,7 +57,12 @@ class Character {
         }
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
             let hitbox = null;
-            this.getEnemies(fight).forEach(enemy => hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true)));
+            this.getEnemies(fight).forEach(enemy =>{ 
+                hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(this.hurtboxes).includes(true))
+                if (enemy.hitboxes.includes(hitbox)) {
+                    enemy.hurtnotify(this)
+                }
+            });
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
 

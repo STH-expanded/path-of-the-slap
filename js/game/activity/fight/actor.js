@@ -23,7 +23,10 @@ class Actor {
             master.collisionBox.center().plus(new Vector2D(offset.x * (master.direction ? 1 : -1), offset.y)),
             this.actions[action].size
         );
+        this.hitingEnemy = false;
     }
+
+    hurtnotify = enemyhit => this.hitingEnemy = enemyhit;
 
     getEnemy = fight => fight.players.find(player => player.character !== this.master).character;
 
