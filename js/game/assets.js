@@ -153,8 +153,8 @@ class Assets {
         { id: 'result2', src: 'img/fight/result2.png' },
         { id: 'result3', src: 'img/fight/result3.png' },
         { id: 'timeover', src: 'img/fight/timeover.png' },
-        { id: 'dust', src: 'img/fight/dust.png' },
-        { id: 'dash', src: 'img/fight/dash.png' },
+        { id: 'DUST', src: 'img/fight/dust.png' },
+        { id: 'DASH', src: 'img/fight/dash.png' },
 
         // Fight Training
         { id: 'infinity', src: 'img/training/infinity.png' },

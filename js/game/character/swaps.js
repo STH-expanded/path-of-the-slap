@@ -242,7 +242,13 @@ const SWAPS = {
                 offset: { x: -64, y: -48 },
                 size: { x: 182, y: 192 },
                 speed: 1 / 3,
-                frameCount: 6
+                frameCount: 6,
+                vfx: {
+                    0: [
+                        { offset: { x: -150, y: 8 }, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST"},
+                        { offset: { x: 30, y: -15 }, size: { x: 128, y: 136 }, speed: 1 / 5, frameCount: 4, assetId: "DASH"}
+                    ]
+                },
             }
         },
         BACK_DASH: {
