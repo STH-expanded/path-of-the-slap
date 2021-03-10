@@ -130,6 +130,14 @@ const SLING = {
             action: "LOW_HEAVY"
         },
         {
+            condition: (fight, character, inputList) => inputList.state[0].input.c && inputList.state[0].input.stick < 4,
+            action: "LOW_TAUNT"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.c,
+            action: "TAUNT"
+        },
+        {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4,
             action: "CROUCH"
         },
@@ -1116,6 +1124,38 @@ const SLING = {
                 speed: 1 / 8,
                 frameCount: 6
             }
-        }
+        },
+        TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
+        LOW_TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
     }
 }
