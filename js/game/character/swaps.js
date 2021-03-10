@@ -793,7 +793,7 @@ const SWAPS = {
             }
         },
         GRAB: {
-            duration: 25,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -806,7 +806,12 @@ const SWAPS = {
                     { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
                 ]
             },
-            animation: {}
+            animation: {
+                offset: { x: -48, y: -48 },
+                size: { x: 107, y: 192 },
+                speed: 1 / 6,
+                frameCount: 4
+            }
         },
         GRAB_RELEASE: {
             duration: 16,
@@ -868,7 +873,12 @@ const SWAPS = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            animation: {}
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 107, y: 192 },
+                speed: 1 / 8,
+                frameCount: 4
+            }
         },
         FORWARD_THROW: {
             duration: 32,
@@ -880,7 +890,12 @@ const SWAPS = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            animation: {}
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 125, y: 192 },
+                speed: 1 / 8,
+                frameCount: 4
+            }
         },
         INTRO: {
             duration: 64,
