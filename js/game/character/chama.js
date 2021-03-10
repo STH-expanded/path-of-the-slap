@@ -42,7 +42,7 @@ const CHAMA = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
+            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
             action: "GRAB",
         },
         // Status actions
@@ -75,7 +75,7 @@ const CHAMA = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight),
             action: "GRABBED"
         },
         {
@@ -906,13 +906,13 @@ const CHAMA = {
         },
         GRAB_TECH: {},
         GRAB_RELEASE: {
-            duration: 32,
+            duration: 16,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 120 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+                0: (fight, character, inputList) => ({ x: character.direction ? -2.5 : 2.5, y: 0 })
             },
             hurtboxes: {
                 0: [
@@ -931,7 +931,7 @@ const CHAMA = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 8,
+                speed: 1 / 2,
                 frameCount: 6
             }
         },
