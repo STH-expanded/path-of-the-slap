@@ -34,6 +34,7 @@ class Player {
             stick: stick,
             a: rawKeys.a,
             b: rawKeys.b,
+            c: rawKeys.c,
             start: rawKeys.start
         }
     }

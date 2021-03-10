@@ -37,7 +37,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
+            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
             action: "GRAB",
         },
         {
@@ -69,7 +69,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight),
             action: "GRABBED"
         },
         {
@@ -113,6 +113,14 @@ const SWAPS = {
         {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.b,
             action: "LOW_HEAVY"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.c && inputList.state[0].input.stick < 4,
+            action: "LOW_TAUNT"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.c,
+            action: "TAUNT"
         },
         {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4,
@@ -246,7 +254,13 @@ const SWAPS = {
                 offset: { x: -64, y: -48 },
                 size: { x: 182, y: 192 },
                 speed: 1 / 3,
-                frameCount: 6
+                frameCount: 6,
+                vfx: {
+                    0: [
+                        { offset: { x: -150, y: 8 }, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST"},
+                        { offset: { x: 30, y: -15 }, size: { x: 128, y: 136 }, speed: 1 / 5, frameCount: 4, assetId: "DASH"}
+                    ]
+                },
             }
         },
         BACK_DASH: {
@@ -800,13 +814,13 @@ const SWAPS = {
             }
         },
         GRAB_RELEASE: {
-            duration: 32,
+            duration: 16,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 120 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+                0: (fight, character, inputList) => ({ x: character.direction ? -2.5 : 2.5, y: 0 })
             },
             hurtboxes: {
                 0: [
@@ -825,7 +839,7 @@ const SWAPS = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 8,
+                speed: 1 / 2,
                 frameCount: 6
             }
         },
@@ -981,6 +995,38 @@ const SWAPS = {
                 speed: 1 / 8,
                 frameCount: 6
             }
-        }
+        },
+        TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
+        LOW_TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
     }
 }

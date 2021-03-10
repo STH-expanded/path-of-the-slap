@@ -1,6 +1,6 @@
 class KeyboardListener {
-    keys = { left: false, up: false, right: false, down: false, a: false, b: false, start: false }
-    keyCodes = { q: "left", z: "up", d: "right", s: "down", o: "a", p: "b", Enter: "start" }
+    keys = { left: false, up: false, right: false, down: false, a: false, b: false, c: false, start: false }
+    keyCodes = { q: "left", z: "up", d: "right", s: "down", o: "a", p: "b", m: "c", Enter: "start" }
 
     constructor() {
         document.body.onkeydown = event => this.handler(event);
@@ -30,6 +30,7 @@ class InputManager {
                 down: gamepad.axes[1] > 0.5,
                 a: gamepad.buttons[1].value,
                 b: gamepad.buttons[0].value,
+                c: gamepad.buttons[3].value,
                 start: gamepad.buttons[2].value,
             }
         });

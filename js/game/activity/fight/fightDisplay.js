@@ -41,6 +41,7 @@ Fight.display = display => {
                         if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
                     });
                 }
+              
                 if (animation.sfx) {
                     const sfxs = animation.sfx[Object.keys(animation.sfx).reverse().find(index => index <= element.actionIndex)];
                     sfxs.forEach(sfx => {
@@ -54,6 +55,18 @@ Fight.display = display => {
                     animation.offset.x, animation.offset.y,
                     animation.size.x, animation.size.y
                 );
+                if (animation.vfx) {
+                    const vfxs = animation.vfx[Object.keys(animation.vfx).reverse().find(index => index <= element.actionIndex)];
+                    vfxs.forEach(vfx => {
+                        cx.drawImage(
+                            display.assets.images[vfx.assetId],
+                            vfx.size.x * (Math.floor(element.actionIndex * vfx.speed) % vfx.frameCount), 0,
+                            vfx.size.x, vfx.size.y,
+                            vfx.offset.x, vfx.offset.y,
+                            vfx.size.x, vfx.size.y
+                        );
+                    });
+                }
                 cx.restore();
             }
         }
