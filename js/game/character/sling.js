@@ -906,13 +906,13 @@ const SLING = {
         },
         GRAB_TECH: {},
         GRAB_RELEASE: {
-            duration: 32,
+            duration: 16,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 120 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+                0: (fight, character, inputList) => ({ x: character.direction ? -2.5 : 2.5, y: 0 })
             },
             hurtboxes: {
                 0: [
@@ -931,7 +931,7 @@ const SLING = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 8,
+                speed: 1 / 2,
                 frameCount: 6
             }
         },
