@@ -91,6 +91,9 @@ class Assets {
         { id: 'CHARACTER_02_LOW_BLOCK', src: 'img/character/CHARACTER_02_LOW_BLOCK.png' },
         { id: 'CHARACTER_02_GROUND', src: 'img/character/CHARACTER_02_GROUND.png' },
         { id: 'CHARACTER_02_GET_UP', src: 'img/character/CHARACTER_02_GET_UP.png' },
+        { id: 'CHARACTER_02_GRAB', src: 'img/character/CHARACTER_02_GRAB.png' },
+        { id: 'CHARACTER_02_FORWARD_THROW', src: 'img/character/CHARACTER_02_FORWARD_THROW.png' },
+        { id: 'CHARACTER_02_BACK_THROW', src: 'img/character/CHARACTER_02_BACK_THROW.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },
