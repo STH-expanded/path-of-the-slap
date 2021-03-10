@@ -33,7 +33,11 @@ const SWAPS = {
             action: "BACK_THROW",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB",
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && character.actionIndex === character.actions[character.action].duration,
+            action: "GRAB_RELEASE",
+        },
+        {
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
             action: "GRAB",
         },
         {
@@ -61,12 +65,12 @@ const SWAPS = {
             action: "EJECTED"
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
-            action: "GRABBED"
+            condition: (fight, character, inputList) => character.action === "GRABBED" && character.getEnemy(fight).action === "GRAB_RELEASE",
+            action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.ejection,
-            action: "EJECTED"
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
+            action: "GRABBED"
         },
         {
             condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
@@ -109,6 +113,14 @@ const SWAPS = {
         {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.b,
             action: "LOW_HEAVY"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.c && inputList.state[0].input.stick < 4,
+            action: "LOW_TAUNT"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.c,
+            action: "TAUNT"
         },
         {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4,
@@ -796,7 +808,36 @@ const SWAPS = {
             },
             animation: {}
         },
-        GRAB_TECH: {},
+        GRAB_RELEASE: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 120 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 40, y: 64 } },
+                    { offset: { x: -16, y: 64 }, size: { x: 56, y: 56 } }
+                ],
+                24: [
+                    { offset: { x: 8, y: 0 }, size: { x: 40, y: 64 } },
+                    { offset: { x: -16, y: 64 }, size: { x: 56, y: 56 } }
+                ]
+            },
+            animation: {
+                altImg: {
+                    action: "IDLE",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -56 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
+            }
+        },
         GRABBED: {
             // duration: 1,
             cancellable: true,
@@ -819,6 +860,7 @@ const SWAPS = {
         },
         BACK_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -830,6 +872,7 @@ const SWAPS = {
         },
         FORWARD_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -937,6 +980,38 @@ const SWAPS = {
                 speed: 1 / 8,
                 frameCount: 6
             }
-        }
+        },
+        TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
+        LOW_TAUNT: {
+            duration: 20,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 0, y: 0 }, size: { x: 32, y: 128 } }
+                ]
+            },
+            animation: {}
+        },
     }
 }

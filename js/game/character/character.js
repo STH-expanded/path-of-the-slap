@@ -53,6 +53,7 @@ class Character {
             this.ejection = 1;
             const enemy = this.getEnemy(fight);
             const direction = enemy.direction && enemy.action === "FORWARD_THROW" || !enemy.direction && enemy.action === "BACK_THROW";
+            this.takeDamage(enemy.actions[enemy.action].damage);
             this.ejectionVelocity = new Vector2D(16 * (direction ? 1 : -1), -8);
         }
         if ((!['HIT', 'BLOCK', 'AERIAL_BLOCK', 'LOW_BLOCK'].includes(this.action)) && this.isHit(fight)) {
