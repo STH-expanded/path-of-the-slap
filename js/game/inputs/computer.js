@@ -521,6 +521,39 @@ class Computer extends Player {
                 start: false
             })
         }
+    },
+    {
+        // block
+        frames: 121,
+        fit: (fight, character) => {
+            let i = 0;
+            fight.actors.forEach(actor => {
+                if (Math.abs(actor.collisionBox.center().x - fight.players[1].character.collisionBox.center().x) < 100) {
+                    i = 1;
+                }
+            });
+            return i;
+        },
+        steps: {
+            0: (fight, character) => ({
+                left: character.direction,
+                up: false,
+                right: !character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            120: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            })
+        }
     }];
     sequence = this.sequences[0];
     sequenceIndex = 1;
