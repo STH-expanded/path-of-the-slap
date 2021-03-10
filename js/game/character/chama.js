@@ -30,16 +30,20 @@ const CHAMA = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b,
-            action: "GRAB",
-        },
-        {
             condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && (character.direction ? inputList.state[0].input.stick === 6 : inputList.state[0].input.stick === 4),
             action: "FORWARD_THROW",
         },
         {
-            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED",
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6),
             action: "BACK_THROW",
+        },
+        {
+            condition: (fight, character, inputList) => character.getEnemy(fight).action === "GRABBED" && character.actionIndex === character.actions[character.action].duration,
+            action: "GRAB_RELEASE",
+        },
+        {
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
+            action: "GRAB",
         },
         // Status actions
         {
@@ -55,10 +59,6 @@ const CHAMA = {
             action: "LOW_BLOCK"
         },
         {
-            condition: (fight, character, inputList) => character.grabbed,
-            action: "GRABBED"
-        },
-        {
             condition: (fight, character, inputList) => character.hitstun,
             action: "HIT"
         },
@@ -69,6 +69,14 @@ const CHAMA = {
         {
             condition: (fight, character, inputList) => character.ejection,
             action: "EJECTED"
+        },
+        {
+            condition: (fight, character, inputList) => character.action === "GRABBED" && character.getEnemy(fight).action === "GRAB_RELEASE",
+            action: "GRAB_RELEASE",
+        },
+        {
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64,
+            action: "GRABBED"
         },
         {
             condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
@@ -881,15 +889,44 @@ const CHAMA = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            hitboxes: {
-                0: []
-            },
             hurtboxes: {
-                0: [],
+                0: [
+                    { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
+                ]
             },
             animation: {}
         },
         GRAB_TECH: {},
+        GRAB_RELEASE: {
+            duration: 32,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 120 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: -8, y: 0 }, size: { x: 40, y: 64 } },
+                    { offset: { x: -16, y: 64 }, size: { x: 56, y: 56 } }
+                ],
+                24: [
+                    { offset: { x: 8, y: 0 }, size: { x: 40, y: 64 } },
+                    { offset: { x: -16, y: 64 }, size: { x: 56, y: 56 } }
+                ]
+            },
+            animation: {
+                altImg: {
+                    action: "IDLE",
+                    condition: (fight, character) => true
+                },
+                offset: { x: -29, y: -56 },
+                size: { x: 91, y: 192 },
+                speed: 1 / 8,
+                frameCount: 6
+            }
+        },
         GRABBED: {
             // duration: 1,
             cancellable: true,
@@ -917,63 +954,25 @@ const CHAMA = {
         },
         BACK_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
-                16: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-            hitboxes: {
-                0: [],
-                12: [
-                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: -16, y: -15 } }
-                ],
-                18: []
-            },
-            hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
-                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
-                ],
-                24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {}
         },
         FORWARD_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.4 * (character.direction ? -1 : 1), y: 0 }),
-                16: (fight, character, inputList) => ({ x: 0, y: 0 })
-            },
-            hitboxes: {
-                0: [],
-                12: [
-                    { offset: { x: 10, y: 24 }, size: { x: 100, y: 100 }, damage: 10, hitstunFrame: 8, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 16, y: -15 } }
-                ],
-                18: []
-            },
-            hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 30, y: 128 } },
-                    { offset: { x: 10, y: 24 }, size: { x: 30, y: 44 } }
-                ],
-                24: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {}
         },

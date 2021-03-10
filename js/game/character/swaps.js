@@ -73,10 +73,6 @@ const SWAPS = {
             action: "GRABBED"
         },
         {
-            condition: (fight, character, inputList) => character.ejection,
-            action: "EJECTED"
-        },
-        {
             condition: (fight, character, inputList) => character.action === "GROUND" && (inputList.state[0].input.stick !== 5 || inputList.state[0].input.a || inputList.state[0].input.b),
             action: "GET_UP"
         },
@@ -850,6 +846,7 @@ const SWAPS = {
         },
         BACK_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -861,6 +858,7 @@ const SWAPS = {
         },
         FORWARD_THROW: {
             duration: 32,
+            damage: 50,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
