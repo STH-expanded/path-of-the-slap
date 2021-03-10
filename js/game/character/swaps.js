@@ -37,7 +37,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB",
+            condition: (fight, character, inputList) => character.isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
             action: "GRAB",
         },
         {
