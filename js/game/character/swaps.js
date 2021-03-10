@@ -403,7 +403,12 @@ const SWAPS = {
                 offset: { x: -52, y: -48 },
                 size: { x: 128, y: 192 },
                 speed: 1 / 4,
-                frameCount: 6
+                frameCount: 6,
+                vfx: {
+                    0: [
+                        { offset: { x: 30, y: -12 }, size: { x: 64, y: 64 }, speed: 1 / 5, frameCount: 5, assetId: "SLASH"}
+                    ]
+                },
             }
         },
         HEAVY: {

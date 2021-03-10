@@ -159,6 +159,7 @@ class Assets {
         { id: 'DUST', src: 'img/fight/dust.png' },
         { id: 'DASH', src: 'img/fight/dash.png' },
         { id: 'HIT', src: 'img/fight/hit.png' },
+        { id: 'SLASH', src: 'img/fight/slash.png' },
 
         // Fight Training
         { id: 'infinity', src: 'img/training/infinity.png' },
