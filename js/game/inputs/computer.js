@@ -3,13 +3,67 @@ class Computer extends Player {
         frames: 60,
         fit: (fight, character) => debugMode.cpu ? 2 : 0,
         steps: {
-            1: (fight, character) => ({
+            0: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            3: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            4: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            5: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            6: (fight, character) => ({
                 left: false,
                 up: false,
                 right: false,
                 down: false,
                 a: false,
-                b: true,
+                b: false,
+                start: false
+            }),
+            39: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            40: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
                 start: false
             })
         }

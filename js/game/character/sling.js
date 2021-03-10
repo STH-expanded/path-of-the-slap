@@ -587,7 +587,7 @@ const SLING = {
                                     action: "BREAK"
                                 },
                                 {
-                                    condition: (fight, actor) => actor.hitEnemy(fight) || actor.collisionBox.pos.x === 0 || actor.collisionBox.pos.x + actor.collisionBox.size.x === fight.stage.collisionBox.size.x,
+                                    condition: (fight, actor) => actor.hitingEnemy || actor.collisionBox.pos.x === 0 || actor.collisionBox.pos.x + actor.collisionBox.size.x === fight.stage.collisionBox.size.x,
                                     action: "HIT"
                                 },
                                 {
