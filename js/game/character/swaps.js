@@ -673,7 +673,7 @@ const SWAPS = {
             }
         },
         HIT: {
-            duration: 1,
+            duration: 15,
             cancellable: true,
             fixedDirection: true,
             isAerial: true,
@@ -694,6 +694,11 @@ const SWAPS = {
                 effects: {
                     0: [
                         { name: 'shake' }
+                    ]
+                },
+                vfx: {
+                    0: [
+                        { offset: { x: 15, y: 10 }, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT"}
                     ]
                 },
                 sfx: {

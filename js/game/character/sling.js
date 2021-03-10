@@ -819,6 +819,11 @@ const SLING = {
                         { name: 'shake' }
                     ]
                 },
+                vfx: {
+                    0: [
+                        { offset: { x: 15, y: 10 }, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT"}
+                    ]
+                },
                 sfx: {
                     0: [
                         { name: 'CHARACTER_00_HIT' }
