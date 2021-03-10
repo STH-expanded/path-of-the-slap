@@ -69,7 +69,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight) && !character.actions[action].collisionBoxDisable,
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight) && !character.actions[character.action].collisionBoxDisable,
             action: "GRABBED"
         },
         {
