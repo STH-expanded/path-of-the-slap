@@ -572,7 +572,7 @@ const CHAMA = {
                 0: [],
                 16: [
                     {
-                        offset: { x: 32, y: -48 },
+                        offset: { x: -16, y: 200 },
                         data: {
                             id: "00",
                             health: 1,
@@ -598,12 +598,12 @@ const CHAMA = {
 
                             actions: {
                                 IDLE: {
-                                    duration: 2,
+                                    duration: 1000000,
                                     cancellable: true,
-                                    size: { x: 32, y: 32 },
+                                    size: { x: 40, y: 100 },
                                     attackType: "NORMAL",
                                     velocity: {
-                                        0: (fight, actor) => ({ x: 4 * (actor.direction ? 1 : -1), y: 0 })
+                                        1: (fight, actor) => ({ x: 6 * (actor.direction ? 1 : -1), y: (-Math.cos((actor.actionIndex * 2) * Math.PI / 180) * 3) }),
                                     },
                                     hitboxes: {
                                         0: [
