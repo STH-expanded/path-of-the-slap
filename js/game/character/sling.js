@@ -677,7 +677,7 @@ const SLING = {
             }
         },
         DP: {
-            duration: 180,
+            duration: 36,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -693,26 +693,17 @@ const SLING = {
                 9: []
             },
             hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                6: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: []
             },
             animation: {
-                offset: { x: -58, y: -48 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 4,
-                frameCount: 4
+                offset: { x: -29, y: -57 },
+                size: { x: 89, y: 192 },
+                speed: 1 / 6,
+                frameCount: 6
             }
         },
         HCF: {
-            duration: 180,
+            duration: 120,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -721,29 +712,16 @@ const SLING = {
                 0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
             },
             hitboxes: {
-                0: [],
-                6: [
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
-                ],
-                9: []
+                0: []
             },
             hurtboxes: {
-                0: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
-                6: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } },
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 16 } }
-                ],
-                12: [
-                    { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
-                ],
+                0: []
             },
             animation: {
-                offset: { x: -58, y: -48 },
-                size: { x: 182, y: 192 },
-                speed: 1 / 4,
-                frameCount: 4
+                offset: { x: -29, y: -48 },
+                size: { x: 124, y: 192 },
+                speed: 1 / 5,
+                frameCount: 24
             }
         },
         QCB: {},
@@ -894,7 +872,7 @@ const SLING = {
         LAND: {},
         RECOVER: {},
         GRAB: {
-            duration: 25,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -907,7 +885,12 @@ const SLING = {
                     { offset: { x: 0, y: 0 }, size: { x: 64, y: 128 } }
                 ]
             },
-            animation: {}
+            animation: {
+                offset: { x: -20, y: -48 },
+                size: { x: 107, y: 192 },
+                speed: 1 / 6,
+                frameCount: 4
+            }
         },
         GRAB_TECH: {},
         GRAB_RELEASE: {
@@ -936,8 +919,8 @@ const SLING = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 2,
-                frameCount: 6
+                speed: 1 / 4,
+                frameCount: 4
             }
         },
         GRABBED: {

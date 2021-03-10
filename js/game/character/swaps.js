@@ -844,8 +844,8 @@ const SWAPS = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 2,
-                frameCount: 6
+                speed: 1 / 4,
+                frameCount: 4
             }
         },
         GRABBED: {
