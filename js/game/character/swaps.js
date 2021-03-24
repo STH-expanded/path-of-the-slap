@@ -718,7 +718,7 @@ const SWAPS = {
                 effects: {
                     0: [],
                     40: [
-                        { name: 'dark', displayOnFront: true }
+                        { name: 'dark', displayOnFront: true, params: [40, 16] }
                     ],
                     56: []
                 }

@@ -217,34 +217,62 @@ class Computer extends Player {
         }
     },
     {
+        // DP
+        frames: 40,
+        fit: (fight, character) => {
+            const p1 = fight.players[0].character.collisionBox;
+            const p2 = fight.players[1].character.collisionBox;
+            const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
+            const hit_dist = 80 - character.collisionBox.size.x / 2;
+            return hit_dist >= dist ? 1 : 0;
+        },
+        steps: {
+            0: (fight, character) => ({
+                left: !character.direction,
+                right: character.direction
+            }),
+            3: (fight, character) => ({
+                down: true
+            }),
+            4: (fight, character) => ({
+                left: !character.direction,
+                right: character.direction,
+                down: true,
+                a: true
+            }),
+            5: (fight, character) => ({
+            })
+        }
+    },
+    {
         // move forward 
-        frames: 120,
+        frames: 60,
         fit: (fight, character) => .05,
         steps: {
             0: (fight, character) => ({
                 left: !character.direction,
                 right: character.direction
             }),
-            120: (fight, character) => ({
+            59: (fight, character) => ({
             })
         }
     },
     {
         // move backward
-        frames: 120,
+        frames: 60,
         fit: (fight, character) => .05,
         steps: {
             0: (fight, character) => ({
                 left: character.direction,
                 right: !character.direction
             }),
-            120: (fight, character) => ({
+            59: (fight, character) => ({
             })
         }
     },
     {
         // block
-        frames: 121,
+        frames: 30,
         fit: (fight, character) => {
             let i = 0;
             fight.actors.forEach(actor => {
@@ -259,7 +287,7 @@ class Computer extends Player {
                 left: character.direction,
                 right: !character.direction
             }),
-            120: (fight, character) => ({
+            30: (fight, character) => ({
             })
         }
     }];
