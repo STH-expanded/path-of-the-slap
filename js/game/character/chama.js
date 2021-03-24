@@ -47,7 +47,17 @@ const CHAMA = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => {
+                let hitbox = null;
+                character.getEnemies(fight).forEach(enemy =>{ 
+                    hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(character.hurtboxes).includes(true))
+                    if (enemy.hitboxes.includes(hitbox)) {
+                        enemy.hurtnotify(character)
+                    }
+                });
+
+                return character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || character.action === 'BLOCK' && character.hitstun
+            },
             action: "BLOCK",
         },
         {

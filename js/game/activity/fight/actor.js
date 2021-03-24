@@ -90,7 +90,7 @@ class Actor {
                     else {
                         this.hitboxes.push(new HitBox(pos, size, element.damage,
                             element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
-                            new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y), null
+                            new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y), null,this
                         ));
                     }
                 });

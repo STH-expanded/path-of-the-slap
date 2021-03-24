@@ -67,9 +67,9 @@ class Character {
             if (hitbox) {
                 this.hitstun = hitbox.hitstunFrame;
 
-                if (!(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'BLOCK' && this.hitstun)
-                    && !(this.canBlock(fight) && !this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'AERIAL_BLOCK' && this.hitstun)
-                    && !(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(this.getEnemy(fight).actions[this.getEnemy(fight).action].attackType) || this.action === 'LOW_BLOCK' && this.hitstun)) {
+                if (!(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'BLOCK' && this.hitstun)
+                    && !(this.canBlock(fight) && !this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'AERIAL_BLOCK' && this.hitstun)
+                    && !(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'LOW_BLOCK' && this.hitstun)) {
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
                         this.ejection = 1;
@@ -170,7 +170,7 @@ class Character {
                         else {
                             this.hitboxes.push(new HitBox(pos, size, element.damage, element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
                                 new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y),
-                                element.ejectionVelocity ? new Vector2D(element.ejectionVelocity.x * (this.direction ? 1 : -1), element.ejectionVelocity.y) : null
+                                element.ejectionVelocity ? new Vector2D(element.ejectionVelocity.x * (this.direction ? 1 : -1), element.ejectionVelocity.y) : null,this
                             ));
                         }
                     }
