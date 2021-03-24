@@ -224,7 +224,7 @@ class Computer extends Player {
             const p2 = fight.players[1].character.collisionBox;
             const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
             const hit_dist = 80 - character.collisionBox.size.x / 2;
-            return hit_dist >= dist ? 1.5 : 0;
+            return hit_dist >= dist ? 1 : 0;
         },
         steps: {
             0: (fight, character) => ({
