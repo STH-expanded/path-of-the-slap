@@ -4,67 +4,7 @@ class Computer extends Player {
         fit: (fight, character) => debugMode.cpu ? 2 : 0,
         steps: {
             0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
-            }),
-            3: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: true,
-                a: false,
-                b: false,
-                start: false
-            }),
-            4: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            5: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: true,
-                b: false,
-                start: false
-            }),
-            6: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            39: (fight, character) => ({
-                left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
-            }),
-            40: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                a: true
             })
         }
     },
@@ -80,67 +20,23 @@ class Computer extends Player {
         },
         steps: {
             0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
+                down: true
             }),
             3: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
                 down: true,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             4: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             17: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             18: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             34: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             35: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
@@ -150,85 +46,35 @@ class Computer extends Player {
         fit: (fight, character) => .05,
         steps: {
             0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
+                down: true
             }),
             3: (fight, character) => ({
                 left: !character.direction,
-                up: false,
                 right: character.direction,
-                down: true,
-                a: false,
-                b: false,
-                start: false
+                down: true
             }),
             4: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             5: (fight, character) => ({
                 left: !character.direction,
-                up: false,
                 right: character.direction,
-                down: false,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             6: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             39: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             40: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             41: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             42: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
@@ -239,57 +85,26 @@ class Computer extends Player {
         steps: {
             0: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             5: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             11: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             17: (fight, character) => ({
                 left: !character.direction,
                 up: true,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             28: (fight, character) => ({
                 left: !character.direction,
                 up: true,
                 right: character.direction,
-                down: false,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             42: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
@@ -305,85 +120,28 @@ class Computer extends Player {
         },
         steps: {
             0: (fight, character) => ({
-                left: false,
-                up: true,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                up: true
             }),
             1: (fight, character) => ({
-                left: false,
                 up: true,
-                right: false,
-                down: false,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             2: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             25: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             26: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             41: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             42: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             57: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             58: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
@@ -399,126 +157,90 @@ class Computer extends Player {
         },
         steps: {
             0: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: true,
-                a: false,
-                b: false,
-                start: false
+                down: true
             }),
             1: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
                 down: true,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             2: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             32: (fight, character) => ({
-                left: false,
-                up: true,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                up: true
             }),
             33: (fight, character) => ({
-                left: false,
                 up: true,
-                right: false,
-                down: false,
-                a: true,
-                b: false,
-                start: false
+                a: true
             }),
             34: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             }),
             59: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: true,
-                start: false
+                b: true
             }),
             60: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+            })
+        }
+    },
+    {
+        // HCF
+        frames: 130,
+        fit: (fight, character) => {
+            const p1 = fight.players[0].character.collisionBox;
+            const p2 = fight.players[1].character.collisionBox;
+            const dist = Math.abs(p1.pos.x + p1.size.x / 2 - (p2.pos.x + p2.size.x / 2)) - p1.size.x / 2 - p2.size.x / 2;
+            const hit_dist = 80 - character.collisionBox.size.x / 2;
+            return hit_dist >= dist ? 1 : 0;
+        },
+        steps: {
+            0: (fight, character) => ({
+                left: character.direction,
+                right: !character.direction
+            }),
+            3: (fight, character) => ({
+                left: character.direction,
+                right: !character.direction,
+                down: true
+            }),
+            4: (fight, character) => ({
+                down: true
+            }),
+            5: (fight, character) => ({
+                left: !character.direction,
+                right: character.direction,
+                down: true
+            }),
+            6: (fight, character) => ({
+                left: !character.direction,
+                right: character.direction,
+                a: true
+            }),
+            7: (fight, character) => ({
             })
         }
     },
     {
         // move forward 
-        frames: 121,
+        frames: 120,
         fit: (fight, character) => .05,
         steps: {
             0: (fight, character) => ({
                 left: !character.direction,
-                up: false,
-                right: character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: character.direction
             }),
             120: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
     {
         // move backward
-        frames: 121,
+        frames: 120,
         fit: (fight, character) => .05,
         steps: {
             0: (fight, character) => ({
                 left: character.direction,
-                up: false,
-                right: !character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: !character.direction
             }),
             120: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     },
@@ -537,21 +259,9 @@ class Computer extends Player {
         steps: {
             0: (fight, character) => ({
                 left: character.direction,
-                up: false,
-                right: !character.direction,
-                down: false,
-                a: false,
-                b: false,
-                start: false
+                right: !character.direction
             }),
             120: (fight, character) => ({
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                a: false,
-                b: false,
-                start: false
             })
         }
     }];
