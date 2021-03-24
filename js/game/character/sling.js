@@ -726,14 +726,14 @@ const SLING = {
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+                0: (fight, character, inputList) => ({ x: 0.15 * (character.direction ? 1 : -1), y: 0 })
             },
             hitboxes: {
                 0: [
-                    { offset: { x: 35, y: 21 }, size: { x: 45, y: 15 }, damage: 20, hitstunVelocity: { x: 0.5, y:  0} }
+                    { offset: { x: 35, y: 21 }, size: { x: 45, y: 15 }, damage: 20, hitstunVelocity: { x: 0, y:  0} }
                 ],
                 75: [
-                    { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 }, damage: 20, hitstunVelocity: { x: 0.5, y:  0} }
+                    { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 }, damage: 20, hitstunVelocity: { x: 0, y:  0} }
                 ],
                 85: [
                     { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 }, damage: 20, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 15, y: -8 } }
