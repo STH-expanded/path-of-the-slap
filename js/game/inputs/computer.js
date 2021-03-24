@@ -7,6 +7,60 @@ class Computer extends Player {
                 left: false,
                 up: false,
                 right: false,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            3: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: true,
+                a: false,
+                b: false,
+                start: false
+            }),
+            4: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            5: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: true,
+                b: false,
+                start: false
+            }),
+            6: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            39: (fight, character) => ({
+                left: !character.direction,
+                up: false,
+                right: character.direction,
+                down: false,
+                a: false,
+                b: false,
+                start: false
+            }),
+            40: (fight, character) => ({
+                left: false,
+                up: false,
+                right: false,
                 down: false,
                 a: false,
                 b: false,

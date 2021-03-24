@@ -232,11 +232,11 @@ const SWAPS = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: character.direction ? -1 : 1, y: 0 })
             },
-            hurtboxes: {
+            hurtboxes:{
                 0: [
                     { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
                 ]
-            },
+            }, 
             animation: {
                 offset: { x: -29, y: -48 },
                 size: { x: 91, y: 192 },
@@ -265,11 +265,18 @@ const SWAPS = {
                 frameCount: 6,
                 vfx: {
                     0: [
-                        { offset: { x: -150, y: 8 }, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST"},
                         { offset: { x: 30, y: -15 }, size: { x: 128, y: 136 }, speed: 1 / 5, frameCount: 4, assetId: "DASH"}
                     ]
                 },
-            }
+              
+            },
+            animationUnlink: {
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST",indexCount:20}
+                ],
+                1: []
+            },
+            
         },
         BACK_DASH: {
             duration: 16,
@@ -417,6 +424,12 @@ const SWAPS = {
                         { offset: { x: 30, y: -12 }, size: { x: 64, y: 64 }, speed: 1 / 5, frameCount: 5, assetId: "SLASH"}
                     ]
                 },
+            },
+            animationUnlink:{
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 72, y: 72 }, speed: 1, frameCount: 1, assetId: "SLASHUP",indexCount:10}
+                ],
+                1: []
             }
         },
         HEAVY: {
@@ -453,7 +466,8 @@ const SWAPS = {
                 size: { x: 160, y: 192 },
                 speed: 1 / 6,
                 frameCount: 6
-            }
+            },
+           
         },
         LOW_LIGHT: {
             duration: 16,

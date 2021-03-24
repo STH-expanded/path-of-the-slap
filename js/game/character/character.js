@@ -150,7 +150,7 @@ class Character {
     updateActionElements = (fight, actionData) => {
         this.hitboxes = [];
         this.hurtboxes = [];
-        ["hitboxes", "hurtboxes", "actors"].forEach(actionElement => {
+        ["hitboxes", "hurtboxes", "actors","animationUnlink"].forEach(actionElement => {
             if (actionData[actionElement]) {
                 const elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
                 elements.forEach(element => {
@@ -162,6 +162,11 @@ class Character {
                             this.collisionBox.pos.y + element.offset.y
                         );
                         if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
+                        else if (actionElement === "animationUnlink") {
+                            fight.animationUnlink.push(new Animation(this.collisionBox.center().plus(this.direction? new Vector2D(element.offset.x-element.size.x,element.offset.y):new Vector2D(-element.offset.x,element.offset.y)), element.size,element.speed,element.frameCount, this.direction,element.assetId,element.indexCount));
+                            // fight.animationUnlink.push(new Animation(this.collisionBox.center().plus(element.offset), element.size,element.speed,element.frameCount, this.direction,element.assetId,element.indexCount));
+                        
+                        }
                         else {
                             this.hitboxes.push(new HitBox(pos, size, element.damage, element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
                                 new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y),

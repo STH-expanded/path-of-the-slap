@@ -165,6 +165,7 @@ class Assets {
         { id: 'timeover', src: 'img/fight/timeover.png' },
         { id: 'DUST', src: 'img/fight/dust.png' },
         { id: 'DASH', src: 'img/fight/dash.png' },
+        { id: 'SLASHUP', src: 'img/fight/slashup.png' },
         { id: 'HIT', src: 'img/fight/hit.png' },
         { id: 'SLASH', src: 'img/fight/slash.png' },
 
