@@ -42,7 +42,7 @@ const CHAMA = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
+            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE" && !character.getEnemy(fight).actions[character.getEnemy(fight).action].collisionBoxDisable,
             action: "GRAB",
         },
         // Status actions
@@ -75,7 +75,7 @@ const CHAMA = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight),
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight) && !character.actions[character.action].collisionBoxDisable,
             action: "GRABBED"
         },
         {

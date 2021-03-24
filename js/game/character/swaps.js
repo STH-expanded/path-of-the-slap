@@ -37,7 +37,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE",
+            condition: (fight, character, inputList) => character.isGrounded(fight) && character.getEnemy(fight).isGrounded(fight) && inputList.state[0].input.a && inputList.state[0].input.b && character.action !== "GRAB" && character.action !== "GRAB_RELEASE" && !character.getEnemy(fight).actions[character.getEnemy(fight).action].collisionBoxDisable,
             action: "GRAB",
         },
         {
@@ -69,7 +69,7 @@ const SWAPS = {
             action: "GRAB_RELEASE",
         },
         {
-            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight),
+            condition: (fight, character, inputList) => character.action !== "EJECTED" && character.getEnemy(fight).action === "GRAB" && Math.abs(character.collisionBox.center().x - character.getEnemy(fight).collisionBox.center().x) < 64 && character.isGrounded(fight) && !character.actions[character.action].collisionBoxDisable,
             action: "GRABBED"
         },
         {
@@ -410,7 +410,18 @@ const SWAPS = {
                 offset: { x: -52, y: -48 },
                 size: { x: 128, y: 192 },
                 speed: 1 / 4,
-                frameCount: 6
+                frameCount: 6,
+                vfx: {
+                    0: [
+                        { offset: { x: 30, y: -12 }, size: { x: 64, y: 64 }, speed: 1 / 5, frameCount: 5, assetId: "SLASH"}
+                    ]
+                },
+            },
+            animationUnlink:{
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 72, y: 72 }, speed: 1, frameCount: 1, assetId: "SLASHUP",indexCount:10}
+                ],
+                1: []
             }
         },
         HEAVY: {
@@ -447,7 +458,8 @@ const SWAPS = {
                 size: { x: 160, y: 192 },
                 speed: 1 / 6,
                 frameCount: 6
-            }
+            },
+           
         },
         LOW_LIGHT: {
             duration: 16,
@@ -851,8 +863,8 @@ const SWAPS = {
                 },
                 offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 2,
-                frameCount: 6
+                speed: 1 / 4,
+                frameCount: 4
             }
         },
         GRABBED: {
