@@ -99,7 +99,7 @@ Fight.display = display => {
     displayOnFrontArray.forEach(({ element, effect }) => {
         if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
         if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
-        if (effect.name === "dark") display[effect.name + "Effect"](view);
+        if (effect.name === "dark") display[effect.name + "Effect"](view, element.actionIndex, ...effect.params);
     });
 
     cx.translate(view.xOffset, view.yOffset);
