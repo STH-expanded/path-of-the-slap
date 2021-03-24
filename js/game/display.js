@@ -51,9 +51,16 @@ class Display {
     }
 
     // Dark effect
-    darkEffect = view => {
+    darkEffect = (view, frame, frameStart, frameLength) => {
         this.cx.fillStyle = '#000';
-        this.cx.fillRect(Math.max(0, view.xOffset), Math.max(0, view.yOffset), view.w, view.h);
+        this.cx.fillRect(view.xOffset, view.yOffset, view.w, view.h);
+        this.cx.fillStyle = '#fff';
+        const effectHeight = (this.height - this.height * (frame - frameStart) / frameLength) / 2;
+        const effectYOffset = this.height / 8;
+        this.cx.fillRect(
+            view.xOffset, view.yOffset + this.height / 2 + effectYOffset - effectHeight / 2,
+            this.width, effectHeight
+        );
     }
 
     // Resize canvas
