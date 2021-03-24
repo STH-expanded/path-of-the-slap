@@ -50,6 +50,12 @@ class Display {
         this.cx.translate(-element.collisionBox.size.x / 2, -element.collisionBox.size.y / 2);
     }
 
+    // Dark effect
+    darkEffect = view => {
+        this.cx.fillStyle = '#000';
+        this.cx.fillRect(Math.max(0, view.xOffset), Math.max(0, view.yOffset), view.w, view.h);
+    }
+
     // Resize canvas
     resize = () => {
         this.zoom = Math.max(1, Math.min(Math.floor(innerWidth / this.width), Math.floor(innerHeight / this.height)));

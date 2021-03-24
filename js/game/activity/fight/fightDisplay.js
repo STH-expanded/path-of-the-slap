@@ -24,6 +24,9 @@ Fight.display = display => {
     Fight.GUI(display);
     cx.translate(-view.xOffset, -view.yOffset);
 
+    //
+    const displayOnFrontArray = [];
+
     // Characters & actors
     [char1, char2, ...fight.actors].forEach(element => {
         if (debugMode.display) Fight.debugActor(display, element);
@@ -37,8 +40,12 @@ Fight.display = display => {
                 if (animation.effects) {
                     const effects = animation.effects[Object.keys(animation.effects).reverse().find(index => index <= element.actionIndex)];
                     effects.forEach(effect => {
-                        if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
-                        if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
+                        if (effect.displayOnFront) {
+                            displayOnFrontArray.push({ element: element, effect: effect });
+                        } else {
+                            if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
+                            if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
+                        }
                     });
                 }
               
@@ -86,8 +93,14 @@ Fight.display = display => {
             vfx.pos.x  ,vfx.pos.y,
             vfx.size.x, vfx.size.y
         );
-        cx.restore()
-    })
+        cx.restore();
+    });
+
+    displayOnFrontArray.forEach(({ element, effect }) => {
+        if (effect.name === "shake") display[effect.name + "Effect"](element.hitstun, element.hitstun);
+        if (effect.name === "rotate") display[effect.name + "Effect"](element, ...effect.params);
+        if (effect.name === "dark") display[effect.name + "Effect"](view);
+    });
 
     cx.translate(view.xOffset, view.yOffset);
     
