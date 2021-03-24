@@ -705,6 +705,7 @@ const SLING = {
             hurtboxes: {
                 0: [{ offset: { x: -8, y: 0 }, size: { x: 58, y: 128 } }],
                 6: [
+                    { offset: { x: -8, y: 0 }, size: { x: 58, y: 128 } },
                     { offset: { x: 40, y: 24 }, size: { x: 24, y: 24 } }
                 ],
                 16: [

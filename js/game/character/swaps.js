@@ -676,13 +676,15 @@ const SWAPS = {
             },
             hitboxes: {
                 0: [],
-                6: [
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
-                ],
-                9: []
+                16: [ 
+                    { offset: { x: 40, y: 20 }, size: { x: 20, y: 20 }, damage: 30, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 60, y: 0 }, size: { x: 20, y: 20 }, damage: 40, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 80, y: -20 }, size: { x: 20, y: 20 }, damage: 50, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 100, y: -30 }, size: { x: 20, y: 15 }, damage: 75, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} }
+                ]
             },
             hurtboxes: {
-                0: []
+                0: [{ offset: { x: -20, y: 0 }, size: { x: 70, y: 128 } }],
             },
             animation: {
                 offset: { x: -40, y: -48 },
