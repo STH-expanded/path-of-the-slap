@@ -72,6 +72,23 @@ Fight.display = display => {
         }
     });
 
+    fight.animationUnlink.forEach((vfx)=>{
+        cx.save();
+        if (!vfx.direction) display.flipHorizontally(new CollisionBox(vfx.pos,vfx.size).center().x);
+        // cx.fillRect(
+        //     vfx.pos.x  ,vfx.pos.y,
+        //     vfx.size.x, vfx.size.y
+        // );
+        cx.drawImage(
+            display.assets.images[vfx.assetId],
+            vfx.size.x * (Math.floor(vfx.indexCount * vfx.speed) % vfx.frameCount), 0,
+            vfx.size.x, vfx.size.y,
+            vfx.pos.x  ,vfx.pos.y,
+            vfx.size.x, vfx.size.y
+        );
+        cx.restore()
+    })
+
     cx.translate(view.xOffset, view.yOffset);
     
     // Training or Fight Animation Display

@@ -5,6 +5,7 @@ class Fight extends Activity {
 	roundDuration = 5400;
 	winCount = [0, 0];
 	playoff = 2;
+	animationUnlink = []
 
 	constructor(initAnimInitFrame, endAnimEndFrame, players, stage, trainingMode) {
 		super(initAnimInitFrame, endAnimEndFrame);
@@ -65,6 +66,8 @@ class Fight extends Activity {
 		// Update actors
 		this.actors = this.actors.filter(actor => actor.action !== "BREAK");
 		this.actors.forEach(actor => actor.update(game));
+		this.animationUnlink.forEach(animation => animation.update(game));
+		this.animationUnlink = this.animationUnlink.filter(e=>e.indexCount>0)
 	}
 
 	roundHandler = game => {
