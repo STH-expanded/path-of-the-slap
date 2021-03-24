@@ -109,6 +109,8 @@ class Assets {
         { id: 'CHARACTER_03_ACTIVE_PROFILE_SHADOW', src: 'img/character/CHARACTER_03_ACTIVE_PROFILE_SHADOW.png' },
         { id: 'CHARACTER_03_MUGSHOT', src: 'img/character/CHARACTER_03_MUGSHOT.png' },
         { id: 'CHARACTER_03_SKEWED_NAME', src: 'img/character/CHARACTER_03_SKEWED_NAME.png' },
+        { id: 'CHARACTER_03_IDLE', src: 'img/character/CHARACTER_03_IDLE.png' },
+        { id: 'CHARACTER_03_WALK_FORWARD', src: 'img/character/CHARACTER_03_WALK_FORWARD.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },

@@ -47,7 +47,17 @@ const CHAMA = {
         },
         // Status actions
         {
-            condition: (fight, character, inputList) => character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(character.getEnemy(fight).actions[character.getEnemy(fight).action].attackType) || character.action === 'BLOCK' && character.hitstun,
+            condition: (fight, character, inputList) => {
+                let hitbox = null;
+                character.getEnemies(fight).forEach(enemy =>{ 
+                    hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(character.hurtboxes).includes(true))
+                    if (enemy.hitboxes.includes(hitbox)) {
+                        enemy.hurtnotify(character)
+                    }
+                });
+
+                return character.canBlock(fight) && character.isGrounded(fight) && (character.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || character.action === 'BLOCK' && character.hitstun
+            },
             action: "BLOCK",
         },
         {
@@ -184,7 +194,7 @@ const CHAMA = {
 
     actions: {
         IDLE: {
-            duration: 48,
+            duration: 50,
             cancellable: true,
             fixedDirection: false,
             isAerial: false,
@@ -193,24 +203,17 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             hurtboxes: {
-                0: [
-                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 64 } },
-                    { offset: { x: 0, y: 64 }, size: { x: 48, y: 64 } }
-                ],
-                16: [
-                    { offset: { x: 8, y: 0 }, size: { x: 48, y: 64 } },
-                    { offset: { x: 0, y: 64 }, size: { x: 48, y: 64 } }
-                ]
+                0: []
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -56 },
+                size: { x: 92, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         WALK_FORWARD: {
-            duration: 48,
+            duration: 50,
             cancellable: true,
             fixedDirection: false,
             isAerial: false,
@@ -219,15 +222,13 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: character.direction ? 1 : -1, y: 0 })
             },
             hurtboxes: {
-                0: [
-                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 128 } }
-                ]
+                0: []
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -40, y: -56 },
+                size: { x: 119, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         WALK_BACK: {
