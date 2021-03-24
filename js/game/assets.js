@@ -54,7 +54,7 @@ class Assets {
         { id: 'CHARACTER_00_WIN_WAITING', src: 'img/character/CHARACTER_00_WIN_WAITING.png' },
         { id: 'CHARACTER_00_GRAB', src: 'img/character/CHARACTER_00_GRAB.png' },
         { id: 'CHARACTER_00_FORWARD_THROW', src: 'img/character/CHARACTER_00_FORWARD_THROW.png' },
-        // { id: 'CHARACTER_00_BACK_THROW', src: 'img/character/CHARACTER_00_BACK_THROW.png' },
+        { id: 'CHARACTER_00_BACK_THROW', src: 'img/character/CHARACTER_00_BACK_THROW.png' },
         { id: 'CHARACTER_00_DP', src: 'img/character/CHARACTER_00_DP.png' },
         { id: 'CHARACTER_00_HCF', src: 'img/character/CHARACTER_00_HCF.png' },
 
@@ -99,6 +99,8 @@ class Assets {
         { id: 'CHARACTER_02_GRAB', src: 'img/character/CHARACTER_02_GRAB.png' },
         { id: 'CHARACTER_02_FORWARD_THROW', src: 'img/character/CHARACTER_02_FORWARD_THROW.png' },
         { id: 'CHARACTER_02_BACK_THROW', src: 'img/character/CHARACTER_02_BACK_THROW.png' },
+        { id: 'CHARACTER_02_DP', src: 'img/character/CHARACTER_02_DP.png' },
+        // { id: 'CHARACTER_02_HCF', src: 'img/character/CHARACTER_02_HCF.png' },
 
         { id: 'CHARACTER_03_NAME', src: 'img/character/CHARACTER_03_NAME.png' },
         { id: 'CHARACTER_03_PROFILE', src: 'img/character/CHARACTER_03_PROFILE.png' },

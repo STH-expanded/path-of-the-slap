@@ -107,6 +107,14 @@ const SWAPS = {
         },
         // Crouch actions
         {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 3 : 1) &&
+                ((inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].frameCount < 8 && inputList.state[3].input.stick === (character.direction ? 3 : 1) && inputList.state[4].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === 2 && inputList.state[2].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                    (inputList.state[1].input.stick === 2 && inputList.state[2].input.stick === (character.direction ? 6 : 4))),
+            action: "DP"
+        },
+        {
             condition: (fight, character, inputList) => inputList.state[0].input.stick < 4 && inputList.state[0].input.a,
             action: "LOW_LIGHT"
         },
@@ -627,7 +635,32 @@ const SWAPS = {
                 frameCount: 8
             }
         },
-        DP: {},
+        DP: {
+            duration: 36,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+            },
+            hitboxes: {
+                0: [],
+                6: [
+                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
+                ],
+                9: []
+            },
+            hurtboxes: {
+                0: []
+            },
+            animation: {
+                offset: { x: -40, y: -48 },
+                size: { x: 160, y: 192 },
+                speed: 1 / 6,
+                frameCount: 6
+            }
+        },
         HCF: {},
         AERIAL_BLOCK: {
             duration: 1,

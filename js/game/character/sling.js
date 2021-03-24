@@ -958,7 +958,12 @@ const SLING = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            animation: {}
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 128, y: 192 },
+                speed: 1 / 8,
+                frameCount: 4
+            }
         },
         FORWARD_THROW: {
             duration: 32,
