@@ -57,6 +57,8 @@ class Assets {
         { id: 'CHARACTER_00_BACK_THROW', src: 'img/character/CHARACTER_00_BACK_THROW.png' },
         { id: 'CHARACTER_00_DP', src: 'img/character/CHARACTER_00_DP.png' },
         { id: 'CHARACTER_00_HCF', src: 'img/character/CHARACTER_00_HCF.png' },
+        { id: 'HCF_SLING_MULTISLASH', src: 'img/character/CHARACTER_00_HCFEXPLOSION.png' },
+
 
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
@@ -170,6 +172,9 @@ class Assets {
         { id: 'SLASHUP', src: 'img/fight/slashup.png' },
         { id: 'HIT', src: 'img/fight/hit.png' },
         { id: 'SLASH', src: 'img/fight/slash.png' },
+
+
+
 
         // Fight Training
         { id: 'infinity', src: 'img/training/infinity.png' },
