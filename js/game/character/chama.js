@@ -331,7 +331,8 @@ const CHAMA = {
             },
             hurtboxes: {
                 0: [
-                    { offset: { x: -8, y: 0 }, size: { x: 48, y: 96 } }
+                    { offset: { x: -14, y: 10 }, size: { x: 64, y: 86 } },
+                    { offset: { x: 50, y: 48 }, size: { x: 20, y: 10 } }
                 ]
             },
             animation: {
