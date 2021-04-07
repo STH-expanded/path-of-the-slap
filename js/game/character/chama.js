@@ -904,7 +904,7 @@ const CHAMA = {
             }
         },
         GET_UP: {
-            duration: 24,
+            duration: 25,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -915,9 +915,9 @@ const CHAMA = {
             },
             animation: {
                 offset: { x: -29, y: -48 },
-                size: { x: 128, y: 192 },
-                speed: 1 / 4,
-                frameCount: 6
+                size: { x: 142, y: 192 },
+                speed: 1 / 5,
+                frameCount: 5
             }
         },
         LAND: {},
@@ -963,10 +963,10 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -56 },
+                offset: { x: -29, y: -64 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 2,
-                frameCount: 6
+                speed: 1 / 6,
+                frameCount: 5
             }
         },
         GRABBED: {
@@ -1095,14 +1095,14 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -56 },
+                size: { x: 92, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         WIN: {
-            duration: 48,
+            duration: 45,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1113,10 +1113,10 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -56 },
-                size: { x: 114, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -48 },
+                size: { x: 85, y: 192 },
+                speed: 1 / 9,
+                frameCount: 5
             }
         },
         WIN_WAITING: {
@@ -1131,8 +1131,8 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -56 },
-                size: { x: 114, y: 192 },
+                offset: { x: -29, y: -48 },
+                size: { x: 85, y: 192 },
                 speed: 1,
                 frameCount: 1
             }
@@ -1153,10 +1153,10 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -56 },
+                size: { x: 92, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         TAUNT: {

@@ -122,6 +122,10 @@ class Assets {
         { id: 'CHARACTER_03_BLOCK', src: 'img/character/CHARACTER_03_BLOCK.png' },
         { id: 'CHARACTER_03_AERIAL_BLOCK', src: 'img/character/CHARACTER_03_AERIAL_BLOCK.png' },
         { id: 'CHARACTER_03_LOW_BLOCK', src: 'img/character/CHARACTER_03_LOW_BLOCK.png' },
+        { id: 'CHARACTER_03_GROUND', src: 'img/character/CHARACTER_03_GROUND.png' },
+        { id: 'CHARACTER_03_GET_UP', src: 'img/character/CHARACTER_03_GET_UP.png' },
+        { id: 'CHARACTER_03_WIN', src: 'img/character/CHARACTER_03_WIN.png' },
+        { id: 'CHARACTER_03_WIN_WAITING', src: 'img/character/CHARACTER_03_WIN_WAITING.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },
