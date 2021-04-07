@@ -191,6 +191,7 @@ class Assets {
         { id: 'HIT', src: 'img/fight/hit.png' },
         { id: 'SLASH', src: 'img/fight/slash.png' },
         { id: 'MINI_DUST', src: 'img/fight/MiniDust.png' },
+        { id: 'Sparkle', src: 'img/fight/sparkle.png' },
         
 
 
