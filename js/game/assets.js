@@ -57,6 +57,7 @@ class Assets {
         { id: 'CHARACTER_00_BACK_THROW', src: 'img/character/CHARACTER_00_BACK_THROW.png' },
         { id: 'CHARACTER_00_DP', src: 'img/character/CHARACTER_00_DP.png' },
         { id: 'CHARACTER_00_HCF', src: 'img/character/CHARACTER_00_HCF.png' },
+        { id: 'DP_SLING_PULSE', src: 'img/character/CHARACTER_00_DPPULSE.png' },
         { id: 'HCF_SLING_MULTISLASH', src: 'img/character/CHARACTER_00_HCFEXPLOSION.png' },
 
 
