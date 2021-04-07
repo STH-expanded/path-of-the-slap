@@ -209,7 +209,14 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             hurtboxes: {
-                0: []
+                0: [
+                    { offset: { x: -12, y: 0 }, size: { x: 50, y: 98 } },
+                    { offset: { x: -8, y: 98 }, size: { x: 56, y: 30 } }
+                ],
+                18: [
+                    { offset: { x: 8, y: 0 }, size: { x: 45, y: 98 } },
+                    { offset: { x: -8, y: 98 }, size: { x: 56, y: 30 } }
+                ]
             },
             animation: {
                 offset: { x: -29, y: -56 },
