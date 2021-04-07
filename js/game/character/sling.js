@@ -126,10 +126,10 @@ const SLING = {
         // Crouch actions
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 3 : 1) &&
-                ((inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].frameCount < 8 && inputList.state[3].input.stick === (character.direction ? 3 : 1) && inputList.state[4].input.stick === (character.direction ? 6 : 4)) ||
-                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
-                    (inputList.state[1].input.stick === 2 && inputList.state[2].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
-                    (inputList.state[1].input.stick === 2 && inputList.state[2].input.stick === (character.direction ? 6 : 4))),
+            ((inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].frameCount < 8 && inputList.state[3].input.stick === (character.direction ? 3 : 1) && inputList.state[4].input.stick === (character.direction ? 6 : 4)) ||
+                (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                (inputList.state[1].input.stick === 2 && inputList.state[2].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === (character.direction ? 6 : 4)) ||
+                (inputList.state[1].input.stick === 2 && inputList.state[2].input.stick === (character.direction ? 6 : 4))),
             action: "DP"
         },
         {
@@ -739,7 +739,10 @@ const SLING = {
                 offset: { x: -29, y: -57 },
                 size: { x: 89, y: 192 },
                 speed: 1 / 6,
-                frameCount: 6
+                frameCount: 6,
+                vfx:{
+                    0:[{ offset: { x:5, y: -85 }, size: { x: 100, y: 144 }, speed: 1 /8, frameCount: 5, assetId: "DP_SLING_PULSE"}]
+                }
             }
         },
         HCF: {

@@ -237,7 +237,14 @@ const SWAPS = {
                 size: { x: 182, y: 192 },
                 speed: 1 / 8,
                 frameCount: 9
-            }
+            },
+            animationUnlink: {
+                0: [],
+                18: [(fight, character) => (
+                    { offset: { x:-19, y:30}, size: { x: 50, y: 50 }, speed: 1 / 5, frameCount: 4, assetId: "Sparkle",indexCount:20}
+                )],
+                19: []
+            },
         },
         WALK_BACK: {
             duration: 48,
