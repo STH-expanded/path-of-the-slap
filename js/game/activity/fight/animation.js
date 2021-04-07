@@ -7,10 +7,11 @@ class Animation {
         this.assetId = assetId
         this.indexCount = indexCount
         this.direction = direction
+        this.count = 0
     }
 
 
     update = game => {
-        this.indexCount-- 
+        this.count++ 
     }
 }

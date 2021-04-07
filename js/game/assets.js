@@ -57,6 +57,8 @@ class Assets {
         { id: 'CHARACTER_00_BACK_THROW', src: 'img/character/CHARACTER_00_BACK_THROW.png' },
         { id: 'CHARACTER_00_DP', src: 'img/character/CHARACTER_00_DP.png' },
         { id: 'CHARACTER_00_HCF', src: 'img/character/CHARACTER_00_HCF.png' },
+        { id: 'HCF_SLING_MULTISLASH', src: 'img/character/CHARACTER_00_HCFEXPLOSION.png' },
+
 
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
@@ -111,6 +113,23 @@ class Assets {
         { id: 'CHARACTER_03_SKEWED_NAME', src: 'img/character/CHARACTER_03_SKEWED_NAME.png' },
         { id: 'CHARACTER_03_IDLE', src: 'img/character/CHARACTER_03_IDLE.png' },
         { id: 'CHARACTER_03_WALK_FORWARD', src: 'img/character/CHARACTER_03_WALK_FORWARD.png' },
+        { id: 'CHARACTER_03_WALK_BACK', src: 'img/character/CHARACTER_03_WALK_BACK.png' },
+        { id: 'CHARACTER_03_FORWARD_DASH', src: 'img/character/CHARACTER_03_FORWARD_DASH.png' },
+        { id: 'CHARACTER_03_BACK_DASH', src: 'img/character/CHARACTER_03_BACK_DASH.png' },
+        { id: 'CHARACTER_03_CROUCH', src: 'img/character/CHARACTER_03_CROUCH.png' },
+        { id: 'CHARACTER_03_JUMP', src: 'img/character/CHARACTER_03_JUMP.png' },
+        { id: 'CHARACTER_03_AERIAL', src: 'img/character/CHARACTER_03_AERIAL.png' },
+        { id: 'CHARACTER_03_FALL', src: 'img/character/CHARACTER_03_FALL.png' },
+        { id: 'CHARACTER_03_HIT', src: 'img/character/CHARACTER_03_HIT.png' },
+        { id: 'CHARACTER_03_BLOCK', src: 'img/character/CHARACTER_03_BLOCK.png' },
+        { id: 'CHARACTER_03_AERIAL_BLOCK', src: 'img/character/CHARACTER_03_AERIAL_BLOCK.png' },
+        { id: 'CHARACTER_03_LOW_BLOCK', src: 'img/character/CHARACTER_03_LOW_BLOCK.png' },
+        { id: 'CHARACTER_03_GROUND', src: 'img/character/CHARACTER_03_GROUND.png' },
+        { id: 'CHARACTER_03_GET_UP', src: 'img/character/CHARACTER_03_GET_UP.png' },
+        { id: 'CHARACTER_03_WIN', src: 'img/character/CHARACTER_03_WIN.png' },
+        { id: 'CHARACTER_03_WIN_WAITING', src: 'img/character/CHARACTER_03_WIN_WAITING.png' },
+        { id: 'CHARACTER_03_INTRO', src: 'img/character/CHARACTER_03_INTRO.png' },
+        { id: 'CHARACTER_03_GRAB', src: 'img/character/CHARACTER_03_GRAB.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },
@@ -170,6 +189,11 @@ class Assets {
         { id: 'SLASHUP', src: 'img/fight/slashup.png' },
         { id: 'HIT', src: 'img/fight/hit.png' },
         { id: 'SLASH', src: 'img/fight/slash.png' },
+        { id: 'MINI_DUST', src: 'img/fight/MiniDust.png' },
+        
+
+
+
 
         // Fight Training
         { id: 'infinity', src: 'img/training/infinity.png' },

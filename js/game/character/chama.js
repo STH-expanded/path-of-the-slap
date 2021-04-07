@@ -157,6 +157,12 @@ const CHAMA = {
                 inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
             action: "FORWARD_DASH"
         },
+        {
+            condition: (fight, character, inputList) => (inputList.state[0].input.stick === 6 && !character.direction || inputList.state[0].input.stick === 4 && character.direction) &&
+                inputList.state[0].frameCount < 8 && inputList.state[1].input.stick === 5 &&
+                inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === inputList.state[0].input.stick,
+            action: "BACK_DASH"
+        },
         // Standing actions
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
@@ -219,7 +225,7 @@ const CHAMA = {
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: character.direction ? 1 : -1, y: 0 })
+                0: (fight, character, inputList) => ({ x: character.direction ? 1.5 : -1.5, y: 0 })
             },
             hurtboxes: {
                 0: []
@@ -232,7 +238,7 @@ const CHAMA = {
             }
         },
         WALK_BACK: {
-            duration: 48,
+            duration: 50,
             cancellable: true,
             fixedDirection: false,
             isAerial: false,
@@ -246,10 +252,10 @@ const CHAMA = {
                 ]
             },
             animation: {
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -40, y: -56 },
+                size: { x: 133, y: 192 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         FORWARD_DASH: {
@@ -268,14 +274,42 @@ const CHAMA = {
                 ]
             },
             animation: {
-                offset: { x: -58, y: -48 },
-                size: { x: 182, y: 192 },
-                speed: 1,
-                frameCount: 1
+                offset: { x: -40, y: -50 },
+                size: { x: 93, y: 192 },
+                speed: 1 / 4,
+                frameCount: 4
+            },
+            animationUnlink: {
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST",indexCount:20}
+                ],
+                1: []
+            },
+        },
+        BACK_DASH: {
+            duration: 24,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 6 * (character.direction ? -1 : 1), y: 0 })
+            },
+            hurtboxes: {
+                0: [
+                    { offset: { x: 16, y: 16 }, size: { x: 56, y: 48 } },
+                    { offset: { x: -24, y: 64 }, size: { x: 64, y: 64 } }
+                ]
+            },
+            animation: {
+                offset: { x: -40, y: -48 },
+                size: { x: 107, y: 192 },
+                speed: 1 / 6,
+                frameCount: 4
             }
         },
         CROUCH: {
-            duration: 48,
+            duration: 32,
             cancellable: true,
             fixedDirection: false,
             isAerial: false,
@@ -290,9 +324,9 @@ const CHAMA = {
             },
             animation: {
                 offset: { x: -29, y: -80 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                size: { x: 107, y: 192 },
+                speed: 1 / 16,
+                frameCount: 2
             }
         },
         AERIAL: {
@@ -322,8 +356,8 @@ const CHAMA = {
                     action: "FALL",
                     condition: (fight, character) => character.velocity.y > 0
                 },
-                offset: { x: -29, y: -24 },
-                size: { x: 91, y: 192 },
+                offset: { x: -29, y: -32 },
+                size: { x: 89, y: 192 },
                 speed: 1,
                 frameCount: 1
             }
@@ -354,9 +388,16 @@ const CHAMA = {
             },
             animation: {
                 offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
+                size: { x: 96, y: 192 },
                 speed: 1,
                 frameCount: 1
+            },
+            animationUnlink:{
+                0:[
+                    { offset: { x:20, y: 20 }, size: { x: 100, y: 50 }, speed: 1 / 4, frameCount: 10, assetId: "MINI_DUST",indexCount:40},
+                ],
+                1:[],
+                    
             }
         },
         LIGHT: {
@@ -774,7 +815,7 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
@@ -875,7 +916,7 @@ const CHAMA = {
             }
         },
         GET_UP: {
-            duration: 24,
+            duration: 25,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -886,15 +927,15 @@ const CHAMA = {
             },
             animation: {
                 offset: { x: -29, y: -48 },
-                size: { x: 128, y: 192 },
-                speed: 1 / 4,
-                frameCount: 6
+                size: { x: 142, y: 192 },
+                speed: 1 / 5,
+                frameCount: 5
             }
         },
         LAND: {},
         RECOVER: {},
         GRAB: {
-            duration: 25,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -907,7 +948,12 @@ const CHAMA = {
                     { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
                 ]
             },
-            animation: {}
+            animation: {
+                offset: { x: -48, y: -48 },
+                size: { x: 114, y: 192 },
+                speed: 1 / 8,
+                frameCount: 3
+            }
         },
         GRAB_TECH: {},
         GRAB_RELEASE: {
@@ -934,10 +980,10 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -56 },
+                offset: { x: -29, y: -64 },
                 size: { x: 91, y: 192 },
-                speed: 1 / 2,
-                frameCount: 6
+                speed: 1 / 6,
+                frameCount: 5
             }
         },
         GRABBED: {
@@ -1011,7 +1057,7 @@ const CHAMA = {
             }
         },
         INTRO: {
-            duration: 48,
+            duration: 64,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1022,10 +1068,10 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -48, y: -54 },
-                size: { x: 108, y: 192 },
+                offset: { x: -32, y: -48 },
+                size: { x: 89, y: 192 },
                 speed: 1 / 8,
-                frameCount: 6
+                frameCount: 8
             }
         },
         KO: {
@@ -1066,14 +1112,14 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -56 },
+                size: { x: 92, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         WIN: {
-            duration: 48,
+            duration: 45,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1084,10 +1130,10 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -56 },
-                size: { x: 114, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -48 },
+                size: { x: 85, y: 192 },
+                speed: 1 / 9,
+                frameCount: 5
             }
         },
         WIN_WAITING: {
@@ -1102,8 +1148,8 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -29, y: -56 },
-                size: { x: 114, y: 192 },
+                offset: { x: -29, y: -48 },
+                size: { x: 85, y: 192 },
                 speed: 1,
                 frameCount: 1
             }
@@ -1124,10 +1170,10 @@ const CHAMA = {
                     action: "IDLE",
                     condition: (fight, character) => true
                 },
-                offset: { x: -29, y: -48 },
-                size: { x: 91, y: 192 },
-                speed: 1 / 8,
-                frameCount: 6
+                offset: { x: -29, y: -56 },
+                size: { x: 92, y: 200 },
+                speed: 1 / 10,
+                frameCount: 5
             }
         },
         TAUNT: {

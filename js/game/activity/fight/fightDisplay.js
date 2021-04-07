@@ -88,7 +88,7 @@ Fight.display = display => {
         // );
         cx.drawImage(
             display.assets.images[vfx.assetId],
-            vfx.size.x * (Math.floor(vfx.indexCount * vfx.speed) % vfx.frameCount), 0,
+            vfx.size.x * (Math.floor(vfx.count * vfx.speed) % vfx.frameCount), 0,
             vfx.size.x, vfx.size.y,
             vfx.pos.x  ,vfx.pos.y,
             vfx.size.x, vfx.size.y
