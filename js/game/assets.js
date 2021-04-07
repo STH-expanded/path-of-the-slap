@@ -111,6 +111,13 @@ class Assets {
         { id: 'CHARACTER_03_SKEWED_NAME', src: 'img/character/CHARACTER_03_SKEWED_NAME.png' },
         { id: 'CHARACTER_03_IDLE', src: 'img/character/CHARACTER_03_IDLE.png' },
         { id: 'CHARACTER_03_WALK_FORWARD', src: 'img/character/CHARACTER_03_WALK_FORWARD.png' },
+        { id: 'CHARACTER_03_WALK_BACK', src: 'img/character/CHARACTER_03_WALK_BACK.png' },
+        { id: 'CHARACTER_03_FORWARD_DASH', src: 'img/character/CHARACTER_03_FORWARD_DASH.png' },
+        { id: 'CHARACTER_03_BACK_DASH', src: 'img/character/CHARACTER_03_BACK_DASH.png' },
+        { id: 'CHARACTER_03_CROUCH', src: 'img/character/CHARACTER_03_CROUCH.png' },
+        { id: 'CHARACTER_03_JUMP', src: 'img/character/CHARACTER_03_JUMP.png' },
+        { id: 'CHARACTER_03_AERIAL', src: 'img/character/CHARACTER_03_AERIAL.png' },
+        { id: 'CHARACTER_03_FALL', src: 'img/character/CHARACTER_03_FALL.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },
