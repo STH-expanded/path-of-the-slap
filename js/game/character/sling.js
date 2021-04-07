@@ -277,12 +277,25 @@ const SLING = {
                     { offset: { x: -24, y: 64 }, size: { x: 64, y: 64 } }
                 ]
             },
+            
             animation: {
-                offset: { x: -58, y: -48 },
+                 offset: { x: -58, y: -48 },
                 size: { x: 182, y: 192 },
                 speed: 1,
-                frameCount: 1
-            }
+                frameCount: 1,
+                vfx: {
+                    0: [
+                        { offset: { x: 30, y: -15 }, size: { x: 128, y: 136 }, speed: 1 / 5, frameCount: 4, assetId: "DASH"}
+                    ]
+                },
+              
+            },
+            animationUnlink: {
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST",indexCount:20}
+                ],
+                1: []
+            },
         },
         CROUCH: {
             duration: 48,
@@ -367,7 +380,15 @@ const SLING = {
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
+            },
+            animationUnlink:{
+                0:[
+                    { offset: { x:20, y: 20 }, size: { x: 100, y: 50 }, speed: 1 / 4, frameCount: 10, assetId: "MINI_DUST",indexCount:40},
+                ],
+                1:[],
+                    
             }
+            
         },
         LIGHT: {
             duration: 16,

@@ -67,7 +67,7 @@ class Fight extends Activity {
 		this.actors = this.actors.filter(actor => actor.action !== "BREAK");
 		this.actors.forEach(actor => actor.update(game));
 		this.animationUnlink.forEach(animation => animation.update(game));
-		this.animationUnlink = this.animationUnlink.filter(e=>e.indexCount>0)
+		this.animationUnlink = this.animationUnlink.filter(e=>e.count<e.indexCount)
 	}
 
 	roundHandler = game => {

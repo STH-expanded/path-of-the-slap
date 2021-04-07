@@ -278,7 +278,13 @@ const CHAMA = {
                 size: { x: 93, y: 192 },
                 speed: 1 / 4,
                 frameCount: 4
-            }
+            },
+            animationUnlink: {
+                0: [
+                    { offset: { x:0, y:-50}, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST",indexCount:20}
+                ],
+                1: []
+            },
         },
         BACK_DASH: {
             duration: 24,
@@ -385,6 +391,13 @@ const CHAMA = {
                 size: { x: 96, y: 192 },
                 speed: 1,
                 frameCount: 1
+            },
+            animationUnlink:{
+                0:[
+                    { offset: { x:20, y: 20 }, size: { x: 100, y: 50 }, speed: 1 / 4, frameCount: 10, assetId: "MINI_DUST",indexCount:40},
+                ],
+                1:[],
+                    
             }
         },
         LIGHT: {

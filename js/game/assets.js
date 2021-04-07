@@ -183,6 +183,8 @@ class Assets {
         { id: 'SLASHUP', src: 'img/fight/slashup.png' },
         { id: 'HIT', src: 'img/fight/hit.png' },
         { id: 'SLASH', src: 'img/fight/slash.png' },
+        { id: 'MINI_DUST', src: 'img/fight/MiniDust.png' },
+        
 
 
 

@@ -399,6 +399,13 @@ const SWAPS = {
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
+            },
+            animationUnlink:{
+                0:[
+                    { offset: { x:20, y: 20 }, size: { x: 100, y: 50 }, speed: 1 / 4, frameCount: 10, assetId: "MINI_DUST",indexCount:40},
+                ],
+                1:[],
+                    
             }
         },
         LIGHT: {
