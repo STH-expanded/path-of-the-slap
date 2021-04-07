@@ -129,6 +129,7 @@ class Assets {
         { id: 'CHARACTER_03_WIN', src: 'img/character/CHARACTER_03_WIN.png' },
         { id: 'CHARACTER_03_WIN_WAITING', src: 'img/character/CHARACTER_03_WIN_WAITING.png' },
         { id: 'CHARACTER_03_INTRO', src: 'img/character/CHARACTER_03_INTRO.png' },
+        { id: 'CHARACTER_03_GRAB', src: 'img/character/CHARACTER_03_GRAB.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },

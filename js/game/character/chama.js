@@ -936,7 +936,7 @@ const CHAMA = {
         LAND: {},
         RECOVER: {},
         GRAB: {
-            duration: 25,
+            duration: 24,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -949,7 +949,12 @@ const CHAMA = {
                     { offset: { x: 0, y: 8 }, size: { x: 40, y: 120 } }
                 ]
             },
-            animation: {}
+            animation: {
+                offset: { x: -48, y: -48 },
+                size: { x: 114, y: 192 },
+                speed: 1 / 8,
+                frameCount: 3
+            }
         },
         GRAB_TECH: {},
         GRAB_RELEASE: {
