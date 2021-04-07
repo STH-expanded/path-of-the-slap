@@ -1053,7 +1053,7 @@ const CHAMA = {
             }
         },
         INTRO: {
-            duration: 48,
+            duration: 64,
             cancellable: false,
             fixedDirection: true,
             isAerial: false,
@@ -1064,10 +1064,10 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
             animation: {
-                offset: { x: -48, y: -54 },
-                size: { x: 108, y: 192 },
+                offset: { x: -32, y: -48 },
+                size: { x: 89, y: 192 },
                 speed: 1 / 8,
-                frameCount: 6
+                frameCount: 8
             }
         },
         KO: {

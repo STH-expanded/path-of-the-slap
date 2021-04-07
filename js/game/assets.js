@@ -128,6 +128,7 @@ class Assets {
         { id: 'CHARACTER_03_GET_UP', src: 'img/character/CHARACTER_03_GET_UP.png' },
         { id: 'CHARACTER_03_WIN', src: 'img/character/CHARACTER_03_WIN.png' },
         { id: 'CHARACTER_03_WIN_WAITING', src: 'img/character/CHARACTER_03_WIN_WAITING.png' },
+        { id: 'CHARACTER_03_INTRO', src: 'img/character/CHARACTER_03_INTRO.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },
