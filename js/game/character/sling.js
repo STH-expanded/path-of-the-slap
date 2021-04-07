@@ -51,6 +51,7 @@ const SLING = {
                 let hitbox = null;
                 character.getEnemies(fight).forEach(enemy =>{ 
                     hitbox = hitbox ? hitbox : enemy.hitboxes.find(hitbox => hitbox.intersectingCollisionBoxes(character.hurtboxes).includes(true))
+                 
                     if (enemy.hitboxes.includes(hitbox)) {
                         enemy.hurtnotify(character)
                     }
@@ -757,7 +758,13 @@ const SLING = {
                 offset: { x: -29, y: -48 },
                 size: { x: 124, y: 192 },
                 speed: 1 / 5,
-                frameCount: 24
+                frameCount: 120,
+                //transfo en unlink et add a chaque frame une seul boules et les cumulées
+                vfx: {
+                    0: [
+                        { offset: { x:55, y: 5 }, size: { x: 72, y: 72 }, speed: 1 / 6.5, frameCount: 18, assetId: "HCF_SLING_MULTISLASH"}
+                    ]
+                },
             }
         },
         QCB: {},
