@@ -820,17 +820,16 @@ const CHAMA = {
                         { name: 'shake' }
                     ]
                 },
-                vfx: {
-                    0: [
-                        { offset: { x: 15, y: 10 }, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT"}
-                    ]
-                },
                 sfx: {
                     0: [
                         { name: 'CHARACTER_00_HIT' }
                     ]
                 }
-            }
+            },
+            animationUnlink: {
+                0: [(fight, character) => ({ offset: { x: !character.direction ? (character.collisionBox.center().x - character.ennemyLastHitbox.center().x) : (character.ennemyLastHitbox.center().x - character.collisionBox.center().x), y: character.direction ? (character.collisionBox.center().y - character.ennemyLastHitbox.center().y) - 40 : (character.ennemyLastHitbox.center().y - character.collisionBox.center().y) - 40}, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT", indexCount: 20 })],
+                1: []
+            },
         },
         EJECTED: {
             duration: 1,
