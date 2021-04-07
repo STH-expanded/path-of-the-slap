@@ -450,16 +450,14 @@ const SWAPS = {
                 speed: 1 / 4,
                 frameCount: 6,
                 vfx: {
-                    0: [
-                        { offset: { x: 30, y: -12 }, size: { x: 64, y: 64 }, speed: 1 / 5, frameCount: 5, assetId: "SLASH"}
+                    0: [],
+                    5: [
+                        { offset: { x: 30, y: -12 }, size: { x: 53, y: 64 }, speed: 1 / 5, frameCount: 5, assetId: "SLASH"}
                     ]
                 },
             },
             animationUnlink:{
-                0: [ (fight, character) => (
-                    { offset: { x:0, y:-50}, size: { x: 72, y: 72 }, speed: 1, frameCount: 1, assetId: "SLASHUP",indexCount:10}
-                )],
-                1: []
+                0: []
             }
         },
         HEAVY: {
