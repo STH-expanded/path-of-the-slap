@@ -3,7 +3,7 @@ class Computer extends Player {
         frames: 60,
         fit: (fight, character) => debugMode.cpu ? 2 : 0,
         steps: {
-            0: (fight, character) => ({})
+            0: (fight, character) => ({ b:true })
         }
     },
     {

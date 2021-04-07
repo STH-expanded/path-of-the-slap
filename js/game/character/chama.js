@@ -802,7 +802,7 @@ const CHAMA = {
                 0: (fight, character, inputList) => ({ x: character.velocity.x, y: character.velocity.y })
             },
             animation: {
-                offset: { x: -29, y: -48 },
+                offset: { x: -29, y: -56 },
                 size: { x: 91, y: 192 },
                 speed: 1,
                 frameCount: 1
