@@ -12,6 +12,8 @@ class Character {
 
     ejectionVelocity = new Vector2D(0, 0);
     ejection = 0;
+    ennemyLastHitbox;
+
 
     constructor(data, action, direction, position) {
         this.data = data;
@@ -70,6 +72,7 @@ class Character {
                 if (!(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 4 : inputList.state[0].input.stick === 6) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'BLOCK' && this.hitstun)
                     && !(this.canBlock(fight) && !this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 7 : inputList.state[0].input.stick === 9) && ['AERIAL', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'AERIAL_BLOCK' && this.hitstun)
                     && !(this.canBlock(fight) && this.isGrounded(fight) && (this.direction ? inputList.state[0].input.stick === 1 : inputList.state[0].input.stick === 3) && ['LOW', 'NORMAL'].includes(hitbox.owner.actions[hitbox.owner.action].attackType) || this.action === 'LOW_BLOCK' && this.hitstun)) {
+                    this.ennemyLastHitbox = hitbox;
                     this.takeDamage(hitbox.damage);
                     if (hitbox.ejectionVelocity) {
                         this.ejection = 1;
@@ -152,9 +155,13 @@ class Character {
         this.hurtboxes = [];
         ["hitboxes", "hurtboxes", "actors","animationUnlink"].forEach(actionElement => {
             if (actionData[actionElement]) {
-                const elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
+                let elements = actionData[actionElement][Object.keys(actionData[actionElement]).reverse().find(index => index <= this.actionIndex)];
+                elements = actionData === "animationUnlink" ? elements() : elements;
                 elements.forEach(element => {
                     if (actionElement === "actors") fight.actors.push(new Actor(element.data, "IDLE", element.offset, this));
+                    else if (actionElement === "animationUnlink") {
+                        fight.animationUnlink.push(new Animation(this.collisionBox.center().plus(this.direction? new Vector2D(element(fight, this).offset.x-element(fight, this).size.x,element(fight, this).offset.y):new Vector2D(-element(fight, this).offset.x,element(fight, this).offset.y)), element(fight, this).size,element(fight, this).speed,element(fight, this).frameCount, this.direction,element(fight, this).assetId,element(fight, this).indexCount));
+                    }
                     else {
                         const size = new Vector2D(element.size.x, element.size.y);
                         const pos = new Vector2D(
@@ -162,11 +169,6 @@ class Character {
                             this.collisionBox.pos.y + element.offset.y
                         );
                         if (actionElement === "hurtboxes") this.hurtboxes.push(new CollisionBox(pos, size));
-                        else if (actionElement === "animationUnlink") {
-                            fight.animationUnlink.push(new Animation(this.collisionBox.center().plus(this.direction? new Vector2D(element.offset.x-element.size.x,element.offset.y):new Vector2D(-element.offset.x,element.offset.y)), element.size,element.speed,element.frameCount, this.direction,element.assetId,element.indexCount));
-                            // fight.animationUnlink.push(new Animation(this.collisionBox.center().plus(element.offset), element.size,element.speed,element.frameCount, this.direction,element.assetId,element.indexCount));
-                        
-                        }
                         else {
                             this.hitboxes.push(new HitBox(pos, size, element.damage, element.hitstunFrame || element.hitstunFrame === 0 ? element.hitstunFrame : Math.round(element.damage * 0.25),
                                 new Vector2D(element.hitstunVelocity.x * (this.direction ? 1 : -1), element.hitstunVelocity.y),

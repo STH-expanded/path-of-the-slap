@@ -287,9 +287,9 @@ const SWAPS = {
               
             },
             animationUnlink: {
-                0: [
+                0: [(fight, character) => (
                     { offset: { x:0, y:-50}, size: { x: 128, y: 128 }, speed: 1 / 2, frameCount: 10, assetId: "DUST",indexCount:20}
-                ],
+                )],
                 1: []
             },
             
@@ -442,9 +442,9 @@ const SWAPS = {
                 },
             },
             animationUnlink:{
-                0: [
+                0: [ (fight, character) => (
                     { offset: { x:0, y:-50}, size: { x: 72, y: 72 }, speed: 1, frameCount: 1, assetId: "SLASHUP",indexCount:10}
-                ],
+                )],
                 1: []
             }
         },
@@ -796,17 +796,16 @@ const SWAPS = {
                         { name: 'shake' }
                     ]
                 },
-                vfx: {
-                    0: [
-                        { offset: { x: 15, y: 10 }, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT"}
-                    ]
-                },
                 sfx: {
                     0: [
                         { name: 'CHARACTER_02_HIT' }
                     ]
                 },
-            }
+            },
+            animationUnlink: {
+                0: [(fight, character) => ({ offset: { x: !character.direction ? (character.collisionBox.center().x - character.ennemyLastHitbox.center().x) : (character.ennemyLastHitbox.center().x - character.collisionBox.center().x), y: character.direction ? (character.collisionBox.center().y - character.ennemyLastHitbox.center().y) - 40 : (character.ennemyLastHitbox.center().y - character.collisionBox.center().y) - 40}, size: { x: 33, y: 40 }, speed: 1 / 5, frameCount: 4, assetId: "HIT", indexCount: 20 })],
+                1: []
+            },
         },
         EJECTED: {
             duration: 1,
