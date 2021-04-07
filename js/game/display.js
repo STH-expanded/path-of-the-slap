@@ -50,6 +50,19 @@ class Display {
         this.cx.translate(-element.collisionBox.size.x / 2, -element.collisionBox.size.y / 2);
     }
 
+    // Dark effect
+    darkEffect = (view, frame, frameStart, frameLength) => {
+        this.cx.fillStyle = '#000';
+        this.cx.fillRect(view.xOffset, view.yOffset, view.w, view.h);
+        this.cx.fillStyle = '#fff';
+        const effectHeight = (this.height - this.height * (frame - frameStart) / frameLength) / 2;
+        const effectYOffset = this.height / 8;
+        this.cx.fillRect(
+            view.xOffset, view.yOffset + this.height / 2 + effectYOffset - effectHeight / 2,
+            this.width, effectHeight
+        );
+    }
+
     // Resize canvas
     resize = () => {
         this.zoom = Math.max(1, Math.min(Math.floor(innerWidth / this.width), Math.floor(innerHeight / this.height)));

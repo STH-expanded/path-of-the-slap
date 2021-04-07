@@ -706,6 +706,7 @@ const SLING = {
             hurtboxes: {
                 0: [{ offset: { x: -8, y: 0 }, size: { x: 58, y: 128 } }],
                 6: [
+                    { offset: { x: -8, y: 0 }, size: { x: 58, y: 128 } },
                     { offset: { x: 40, y: 24 }, size: { x: 24, y: 24 } }
                 ],
                 16: [
@@ -727,13 +728,31 @@ const SLING = {
             isAerial: false,
             size: { x: 32, y: 128 },
             velocity: {
-                0: (fight, character, inputList) => ({ x: 0.125 * (character.direction ? 1 : -1), y: 0 })
+                0: (fight, character, inputList) => ({ x: 0.15 * (character.direction ? 1 : -1), y: 0 })
             },
             hitboxes: {
-                0: []
+                0: [
+                    { offset: { x: 35, y: 21 }, size: { x: 45, y: 15 }, damage: 20, hitstunVelocity: { x: 0, y:  0} }
+                ],
+                75: [
+                    { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 }, damage: 20, hitstunVelocity: { x: 0, y:  0} }
+                ],
+                85: [
+                    { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 }, damage: 20, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 15, y: -8 } }
+                ],
+                100: []
             },
             hurtboxes: {
-                0: []
+                0: [
+                    { offset: { x: 5, y: 0 }, size: { x: 40, y: 84 } },
+                    { offset: { x: -15, y: 84 }, size: { x: 60, y: 44 } },
+                    { offset: { x: 35, y: 21 }, size: { x: 45, y: 15 } }
+                ],
+                75: [
+                    { offset: { x: 0, y: 0 }, size: { x: 55, y: 84 } },
+                    { offset: { x: -22, y: 84 }, size: { x: 82, y: 44 } },
+                    { offset: { x: 35, y: 18 }, size: { x: 48, y: 20 } }
+                ],
             },
             animation: {
                 offset: { x: -29, y: -48 },

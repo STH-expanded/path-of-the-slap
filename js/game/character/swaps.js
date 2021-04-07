@@ -159,6 +159,12 @@ const SWAPS = {
         // Standing actions
         {
             condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
+                ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2 && inputList.state[4].input.stick === (character.direction ? 1 : 3) && inputList.state[5].input.stick === (character.direction ? 4 : 6)) ||
+                    (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2 && inputList.state[3].input.stick === (character.direction ? 1 : 3) && inputList.state[4].input.stick === (character.direction ? 4 : 6))),
+            action: "HCF"
+        },
+        {
+            condition: (fight, character, inputList) => inputList.state[0].input.a && inputList.state[0].input.stick === (character.direction ? 6 : 4) &&
                 ((inputList.state[1].input.stick === (character.direction ? 6 : 4) && inputList.state[1].frameCount < 8 && inputList.state[2].input.stick === (character.direction ? 3 : 1) && inputList.state[3].input.stick === 2) ||
                     (inputList.state[1].input.stick === (character.direction ? 3 : 1) && inputList.state[2].input.stick === 2)),
             action: "QCF"
@@ -670,13 +676,15 @@ const SWAPS = {
             },
             hitboxes: {
                 0: [],
-                6: [
-                    { offset: { x: 32, y: 24 }, size: { x: 64, y: 24 }, damage: 50, hitstunVelocity: { x: 2, y: 0 } }
-                ],
-                9: []
+                16: [ 
+                    { offset: { x: 40, y: 20 }, size: { x: 20, y: 20 }, damage: 30, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 60, y: 0 }, size: { x: 20, y: 20 }, damage: 40, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 80, y: -20 }, size: { x: 20, y: 20 }, damage: 50, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} },
+                    { offset: { x: 100, y: -30 }, size: { x: 20, y: 15 }, damage: 75, hitstunFrame: 0, hitstunVelocity: { x: 0, y: 0 }, ejectionVelocity: { x: 10, y: -10} }
+                ]
             },
             hurtboxes: {
-                0: []
+                0: [{ offset: { x: -20, y: 0 }, size: { x: 70, y: 128 } }],
             },
             animation: {
                 offset: { x: -40, y: -48 },
@@ -685,7 +693,37 @@ const SWAPS = {
                 frameCount: 6
             }
         },
-        HCF: {},
+        HCF: {
+            duration: 96,
+            cancellable: false,
+            fixedDirection: true,
+            isAerial: false,
+            size: { x: 32, y: 128 },
+            velocity: {
+                0: (fight, character, inputList) => ({ x: 0, y: 0 }),
+                40: (fight, character, inputList) => ({ x: character.direction ? 16 : -16, y: 0 }),
+                56: (fight, character, inputList) => ({ x: 0, y: 0 })
+            },
+            hitboxes: {
+                0: []
+            },
+            hurtboxes: {
+                0: []
+            },
+            animation: {
+                offset: { x: -64, y: -48 },
+                size: { x: 151, y: 192 },
+                speed: 1 / 8,
+                frameCount: 12,
+                effects: {
+                    0: [],
+                    40: [
+                        { name: 'dark', displayOnFront: true, params: [40, 16] }
+                    ],
+                    56: []
+                }
+            }
+        },
         AERIAL_BLOCK: {
             duration: 1,
             cancellable: true,

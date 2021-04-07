@@ -7,7 +7,7 @@ class Opening extends Activity {
         // Debug mode
         if (debugMode.fight) {
             game.players["keyboard"].selectedCharacter = CHAMA;
-            game.computer.selectedCharacter = SWAPS;
+            game.computer.selectedCharacter = SLING;
             this.nextActivity = new Fight(60, 60,
                 [game.players["keyboard"], game.computer],
                 Game.TRAINING_STAGE,
