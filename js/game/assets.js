@@ -59,7 +59,6 @@ class Assets {
         { id: 'CHARACTER_00_HCF', src: 'img/character/CHARACTER_00_HCF.png' },
         { id: 'HCF_SLING_MULTISLASH', src: 'img/character/CHARACTER_00_HCFEXPLOSION.png' },
 
-
         { id: 'CHARACTER_01_NAME', src: 'img/character/CHARACTER_01_NAME.png' },
         { id: 'CHARACTER_01_PROFILE', src: 'img/character/CHARACTER_01_PROFILE.png' },
         { id: 'CHARACTER_01_PROFILE_SHADOW', src: 'img/character/CHARACTER_01_PROFILE_SHADOW.png' },
@@ -130,6 +129,10 @@ class Assets {
         { id: 'CHARACTER_03_WIN_WAITING', src: 'img/character/CHARACTER_03_WIN_WAITING.png' },
         { id: 'CHARACTER_03_INTRO', src: 'img/character/CHARACTER_03_INTRO.png' },
         { id: 'CHARACTER_03_GRAB', src: 'img/character/CHARACTER_03_GRAB.png' },
+        { id: 'CHARACTER_03_FORWARD_THROW', src: 'img/character/CHARACTER_03_FORWARD_THROW.png' },
+        { id: 'CHARACTER_03_BACK_THROW', src: 'img/character/CHARACTER_03_BACK_THROW.png' },
+        { id: 'CHARACTER_03_LOW_LIGHT', src: 'img/character/CHARACTER_03_LOW_LIGHT.png' },
+        { id: 'CHARACTER_03_LOW_HEAVY', src: 'img/character/CHARACTER_03_LOW_HEAVY.png' },
 
         // Character Selection
         { id: 'characterSelect', src: 'img/characterSelect/characterSelect.png' },

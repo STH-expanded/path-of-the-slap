@@ -1012,7 +1012,7 @@ const CHAMA = {
             }
         },
         BACK_THROW: {
-            duration: 32,
+            duration: 33,
             damage: 50,
             cancellable: false,
             fixedDirection: true,
@@ -1021,10 +1021,15 @@ const CHAMA = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            animation: {}
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 107, y: 192 },
+                speed: 1 / 11,
+                frameCount: 3
+            }
         },
         FORWARD_THROW: {
-            duration: 32,
+            duration: 33,
             damage: 50,
             cancellable: false,
             fixedDirection: true,
@@ -1033,7 +1038,12 @@ const CHAMA = {
             velocity: {
                 0: (fight, character, inputList) => ({ x: 0, y: 0 })
             },
-            animation: {}
+            animation: {
+                offset: { x: -29, y: -48 },
+                size: { x: 114, y: 192 },
+                speed: 1 / 11,
+                frameCount: 3
+            }
         },
         TECH: {
             duration: 16,
