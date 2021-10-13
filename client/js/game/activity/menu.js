@@ -120,7 +120,7 @@ class PauseMenu extends AbstractMenu {
                 Game.CHARACTERS, Game.STAGES,
                 game.lastFight.players
             ) :
-            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null;
+            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null;
     }
 }
 
@@ -131,5 +131,5 @@ class EndMenu extends AbstractMenu {
 
     optionHandler = game => (this.options[this.cursor] === 'Rematch' ? new Fight(60, 60, game.lastFight.players, game.lastFight.stage, false) :
         this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
-        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null);
+        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
 }

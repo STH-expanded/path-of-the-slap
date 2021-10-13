@@ -102,7 +102,7 @@ class CharacterSelection extends Activity {
                     cursor.ready = false;
                     cursor.infoFrame = this.cursorInfoInitFrame;
                     // If cancel while not having choosed character : return to main menu
-                } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4);
+                } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4);
             }
         } else if (!cursor.ready) {
             // Else if input directions
