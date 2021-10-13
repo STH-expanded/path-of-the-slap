@@ -30,6 +30,10 @@ class CharacterSelection extends Activity {
         this.characters = characters;
         this.stages = stages;
 
+        if(mode === "Online"){
+            var socket = io()
+        }
+
         this.cursors = players.map((player, i) => ({
             player: player,
             ready: false,

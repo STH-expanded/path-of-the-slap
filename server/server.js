@@ -7,12 +7,12 @@ const io = new Server(server);
 
 app.use(express.static(__dirname + '/../client'));
 
-//   io.on('connection', (socket) => {
-//     console.log('a user connected');
-//     socket.on('disconnect', () => {
-//       console.log('user disconnected');
-//     });
-//   });
+  io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+  });
 
 //   io.on('connection', (socket) => {
 //     socket.on('chat message', (msg) => {
