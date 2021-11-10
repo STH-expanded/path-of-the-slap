@@ -7,7 +7,7 @@ class Game {
         stage: null
     }
 
-    socket = io()
+    socket = io();
   
     constructor(){ 
     }
@@ -18,7 +18,8 @@ class Game {
             this.players[id] = new Player();
         });
         // Update players input
-        if (this.activity instanceof Fight && !this.activity.pauseMenu && this.activity.players[1] instanceof Computer) this.computer.updateInput(this.computer.getInput(this.activity));
+        if (this.activity instanceof Fight && !this.activity.pauseMenu && online[1] instanceof Computer) this.computer.updateInput(this.computer.getInput(this.activity));
+        if ((this.activity instanceof Fight || this.activity instanceof CharacterSelection) && !this.activity.pauseMenu && this.players.online instanceof Online) this.players.online.updateInput(this.players.online.getInput());
         Object.keys(inputList).forEach(id => this.players[id].updateInput(inputList[id]));
         // Update activity
         this.activity.handler(this);
