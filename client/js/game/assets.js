@@ -16,6 +16,7 @@ class Assets {
         { id: 'btnMainMenu', src: 'img/menu/btnreturntomenu.png' },
         { id: 'btnCharacterSelection', src: 'img/menu/btncharacterselection.png' },
         { id: 'btnOnline', src: 'img/menu/btnonline.png' },
+        { id: 'btnOnlineDisabled', src: 'img/menu/btnonlinedisabled.png' },
 
         // Actor
         { id: 'ACTOR_00_IDLE', src: 'img/fight/ACTOR_00_IDLE.png' },

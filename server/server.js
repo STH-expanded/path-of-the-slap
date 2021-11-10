@@ -4,14 +4,21 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const players = [];
 
 app.use(express.static(__dirname + '/../client'));
 
   io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+    if (players.length === 2) {
+      return
+    }
+    socket.on('newPlayer', (player) => {
+      players.push(player)
+      console.log("Player add"+player)
+      if (players.length >= 2) {
+        io.emit("readyForOnline",players)
+      }
+    })
   });
 
 //   io.on('connection', (socket) => {

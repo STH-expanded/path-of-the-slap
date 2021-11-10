@@ -31,7 +31,7 @@ class CharacterSelection extends Activity {
         this.stages = stages;
 
         if(mode === "Online"){
-            var socket = io()
+            // var socket = io()
         }
 
         this.cursors = players.map((player, i) => ({

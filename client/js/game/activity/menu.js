@@ -38,6 +38,7 @@ AbstractMenu.display = display => {
     // Options
     menu.options.forEach((option, index) => {
         option += option === 'Player' && Object.keys(display.game.players).length < 2 ? 'Disabled' : '';
+        option += option === 'Online' && !display.game.hasOnline ? 'Disabled' : '';
         AbstractMenu.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
         if (menu.cursor === index) AbstractMenu.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(menu.animationFrame * 0.1) * 4);
     });
@@ -82,10 +83,14 @@ class MainMenu extends AbstractMenu {
 
     optionHandler = game => {
         const players = Object.values(game.players);
-        return this.options[this.cursor] === 'Player' && players.length < 2 ? null :
-            new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
-                [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
-            );
+        if(this.options[this.cursor] === 'Player' && players.length !== 2) {
+            return null
+        } else if (this.options[this.cursor] === 'Online' && !game.hasOnline) {
+            return null
+        }
+        return new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
+            [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
+        );
     }
 }
 

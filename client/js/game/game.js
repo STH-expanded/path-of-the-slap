@@ -7,9 +7,23 @@ class Game {
         stage: null
     }
 
+    socket = io()
+
+    hasOnline = false;
+  
+    constructor(){
+        this.socket.on("readyForOnline",(players)=>{
+            this.hasOnline = true;
+            console.log(players)
+        })   
+    }
+
     update = inputList => {
         // Add new player if new input is detected
-        Object.keys(inputList).filter(id => !this.players[id]).forEach(id => this.players[id] = new Player());
+        Object.keys(inputList).filter(id => !this.players[id]).forEach(id => {
+            this.players[id] = new Player();
+            this.socket.emit('newPlayer', this.players[id]);
+        });
         // Update players input
         if (this.activity instanceof Fight && !this.activity.pauseMenu && this.activity.players[1] instanceof Computer) this.computer.updateInput(this.computer.getInput(this.activity));
         Object.keys(inputList).forEach(id => this.players[id].updateInput(inputList[id]));
