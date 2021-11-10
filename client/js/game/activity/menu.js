@@ -150,19 +150,16 @@ class WaitingScreen extends AbstractMenu {
 
 
         game.socket.on("readyForOnline",(users)=>{
-
-            console.log(users)
-        
             const myIndex = users.findIndex((player) => {
                 return player.id === game.socket.id
             })
         
-            const onlinePlayerIndex = myIndex === 1 ? 0 : 1
-        
-            console.log(myIndex, onlinePlayerIndex)
-
-            this.nextActivity = new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, [users[myIndex].player, users[onlinePlayerIndex].player]
-            );
+            // const onlinePlayerIndex = myIndex === 1 ? 0 : 1
+            const players = Object.values(game.players);
+            console.log(players)
+            const playerArray = myIndex === 0 ? [players[0],new Online()] :  [new Online(),players[0]];
+    
+            this.nextActivity = new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, playerArray);
         })  
         
     }
