@@ -38,7 +38,6 @@ AbstractMenu.display = display => {
     // Options
     menu.options.forEach((option, index) => {
         option += option === 'Player' && Object.keys(display.game.players).length < 2 ? 'Disabled' : '';
-        option += option === 'Online' && !display.game.hasOnline ? 'Disabled' : '';
         AbstractMenu.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
         if (menu.cursor === index) AbstractMenu.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(menu.animationFrame * 0.1) * 4);
     });
@@ -83,11 +82,15 @@ class MainMenu extends AbstractMenu {
 
     optionHandler = game => {
         const players = Object.values(game.players);
-        console.log(game.playersOnline)
         if(this.options[this.cursor] === 'Player' && players.length !== 2) {
             return null
-        } else if (this.options[this.cursor] === 'Online' && !game.hasOnline) {
-            return null
+        }  else if (this.options[this.cursor] === 'Online') {
+            console.log(game.socket.id)
+            game.socket.emit("newUser", {
+                id: game.socket.id,
+                player: players[0]
+            })
+            return new WaitingScreen(0, 0, ["MainMenu"], 2, this);
         }
         return new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
             this.options[this.cursor] === 'Online' ? game.playersOnline : [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
@@ -138,4 +141,14 @@ class EndMenu extends AbstractMenu {
     optionHandler = game => (this.options[this.cursor] === 'Rematch' ? new Fight(60, 60, game.lastFight.players, game.lastFight.stage, false) :
         this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
         this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
+}
+
+class WaitingScreen extends AbstractMenu {
+    constructor(initAnimInitFrame, endAnimEndFrame, options, optionYCenter) {
+        super(initAnimInitFrame, endAnimEndFrame, options, optionYCenter);
+    }
+
+    // To Do: supprimer le player du socket lorsqu'on retourne au Main Menu
+    optionHandler = () => (this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
+
 }

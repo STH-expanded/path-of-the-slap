@@ -4,23 +4,23 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const players = [];
+const users = [];
 
 app.use(express.static(__dirname + '/../client'));
 
   io.on('connection', (socket) => {
-    if (players.length === 2) {
+    if (users.length === 2) {
       return
     }
-    socket.on('newPlayer', (player) => {
-      players.push(player)
-      console.log("Player add"+player)
-      if (players.length >= 2) {
-        io.emit("readyForOnline",players)
+    socket.on('newUser', (user) => {
+      users.push(user)
+      console.log("user add"+user)
+      if (users.length >= 2) {
+        io.emit("readyForOnline",users)
       }
     })
     socket.on('disconnect', () => {
-      console.log('player disconnected');
+      console.log('user disconnected');
     });
   });
 

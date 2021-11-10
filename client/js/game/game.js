@@ -9,14 +9,12 @@ class Game {
 
     socket = io()
 
-    hasOnline = false;
-    playersOnline = [];
+    usersOnline = [];
   
     constructor(){
-        this.socket.on("readyForOnline",(players)=>{
-            this.hasOnline = true;
-            this.playersOnline = players;
-            console.log(players)
+        this.socket.on("readyForOnline",(users)=>{
+            this.usersOnline = users;
+            console.log(users)
         })   
     }
 
