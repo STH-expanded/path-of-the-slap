@@ -37,7 +37,7 @@ AbstractMenu.display = display => {
 
     // Options
     menu.options.forEach((option, index) => {
-        option += option === 'Player' && Object.keys(display.game.players).length < 2 ? 'Disabled' : '';
+        option += option === '&' && Object.keys(display.game.players).length < 2 ? 'Disabled' : '';
         AbstractMenu.drawMenuElement(display, menu, display.assets.images['btn' + option], index, 0);
         if (menu.cursor === index) AbstractMenu.drawMenuElement(display, menu, display.assets.images.menucursor, index, Math.sin(menu.animationFrame * 0.1) * 4);
     });
@@ -160,8 +160,11 @@ class WaitingScreen extends AbstractMenu {
             const onlinePlayerIndex = myIndex === 1 ? 0 : 1
         
             console.log(myIndex, onlinePlayerIndex)
-        })  
 
+            this.nextActivity = new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, [users[myIndex].player, users[onlinePlayerIndex].player]
+            );
+        })  
+        
     }
 
 
