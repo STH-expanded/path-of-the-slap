@@ -30,8 +30,6 @@ class CharacterSelection extends Activity {
         this.characters = characters;
         this.stages = stages;
 
-        console.log(players)
-
         if(mode === "Online"){
             // var socket = io()
         }

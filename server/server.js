@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/../client'));
     }
     socket.on('newUser', (user) => {
       users.push(user)
-      console.log("user add"+user)
+      console.log("user added" + user)
       if (users.length >= 2) {
         io.emit("readyForOnline",users)
       }

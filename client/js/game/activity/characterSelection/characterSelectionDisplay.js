@@ -111,8 +111,8 @@ CharacterSelection.display = display => {
         cx.drawImage(images.characterSelectInfo2, 0, cursor1.ready ? 24 : 0, 72, 24, (147 + (cursor1.infoFrame / 2) ** 2 * 4), (231 + (cursor1.infoFrame / 2) ** 2 * 1), 72, 24);
         cx.drawImage(images.characterSelectInfo2, 0, cursor2.ready ? 24 : 0, 72, 24, ((cursor2.ready ? 295 : 261) - (cursor2.infoFrame / 2) ** 2 * 4), ((cursor2.ready ? 23 : 15) - (cursor2.infoFrame / 2) ** 2 * 1), 72, 24);
         cx.drawImage(images.characterSelectInfo3, 0, 0, 58, 26, (142 + (charSelect.initInfo3Frame / 2) ** 2 * 4), (244 + (charSelect.initInfo3Frame / 2) ** 2 * 1), 58, 26);
-        cx.drawImage(images.characterSelectInfo3, 0, 26 * (charSelect.mode === 'Player' ? 1 : 2), 58, 26, (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4), (1 - (charSelect.initInfo3Frame / 2) ** 2 * 1), 58, 26);
-
+        cx.drawImage(images.characterSelectInfo3, 0, 26 * ((charSelect.mode === 'Player' || charSelect.mode === 'Online') ? 1 : 2), 58, 26, (280 - (charSelect.initInfo3Frame / 2) ** 2 * 4), (1 - (charSelect.initInfo3Frame / 2) ** 2 * 1), 58, 26);
+        
         // Mugshots
         for (let x = 0; x < charSelect.size.x; x++) {
             for (let y = 0; y < charSelect.size.y; y++) {

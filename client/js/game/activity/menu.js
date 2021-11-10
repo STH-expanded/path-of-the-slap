@@ -90,7 +90,6 @@ class MainMenu extends AbstractMenu {
         if(this.options[this.cursor] === 'Player' && players.length !== 2) {
             return null
         }  else if (this.options[this.cursor] === 'Online') {
-            console.log(game.socket.id)
             game.socket.emit("newUser", {
                 id: game.socket.id,
                 player: players[0]
@@ -164,7 +163,7 @@ class WaitingScreen extends AbstractMenu {
             const online = new Online(game);
             game.players.online = online;
             const playerArray = myIndex === 0 ? [players[0],online] :  [online,players[0]];
-            this.nextActivity = new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, playerArray);
+            this.nextActivity = new CharacterSelection(300, 60, 'Online', Game.CHARACTERS, Game.STAGES, playerArray);
         })  
         
     }
