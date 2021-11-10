@@ -6,6 +6,7 @@ class Assets {
 
         // Menu
         { id: 'titleScreen', src: 'img/menu/titleScreen.png' },
+        { id: 'waiting', src: 'img/menu/waiting.png' },
         { id: 'menucursor', src: 'img/menu/menucursor.png' },
         { id: 'btnPlayerDisabled', src: 'img/menu/btnvsplayerdisabled.png' },
         { id: 'btnPlayer', src: 'img/menu/btnvsplayer.png' },

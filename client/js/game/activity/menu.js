@@ -30,6 +30,11 @@ AbstractMenu.display = display => {
     if (menu instanceof MainMenu) {
         cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, Math.sin(menu.animationFrame * 0.02) * 4, display.width, display.height);
     }
+    else if (menu instanceof WaitingScreen) {
+        cx.fillStyle = "#000";
+        cx.fillRect(0, 0, display.width, display.height)
+        cx.drawImage(display.assets.images.waiting, 0, 0, display.width, display.height, 0, Math.sin(menu.animationFrame * 0.02) * 4, display.width, display.height);
+    }
     else {
         cx.fillStyle = menu instanceof PauseMenu ? '#0008' : '#000';
         cx.fillRect(0, 0, display.width, display.height);
