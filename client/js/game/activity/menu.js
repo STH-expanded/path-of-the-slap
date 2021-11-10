@@ -83,13 +83,14 @@ class MainMenu extends AbstractMenu {
 
     optionHandler = game => {
         const players = Object.values(game.players);
+        console.log(game.playersOnline)
         if(this.options[this.cursor] === 'Player' && players.length !== 2) {
             return null
         } else if (this.options[this.cursor] === 'Online' && !game.hasOnline) {
             return null
         }
         return new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
-            [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
+            this.options[this.cursor] === 'Online' ? game.playersOnline : [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
         );
     }
 }

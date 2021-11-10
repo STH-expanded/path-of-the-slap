@@ -10,10 +10,12 @@ class Game {
     socket = io()
 
     hasOnline = false;
+    playersOnline = [];
   
     constructor(){
         this.socket.on("readyForOnline",(players)=>{
             this.hasOnline = true;
+            this.playersOnline = players;
             console.log(players)
         })   
     }
