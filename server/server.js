@@ -19,22 +19,13 @@ app.use(express.static(__dirname + '/../client'));
         io.emit("readyForOnline",users)
       }
     })
+    socket.on('updatePlayer', (playerinfos) => {
+      socket.broadcast.emit('updatePlayer',playerinfos)
+    });
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
   });
-
-//   io.on('connection', (socket) => {
-//     socket.on('chat message', (msg) => {
-//       console.log('message: ' + msg);
-//     });
-//   });
-
-//   io.on('connection', (socket) => {
-//     socket.on('chat message', (msg) => {
-//       io.emit('chat message', msg);
-//     });
-//   });
 
 
 server.listen(3000, () => {

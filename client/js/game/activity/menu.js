@@ -156,7 +156,7 @@ class WaitingScreen extends AbstractMenu {
         
             // const onlinePlayerIndex = myIndex === 1 ? 0 : 1
             const players = Object.values(game.players);
-            const online = new Online();
+            const online = new Online(game);
             game.players.online = online;
             const playerArray = myIndex === 0 ? [players[0],online] :  [online,players[0]];
             this.nextActivity = new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, playerArray);

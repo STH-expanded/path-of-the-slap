@@ -1,12 +1,15 @@
 class Online extends Player {
-   
+    game;
+   lastInputs = {}
 
+   constructor(game){
+        super(game)
+        game.socket.on('updatePlayer', (playerinfos) => {
+            this.lastInputs = playerinfos.inputs
+        });
+   }
     getInput = activity => {
-        const arrayinp=[{
-            down: true
-        },{}] 
-
-        return arrayinp[Math.round(Math.random())]
+        return this.lastInputs;
          
     }
 }
