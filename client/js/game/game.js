@@ -8,21 +8,14 @@ class Game {
     }
 
     socket = io()
-
-    usersOnline = [];
   
-    constructor(){
-        this.socket.on("readyForOnline",(users)=>{
-            this.usersOnline = users;
-            console.log(users)
-        })   
+    constructor(){ 
     }
 
     update = inputList => {
         // Add new player if new input is detected
         Object.keys(inputList).filter(id => !this.players[id]).forEach(id => {
             this.players[id] = new Player();
-            this.socket.emit('newPlayer', this.players[id]);
         });
         // Update players input
         if (this.activity instanceof Fight && !this.activity.pauseMenu && this.activity.players[1] instanceof Computer) this.computer.updateInput(this.computer.getInput(this.activity));

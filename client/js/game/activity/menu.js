@@ -90,7 +90,7 @@ class MainMenu extends AbstractMenu {
                 id: game.socket.id,
                 player: players[0]
             })
-            return new WaitingScreen(0, 0, ["MainMenu"], 2, this);
+            return new WaitingScreen(0, 0, ["MainMenu"], 2, game);
         }
         return new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
             this.options[this.cursor] === 'Online' ? game.playersOnline : [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
@@ -144,9 +144,27 @@ class EndMenu extends AbstractMenu {
 }
 
 class WaitingScreen extends AbstractMenu {
-    constructor(initAnimInitFrame, endAnimEndFrame, options, optionYCenter) {
-        super(initAnimInitFrame, endAnimEndFrame, options, optionYCenter);
+    constructor(initAnimInitFrame, endAnimEndFrame, options, optionYCenter, game) {
+        super(initAnimInitFrame, endAnimEndFrame, options, optionYCenter, game);
+        
+
+
+        game.socket.on("readyForOnline",(users)=>{
+
+            console.log(users)
+        
+            const myIndex = users.findIndex((player) => {
+                return player.id === game.socket.id
+            })
+        
+            const onlinePlayerIndex = myIndex === 1 ? 0 : 1
+        
+            console.log(myIndex, onlinePlayerIndex)
+        })  
+
     }
+
+
 
     // To Do: supprimer le player du socket lorsqu'on retourne au Main Menu
     optionHandler = () => (this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
