@@ -26,6 +26,11 @@ app.use(express.static(__dirname + '/../client'));
       users.splice(users.findIndex(user => user.id === socket.id), 1)
       console.log(users)
     });
+    socket.on('endOfFight', () => {
+        users = [];
+        io.emit('returnOtherPlayerToMenu')
+        console.log('user disconnected', users)
+    })
     socket.on('disconnect', () => {
       if (users.length === 2 ) {
         users = [];

@@ -42,8 +42,10 @@ class Fight extends Activity {
 	}
 	
 	update = game => {
+		console.log(this.players.findIndex((player) => player instanceof Online))
 		if (this.roundAnimFrame < this.roundAnimEndFrame) this.roundAnimFrame++;
-		else if (this.isOver) this.nextActivity = new EndMenu(10, 10, ['Rematch', 'CharacterSelection', 'MainMenu'], 2);
+		else if (this.isOver && this.players.findIndex((player) => player instanceof Online) !== -1) game.socket.emit('endOfFight');
+		else if (this.isOver)  this.nextActivity = new EndMenu(10, 10, ['Rematch', 'CharacterSelection', 'MainMenu'], 2);
 		else if (this.roundIsOver) {
 			if (this.roundEndAnimFrame < this.roundEndAnimEndFrame) this.roundEndAnimFrame++;
 			else if (this.winCount.some(winner => winner >= this.playoff)) this.isOver = true;
