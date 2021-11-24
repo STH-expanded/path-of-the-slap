@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const users = [];
+let users = [];
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -27,9 +27,14 @@ app.use(express.static(__dirname + '/../client'));
       console.log(users)
     });
     socket.on('disconnect', () => {
-      console.log('user disconnected');
-      users.splice(users.findIndex(user => user.id === socket.id), 1)
-      console.log(users)
+      if (users.length === 2 ) {
+        users = [];
+        io.emit('returnOtherPlayerToMenu')
+        console.log('user disconnected', users)
+      } else {
+        users.splice(users.findIndex(user => user.id === socket.id), 1)
+        console.log('user disconnected', users)
+      }
     });
   });
 

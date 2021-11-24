@@ -10,6 +10,10 @@ class Game {
     socket = io();
   
     constructor(){ 
+        this.socket.on('returnOtherPlayerToMenu', () => {
+            this.players = {}
+            this.activity = new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4)
+        })
     }
 
     update = inputList => {
