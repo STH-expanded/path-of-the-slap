@@ -5,18 +5,22 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 let users = [];
+let waitingUsers = [];
 
 app.use(express.static(__dirname + '/../client'));
 
   io.on('connection', (socket) => {
-    if (users.length === 2) {
-      return
-    }
+    // if (users.length === 2) {
+    //   return
+    // }
     socket.on('newUser', (user) => {
-      users.push(user)
-      console.log("user added" + user)
-      if (users.length >= 2) {
-        io.emit("readyForOnline",users)
+      if (users.length === 2) {
+        waitingUsers.push(user)
+      } else {
+        users.push(user)
+        if (users.length === 2) {
+          io.emit("readyForOnline",users)
+        }
       }
     })
     socket.on('updatePlayer', (playerinfos) => {
@@ -24,22 +28,34 @@ app.use(express.static(__dirname + '/../client'));
     });
     socket.on('leaveOnline', () => {
       users.splice(users.findIndex(user => user.id === socket.id), 1)
-      console.log(users)
     });
     socket.on('endOfFight', () => {
         users = [];
         io.emit('returnOtherPlayerToMenu')
-        console.log('user disconnected', users)
+        const reloadUsers = waitingUsers
+        reloadUsers.forEach(user => {
+        if (users.length < 2) {
+            users.push(user)
+          }
+        })
+        waitingUsers.splice(0, 2);
+        if (users.length === 2) {
+          io.emit("readyForOnline",users)
+        }
     })
     socket.on('disconnect', () => {
-      if (users.length === 2 ) {
         users = [];
         io.emit('returnOtherPlayerToMenu')
-        console.log('user disconnected', users)
-      } else {
-        users.splice(users.findIndex(user => user.id === socket.id), 1)
-        console.log('user disconnected', users)
-      }
+        const reloadUsers = waitingUsers
+        reloadUsers.forEach(user => {
+        if (users.length < 2) {
+            users.push(user)
+          }
+        })
+        waitingUsers.splice(0, 2);
+        if (users.length === 2) {
+          io.emit("readyForOnline",users)
+        }
     });
   });
 

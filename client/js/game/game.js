@@ -9,10 +9,12 @@ class Game {
 
     socket = io();
   
-    constructor(){ 
+    constructor(){
         this.socket.on('returnOtherPlayerToMenu', () => {
-            this.players = {}
-            this.activity = new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4)
+            if (this.activity instanceof Fight || this.activity instanceof CharacterSelection) {
+                this.players = {}
+                this.activity = new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4)
+            }
         })
     }
 
