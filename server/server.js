@@ -22,11 +22,13 @@ app.use(express.static(__dirname + '/../client'));
     socket.on('updatePlayer', (playerinfos) => {
       socket.broadcast.emit('updatePlayer',playerinfos)
     });
+    socket.on('leaveOnline', () => {
+      users.splice(users.findIndex(user => user.id === socket.id), 1)
+      console.log(users)
+    });
     socket.on('disconnect', () => {
       console.log('user disconnected');
-      users.splice(users.findIndex((user) => {
-        return user.id === socket.id
-      }), 1)
+      users.splice(users.findIndex(user => user.id === socket.id), 1)
       console.log(users)
     });
   });

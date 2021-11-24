@@ -171,6 +171,12 @@ class WaitingScreen extends AbstractMenu {
 
 
     // To Do: supprimer le player du socket lorsqu'on retourne au Main Menu
-    optionHandler = () => (this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
-
+    optionHandler = game => {
+        if (this.options[this.cursor] === 'MainMenu') {
+            game.socket.emit('leaveOnline')
+            return new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4)
+        } else {
+            return null
+        }
+    }
 }
