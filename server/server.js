@@ -24,6 +24,10 @@ app.use(express.static(__dirname + '/../client'));
     });
     socket.on('disconnect', () => {
       console.log('user disconnected');
+      users.splice(users.findIndex((user) => {
+        return user.id === socket.id
+      }), 1)
+      console.log(users)
     });
   });
 
