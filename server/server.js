@@ -28,6 +28,6 @@ app.use(express.static(__dirname + '/../client'));
   });
 
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log('listening on *:3000');
 });
