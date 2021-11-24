@@ -30,6 +30,11 @@ AbstractMenu.display = display => {
     if (menu instanceof MainMenu) {
         cx.drawImage(display.assets.images.titleScreen, 0, 0, display.width, display.height, 0, Math.sin(menu.animationFrame * 0.02) * 4, display.width, display.height);
     }
+    else if (menu instanceof WaitingScreen) {
+        cx.fillStyle = "#000";
+        cx.fillRect(0, 0, display.width, display.height)
+        cx.drawImage(display.assets.images.waiting, 0, 0, display.width, display.height, 0, Math.sin(menu.animationFrame * 0.02) * 4, display.width, display.height);
+    }
     else {
         cx.fillStyle = menu instanceof PauseMenu ? '#0008' : '#000';
         cx.fillRect(0, 0, display.width, display.height);
@@ -82,10 +87,18 @@ class MainMenu extends AbstractMenu {
 
     optionHandler = game => {
         const players = Object.values(game.players);
-        return this.options[this.cursor] === 'Player' && players.length < 2 ? null :
-            new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
-                [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
-            );
+        if(this.options[this.cursor] === 'Player' && players.length !== 2) {
+            return null
+        }  else if (this.options[this.cursor] === 'Online') {
+            game.socket.emit("newUser", {
+                id: game.socket.id,
+                player: players[0]
+            })
+            return new WaitingScreen(0, 0, ["MainMenu"], 2, game);
+        }
+        return new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES,
+            this.options[this.cursor] === 'Online' ? game.playersOnline : [players[0], this.options[this.cursor] === 'Player' ? players[1] : game.computer]
+        );
     }
 }
 
@@ -120,7 +133,7 @@ class PauseMenu extends AbstractMenu {
                 Game.CHARACTERS, Game.STAGES,
                 game.lastFight.players
             ) :
-            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null;
+            this.options[this.cursor] === "MainMenu" ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null;
     }
 }
 
@@ -131,5 +144,33 @@ class EndMenu extends AbstractMenu {
 
     optionHandler = game => (this.options[this.cursor] === 'Rematch' ? new Fight(60, 60, game.lastFight.players, game.lastFight.stage, false) :
         this.options[this.cursor] === 'CharacterSelection' ? new CharacterSelection(300, 60, this.options[this.cursor], Game.CHARACTERS, Game.STAGES, game.lastFight.players) :
-        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4) : null);
+        this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
+}
+
+class WaitingScreen extends AbstractMenu {
+    constructor(initAnimInitFrame, endAnimEndFrame, options, optionYCenter, game) {
+        super(initAnimInitFrame, endAnimEndFrame, options, optionYCenter, game);
+        
+
+
+        game.socket.on("readyForOnline",(users)=>{
+            const myIndex = users.findIndex((player) => {
+                return player.id === game.socket.id
+            })
+        
+            // const onlinePlayerIndex = myIndex === 1 ? 0 : 1
+            const players = Object.values(game.players);
+            const online = new Online(game);
+            game.players.online = online;
+            const playerArray = myIndex === 0 ? [players[0],online] :  [online,players[0]];
+            this.nextActivity = new CharacterSelection(300, 60, 'Online', Game.CHARACTERS, Game.STAGES, playerArray);
+        })  
+        
+    }
+
+
+
+    // To Do: supprimer le player du socket lorsqu'on retourne au Main Menu
+    optionHandler = () => (this.options[this.cursor] === 'MainMenu' ? new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4) : null);
+
 }

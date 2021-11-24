@@ -13,7 +13,7 @@ class Opening extends Activity {
                 Game.TRAINING_STAGE,
                 false
             );
-        } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Training'], 4);
+        } else this.nextActivity = new MainMenu(10, 120, ['Computer', 'Player', 'Online', 'Training'], 4);
     }
 }
 

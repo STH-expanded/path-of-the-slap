@@ -6,6 +6,7 @@ class Assets {
 
         // Menu
         { id: 'titleScreen', src: 'img/menu/titleScreen.png' },
+        { id: 'waiting', src: 'img/menu/waiting.png' },
         { id: 'menucursor', src: 'img/menu/menucursor.png' },
         { id: 'btnPlayerDisabled', src: 'img/menu/btnvsplayerdisabled.png' },
         { id: 'btnPlayer', src: 'img/menu/btnvsplayer.png' },
@@ -15,6 +16,8 @@ class Assets {
         { id: 'btnResume', src: 'img/menu/btnresume.png' },
         { id: 'btnMainMenu', src: 'img/menu/btnreturntomenu.png' },
         { id: 'btnCharacterSelection', src: 'img/menu/btncharacterselection.png' },
+        { id: 'btnOnline', src: 'img/menu/btnonline.png' },
+        { id: 'btnOnlineDisabled', src: 'img/menu/btnonlinedisabled.png' },
 
         // Actor
         { id: 'ACTOR_00_IDLE', src: 'img/fight/ACTOR_00_IDLE.png' },
